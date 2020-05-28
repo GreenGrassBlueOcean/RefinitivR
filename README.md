@@ -8,7 +8,7 @@ The reason that this package was developped is that the existing eikonapir api h
 
 An interface to the R datastream package DatastreamDSWS2R is also provided to allow for easy retrieval of information so that both Eikon and Datastream commands can be used from a single r package.
 
-# installation of the package
+# Installation of the package
 (Run Rstudio with elevated permissions or as Administrator for the installation of the python libraries)
 ```
 install.packages("devtools")
