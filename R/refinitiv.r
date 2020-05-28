@@ -2,7 +2,7 @@
 #'
 #' @param method Installation method. By default, "auto" automatically finds a method that will work in the local environment. Change the default to force a specific installation method. Note that the "virtualenv" method is not available on Windows.
 #' @param conda  The path to a conda executable. Use "auto" to allow reticulate to automatically find an appropriate conda binary. See Finding Conda in the reticulate package for more details
-#' @param envname the name for the conda environment that will be used, default  r-eikon
+#' @param envname the name for the conda environment that will be used, default  r-reticulate. Don't Change!
 #'
 #' @return
 #' @export
@@ -11,7 +11,7 @@
 #' \dontrun{
 #' install_eikon()
 #' }
-install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon") {
+install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulate") {
 
   # create helper function to check if conda is installed
   CondaExists <- function(){

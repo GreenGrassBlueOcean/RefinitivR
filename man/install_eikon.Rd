@@ -4,14 +4,14 @@
 \alias{install_eikon}
 \title{Check if Conda exists, if not instals miniconda, creates the conda environment r-eikon to have a dedicated virtual conda environment for this package}
 \usage{
-install_eikon(method = "auto", conda = "auto", envname = "r-eikon")
+install_eikon(method = "auto", conda = "auto", envname = "r-reticulate")
 }
 \arguments{
 \item{method}{Installation method. By default, "auto" automatically finds a method that will work in the local environment. Change the default to force a specific installation method. Note that the "virtualenv" method is not available on Windows.}
 
 \item{conda}{The path to a conda executable. Use "auto" to allow reticulate to automatically find an appropriate conda binary. See Finding Conda in the reticulate package for more details}
 
-\item{envname}{the name for the conda environment that will be used, default  r-eikon}
+\item{envname}{the name for the conda environment that will be used, default  r-reticulate. Don't Change!}
 }
 \value{
 
