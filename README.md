@@ -55,5 +55,6 @@ DSResult <- DataStream$snapshotRequest(instrument = c("ABF","RIO","WPP"),
                                        requestDate = "0D")
 
 ```
+for further details on accesing datastream see https://github.com/CharlesCara/DatastreamDSWS2R
 
 licensing see LICENSE File!
