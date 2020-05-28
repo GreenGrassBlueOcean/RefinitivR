@@ -24,7 +24,9 @@ Refinitiv::install_eikon()
 ```
 
 # Connecting to the Eikonapi
+```
 Eikon <- Refinitiv::EikonConnect(Eikonapplication_id = "YOUR EIKON API KEY", Eikonapplication_port = 9000L)
+```
 
 # Performing a timeseries request
 (make sure that Eikon is running and online)
