@@ -1,4 +1,4 @@
-#' Check if Conda exists, if not instals miniconda, creates the conda environment r-eikon to have a dedicated virtual conda environment for this package
+#' Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-reticulate
 #'
 #' @param method Installation method. By default, "auto" automatically finds a method that will work in the local environment. Change the default to force a specific installation method. Note that the "virtualenv" method is not available on Windows.
 #' @param conda  The path to a conda executable. Use "auto" to allow reticulate to automatically find an appropriate conda binary. See Finding Conda in the reticulate package for more details
@@ -93,7 +93,7 @@ EikonConnect <- function(Eikonapplication_id = .EikonApiKey , Eikonapplication_p
   options(.EikonApiKey = Eikonapplication_id)
   options(.EikonApplicationPort = Eikonapplication_port)
 
-  reticulate::use_condaenv(condaenv = "r-eikon", conda = "auto") # set virtual environment right
+  reticulate::use_condaenv(condaenv = "r-reticulate", conda = "auto") # set virtual environment right
   PythonEK <- reticulate::import(module = "eikon") # import python eikon module
 
   PythonEK$set_port_number(.Options$.EikonApplicationPort)
