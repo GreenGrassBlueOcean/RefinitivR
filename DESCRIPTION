@@ -18,7 +18,8 @@ Imports:
     dplyr,
     reshape,
     methods,
-    stats
+    stats,
+    devtools
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:

@@ -46,6 +46,13 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
   if (!reticulate::py_module_available("eikon")) {
       reticulate::py_install(packages = c("numpy", "eikon") , envname = envname,  method = method, conda = conda)
   }
+
+
+  if(!("DatastreamDSWS2R" %in% rownames(installed.packages()))){
+    print("installing DatastreamDSWS2R from https://github.com/CharlesCara/DatastreamDSWS2R")
+    try(devtools::install_github("CharlesCara/DatastreamDSWS2R"))
+  }
+
 }
 
 
