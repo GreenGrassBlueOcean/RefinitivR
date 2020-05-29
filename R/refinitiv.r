@@ -194,7 +194,7 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
 #' Function to retry failed functions after a time out of 5 seconds. Especially useful for failed api calls.
 #'
 #' @param max maximum number of retries, default = 0
-#' @param init initial state of retries should always be zero
+#' @param init initial state of retries should always be left zero.
 #' @param retryfun function to retry
 #'
 #' @return
@@ -204,7 +204,7 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
 retry <- function(retryfun, max = 10, init = 0){
   suppressWarnings( tryCatch({
     if (init < max) retryfun
-  }, error = function(e){print(paste("retrying time",init + 1)) ;Sys.sleep(time = 5); retry(retryfun, max, init = init + 1)}))
+  }, error = function(e){message(paste0("api request failed, automatically retrying time ",init + 1)) ;Sys.sleep(time = 5); retry(retryfun, max, init = init + 1)}))
 }
 
 
@@ -274,7 +274,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
   }
 
   if ( !is.null(Duration) && (Limit < Datapoints)) {
-    print("chunking required!")
+    message("The operation is too large for one api request and will be chunked in multiple requests")
     ChunckedRics <- EikonChunker(RICS = rics, MaxCallsPerChunk = Limit, Duration =  ceiling(Duration) )
   } else{
     ChunckedRics <- list(rics)
