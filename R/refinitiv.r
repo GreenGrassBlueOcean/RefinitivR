@@ -96,8 +96,8 @@ EikonConnect <- function(Eikonapplication_id = .EikonApiKey , Eikonapplication_p
   reticulate::use_condaenv(condaenv = "r-eikon", conda = "auto") # set virtual environment right
   PythonEK <- reticulate::import(module = "eikon") # import python eikon module
 
-  PythonEK$set_port_number(.EikonApplicationPort)
-  PythonEK$set_app_key(app_key = .EikonApiKey)
+  PythonEK$set_port_number(.Options$.EikonApplicationPort)
+  PythonEK$set_app_key(app_key = .Options$.EikonApiKey)
 
   return(PythonEK)
 }
@@ -229,7 +229,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                               , start_date = "2020-01-01T01:00:00", end_date = paste0(Sys.Date(), "T01:00:00"), cast = TRUE){
 
   # Make sure that Python object has api key
-  EikonObject$set_app_key(app_key = .EikonApiKey)
+  EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
 
   # Convert as posix
   start_date <- as.POSIXct(start_date, format = "%Y-%m-%dT%H:%M:%S")
@@ -325,7 +325,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 EikonGetData <- function(EikonObject, rics, Eikonformulas, raw_output = FALSE){
 
 #Make sure that Python object has api key
-EikonObject$set_app_key(app_key = .EikonApiKey)
+EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
 # Divide RICS in chunks to satisfy api limits
 ChunckedRics <- Refinitiv::EikonChunker(RICS = rics, Eikonfields = Eikonformulas)
 
