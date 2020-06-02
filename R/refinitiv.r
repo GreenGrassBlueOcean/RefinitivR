@@ -298,7 +298,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
   ReturnTimeSeries <- do.call("rbind", TimeSeriesList)
 
 
-  if (isTRUE(cast)) {
+  if (isTRUE(cast) & !is.null(ReturnTimeSeries) ) {
     ReturnTimeSeries <- suppressWarnings(reshape::cast(ReturnTimeSeries,  Date +  Security ~ Field))
     ReturnTimeSeries <- ReturnTimeSeries[order(ReturnTimeSeries$Security),]
     ReturnTimeSeries <- as.data.frame(ReturnTimeSeries) #remove dcast class as it has no use.
