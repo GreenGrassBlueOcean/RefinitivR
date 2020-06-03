@@ -193,7 +193,7 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
 
 #' Function to retry failed functions after a time out of 5 seconds. Especially useful for failed api calls.
 #'
-#' @param max maximum number of retries, default = 0
+#' @param max maximum number of retries, default = 2
 #' @param init initial state of retries should always be left zero.
 #' @param retryfun function to retry
 #'
@@ -201,7 +201,7 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
 #' @export
 #'
 #' @examples  retry(sum(1,"a"), max = 2)
-retry <- function(retryfun, max = 10, init = 0){
+retry <- function(retryfun, max = 3, init = 0){
   suppressWarnings( tryCatch({
     if (init < max) retryfun
   }, error = function(e){message(paste0("api request failed, automatically retrying time ",init + 1)) ;Sys.sleep(time = 5); retry(retryfun, max, init = init + 1)}))
