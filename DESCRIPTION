@@ -14,12 +14,10 @@ Imports:
     reticulate,
     countrycode,
     zoo,
-    magrittr,
     dplyr,
     reshape,
     methods,
     stats,
-    devtools,
     DatastreamDSWS2R
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
