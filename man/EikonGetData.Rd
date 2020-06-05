@@ -15,9 +15,6 @@ EikonGetData(EikonObject, rics, Eikonformulas, raw_output = FALSE)
 
 \item{raw_output}{to return the raw list by chunk for debugging purposes, default = FALSE}
 }
-\value{
-
-}
 \description{
 The function automatically chunks the list of rics into chunks that comply with the api limitations and in the end rebuilds the chunks again into a single data.frame.
 }

@@ -4,18 +4,16 @@
 \alias{retry}
 \title{Function to retry failed functions after a time out of 5 seconds. Especially useful for failed api calls.}
 \usage{
-retry(retryfun, max = 10, init = 0)
+retry(retryfun, max = 2, init = 0)
 }
 \arguments{
 \item{retryfun}{function to retry}
 
-\item{max}{maximum number of retries, default = 0}
+\item{max}{maximum number of retries, default = 2}
 
-\item{init}{initial state of retries should always be zero}
+\item{init}{initial state of retries should always be left zero.}
 }
-\value{
 
-}
 \description{
 Function to retry failed functions after a time out of 5 seconds. Especially useful for failed api calls.
 }

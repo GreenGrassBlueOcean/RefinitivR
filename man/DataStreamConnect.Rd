@@ -11,9 +11,6 @@ DataStreamConnect(DatastreamUserName, DatastreamPassword)
 
 \item{DatastreamPassword}{Refinitiv DataStream password}
 }
-\value{
-
-}
 \description{
 Initialize DataStream Connection
 }

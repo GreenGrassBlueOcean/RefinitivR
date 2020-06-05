@@ -7,9 +7,6 @@
 \usage{
 GetISO103883_MIC()
 }
-\value{
-
-}
 \description{
 Download Operating mic defintions from the isowebsite
 "https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv"

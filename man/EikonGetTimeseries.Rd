@@ -32,9 +32,6 @@ EikonGetTimeseries(
 
 \item{cast}{castedata from wide to long format using the reshape::cast function, Default: TRUE}
 }
-\value{
-
-}
 \description{
 Automatically chunks the timeseries in seperate apicalls and binds them together again in order to comply with api regulations.
 }

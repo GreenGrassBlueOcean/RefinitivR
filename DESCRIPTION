@@ -19,7 +19,8 @@ Imports:
     reshape,
     methods,
     stats,
-    devtools
+    devtools,
+    DatastreamDSWS2R
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:
@@ -30,6 +31,6 @@ Config/reticulate:
   )
 RoxygenNote: 7.1.0
 Depends: 
-    R (>= 3.50)
+    R (>= 3.50),
 Suggests: 
     testthat

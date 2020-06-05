@@ -13,9 +13,6 @@ EikonErrorProcessor(Eikon_get_data_Error, Chunked, ChunkRowStart)
 
 \item{ChunkRowStart}{Vector what the cumulative position is in the final data output}
 }
-\value{
-
-}
 \description{
 This function processes the error output of the python function in r readable output.
 This function is used by

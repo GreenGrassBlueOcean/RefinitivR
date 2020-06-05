@@ -5,6 +5,7 @@
 #' @param envname the name for the conda environment that will be used, default  r-reticulate. Don't Change!
 #'
 #' @return
+#' @importFrom utils installed.packages
 #' @export
 #'
 #' @examples
@@ -47,12 +48,6 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
       reticulate::py_install(packages = c("numpy", "eikon") , envname = envname,  method = method, conda = conda)
   }
 
-
-  if(!("DatastreamDSWS2R" %in% rownames(installed.packages()))){
-    print("installing DatastreamDSWS2R from https://github.com/CharlesCara/DatastreamDSWS2R")
-    try(devtools::install_github("CharlesCara/DatastreamDSWS2R"))
-  }
-
 }
 
 
@@ -63,6 +58,7 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
 #'
 #' @param DatastreamUserName Refinitiv DataStream username
 #' @param DatastreamPassword Refinitiv DataStream password
+#'
 #' @return
 #' @export
 #'
@@ -201,7 +197,7 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
 #' @export
 #'
 #' @examples  retry(sum(1,"a"), max = 2)
-retry <- function(retryfun, max = 3, init = 0){
+retry <- function(retryfun, max = 2, init = 0){
   suppressWarnings( tryCatch({
     if (init < max) retryfun
   }, error = function(e){message(paste0("api request failed, automatically retrying time ",init + 1)) ;Sys.sleep(time = 5); retry(retryfun, max, init = init + 1)}))
