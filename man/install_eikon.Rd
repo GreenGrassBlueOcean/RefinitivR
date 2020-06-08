@@ -13,6 +13,9 @@ install_eikon(method = "auto", conda = "auto", envname = "r-reticulate")
 
 \item{envname}{the name for the conda environment that will be used, default  r-reticulate. Don't Change!}
 }
+\value{
+None
+}
 \description{
 Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-reticulate
 }

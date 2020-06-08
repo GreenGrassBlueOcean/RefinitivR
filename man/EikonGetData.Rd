@@ -4,7 +4,13 @@
 \alias{EikonGetData}
 \title{Function to obtain data from Eikon. Based on the Eikon python function get_data}
 \usage{
-EikonGetData(EikonObject, rics, Eikonformulas, raw_output = FALSE)
+EikonGetData(
+  EikonObject,
+  rics,
+  Eikonformulas,
+  raw_output = FALSE,
+  time_out = 60
+)
 }
 \arguments{
 \item{EikonObject}{Eikon object created using EikonConnect function}
@@ -14,6 +20,11 @@ EikonGetData(EikonObject, rics, Eikonformulas, raw_output = FALSE)
 \item{Eikonformulas}{a vector containing character string of Eikon Formulas}
 
 \item{raw_output}{to return the raw list by chunk for debugging purposes, default = FALSE}
+
+\item{time_out}{set the maximum timeout to the Eikon server, default = 60}
+}
+\value{
+a data.frame containing data.from Eikon
 }
 \description{
 The function automatically chunks the list of rics into chunks that comply with the api limitations and in the end rebuilds the chunks again into a single data.frame.

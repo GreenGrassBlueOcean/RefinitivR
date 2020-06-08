@@ -11,6 +11,9 @@ DataStreamConnect(DatastreamUserName, DatastreamPassword)
 
 \item{DatastreamPassword}{Refinitiv DataStream password}
 }
+\value{
+a DataStream R5 object
+}
 \description{
 Initialize DataStream Connection
 }

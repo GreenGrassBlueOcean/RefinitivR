@@ -11,6 +11,9 @@ EikonConnect(Eikonapplication_id = .EikonApiKey, Eikonapplication_port = 9000L)
 
 \item{Eikonapplication_port}{proxy port id}
 }
+\value{
+a Python module that is an EikonObject
+}
 \description{
 Initialize Eikon Python api
 }

@@ -9,6 +9,9 @@ EikonNameCleaner(names)
 \arguments{
 \item{names}{vector of data.frame column names}
 }
+\value{
+a data.frame in which the Eikon formula's are replaced with the Eikon display Name which is the last part of the formula.
+}
 \description{
 Convert eikon formula's in human readable names
 }

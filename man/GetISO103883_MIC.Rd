@@ -2,15 +2,19 @@
 % Please edit documentation in R/eikonHelperfunctions.r
 \name{GetISO103883_MIC}
 \alias{GetISO103883_MIC}
-\title{Download Operating mic defintions from the isowebsite
-"https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv"}
+\title{Download Operating mic definitions from the isowebsite}
 \usage{
 GetISO103883_MIC()
 }
+\value{
+a data.frame with details of the operating mics from www.iso20022.org
+}
 \description{
-Download Operating mic defintions from the isowebsite
-"https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv"
+Download Operating mic definitions from the isowebsite
 }
 \examples{
 GetISO103883_MIC()
+}
+\references{
+\url{"https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv"}
 }

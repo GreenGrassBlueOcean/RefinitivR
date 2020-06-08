@@ -11,6 +11,9 @@ WeekendDates(MinDate, MaxDate)
 
 \item{MaxDate}{End date in character of Date class format = "\%Y-\%m-\%d"}
 }
+\value{
+a vector of weekend dates between MinDate and MaxDate.
+}
 \description{
 Function to determine weekend Dates
 }

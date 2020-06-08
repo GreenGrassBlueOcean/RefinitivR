@@ -7,7 +7,7 @@
 #' @param Chunked Boolean indicating if the get_data python output is chunked or not
 #' @param ChunkRowStart Vector what the cumulative position is in the final data output
 #'
-#' @return
+#' @return a data.frame
 #'
 #' @seealso \link{EikonGetData},
 #'          \link{EikonGetTimeseries}
@@ -155,12 +155,13 @@ EikonRepairMic <- function(Fundamentals_Data){
 
 
 
-#' Download Operating mic defintions from the isowebsite
-#' "https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv"
-#' @return
+#' Download Operating mic definitions from the isowebsite
+#'
+#' @return a data.frame with details of the operating mics from www.iso20022.org
 #' @export
 #'
 #' @examples GetISO103883_MIC()
+#' @references \url{"https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv"}
 GetISO103883_MIC <- function(){
    OperatingMics_df <- utils::read.csv(file = "https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv")
 
@@ -178,7 +179,7 @@ GetISO103883_MIC <- function(){
 #' @param MinDate Start date in character of Date class format = "\%Y-\%m-\%d"
 #' @param MaxDate End date in character of Date class format = "\%Y-\%m-\%d"
 #'
-#' @return
+#' @return a vector of weekend dates between MinDate and MaxDate.
 #' @export
 #'
 #' @examples
@@ -207,7 +208,7 @@ WeekendDates <- function(MinDate, MaxDate){
 #' @param EikonTimeseriesResult a data.frame with timeseries generated with EikonGetTimeseries containing at least the columns "Date" and "Security"
 #' @param EikonDataResult a data.frame with the columns "Instrument" denoting the RIC of the instrumennt and the column "Operating MIC" denoting the operating mic of the exchange on which the instrument is traded
 #'
-#' @return
+#' @return data.frame with the dates that are missing
 #' @export
 #'
 #' @examples

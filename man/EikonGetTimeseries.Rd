@@ -12,7 +12,8 @@ EikonGetTimeseries(
   fields = c("TIMESTAMP", "VOLUME", "HIGH", "LOW", "OPEN", "CLOSE"),
   start_date = "2020-01-01T01:00:00",
   end_date = paste0(Sys.Date(), "T01:00:00"),
-  cast = TRUE
+  cast = TRUE,
+  time_out = 60
 )
 }
 \arguments{
@@ -30,7 +31,12 @@ EikonGetTimeseries(
 
 \item{end_date}{End date and time of the historical range.  string format is: '\%Y-\%m-\%dT\%H:\%M:\%S'.}
 
-\item{cast}{castedata from wide to long format using the reshape::cast function, Default: TRUE}
+\item{cast}{cast data from wide to long format using the reshape::cast function, Default: TRUE}
+
+\item{time_out}{set the maximum timeout to the Eikon server, default = 60}
+}
+\value{
+A data.frame containing time series from Eikon
 }
 \description{
 Automatically chunks the timeseries in seperate apicalls and binds them together again in order to comply with api regulations.

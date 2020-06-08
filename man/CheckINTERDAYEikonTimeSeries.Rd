@@ -11,6 +11,9 @@ CheckINTERDAYEikonTimeSeries(EikonTimeseriesResult, EikonDataResult)
 
 \item{EikonDataResult}{a data.frame with the columns "Instrument" denoting the RIC of the instrumennt and the column "Operating MIC" denoting the operating mic of the exchange on which the instrument is traded}
 }
+\value{
+data.frame with the dates that are missing
+}
 \description{
 It checks if all dates that should be in the timeseries are also present.
 The function automatically removes weekenddays and public Holidays.
