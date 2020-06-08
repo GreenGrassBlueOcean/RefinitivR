@@ -8,6 +8,7 @@ EikonGetData(
   EikonObject,
   rics,
   Eikonformulas,
+  Parameters = NULL,
   raw_output = FALSE,
   time_out = 60
 )
@@ -18,6 +19,8 @@ EikonGetData(
 \item{rics}{a vector containing the instrument RICS}
 
 \item{Eikonformulas}{a vector containing character string of Eikon Formulas}
+
+\item{Parameters}{a named key value list for setting parameters, Default: NULL}
 
 \item{raw_output}{to return the raw list by chunk for debugging purposes, default = FALSE}
 

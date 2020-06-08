@@ -320,6 +320,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #' @param EikonObject Eikon object created using EikonConnect function
 #' @param rics a vector containing the instrument RICS
 #' @param Eikonformulas a vector containing character string of Eikon Formulas
+#' @param Parameters a named key value list for setting parameters, Default: NULL
 #' @param raw_output to return the raw list by chunk for debugging purposes, default = FALSE
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
 #'
@@ -333,7 +334,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #' EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
 #'              Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/", "TR.CompanyName"))
 #' }
-EikonGetData <- function(EikonObject, rics, Eikonformulas, raw_output = FALSE, time_out = 60){
+EikonGetData <- function(EikonObject, rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60){
 
 #Make sure that Python object has api key
 EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
@@ -347,6 +348,7 @@ EikonDataList <- vector(mode = 'list', length = length(ChunckedRics))
 for (j in 1:length(ChunckedRics)) {
   EikonDataList[[j]] <- try(retry(EikonObject$get_data( instruments = ChunckedRics[[j]]
                                            , fields = as.list(Eikonformulas)
+                                           , parameters = Parameters
                                            , debug = FALSE, raw_output = FALSE
   )))
   Sys.sleep(time = 0.5)
