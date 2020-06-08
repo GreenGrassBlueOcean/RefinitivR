@@ -4,7 +4,7 @@
 An R interface to Refinitv Eikon and Refinitiv DataStream.
 
 RefinitivR is an R interface to the Eikon Python api using the reticulate package and to DataStream using the DatastreamDSWS2R package. This package is in no way affiliated with Thomson Reuters,Refinitv, Eikon or Datastream. A subscription to EIkon and Datastream is required to use this package. Use of the package is at own risk!
-This package uses of the DatastreamDSWS2R package from CharlesCara (https://github.com/CharlesCara/DatastreamDSWS2R) for the DataStream Connections.
+This package uses the DatastreamDSWS2R package from CharlesCara (https://github.com/CharlesCara/DatastreamDSWS2R) for the DataStream Connections.
 
 The reason that this package was developed is that the existing eikonapir package has stability issues leading to dropped api calls. The python api is much more stable and therefore interfacing with the python api will result in a much more stable api connection. Furthermore the package tries to be as robust as possible by automatically chunking long requests in api limit compliant pieces and retries failed requests in order to overcome http 400 errors.
 
