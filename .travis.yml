@@ -3,3 +3,9 @@ language: r
 script:
 - R CMD build .
 - R CMD check *tar.gz
+
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
