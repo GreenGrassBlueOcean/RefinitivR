@@ -1,8 +1,10 @@
 # Load required data for tests
-system.file("testdata","testdata.rda", package="Refinitiv")
+load(file="testdata.rda")
+
 
 testthat::test_that("retry", {
   testthat::expect_equal(retry(retryfun = sum(1,1)), sum(1,1))
+  testthat::expect_equal(retry(retryfun = sum(1,"a"), max = 1), NULL)
 })
 
 
@@ -53,7 +55,9 @@ testthat::test_that("Check EikonGetData returns expected timeseries"
 ## add data for testing as:
 # GoodCheckEikonTimeSeries <- CheckTimeSeries
 # GoodCheckEikonData <- CheckEikonData
-# save(GoodCheckEikonTimeSeries, GoodCheckEikonData, file = "./tests/testdata/testdata.rda")
+# save(StartTestEikonData, GoodOutcomeEikonPostProcessor , GoodCheckEikonTimeSeries, GoodCheckEikonData, file = "./tests/testthat/testdata.rda")
+
+
 
 
 ## Test EikonNameCleaner ----
@@ -105,6 +109,16 @@ test_that("EikonChunker satisfies testcases", {
   CorrectSolution <- NULL
 })
 
+
+## test EikonPostProcessor ----
+
+
+test_that("EikonPostProcessor satisfies testcases", {
+
+# GoodOutcomeEikonPostProcessor <- EikonPostProcessor(Eikon_get_dataOuput = StartTestEikonData)
+    expect_equal(EikonPostProcessor(Eikon_get_dataOuput = StartTestEikonData), GoodOutcomeEikonPostProcessor)
+
+})
 
 
 
