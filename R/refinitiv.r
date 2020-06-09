@@ -48,6 +48,7 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
       reticulate::py_install(packages = c("numpy", "eikon") , envname = envname,  method = method, conda = conda)
   }
 
+  return("Eikon Python interface successfully installed")
 }
 
 

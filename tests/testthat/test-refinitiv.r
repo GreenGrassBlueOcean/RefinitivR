@@ -8,6 +8,11 @@ testthat::test_that("retry", {
 })
 
 
+testthat::test_that("check if install_eikon works", {
+  testthat::expect_equal(install_eikon(), "Eikon Python interface successfully installed")
+})
+
+
 #As this package requires an api key testing is of api function is only possible when having an actual api key.
 # Therefore best to run these after setting the EikonConnect function with the right password.
 
