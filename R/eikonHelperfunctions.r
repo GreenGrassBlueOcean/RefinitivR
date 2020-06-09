@@ -143,8 +143,8 @@ EikonRepairMic <- function(Fundamentals_Data){
                            , sort = FALSE
                            )
   #Repair only if really required
-  if ( any(c("", NA) %in% MergedwithLookup$`Operating MIC`)) {
-    MergedwithLookup[((MergedwithLookup$`Operating MIC` %in% "") | is.na(MergedwithLookup$`Operating MIC`)  ),]$`Operating MIC` <- MergedwithLookup[((MergedwithLookup$`Operating MIC` %in% "") | is.na(MergedwithLookup$`Operating MIC`) ),]$repairedMIC
+  if ( any(c("", NA) %in% MergedwithLookup$`Operating.MIC`)) {
+    MergedwithLookup[((MergedwithLookup$`Operating.MIC` %in% "") | is.na(MergedwithLookup$`Operating.MIC`)  ),]$`Operating.MIC` <- MergedwithLookup[((MergedwithLookup$`Operating.MIC` %in% "") | is.na(MergedwithLookup$`Operating.MIC`) ),]$repairedMIC
   }
 
   # Remove repaired field again before delivering back

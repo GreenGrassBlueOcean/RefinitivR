@@ -26,15 +26,32 @@ test_that("EikonRepairMic returns an error when it should", {
 
 test_that("EikonRepairMic satisfies testcases", {
 
+  # Check with all Mic NA
   testdf1 <- data.frame( "RDN_EXCHD2" = Refinitiv::OperatingMicLookup$RDN_EXCHD2
                       , "Operating MIC" =  NA, stringsAsFactors = FALSE
                       )
 
+  # Check with all Mic ""
   testdf2 <- data.frame( "RDN_EXCHD2" = Refinitiv::OperatingMicLookup$RDN_EXCHD2
                        , "Operating MIC" =  "", stringsAsFactors = FALSE
                        )
 
-  EikonRepairMic(Fundamentals_Data = testdf2)
+  # Check with some information missing
+  testdf3 <- data.frame( "RDN_EXCHD2" = Refinitiv::OperatingMicLookup$RDN_EXCHD2
+                         , "Operating MIC" =  Refinitiv::OperatingMicLookup$repairedMIC
+                         , stringsAsFactors = FALSE)
+  testdf3$Operating.MIC[c(1,5)] <- c("", NA)
+
+  test1 <- EikonRepairMic(Fundamentals_Data = testdf1)
+  test2 <- EikonRepairMic(Fundamentals_Data = testdf2)
+  test3 <- EikonRepairMic(Fundamentals_Data = testdf3)
+
+  expect_equal(test1$Operating.MIC, Refinitiv::OperatingMicLookup$repairedMIC)
+  expect_equal(test1$RDN_EXCHD2, Refinitiv::OperatingMicLookup$RDN_EXCHD2)
+  expect_equal(test2$Operating.MIC, Refinitiv::OperatingMicLookup$repairedMIC)
+  expect_equal(test2$RDN_EXCHD2, Refinitiv::OperatingMicLookup$RDN_EXCHD2)
+  expect_equal(test3$Operating.MIC, Refinitiv::OperatingMicLookup$repairedMIC)
+  expect_equal(test3$RDN_EXCHD2, Refinitiv::OperatingMicLookup$RDN_EXCHD2)
 
 })
 
