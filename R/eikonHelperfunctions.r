@@ -293,12 +293,45 @@ return(MissingDates)
 #' TR_Field(Field_name ='tr.open', sort_dir ='asc', sort_priority = 1)
 #' TR_Field(Field_name ='TR.GrossProfit', Parameters = list('Scale' = 6, 'Curn'= 'EUR')
 #'         , sort_dir = 'asc', sort_priority = 0)
-TR_Field <- function(Field_name = NULL, Parameters = NULL, sort_dir = "asc", sort_priority = 0){
-  FieldList <- list(list('params' = Parameters), sort_dir, sort_priority)
+TR_Field <- function(Field_name = NULL, Parameters = NULL, sort_dir = NULL, sort_priority = NULL){
+
+  # input checks ----------------
+  #check Field_name
+  if(is.null(Field_name)){
+    stop("Field_name should be provided")
+  }
+
+  # check Parameters
+  if(!is.null(Parameters) && (class(Parameters) != "list" | is.null(names(Parameters)))){
+    stop("Parameters should be a named list")
+  }
+
+  # check sort_dir
+  if(!is.null(sort_dir) && ((class(sort_dir) != "character") | (!((sort_dir) %in% c("asc", "desc"))))){
+    stop("sort_dir parameter should be character \"asc\" or \"desc\"")
+  }
+
+  # Check sort_priority
+  if(!is.null(sort_priority) && (class(sort_priority) != "numeric" )){
+    stop("sort_priority parameter should be integer")
+  }
+
+  # Build list -----------
+  if(!is.null(Parameters)){
+    FieldList <- list(list('params' = Parameters))
+  } else{
+    FieldList <- list(list())
+  }
+
+  if(!is.null(sort_dir))
+    FieldList[[1]]  <- append(FieldList[[1]], sort_dir)
+
+  if(!is.null(sort_priority))
+    FieldList[[1]]  <- append(FieldList[[1]], sort_priority)
+
   names(FieldList)[1] <- Field_name
+
 return(FieldList)
 }
-
-
 
 
