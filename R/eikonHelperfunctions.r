@@ -187,8 +187,8 @@ GetISO103883_MIC <- function(){
 #' WeekendDates(MinDate = as.Date("2013-01-01"), MaxDate = as.Date("2019-01-01"))
 WeekendDates <- function(MinDate, MaxDate){
 
-  MinDate <- as.Date(MinDate)
-  MaxDate <- as.Date(MaxDate)
+  MinDate <- as.Date(MinDate, format("%Y-%m-%d")))
+  MaxDate <- as.Date(MaxDate, format("%Y-%m-%d")))
 
   if (MinDate > MaxDate || MaxDate < MinDate ){
     stop("Check dates for function WeekendDates")

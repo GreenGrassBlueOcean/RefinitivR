@@ -1,3 +1,5 @@
+## TR_field ------
+
 test_that("TR_field returns an error when it should", {
   expect_error(TR_Field())
   expect_error(TR_Field(Field_name = 'tr.revenue', sort_dir = 1))
@@ -13,6 +15,7 @@ test_that("TR_field satisfies testcases", {
               , list("TR.GrossProfit" = list(params = list("Scale" = 6, "Curn" =  "EUR"), "asc", 0)))
 })
 
+## EikonRepairMic -----
 
 test_that("EikonRepairMic returns an error when it should", {
   expect_error(EikonRepairMic())
@@ -35,6 +38,14 @@ test_that("EikonRepairMic satisfies testcases", {
 
 })
 
+## GetISO103883_MIC -----------------
+
+test_that("GetISO103883_MIC satisfies testcases", {
+  test <- NULL
+  test <- GetISO103883_MIC()
+  expect_true(all(c("MIC","OPERATINGMIC", "iso3c") %in% names(test)))
+  expect_identical(class(test), "data.frame")
+
+})
 
 
-GetISO103883_MIC
