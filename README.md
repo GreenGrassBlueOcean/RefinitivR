@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.com/GreenGrassBlueOcean/RefinitivR.svg?branch=master)](https://travis-ci.com/GreenGrassBlueOcean/RefinitivR)
+[![codecov](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR/branch/master/graph/badge.svg)](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR)
+
+
 
 # RefinitivR
 An R interface to Refinitv Eikon and Refinitiv DataStream.
