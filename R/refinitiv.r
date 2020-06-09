@@ -144,6 +144,9 @@ EikonNameCleaner <- function(names){
                                            }
 
                         )
+  #replace spaces with "." to have better data.frame columnnames
+  returnNames <- gsub(x = returnNames, pattern = " ", replacement = ".")
+
   return(returnNames)
 }
 
@@ -154,7 +157,7 @@ EikonNameCleaner <- function(names){
 #' @param RICS a vector containing RICS to be requested
 #' @param Eikonfields a list of the eikonfields to be requested default NULL, if eikonfields are supplied duration may not be supplied
 #' @param MaxCallsPerChunk the maximum amount of apicalls that can be made
-#' @param Duration a natural number denoting the amoount of row asked for in a TimeSeries default NULL, if Duration is supplied duration may not be supplied
+#' @param Duration a natural number denoting the amoount of rows asked for in a TimeSeries default NULL, if Duration is supplied Eikonfields may not be supplied
 #'
 #' @return a list of splitted RICS that can be returned to guarantee compliance with api limits.
 #' @export
@@ -168,7 +171,7 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
   } else if (!is.null(Duration) & is.null(Eikonfields)) {
     totalDataPoints <- length(RICS) * Duration
     if (Duration > MaxCallsPerChunk) {
-        stop("Duration is too long for even one ric, Reduce Duration by changing start_date or end_date!")
+        stop("Duration is too long for even one RIC, Reduce Duration by changing start_date or end_date!")
     }
   } else{
       stop("supply either Duration or Eikonfields")

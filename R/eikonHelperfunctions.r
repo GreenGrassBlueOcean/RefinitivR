@@ -190,6 +190,11 @@ WeekendDates <- function(MinDate, MaxDate){
   MinDate <- as.Date(MinDate)
   MaxDate <- as.Date(MaxDate)
 
+  if (MinDate > MaxDate || MaxDate < MinDate ){
+    stop("Check dates for function WeekendDates")
+  }
+
+
   DaysbetweenDates <- diff.Date(c(MinDate,MaxDate))[[1]]
   d <- as.Date(1:DaysbetweenDates, origin = MinDate)
   WeekendDatesinPeriod <- d[strftime(d,"%A") %in% c("Saturday", "Sunday")]

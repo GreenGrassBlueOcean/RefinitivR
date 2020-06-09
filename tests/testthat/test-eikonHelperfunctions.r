@@ -12,3 +12,29 @@ test_that("TR_field satisfies testcases", {
   expect_equal( TR_Field(Field_name ='TR.GrossProfit', Parameters = list('Scale' = 6, 'Curn'= 'EUR'), sort_dir = 'asc', sort_priority = 0)
               , list("TR.GrossProfit" = list(params = list("Scale" = 6, "Curn" =  "EUR"), "asc", 0)))
 })
+
+
+test_that("EikonRepairMic returns an error when it should", {
+  expect_error(EikonRepairMic())
+  expect_error(EikonRepairMic(Fundamentals_Data = "a"))
+  expect_error(EikonRepairMic(Fundamentals_Data = data.frame()))
+})
+
+
+test_that("EikonRepairMic satisfies testcases", {
+
+  testdf1 <- data.frame( "RDN_EXCHD2" = Refinitiv::OperatingMicLookup$RDN_EXCHD2
+                      , "Operating MIC" =  NA, stringsAsFactors = FALSE
+                      )
+
+  testdf2 <- data.frame( "RDN_EXCHD2" = Refinitiv::OperatingMicLookup$RDN_EXCHD2
+                       , "Operating MIC" =  "", stringsAsFactors = FALSE
+                       )
+
+  EikonRepairMic(Fundamentals_Data = testdf2)
+
+})
+
+
+
+GetISO103883_MIC

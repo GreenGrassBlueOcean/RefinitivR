@@ -55,3 +55,56 @@ testthat::test_that("Check EikonGetData returns expected timeseries"
 # GoodCheckEikonData <- CheckEikonData
 # save(GoodCheckEikonTimeSeries, GoodCheckEikonData, file = "./tests/testdata/testdata.rda")
 
+
+## Test EikonNameCleaner ----
+
+test_that("EikonShowAttributes returns an error when it should", {
+  expect_error(EikonShowAttributes(EikonObject = NULL))
+})
+
+testthat::test_that("Check EikonShowAttributes returns expected vector of possibilities"
+                    , { check_Eikonapi()
+                        Eikon <- Refinitiv::EikonConnect()
+                        test <- EikonShowAttributes(Eikon)
+                        expect_identical(class(test), "character")
+                        expect_true(is.vector(test))
+
+                    }
+)
+
+
+
+
+
+
+## Test EikonNameCleaner ----
+
+test_that("EikonNameCleaner satisfies testcases", {
+  expect_equal(EikonNameCleaner(c("Instrument","Company Name","RDN_EXCHD2","Operating MIC")), c("Instrument","Company.Name","RDN_EXCHD2","Operating.MIC"))
+  expect_equal(EikonNameCleaner(c("TR.ShortInterest(SDate=0D)/TR.SharesFreeFloat(SDate=0D)/*Short Interest as % of Float*/")), c("Short.Interest.as.%.of.Float"))
+})
+
+
+## Test EikonChunker ----
+
+test_that("EikonChunker returns an error when it should", {
+  expect_error(EikonChunker())
+  expect_error(EikonChunker(RICS = rep('a', times = 200)))
+  expect_error(EikonChunker(RICS = rep('a', times = 200), MaxCallsPerChunk = 12000, Duration = 12001))
+})
+
+test_that("EikonChunker satisfies testcases", {
+
+  CorrectSolution <- lapply(1:8, FUN = function(x){rep("a", times = 25)})
+  names(CorrectSolution) <-  c("1", "2", "3", "4", "5", "6", "7", "8")
+
+  expect_equal( EikonChunker(RICS = rep('a', times = 200), MaxCallsPerChunk = 100, Eikonfields = c("TR.CompanyName","RDN_EXCHD2","TR.OperatingMIC", "TR.ISINCode"))
+              , CorrectSolution
+              )
+
+  CorrectSolution <- NULL
+})
+
+
+
+
