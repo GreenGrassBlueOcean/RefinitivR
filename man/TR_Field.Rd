@@ -7,8 +7,8 @@
 TR_Field(
   Field_name = NULL,
   Parameters = NULL,
-  sort_dir = "asc",
-  sort_priority = 0
+  sort_dir = NULL,
+  sort_priority = NULL
 )
 }
 \arguments{
@@ -16,7 +16,7 @@ TR_Field(
 
 \item{Parameters}{named List containing the parameters for the field passed in the argument field_name}
 
-\item{sort_dir}{string Indicate the sort direction. Possible values are \'asc\' or \'desc\'. The default value is \'asc\'}
+\item{sort_dir}{string Indicate the sort direction. Possible values are \'asc\' or \'desc\'. The default value is NULL}
 
 \item{sort_priority}{integer Gives a priority to the field for the sorting. The highest priority is 0 (zero). The default value is NULL}
 }
