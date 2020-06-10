@@ -88,9 +88,9 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
    #  with NA to prevent disasters when later handling the data.frame when using unlist Null elements
    #  are removed from the lists causing shorter vectors than expected.
 
-   Eikon_get_datawithoutNULL <- as.data.frame(sapply(Eikon_get_data, function(x) ifelse(x == "NULL", NA, x)))
+   Eikon_get_datawithoutNULL <- as.data.frame(sapply(Eikon_get_data, function(x) ifelse(x == "NULL", NA, x)), stringsAsFactors = FALSE )
    # sapply returns a data.frame of lists go back to a data.frame of vectors using unlist
-   Eikon_get_dataFinal <- as.data.frame(lapply(Eikon_get_datawithoutNULL, unlist))
+   Eikon_get_dataFinal <- as.data.frame(lapply(Eikon_get_datawithoutNULL, unlist), stringsAsFactors = FALSE )
 
    # return human readable names
    names(Eikon_get_dataFinal) <- EikonNameCleaner(names(Eikon_get_dataOuput[[1]][[1]]))
