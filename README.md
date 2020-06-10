@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/GreenGrassBlueOcean/RefinitivR.svg?branch=master)](https://travis-ci.com/GreenGrassBlueOcean/RefinitivR)
+![R-CMD-check](https://github.com/GreenGrassBlueOcean/RefinitivR/workflows/R-CMD-check/badge.svg)
 [![codecov](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR/branch/master/graph/badge.svg)](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR)
 
 
