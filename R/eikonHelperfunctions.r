@@ -44,7 +44,7 @@ EikonErrorProcessor <- function(Eikon_get_data_Error, Chunked, ChunkRowStart){
   #3. turn it into one single big data.frane
   Step3 <- do.call("rbind", Step2A)
   #4. turn columns into vectors
-  Step4 <- as.data.frame(lapply(Step3, unlist))
+  Step4 <- as.data.frame(lapply(Step3, unlist), stringsAsFactors = FALSE)
   if (length(Eikon_get_data_Error[[1]]) > 0) {
       names(Step4) <-  names(Eikon_get_data_Error[[1]][[1]])
   }
