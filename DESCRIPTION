@@ -29,6 +29,6 @@ Config/reticulate:
   )
 RoxygenNote: 7.1.0
 Depends: 
-    R (>= 3.50),
+    R (>= 3.5.0),
 Suggests: 
     testthat
