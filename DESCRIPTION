@@ -18,7 +18,8 @@ Imports:
     reshape,
     methods,
     stats,
-    DatastreamDSWS2R
+    DatastreamDSWS2R,
+    httr
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:
