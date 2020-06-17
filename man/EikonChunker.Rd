@@ -18,7 +18,7 @@ EikonChunker(
 
 \item{MaxCallsPerChunk}{the maximum amount of apicalls that can be made}
 
-\item{Duration}{a natural number denoting the amoount of row asked for in a TimeSeries default NULL, if Duration is supplied duration may not be supplied}
+\item{Duration}{a natural number denoting the amoount of rows asked for in a TimeSeries default NULL, if Duration is supplied Eikonfields may not be supplied}
 }
 \value{
 a list of splitted RICS that can be returned to guarantee compliance with api limits.
