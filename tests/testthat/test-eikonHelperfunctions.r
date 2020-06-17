@@ -66,18 +66,6 @@ test_that("GetISO103883_MIC satisfies testcases", {
 })
 
 
-## WeekendDates -----
-
-test_that("WeekendDates returns an error when it should", {
-  expect_error(WeekendDates(MinDate = "2020-02-01", MaxDate = "2018-04-06"))
-})
-
-test_that("WeekendDates satisfies testcases", {
-  expect_equal(WeekendDates(MinDate = "2020-06-12", MaxDate = "2020-06-15"), c(as.Date("2020-06-13"), as.Date("2020-06-14")))
-  expect_equal(WeekendDates(MinDate = "2020-06-13", MaxDate = "2020-06-15"), c(as.Date("2020-06-13"), as.Date("2020-06-14")))
-  expect_equal(WeekendDates(MinDate = "2020-06-13", MaxDate = "2020-06-14"), c(as.Date("2020-06-13"), as.Date("2020-06-14")))
-  expect_equal(WeekendDates(MinDate = "2020-06-14", MaxDate = "2020-06-14"), c(as.Date("2020-06-14")))
-})
 
 
 
