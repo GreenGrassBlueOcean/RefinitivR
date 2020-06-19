@@ -8,7 +8,8 @@
 #' @importFrom httr GET
 #'
 #' @examples
-#' TestDataStreamCredentials(DatastreamUsername = "wrongusername", DatastreamPassword = "wrongPassword")
+#' TestDataStreamCredentials(DatastreamUsername = "wrongusername"
+#' , DatastreamPassword = "wrongPassword")
 TestDataStreamCredentials <- function(DatastreamUsername, DatastreamPassword){
 
 # 1. check input ----
