@@ -204,7 +204,8 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
 retry <- function(retryfun, max = 2, init = 0){
   suppressWarnings( tryCatch({
     if (init < max) retryfun
-  }, error = function(e){message(paste0("api request failed, automatically retrying time ",init + 1)) ;Sys.sleep(time = 5); retry(retryfun, max, init = init + 1)}))
+  }, error = function(e){message(paste0("api request failed, automatically retrying time ",init + 1, "/", max))
+                        ; Sys.sleep(time = 5); retry(retryfun, max, init = init + 1)}))
 }
 
 
