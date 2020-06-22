@@ -19,7 +19,8 @@ Imports:
     methods,
     stats,
     DatastreamDSWS2R,
-    httr
+    httr,
+    stringi
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:

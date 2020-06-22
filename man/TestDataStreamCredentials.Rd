@@ -12,11 +12,12 @@ TestDataStreamCredentials(DatastreamUsername, DatastreamPassword)
 \item{DatastreamPassword}{character datastream password}
 }
 \value{
-TRUE if the DataStream credentials sare working and the JSON message when not.
+TRUE if the DataStream credentials are working and returns the JSON message when not.
 }
 \description{
 Function to test if the DataStream Credentials are really working
 }
 \examples{
-TestDataStreamCredentials(DatastreamUsername = "wrong username", DatastreamPassword = "wrong Password")
+TestDataStreamCredentials(DatastreamUsername = "wrongusername"
+, DatastreamPassword = "wrongPassword")
 }

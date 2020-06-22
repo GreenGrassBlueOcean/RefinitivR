@@ -147,6 +147,7 @@ EikonNameCleaner <- function(names){
                         )
   #replace spaces with "." to have better data.frame columnnames
   returnNames <- gsub(x = returnNames, pattern = " ", replacement = ".")
+  returnNames <- stringi::stri_trans_general(returnNames, "latin-ascii")
 
   return(returnNames)
 }
