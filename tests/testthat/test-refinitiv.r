@@ -3,6 +3,7 @@ test_that( "",{ expect_equal(1,1)
 
 # Load required data for tests
 load(file="testdata.rda")
+#options( ".EikonApiKey" =  "Put your key here")
 
 
 
@@ -208,6 +209,30 @@ test_that("EikonPostProcessor satisfies testcases", {
     expect_equal(EikonPostProcessor(Eikon_get_dataOuput = StartTestEikonData), GoodOutcomeEikonPostProcessor)
 
 })
+
+
+## TEST CASE PROBLEM ---
+
+test_that( "empty downloaded data.frame can be processed", {
+
+  check_Eikonapi()
+  Eikon <- Refinitiv::EikonConnect()
+  EikonTimeseries <- EikonGetTimeseries(EikonObject = Eikon
+                                        , rics = list("ATM.NZ")
+                                        , start_date = "2006-02-01T01:00:00"
+                                        , end_date = "2006-02-20T01:00:00"
+  )
+
+  expected_outcome <- structure(list(VOLUME = character(0), HIGH = character(0), LOW = character(0),
+                                     OPEN = character(0), CLOSE = character(0))
+                                , class = "data.frame", row.names = character(0))
+
+
+  expect_equivalent(EikonTimeseries,expected_outcome )
+
+})
+
+
 
 
 

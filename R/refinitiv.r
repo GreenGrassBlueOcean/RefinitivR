@@ -92,7 +92,7 @@ DataStreamConnect <- function(DatastreamUserName, DatastreamPassword){
 #' \dontrun{
 #' Eikon <- EikonConnect(Eikonapplication_id = "your key", Eikonapplication_port = 9000L)
 #' }
-EikonConnect <- function(Eikonapplication_id = .EikonApiKey , Eikonapplication_port = 9000L) {
+EikonConnect <- function(Eikonapplication_id = getOption(".EikonApiKey") , Eikonapplication_port = 9000L) {
 
   options(.EikonApiKey = Eikonapplication_id)
   options(.EikonApplicationPort = Eikonapplication_port)
@@ -306,7 +306,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
   ReturnTimeSeries <- do.call("rbind", TimeSeriesList)
 
 
-  if (isTRUE(cast) & !is.null(ReturnTimeSeries) ) {
+  if (isTRUE(cast) & !is.null(ReturnTimeSeries) & nrow(ReturnTimeSeries) > 0 ) {
     ReturnTimeSeries <- suppressWarnings(reshape::cast(ReturnTimeSeries,  Date +  Security ~ Field))
     ReturnTimeSeries <- ReturnTimeSeries[order(ReturnTimeSeries$Security),]
     ReturnTimeSeries <- as.data.frame(ReturnTimeSeries) #remove dcast class as it has no use.
