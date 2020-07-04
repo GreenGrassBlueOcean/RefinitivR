@@ -223,6 +223,7 @@ retry <- function(retryfun, max = 2, init = 0){
 #' @param end_date  End date and time of the historical range.  string format is: '\%Y-\%m-\%dT\%H:\%M:\%S'.
 #' @param cast  cast data from wide to long format using the reshape::cast function, Default: TRUE
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
+#' @param verbose boolean if TRUE prints out the python call to the console
 #'
 #' @return A data.frame containing time series from Eikon
 #' @export
@@ -233,10 +234,10 @@ retry <- function(retryfun, max = 2, init = 0){
 #' Eikon <- Refinitiv::EikonConnect()
 #' EikonGetTimeseries(EikonObject = Eikon, rics = c("MMM", "III.L"),
 #'                    start_date = "2020-01-01T01:00:00",
-#'                    end_date = paste0(Sys.Date(), "T01:00:00"))
+#'                    end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE)
 #' }
 EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender = "tradingdays", fields = c('TIMESTAMP', 'VOLUME', 'HIGH', 'LOW', 'OPEN', 'CLOSE')
-                              , start_date = "2020-01-01T01:00:00", end_date = paste0(Sys.Date(), "T01:00:00"), cast = TRUE, time_out = 60){
+                              , start_date = "2020-01-01T01:00:00", end_date = paste0(Sys.Date(), "T01:00:00"), cast = TRUE, time_out = 60, verbose = FALSE){
 
   # Make sure that Python object has api key and change timeout
   EikonObject$set_timeout(timeout = time_out)
@@ -290,7 +291,21 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 
   TimeSeriesList <- vector(mode = 'list', length = length(ChunckedRics))
   for (j in 1:length(ChunckedRics)) {
-    TimeSeriesList[[j]] <- try(retry(EikonObject$get_timeseries( rics = ChunckedRics[[j]]
+    TimeSeriesList[[j]] <- try({ if (verbose){  message(paste0(Sys.time(), "\n"
+                                                               , " get_timeseries( rics = [\"", paste(ChunckedRics[[j]], collapse = "\",\""), "\"]\n"
+                                                               , "\t, interval= \"", interval, "\"\n"
+                                                               , "\t, interval= \"", calender, "\"\n"
+                                                               , "\t, fields = [\"", paste(fields, collapse = "\",\""),  "\"]\n"
+                                                               , "\t, start_date =  \"", as.character(start_date,  "%Y-%m-%dT%H:%M:%S"), "\"\n"
+                                                               , "\t, end_date =  \"", as.character(end_date,  "%Y-%m-%dT%H:%M:%S"), "\"\n"
+                                                               , "\t, normalize = False\n\t)"
+    )
+    )}
+
+
+
+
+      retry(EikonObject$get_timeseries( rics = ChunckedRics[[j]]
                                                                , interval = interval
                                                                , calendar = calender
                                                                , fields = fields
@@ -299,7 +314,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                                                , normalize = TRUE
                                                                )
 
-    ))
+    )})
     Sys.sleep(time = 0.5)
   }
 
@@ -329,6 +344,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #' @param Parameters a named key value list for setting parameters, Default: NULL
 #' @param raw_output to return the raw list by chunk for debugging purposes, default = FALSE
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
+#' @param verbose boolean, set to true to print out the actual python call with time stamp for debugging.
 #'
 #' @return a data.frame containing data.from Eikon
 #' @export
@@ -338,9 +354,10 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #' \dontrun{
 #' Eikon <- Refinitiv::EikonConnect()
 #' EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
-#'              Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/", "TR.CompanyName"))
+#'              Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
+#'              , "TR.CompanyName"), verbose = TRUE)
 #' }
-EikonGetData <- function(EikonObject, rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60){
+EikonGetData <- function(EikonObject, rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60, verbose = FALSE){
 
 #Make sure that Python object has api key
 EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
@@ -352,11 +369,17 @@ ChunckedRics <- Refinitiv::EikonChunker(RICS = rics, Eikonfields = Eikonformulas
 
 EikonDataList <- vector(mode = 'list', length = length(ChunckedRics))
 for (j in 1:length(ChunckedRics)) {
-  EikonDataList[[j]] <- try(retry(EikonObject$get_data( instruments = ChunckedRics[[j]]
+  EikonDataList[[j]] <- try({ if (verbose){  message(paste0(Sys.time(), "\n"
+                                                    , " get_data( instruments = [\"", paste(ChunckedRics[[j]], collapse = "\",\""), "\"]\n"
+                                                    , "\t, fields = [\"", paste(Eikonformulas, collapse = "\",\""),  "\"]\n"
+                                                    , "\t, debug = False, raw_output = False\n\t)"
+                                                    )
+                                                    )}
+                             retry(EikonObject$get_data( instruments = ChunckedRics[[j]]
                                            , fields = as.list(Eikonformulas)
                                            , parameters = Parameters
                                            , debug = FALSE, raw_output = FALSE
-  )))
+  ))})
   Sys.sleep(time = 0.5)
 }
 

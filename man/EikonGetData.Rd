@@ -10,7 +10,8 @@ EikonGetData(
   Eikonformulas,
   Parameters = NULL,
   raw_output = FALSE,
-  time_out = 60
+  time_out = 60,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ EikonGetData(
 \item{raw_output}{to return the raw list by chunk for debugging purposes, default = FALSE}
 
 \item{time_out}{set the maximum timeout to the Eikon server, default = 60}
+
+\item{verbose}{boolean, set to true to print out the actual python call with time stamp for debugging.}
 }
 \value{
 a data.frame containing data.from Eikon
@@ -36,7 +39,8 @@ The function automatically chunks the list of rics into chunks that comply with 
 \dontrun{
 Eikon <- Refinitiv::EikonConnect()
 EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
-             Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/", "TR.CompanyName"))
+             Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
+             , "TR.CompanyName"), verbose = TRUE)
 }
 }
 \references{
