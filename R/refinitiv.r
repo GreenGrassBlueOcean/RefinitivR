@@ -396,3 +396,84 @@ return(ReturnElement)
 
 
 
+
+
+
+# #' @param debug boolean When set to TRUE, the json request and response are printed.
+
+
+
+#' Returns a list of instrument names converted into another instrument code.
+#' For example: convert SEDOL instrument names to RIC names
+#'
+#' original python parameters raw_output and debug cannot be used due to int64 python to R conversion problem.
+#' \url{https://github.com/rstudio/reticulate/issues/729}
+#'
+#' @param EikonObject Eikon object created using EikonConnect function
+#' @param symbol character or list of characters 	Single instrument or list of instruments to convert.
+#' @param from_symbol_type character Instrument code to convert from. Possible values: 'CUSIP', 'ISIN', 'SEDOL', 'RIC', 'ticker', 'lipperID', 'IMO' Default: 'RIC'
+#' @param to_symbol_type character  string or list 	Instrument code to convert to. Possible values: 'CUSIP', 'ISIN', 'SEDOL', 'RIC', 'ticker', 'lipperID', 'IMO', 'OAPermID' Default: None (means all symbol types are requested)
+#' @param raw_output boolean 	Set this parameter to True to get the data in json format if set to FALSE, the function will return a data frame Default: FALSE
+#' @param bestMatch boolean 	When set to TRUE, only primary symbol is requested. When set to FALSE, all symbols are requested
+#' @param time_out numeric set the maximum timeout to the Eikon server, default = 60
+#' @param verbose boolean, set to true to print out the actual python call with time stamp for debugging.
+#'
+#' @return data.frame
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' Eikon <- Refinitiv::EikonConnect()
+#' EikonGetSymbology(EikonObject = Eikon, symbol =  "AAPL.O"
+#'  , to_symbol_type = "ISIN" )
+#' EikonGetSymbology(EikonObject = Eikon
+#' , symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
+#' ,  to_symbol_type = "RIC" , verbose = TRUE)
+#' EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.AS"
+#' , to_symbol_type = "ISIN"  , verbose = TRUE)
+#' EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
+#' , to_symbol_type = "ISIN"  , verbose = TRUE)
+#' }
+EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to_symbol_type = c('CUSIP', 'ISIN', 'SEDOL', 'RIC', 'ticker', 'lipperID', 'IMO', 'OAPermID')
+                               , bestMatch = TRUE, time_out = 60, verbose = FALSE, raw_output = FALSE){
+
+  #Make sure that Python object has api key
+  EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
+  EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on timeout error chance.
+
+
+  # Divide symbols in chunks to satisfy api limits
+  ChunckedSymbols <- Refinitiv::EikonChunker(RICS = symbol, Eikonfields = to_symbol_type)
+
+  EikonSymbologyList <- vector(mode = 'list', length = length(ChunckedSymbols))
+  for (j in 1:length(ChunckedSymbols)) {
+    EikonSymbologyList[[j]] <- try({ if (verbose){  message(paste0(Sys.time(), "\n"
+                                                              , "get_symbology( symbol = [\"", paste(ChunckedSymbols[[j]], collapse = "\",\""), "\"]\n"
+                                                              , "\t, from_symbol_type = [\"", paste(from_symbol_type, collapse = "\",\""),  "\"]\n"
+                                                              , "\t, to_symbol_type = [\"", paste(to_symbol_type, collapse = "\",\""),  "\"]\n"
+                                                              , "\t, debug = False, raw_output = False\n\t)"
+    )
+    )}
+      retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
+                                     , from_symbol_type = from_symbol_type
+                                     , to_symbol_type = list(to_symbol_type)
+                                     , raw_output = FALSE
+                                     , debug = FALSE
+
+                                  ))})
+    Sys.sleep(time = 0.5)
+  }
+
+
+  # if (!raw_output) {
+  #   ReturnElement <- EikonPostProcessor(EikonSymbologyList)
+  # } else {
+     ReturnElement <- EikonSymbologyList
+  # }
+
+  return(ReturnElement)
+}
+
+
+
+
