@@ -53,5 +53,8 @@ EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.AS"
 , to_symbol_type = "ISIN"  , verbose = TRUE)
 EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
 , to_symbol_type = "ISIN"  , verbose = TRUE)
+
+
+
 }
 }

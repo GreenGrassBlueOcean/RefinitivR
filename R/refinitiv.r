@@ -433,6 +433,9 @@ return(ReturnElement)
 #' , to_symbol_type = "ISIN"  , verbose = TRUE)
 #' EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
 #' , to_symbol_type = "ISIN"  , verbose = TRUE)
+#'
+#'
+#'
 #' }
 EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to_symbol_type = c('CUSIP', 'ISIN', 'SEDOL', 'RIC', 'ticker', 'lipperID', 'IMO', 'OAPermID')
                                , bestMatch = TRUE, time_out = 60, verbose = FALSE, raw_output = FALSE){
@@ -451,6 +454,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                                               , "get_symbology( symbol = [\"", paste(ChunckedSymbols[[j]], collapse = "\",\""), "\"]\n"
                                                               , "\t, from_symbol_type = [\"", paste(from_symbol_type, collapse = "\",\""),  "\"]\n"
                                                               , "\t, to_symbol_type = [\"", paste(to_symbol_type, collapse = "\",\""),  "\"]\n"
+                                                              , "\t, bestMatch = ", ifelse(test = isTRUE(bestMatch), yes = "True", no = "False")  ,"\n"
                                                               , "\t, debug = False, raw_output = False\n\t)"
     )
     )}
@@ -459,7 +463,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                      , to_symbol_type = list(to_symbol_type)
                                      , raw_output = FALSE
                                      , debug = FALSE
-
+                                     , bestMatch = bestMatch
                                   ))})
     Sys.sleep(time = 0.5)
   }
