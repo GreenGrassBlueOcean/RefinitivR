@@ -49,6 +49,9 @@ EikonGetSymbology(EikonObject = Eikon, symbol =  "AAPL.O"
 EikonGetSymbology(EikonObject = Eikon
 , symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
 ,  to_symbol_type = "RIC" , verbose = TRUE)
+EikonGetSymbology(EikonObject = Eikon
+, symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
+,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
 EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.AS"
 , to_symbol_type = "ISIN"  , verbose = TRUE)
 EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
