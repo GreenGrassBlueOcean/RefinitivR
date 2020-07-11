@@ -535,11 +535,13 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
                                         , from_symbol_type = unlist(EikonSymbologyResult[i,3])
                                         , BestMatch = as.character(unlist(EikonSymbologyResult[i,2]))
                                         , error =  unlist(EikonSymbologyResult[i,4])
+                                        , stringsAsFactors = FALSE
                                         )
                           } else {
                                 data.frame( to_symbol_type = unlist(EikonSymbologyResult[[1]][[i]])
                                           , from_symbol_type = unlist(EikonSymbologyResult[i,3])
                                           , BestMatch = as.character(unlist(EikonSymbologyResult[i,2]))
+                                          , stringsAsFactors = FALSE
                                           )
                          }
     }
