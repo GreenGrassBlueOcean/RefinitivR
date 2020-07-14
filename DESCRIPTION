@@ -33,4 +33,5 @@ RoxygenNote: 7.1.0
 Depends: 
     R (>= 3.5.0),
 Suggests: 
-    testthat
+    testthat,
+    covr
