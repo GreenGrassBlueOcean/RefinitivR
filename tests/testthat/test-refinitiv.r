@@ -516,47 +516,230 @@ test_that( "ProcessSymbology works correctly", {
 })
 
 
-# test_that("test a randomn Porfolio",{
-#
-#   check_Eikonapi()
-#   Eikon <- Refinitiv::EikonConnect()
-#
-#   PFrics <- c("WBC.AX", "GLPG.AS", "AGES.BR", "UMI.BR", "BE6253607178.LUF",
-#               "BMO.TO", "RCIb.TO", "ROG.S", "SOON.S", "SRENH.S", "DBKGn.DE",
-#               "BMWG.DE", "DTEGn.DE", "HNKG_p.DE", "SAPG.DE", "ALVG.DE", "BASFn.DE",
-#               "0P6S.L", "ORSTED.CO", "NZYMb.CO", "SAN.MC", "ITX.MC", "REE.MC",
-#               "REP.MC", "REPDe.BCO", "REPDe.BCO", "NOKIA.HE", "NDAFI.HE", "AIRP.PA",
-#               "OREP.PA", "AXAF.PA", "MICP.PA", "SCHN.PA", "CAPP.PA", "SN.L",
-#               "RDSa.AS", "RBS.L", "VOD.L", "JMAT.L", "VDEM.L", "ACN.NB", "LINI.DE",
-#               "SPMI.MI", "A0J2N8X.DX", "A0M81KX.DX", "ASREUA.DE", "UIMT.AS",
-#               "LP68162946", "20300348.S", "LP68237734", "A1W9F4X.DX", "24544080.S",
-#               "A14PCJX.DX", "A14PCNX.DX", "FRCJ.DE", "LP68396468", "LU1554262680EUR.S",
-#               "AASU.L", "USRI.PA", "AKZO.AS", "UNAa.AQXd", "DSMN.AS", "UNA.AS",
-#               "ARDS.AS", "ENX.PA", "VOPA.AS", "NXPI.NB", "PTNL.AS", "ASML.AS",
-#               "NN.AS", "FLOW.AS", "AD.AS", "INGA.AS", "ASNML.AS", "ADIAN.AS",
-#               "DNB.OL", "TEL.OL", "EQNR.OL", "ABBV.NB", "ALB.NB", "BABA.NB",
-#               "GOOG.NB", "GOOGL.NB", "AMZN.NB", "AMGN.NB", "BK.NB", "BAX.NB",
-#               "BIIB.NB", "BA.NB", "BMY.NB", "CME.NB", "CRC.NB", "COF.NB", "CHL.NB",
-#               "CL.NB", "CMCSA.NB", "CIG.NB", "ED.NB", "DE.NB", "DIS.NB", "EA.NB",
-#               "FDX.NB", "GE.NB", "GILD.NB", "GS.NB", "HD.NB", "IBM.NB", "PIN.NB",
-#               "DVYE.NB", "EEMA.NB", "EMB.NB", "INDY.NB", "EPHE.NB", "ITUB.NB",
-#               "KWEB.NB", "MPC.NB", "MCD.NB", "MSFT.NB", "NKE.NB", "OXY.NB",
-#               "ORCL.NB", "PEP.NB", "PBR.NB", "GMF.NB", "GXC.NB", "SMSNl.BCO",
-#               "SBUX.NB", "TSM.NB", "TXN.NB", "USB.NB", "UNH.NB", "GLIN.NB",
-#               "VNM.NB", "VZ.NB", "WM.NB", "EPI.NB")
-#
-#   PastandCurrentStocks_TS <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
-#                                                             , rics = PFrics
-#                                                             , start_date = "2020-01-01T01:00:00"
-#                                                             , end_date = paste0(Sys.Date(), "T01:00:00")
-#   )
-#
-#
-# })
-#
-#
+
+test_that("ProcessSymbology returns an error when it should", {
+  expect_error(ProcessSymbology(EikonSymbologyResult = list(data.frame()), from_symbol_type = "ISIN", to_symbol_type = "RIC")
+              , "ProcessSymbology retrieved input in wrong format"
+              )
+
+})
 
 
+test_that("ProcessSymbology still works when an error is returned for one item", {
+
+
+  ProcessSymbologyInput <- list(structure(list(RICs = list(c("RDSa.AS", "RDSaEUR.xbo", "RDSaGBP.xbo",
+                                  "RDSa.L", "RDSa.F", "RDSa.DE", "RDSAa.CHI", "RDSAa.BS", "RDSAl.BS",
+                                  "RDSAl.CHI", "RDSAa.TQ", "RDSa.BE", "RDSAl.TQ", "RDSa.S", "RDSa.MU",
+                                  "RDSa.D", "RDSa.SG", "R6Cd.BS", "R6Cd.CHI", "RYDAF.PK", "RDSa.H",
+                                  "RDSa.HA", "RDSAa.ED", "RDSAa.SIG", "RDSAl.ED", "RDSa.BN", "RDSA.PR",
+                                  "RDSa.xt", "RDSa.AS1", "RDSAas.TRE", "RYDAF.PQ", "RDSa.TG", "RDSAl.AQX",
+                                  "R6Cd.AQX", "RDSAa.DXE", "R6Cd.DXE", "RDSAa.AQX", "RDSAa.NXT",
+                                  "RDSa.DEU", "RDSAas.DAp", "RDSAas.ICEM", "RDSAa.EDM", "RDSAl.EDM",
+                                  "R6Cd.BCU", "RDSAa.BCU", "RDSAl.BCU", "RYDAFn.BCU", "RDSAas.IGDM",
+                                  "R6C.QTX", "RDSAa.MSF", "GB00B03MLX29.GTX", "RDSAl.EDv", "RDSAa.EDv",
+                                  "RDSAl.NXT", "RDSAa.AQXd", "RDSAl.AQXd", "R6Cd.AQXd", "RDSAas.TBEM",
+                                  "0LN9.L^A20", "RDSa.EU^E08", "RDSa.VX^B09", "RDSa.PAp^C18", "RDSa.SMp^J17",
+                                  "RDSAas1.TRE^A20", "RDSaGBP.PAp^B17", "RDSaEUR.PAp^B17", "RDSaEUR.DEp^A18",
+                                  "RDSaGBP.DEp^A18", "RDSa.S^K08", "RDSaEUR.Sp^J18", "RDSa.SGp^L17",
+                                  "RDSas.INS^H07", "RDSaGBP.SGp^L17", "RDSaEUR.SGp^L17", "RDSaEUR.CHIp^E12",
+                                  "RDSaGBP.CHIp^E12", "RDSaEUR.MIp^L17", "RDSaGBX.Sp^J18", "RDSaGBP.xt^I11",
+                                  "RDSaEUR.OLp^E10", "RDSaEUR.STp^J18", "RDSa999.STp^J18", "RDSaGBP.OLp^E10",
+                                  "RDSa.VI^F20", "R6Cd.BCO^A14", "1ERDSANA.PIPB^C18", "1ESRDSANA.PIPB^C18",
+                                  "RDSa.PO^L08", "RDSade.CHI^J08", "RDSa.VIf^F20", "RDSaEUR.VIp^J18",
+                                  "RDSAd.NXT^F19", "RDSa.rEUR^J09", "RDSa.rGBP^J09", "RDSa.MB^L17",
+                                  "RDSa.mGBP^L14", "RDSaEUR.Ip^G19", "RDSaGBP.Ip^G19", "RDSaGBP.PZp^B09"
+                              ), c("AAPL.O", "AAPLEUR.xbo", "0R2V.L", "AAPL.OQ", "AAPL.Z",
+                                   "AAPL.DG", "AAPL.F", "AAPL.DE", "AAPL.B", "AAPL.BE", "AAPL.MU",
+                                   "AAPL.D", "AAPL.SG", "AAPLE.MI", "AAPL.HA", "AAPL.H", "AAPLUSD.S",
+                                   "AAPL.S", "AAPLEUR.S", "AAPL.MX", "AAPL.DY", "AAPL.ZY", "AAPL.PH",
+                                   "AAPL.DF", "AAPL.MW", "AAPL.SN", "AAPL.BN", "AAPL.VI", "AAPL.LM",
+                                   "AAPL.UAX", "US_AAPL.KZ", "AAPL.xt", "APCde.TRE", "AAPLn.TQ",
+                                   "AAPLEtah.MI", "AAPL.ARC", "AAPL.NB", "AAPL.CN", "AAPL.BIV",
+                                   "AAPL.CE", "AAPL.TI", "AAPL.PFTQ", "AAPL.PFT", "AAPL.BT1", "AAPL.N",
+                                   "AAPL.TG", "AAPL.P", "AAPL.ITC", "AAPL.EI", "AAPL.A", "AAPL.C",
+                                   "AAPL.BAT", "AAPL.BYX", "AAPL.DEU", "AAPL.VIf", "APCde.DAp",
+                                   "APCde.ICEM", "AAPL.PFTP", "AAPL.PFTR", "0R2Vl.BCU", "APCd.BCU",
+                                   "1ASPAAPL.PIPB", "1AAAPL.PIPB", "APC.QTX", "AAPL.MCO", "US0378331005.GTX",
+                                   "AAPLq.L^K07", "AAPL.T^L04", "AAPLEUR.Lp^H16", "AAPLz.F^D94",
+                                   "AAPLq.L^A00", "AAPL.CD^K00", "AAPLqEUR.PAp^K07", "AAPLqGBP.PAp^K07",
+                                   "AAPLEUR.DEp^A10", "AAPLGBP.DEp^A10", "AAPLEUR.PAp^B17", "AAPLGBP.PAp^F11",
+                                   "0HDZ.L^A08", "AAPLEUR.Lp^F08", "0HDZ.L^L08", "0JQ4.L^D10", "AAPLUSD.DEp^D13",
+                                   "AAPLEUR.DEp^D13", "AAPL.DEU^A04", "AAPLUSD.PAp^B17", "AAPL.S^K08",
+                                   "AAPL.SI^D02", "AAPL.B^J07", "AAPLde.INS^H07", "AAPLk.SI^B97",
+                                   "AAPLGBP.SGp^A10", "AAPLEUR.SGp^A10", "AAPLUSD.SGp^D13", "AAPL.HA^B08",
+                                   "AAPLEUR.SGp^D13", "AAPLEUR.CHIp^E12", "AAPL.BM^D03", "AAPLc.MX^J07"
+                              ), NaN)
+                    , bestMatch = list(list(RIC = "RDSa.AS"), list(RIC = "AAPL.O"), list(error = "No best match available"))
+                    , symbol = c("GB00B03MLX29", "US0378331005", "WRONGISIN")
+                    , error = list(NaN, NaN, "Unknown symbol"))
+               , class = "data.frame", row.names = c("GB00B03MLX29", "US0378331005", "WRONGISIN")))
+
+
+
+
+  ProcessSymbology_outcome <- ProcessSymbology(EikonSymbologyResult = ProcessSymbologyInput, from_symbol_type = "ISIN", to_symbol_type = "RIC")
+
+  ExpectecOutcome <- structure(list(RIC = c("RDSa.AS", "RDSaEUR.xbo", "RDSaGBP.xbo",
+                                            "RDSa.L", "RDSa.F", "RDSa.DE", "RDSAa.CHI", "RDSAa.BS", "RDSAl.BS",
+                                            "RDSAl.CHI", "RDSAa.TQ", "RDSa.BE", "RDSAl.TQ", "RDSa.S", "RDSa.MU",
+                                            "RDSa.D", "RDSa.SG", "R6Cd.BS", "R6Cd.CHI", "RYDAF.PK", "RDSa.H",
+                                            "RDSa.HA", "RDSAa.ED", "RDSAa.SIG", "RDSAl.ED", "RDSa.BN", "RDSA.PR",
+                                            "RDSa.xt", "RDSa.AS1", "RDSAas.TRE", "RYDAF.PQ", "RDSa.TG", "RDSAl.AQX",
+                                            "R6Cd.AQX", "RDSAa.DXE", "R6Cd.DXE", "RDSAa.AQX", "RDSAa.NXT",
+                                            "RDSa.DEU", "RDSAas.DAp", "RDSAas.ICEM", "RDSAa.EDM", "RDSAl.EDM",
+                                            "R6Cd.BCU", "RDSAa.BCU", "RDSAl.BCU", "RYDAFn.BCU", "RDSAas.IGDM",
+                                            "R6C.QTX", "RDSAa.MSF", "GB00B03MLX29.GTX", "RDSAl.EDv", "RDSAa.EDv",
+                                            "RDSAl.NXT", "RDSAa.AQXd", "RDSAl.AQXd", "R6Cd.AQXd", "RDSAas.TBEM",
+                                            "0LN9.L^A20", "RDSa.EU^E08", "RDSa.VX^B09", "RDSa.PAp^C18", "RDSa.SMp^J17",
+                                            "RDSAas1.TRE^A20", "RDSaGBP.PAp^B17", "RDSaEUR.PAp^B17", "RDSaEUR.DEp^A18",
+                                            "RDSaGBP.DEp^A18", "RDSa.S^K08", "RDSaEUR.Sp^J18", "RDSa.SGp^L17",
+                                            "RDSas.INS^H07", "RDSaGBP.SGp^L17", "RDSaEUR.SGp^L17", "RDSaEUR.CHIp^E12",
+                                            "RDSaGBP.CHIp^E12", "RDSaEUR.MIp^L17", "RDSaGBX.Sp^J18", "RDSaGBP.xt^I11",
+                                            "RDSaEUR.OLp^E10", "RDSaEUR.STp^J18", "RDSa999.STp^J18", "RDSaGBP.OLp^E10",
+                                            "RDSa.VI^F20", "R6Cd.BCO^A14", "1ERDSANA.PIPB^C18", "1ESRDSANA.PIPB^C18",
+                                            "RDSa.PO^L08", "RDSade.CHI^J08", "RDSa.VIf^F20", "RDSaEUR.VIp^J18",
+                                            "RDSAd.NXT^F19", "RDSa.rEUR^J09", "RDSa.rGBP^J09", "RDSa.MB^L17",
+                                            "RDSa.mGBP^L14", "RDSaEUR.Ip^G19", "RDSaGBP.Ip^G19", "RDSaGBP.PZp^B09",
+                                            "AAPL.O", "AAPLEUR.xbo", "0R2V.L", "AAPL.OQ", "AAPL.Z", "AAPL.DG",
+                                            "AAPL.F", "AAPL.DE", "AAPL.B", "AAPL.BE", "AAPL.MU", "AAPL.D",
+                                            "AAPL.SG", "AAPLE.MI", "AAPL.HA", "AAPL.H", "AAPLUSD.S", "AAPL.S",
+                                            "AAPLEUR.S", "AAPL.MX", "AAPL.DY", "AAPL.ZY", "AAPL.PH", "AAPL.DF",
+                                            "AAPL.MW", "AAPL.SN", "AAPL.BN", "AAPL.VI", "AAPL.LM", "AAPL.UAX",
+                                            "US_AAPL.KZ", "AAPL.xt", "APCde.TRE", "AAPLn.TQ", "AAPLEtah.MI",
+                                            "AAPL.ARC", "AAPL.NB", "AAPL.CN", "AAPL.BIV", "AAPL.CE", "AAPL.TI",
+                                            "AAPL.PFTQ", "AAPL.PFT", "AAPL.BT1", "AAPL.N", "AAPL.TG", "AAPL.P",
+                                            "AAPL.ITC", "AAPL.EI", "AAPL.A", "AAPL.C", "AAPL.BAT", "AAPL.BYX",
+                                            "AAPL.DEU", "AAPL.VIf", "APCde.DAp", "APCde.ICEM", "AAPL.PFTP",
+                                            "AAPL.PFTR", "0R2Vl.BCU", "APCd.BCU", "1ASPAAPL.PIPB", "1AAAPL.PIPB",
+                                            "APC.QTX", "AAPL.MCO", "US0378331005.GTX", "AAPLq.L^K07", "AAPL.T^L04",
+                                            "AAPLEUR.Lp^H16", "AAPLz.F^D94", "AAPLq.L^A00", "AAPL.CD^K00",
+                                            "AAPLqEUR.PAp^K07", "AAPLqGBP.PAp^K07", "AAPLEUR.DEp^A10", "AAPLGBP.DEp^A10",
+                                            "AAPLEUR.PAp^B17", "AAPLGBP.PAp^F11", "0HDZ.L^A08", "AAPLEUR.Lp^F08",
+                                            "0HDZ.L^L08", "0JQ4.L^D10", "AAPLUSD.DEp^D13", "AAPLEUR.DEp^D13",
+                                            "AAPL.DEU^A04", "AAPLUSD.PAp^B17", "AAPL.S^K08", "AAPL.SI^D02",
+                                            "AAPL.B^J07", "AAPLde.INS^H07", "AAPLk.SI^B97", "AAPLGBP.SGp^A10",
+                                            "AAPLEUR.SGp^A10", "AAPLUSD.SGp^D13", "AAPL.HA^B08", "AAPLEUR.SGp^D13",
+                                            "AAPLEUR.CHIp^E12", "AAPL.BM^D03", "AAPLc.MX^J07", "NaN")
+                                    , ISIN = c("GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29",
+                                              "GB00B03MLX29", "GB00B03MLX29", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "US0378331005", "US0378331005", "US0378331005",
+                                              "US0378331005", "WRONGISIN")
+                                    , BestMatch = c("RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                                    "RDSa.AS", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O", "AAPL.O",
+                                                    "AAPL.O", "AAPL.O", "AAPL.O", "No best match available")
+                                    , error = c("NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN",
+                                                "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "NaN", "Unknown symbol"
+                                                )), row.names = c(NA, -199L), class = "data.frame")
+
+  expect_equal(ProcessSymbology_outcome, ExpectecOutcome )
+
+})
+
+
+test_that("CondaExists returns a logical" , {
+
+  expect_type(CondaExists(), "logical")
+
+
+
+})
 
 
 

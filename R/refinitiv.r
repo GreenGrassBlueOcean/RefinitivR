@@ -1,3 +1,21 @@
+# create helper function to check if conda is installed
+CondaExists <- function(){
+
+  out <- tryCatch(
+    {
+      reticulate::conda_binary()
+      return(TRUE)
+    },
+    error = function(cond) {
+      message(paste("Conda does not seem to be installed"))
+      message(cond)
+      return(FALSE)
+    }
+  )
+  return(out)
+}
+
+
 #' Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-reticulate
 #'
 #' @param method Installation method. By default, "auto" automatically finds a method that will work in the local environment. Change the default to force a specific installation method. Note that the "virtualenv" method is not available on Windows.
@@ -13,23 +31,6 @@
 #' install_eikon()
 #' }
 install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulate") {
-
-  # create helper function to check if conda is installed
-  CondaExists <- function(){
-
-    out <- tryCatch(
-      {
-        reticulate::conda_binary()
-        return(TRUE)
-      },
-      error = function(cond) {
-        message(paste("Conda does not seem to be installed"))
-        message(cond)
-        return(FALSE)
-      }
-    )
-    return(out)
-  }
 
 # Check if a conda environment exists and install if not available
   if (CondaExists() == FALSE ) {
