@@ -221,7 +221,7 @@ retry <- function(retryfun, max = 2, init = 0){
 #' @param fields a vector containing  any combination ('TIMESTAMP', 'VOLUME', 'HIGH', 'LOW', 'OPEN', 'CLOSE')
 #' @param start_date Starting date and time of the historical range. string format is: '\%Y-\%m-\%dT\%H:\%M:\%S'.
 #' @param end_date  End date and time of the historical range.  string format is: '\%Y-\%m-\%dT\%H:\%M:\%S'.
-#' @param cast  cast data from wide to long format using the reshape::cast function, Default: TRUE
+#' @param cast  cast data from wide to long format using the reshape2::dcast function, Default: TRUE
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
 #' @param verbose boolean if TRUE prints out the python call to the console
 #'
@@ -322,7 +322,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 
 
   if ((isTRUE(cast) & !is.null(ReturnTimeSeries)) && (nrow(ReturnTimeSeries) > 0) ) {
-    ReturnTimeSeries <- suppressWarnings(reshape::cast(ReturnTimeSeries,  Date +  Security ~ Field))
+    ReturnTimeSeries <- suppressWarnings(reshape2::dcast(unique(ReturnTimeSeries),  Date +  Security ~ Field, fill = NA_integer_, drop = FALSE, value.var = "Value"))
     ReturnTimeSeries <- ReturnTimeSeries[order(ReturnTimeSeries$Security),]
     ReturnTimeSeries <- as.data.frame(ReturnTimeSeries) #remove dcast class as it has no use.
    }

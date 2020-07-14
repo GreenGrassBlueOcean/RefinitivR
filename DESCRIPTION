@@ -15,12 +15,12 @@ Imports:
     countrycode,
     zoo,
     dplyr,
-    reshape,
     methods,
     stats,
     DatastreamDSWS2R,
     httr,
-    stringi
+    stringi,
+    reshape2
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:

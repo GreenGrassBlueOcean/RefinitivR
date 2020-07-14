@@ -48,22 +48,17 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                 start_date = "2020-01-01T01:00:00",
                                                                 end_date = "2020-01-10T01:00:00"))
 
-                     GoodCheckEikonTimeSeries <- structure(list( Date = structure(c(1577923200, 1578009600, 1578268800, 1578355200, 1578441600, 1578528000, 1578614400, 1577923200, 1578009600, 1578268800, 1578355200, 1578441600, 1578528000, 1578614400)
-                                   , class = c("POSIXct", "POSIXt")), Security = c("III.L", "III.L", "III.L", "III.L","III.L", "III.L", "III.L", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
-                                   , CLOSE = c(1116.5, 1108, 1088.5, 1086.5, 1088, 1094, 1088.5, 180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47)
-                                   , HIGH = c(1123, 1110.5, 1102.5, 1101, 1089.5, 1096, 1100, 180.01, 178.66, 178.71, 178.51, 181.5, 181.59, 182.18)
-                                   , LOW = c(1107.5, 1090.5, 1074, 1086.5, 1075, 1083, 1085, 177.1356, 175.63, 176.35, 176.82, 177.65, 179.76, 180.14)
-                                   , OPEN = c(1108, 1110.5, 1101, 1096.5, 1079.5, 1090.5, 1100, 177.68, 177.02, 177.15, 178.28, 178, 181.51, 181.61)
-                                   , VOLUME = c(723692, 717234, 813990, 1163565, 1451744, 975325, 2377611, 3448335, 2467310, 1997981, 2176615, 2758339, 2746346, 2103818))
-                               , idvars = c("Date", "Security")
-                               , rdimnames = list(structure(list( Date = structure(c(1577923200, 1577923200, 1578009600, 1578009600, 1578268800, 1578268800, 1578355200, 1578355200, 1578441600, 1578441600, 1578528000, 1578528000, 1578614400, 1578614400)
-                                                                , class = c("POSIXct", "POSIXt")), Security = c("III.L", "MMM", "III.L", "MMM", "III.L", "MMM", "III.L", "MMM", "III.L", "MMM", "III.L", "MMM", "III.L", "MMM"))
-                                                                , row.names = c("2020-01-02 01:00:00_III.L", "2020-01-02 01:00:00_MMM", "2020-01-03 01:00:00_III.L", "2020-01-03 01:00:00_MMM", "2020-01-06 01:00:00_III.L"
-                                                                               , "2020-01-06 01:00:00_MMM", "2020-01-07 01:00:00_III.L", "2020-01-07 01:00:00_MMM", "2020-01-08 01:00:00_III.L", "2020-01-08 01:00:00_MMM", "2020-01-09 01:00:00_III.L"
-                                                                               , "2020-01-09 01:00:00_MMM", "2020-01-10 01:00:00_III.L", "2020-01-10 01:00:00_MMM"), class = "data.frame")
-                                                                , structure(list(Field = c("CLOSE", "HIGH", "LOW", "OPEN", "VOLUME"))
-                                                                            , row.names = c("CLOSE", "HIGH", "LOW", "OPEN", "VOLUME"), class = "data.frame")), row.names = c(1L, 3L, 5L, 7L, 9L, 11L, 13L, 2L, 4L, 6L, 8L, 10L, 12L, 14L), class = "data.frame")
-
+                     GoodCheckEikonTimeSeries <- structure(list(Date = structure(c(1577923200, 1578009600, 1578268800,
+                                                                                   1578355200, 1578441600, 1578528000, 1578614400, 1577923200, 1578009600,
+                                                                                   1578268800, 1578355200, 1578441600, 1578528000, 1578614400)
+                                                                                 , class = c("POSIXct", "POSIXt"))
+                                                                , Security = c("III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
+                                                                , CLOSE = c(1116.5, 1108, 1088.5, 1086.5, 1088, 1094, 1088.5, 180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47)
+                                                                , HIGH = c(1123, 1110.5, 1102.5, 1101, 1089.5, 1096, 1100, 180.01, 178.66, 178.71, 178.51, 181.5, 181.59, 182.18)
+                                                                , LOW = c(1107.5, 1090.5, 1074, 1086.5, 1075, 1083, 1085, 177.1356, 175.63, 176.35, 176.82, 177.65, 179.76, 180.14)
+                                                                , OPEN = c(1108, 1110.5, 1101, 1096.5, 1079.5, 1090.5, 1100, 177.68, 177.02, 177.15, 178.28, 178, 181.51, 181.61)
+                                                                , VOLUME = c(723692, 717234, 813990, 1163565, 1451744, 975325, 2377611, 3448335, 2467310, 1997981, 2176615, 2758339, 2746346, 2103818))
+                                                           , row.names = c(1L, 3L, 5L, 7L, 9L, 11L, 13L, 2L, 4L, 6L, 8L, 10L, 12L, 14L), class = "data.frame")
 
 
 
@@ -80,25 +75,61 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                  start_date = "2020-01-01T01:00:00",
                                                                  end_date = "2020-01-10T01:00:00"))
 
-                      GoodCheckEikonTimeSeries <- structure(list(Date = structure(c(1577923200, 1578009600, 1578268800, 1578355200, 1578441600, 1578528000, 1578614400)
-                                                                , class = c("POSIXct", "POSIXt"))
+                      GoodCheckEikonTimeSeries <-structure(list(Date = structure(c(1577923200, 1578009600, 1578268800, 1578355200, 1578441600, 1578528000, 1578614400)
+                                                                                 , class = c("POSIXct", "POSIXt"))
                                                                 , Security = c("MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
                                                                 , CLOSE = c(180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47)
                                                                 , HIGH = c(180.01, 178.66, 178.71, 178.51, 181.5, 181.59, 182.18)
                                                                 , LOW = c(177.1356, 175.63, 176.35, 176.82, 177.65, 179.76, 180.14)
                                                                 , OPEN = c(177.68, 177.02, 177.15, 178.28, 178, 181.51, 181.61)
                                                                 , VOLUME = c(3448335, 2467310, 1997981, 2176615, 2758339, 2746346, 2103818))
-                                                            , idvars = c("Date", "Security")
-                                                            , rdimnames = list(structure(list(Date = structure(c(1577923200, 1578009600, 1578268800, 1578355200, 1578441600, 1578528000, 1578614400), class = c("POSIXct", "POSIXt"))
-                                                                                              , Security = c("MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM"))
-                                                                                         , row.names = c("2020-01-02 01:00:00_MMM", "2020-01-03 01:00:00_MMM", "2020-01-06 01:00:00_MMM", "2020-01-07 01:00:00_MMM", "2020-01-08 01:00:00_MMM", "2020-01-09 01:00:00_MMM", "2020-01-10 01:00:00_MMM")
-                                                                                         , class = "data.frame"), structure(list(Field = c("CLOSE", "HIGH", "LOW", "OPEN", "VOLUME"))
-                                                                                                                            , row.names = c("CLOSE", "HIGH", "LOW", "OPEN", "VOLUME")
-                                                                                                                            , class = "data.frame")), row.names = c(NA, 7L), class = "data.frame")
-
+                                                           , row.names = c(NA, 7L), class = "data.frame")
 
                       testthat::expect_identical(CheckTimeSeries, GoodCheckEikonTimeSeries)}
 )
+
+
+
+testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with only one ric and one field"
+                    , {check_Eikonapi()
+                      Eikon <- Refinitiv::EikonConnect()
+                      CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
+                                                                 rics = c("MMM"),
+                                                                 start_date = "2020-01-01T01:00:00",
+                                                                 end_date = "2020-01-10T01:00:00",
+                                                                 fields = "CLOSE")
+                                             )
+
+                      GoodCheckEikonTimeSeries <-structure(list(Date = structure(c(1577923200, 1578009600, 1578268800, 1578355200, 1578441600, 1578528000, 1578614400)
+                                                                                 , class = c("POSIXct", "POSIXt"))
+                                                                , Security = c("MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
+                                                                , CLOSE = c(180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47))
+                                                           , row.names = c(NA, 7L), class = "data.frame")
+
+                      testthat::expect_identical(CheckTimeSeries, GoodCheckEikonTimeSeries)}
+)
+
+testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with only 2 rics and one field"
+                    , {check_Eikonapi()
+                      Eikon <- Refinitiv::EikonConnect()
+                      CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
+                                                                 rics = c("MMM", "III.L"),
+                                                                 start_date = "2020-01-01T01:00:00",
+                                                                 end_date = "2020-01-10T01:00:00",
+                                                                 fields = "CLOSE")
+                      )
+
+                      GoodCheckEikonTimeSeries <- structure(list(Date = structure(c(1577923200, 1578009600, 1578268800, 1578355200, 1578441600, 1578528000, 1578614400, 1577923200, 1578009600,
+                                                                                    1578268800, 1578355200, 1578441600, 1578528000, 1578614400)
+                                                                                  , class = c("POSIXct", "POSIXt"))
+                                                                 , Security = c("III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
+                                                                 , CLOSE = c(1116.5, 1108, 1088.5, 1086.5, 1088, 1094, 1088.5, 180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47))
+                                                            , row.names = c(1L, 3L, 5L, 7L, 9L, 11L, 13L, 2L, 4L, 6L, 8L, 10L, 12L, 14L), class = "data.frame")
+                      testthat::expect_identical(CheckTimeSeries, GoodCheckEikonTimeSeries)}
+)
+
+
+
 
 
 
@@ -145,6 +176,62 @@ testthat::test_that("Check EikonGetData returns expected data with only one ric"
  )
 
 
+
+#add test case if only 2 rics and one field is requested
+testthat::test_that("Check EikonGetData returns expected data with only 2 ric and one field"
+                    , {check_Eikonapi()
+                      Eikon <- Refinitiv::EikonConnect()
+
+                      GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = c("MMM", "III.L")
+                                                                                            , Company.Name = c("3M Co", "3i Group PLC")), class = "data.frame", row.names = c(NA, -2L))
+                                                 , Eikon_Error_Data = structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"))
+
+                      CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
+                                                         Eikonformulas = "TR.CompanyName"))
+
+
+                      testthat::expect_identical(CheckEikonData, GoodCheckEikonData)
+                    }
+)
+
+
+
+#add test case if only 2 rics and one field is requested
+testthat::test_that("Check EikonGetData returns expected data with only 2 ric and one field"
+                    , {check_Eikonapi()
+                      Eikon <- Refinitiv::EikonConnect()
+
+                      GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = c("MMM", "III.L")
+                                                                                            , Company.Name = c("3M Co", "3i Group PLC"))
+                                                                                       , class = "data.frame", row.names = c(NA, -2L))
+                                                 , Eikon_Error_Data = structure(list(), .Names = character(0), row.names = integer(0)
+                                                                                , class = "data.frame"))
+
+                      CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
+                                                         Eikonformulas = "TR.CompanyName"))
+
+
+                      testthat::expect_identical(CheckEikonData, GoodCheckEikonData)
+                    }
+)
+
+
+#add test case if only 1 ric and one field is requested
+testthat::test_that("Check EikonGetData returns expected data with only 1 ric and one field"
+                    , {check_Eikonapi()
+                      Eikon <- Refinitiv::EikonConnect()
+
+                      GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = "MMM", Company.Name = "3M Co")
+                                                                                       , class = "data.frame", row.names = c(NA, -1L))
+                                                 , Eikon_Error_Data = structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"))
+
+                      CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("MMM"),
+                                                         Eikonformulas = "TR.CompanyName"))
+
+
+                      testthat::expect_identical(CheckEikonData, GoodCheckEikonData)
+                    }
+)
 
 
 
@@ -423,7 +510,54 @@ test_that( "ProcessSymbology works correctly", {
 
   expect_equal(test_bestmatch, Good_outcomeTRUEBM)
 
+
+  expect_error(ProcessSymbology(EikonSymbologyResult = data.frame(),  from_symbol_type = "ISIN", to_symbol_type = "RIC"))
+
 })
+
+
+# test_that("test a randomn Porfolio",{
+#
+#   check_Eikonapi()
+#   Eikon <- Refinitiv::EikonConnect()
+#
+#   PFrics <- c("WBC.AX", "GLPG.AS", "AGES.BR", "UMI.BR", "BE6253607178.LUF",
+#               "BMO.TO", "RCIb.TO", "ROG.S", "SOON.S", "SRENH.S", "DBKGn.DE",
+#               "BMWG.DE", "DTEGn.DE", "HNKG_p.DE", "SAPG.DE", "ALVG.DE", "BASFn.DE",
+#               "0P6S.L", "ORSTED.CO", "NZYMb.CO", "SAN.MC", "ITX.MC", "REE.MC",
+#               "REP.MC", "REPDe.BCO", "REPDe.BCO", "NOKIA.HE", "NDAFI.HE", "AIRP.PA",
+#               "OREP.PA", "AXAF.PA", "MICP.PA", "SCHN.PA", "CAPP.PA", "SN.L",
+#               "RDSa.AS", "RBS.L", "VOD.L", "JMAT.L", "VDEM.L", "ACN.NB", "LINI.DE",
+#               "SPMI.MI", "A0J2N8X.DX", "A0M81KX.DX", "ASREUA.DE", "UIMT.AS",
+#               "LP68162946", "20300348.S", "LP68237734", "A1W9F4X.DX", "24544080.S",
+#               "A14PCJX.DX", "A14PCNX.DX", "FRCJ.DE", "LP68396468", "LU1554262680EUR.S",
+#               "AASU.L", "USRI.PA", "AKZO.AS", "UNAa.AQXd", "DSMN.AS", "UNA.AS",
+#               "ARDS.AS", "ENX.PA", "VOPA.AS", "NXPI.NB", "PTNL.AS", "ASML.AS",
+#               "NN.AS", "FLOW.AS", "AD.AS", "INGA.AS", "ASNML.AS", "ADIAN.AS",
+#               "DNB.OL", "TEL.OL", "EQNR.OL", "ABBV.NB", "ALB.NB", "BABA.NB",
+#               "GOOG.NB", "GOOGL.NB", "AMZN.NB", "AMGN.NB", "BK.NB", "BAX.NB",
+#               "BIIB.NB", "BA.NB", "BMY.NB", "CME.NB", "CRC.NB", "COF.NB", "CHL.NB",
+#               "CL.NB", "CMCSA.NB", "CIG.NB", "ED.NB", "DE.NB", "DIS.NB", "EA.NB",
+#               "FDX.NB", "GE.NB", "GILD.NB", "GS.NB", "HD.NB", "IBM.NB", "PIN.NB",
+#               "DVYE.NB", "EEMA.NB", "EMB.NB", "INDY.NB", "EPHE.NB", "ITUB.NB",
+#               "KWEB.NB", "MPC.NB", "MCD.NB", "MSFT.NB", "NKE.NB", "OXY.NB",
+#               "ORCL.NB", "PEP.NB", "PBR.NB", "GMF.NB", "GXC.NB", "SMSNl.BCO",
+#               "SBUX.NB", "TSM.NB", "TXN.NB", "USB.NB", "UNH.NB", "GLIN.NB",
+#               "VNM.NB", "VZ.NB", "WM.NB", "EPI.NB")
+#
+#   PastandCurrentStocks_TS <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
+#                                                             , rics = PFrics
+#                                                             , start_date = "2020-01-01T01:00:00"
+#                                                             , end_date = paste0(Sys.Date(), "T01:00:00")
+#   )
+#
+#
+# })
+#
+#
+
+
+
 
 
 
