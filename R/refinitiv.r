@@ -1,10 +1,8 @@
 # create helper function to check if conda is installed
 CondaExists <- function(){
-
   out <- tryCatch(
     {
       reticulate::conda_binary()
-      return(TRUE)
     },
     error = function(cond) {
       message(paste("Conda does not seem to be installed"))
@@ -12,6 +10,8 @@ CondaExists <- function(){
       return(FALSE)
     }
   )
+  out <- ifelse(isFALSE(out), yes = FALSE, no = TRUE)
+
   return(out)
 }
 
