@@ -735,7 +735,9 @@ test_that("ProcessSymbology still works when an error is returned for one item",
 
 test_that("CondaExists returns a logical" , {
 
-  expect_type(CondaExists(), "logical")
+  test <- CondaExists()
+
+  expect_type(test, "logical")
 
 
 
