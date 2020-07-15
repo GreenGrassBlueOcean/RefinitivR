@@ -321,12 +321,13 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
   }
 
   ReturnTimeSeries <- do.call("rbind", TimeSeriesList)
-
+  ReturnTimeSeries <- make.true.NA_df(ReturnTimeSeries)
 
   if ((isTRUE(cast) & !is.null(ReturnTimeSeries)) && (nrow(ReturnTimeSeries) > 0) ) {
     ReturnTimeSeries <- suppressWarnings(reshape2::dcast(unique(ReturnTimeSeries),  Date +  Security ~ Field, fill = NA_integer_, drop = FALSE, value.var = "Value"))
     ReturnTimeSeries <- ReturnTimeSeries[order(ReturnTimeSeries$Security),]
     ReturnTimeSeries <- as.data.frame(ReturnTimeSeries, stringsAsFactors = FALSE) #remove dcast class as it has no use.
+
    }
 
   return(ReturnTimeSeries)
@@ -438,9 +439,6 @@ return(ReturnElement)
 #' , to_symbol_type = "ISIN"  , verbose = TRUE)
 #' EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
 #' , to_symbol_type = "ISIN"  , verbose = TRUE)
-#'
-#'
-#'
 #' }
 EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to_symbol_type = c('CUSIP', 'ISIN', 'SEDOL', 'RIC', 'ticker', 'lipperID', 'IMO', 'OAPermID')
                                , bestMatch = TRUE, time_out = 60, verbose = FALSE, raw_output = FALSE){
@@ -485,73 +483,3 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 
 
 
-#' Function to process raw output of python get_symbology to better in r readable format
-#'
-#' @param EikonSymbologyResult nested list: output from EikonGetSymbology with option raw_output set to TRUE
-#' @param from_symbol_type character use her same input as in EikonGetSymbology
-#' @param to_symbol_type character use her same input as in EikonGetSymbology
-#'
-#' @return data.frame containing 4 columns to_symbol_type, from_symbol_type, BestMatch (as defined by EIkon), error
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' Raw_output_No_BestMatch <- EikonGetSymbology(EikonObject = Eikon
-#' , symbol =  c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN"
-#' , to_symbol_type = "RIC" , raw_output = TRUE, bestMatch = FALSE  )
-#' ProcessSymbology(EikonSymbologyResult = Raw_output_No_BestMatch
-#' , from_symbol_type = "ISIN", to_symbol_type = "RIC")
-#'
-#' Raw_output_BestMatch <- EikonGetSymbology(EikonObject = Eikon
-#' , symbol =  c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN"
-#' , to_symbol_type = "RIC" , raw_output = TRUE, bestMatch = TRUE  )
-#' ProcessSymbology(EikonSymbologyResult = Raw_output_BestMatch
-#' , from_symbol_type = "ISIN", to_symbol_type = "RIC")
-#' }
-ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_type){
-
-  EikonSymbologyResult <- EikonSymbologyResult[[1]]
-
-  #1. Check Input
-  if ( to_symbol_type %in% names(EikonSymbologyResult)){
-      BestMatch <- TRUE
-  } else if( paste0(to_symbol_type, "s") %in% names(EikonSymbologyResult)){
-      BestMatch <- FALSE
-  } else{
-      stop("ProcessSymbology retrieved input in wrong format")
-  }
-
-  #2. Run main function
-  if(BestMatch){
-    EikonSymbologyResult[[to_symbol_type]] <- rownames(EikonSymbologyResult)
-    rownames(EikonSymbologyResult) <- NULL
-    ReturnVar <- EikonSymbologyResult
-  }
-  else{
-    returnList <- vector(mode = "list", length = nrow(EikonSymbologyResult))
-
-    for (i in 1:nrow(EikonSymbologyResult)){
-      returnList[[i]] <- if(!is.null(unlist(EikonSymbologyResult[i,4]))){
-
-                              data.frame( to_symbol_type = unlist(EikonSymbologyResult[[1]][[i]])
-                                        , from_symbol_type = unlist(EikonSymbologyResult[i,3])
-                                        , BestMatch = as.character(unlist(EikonSymbologyResult[i,2]))
-                                        , error =  unlist(EikonSymbologyResult[i,4])
-                                        , stringsAsFactors = FALSE
-                                        )
-                          } else {
-                                data.frame( to_symbol_type = unlist(EikonSymbologyResult[[1]][[i]])
-                                          , from_symbol_type = unlist(EikonSymbologyResult[i,3])
-                                          , BestMatch = as.character(unlist(EikonSymbologyResult[i,2]))
-                                          , stringsAsFactors = FALSE
-                                          )
-                         }
-    }
-    ReturnVar <- do.call("rbind", returnList)
-    names(ReturnVar)[names(ReturnVar) == 'to_symbol_type'] <- to_symbol_type
-    names(ReturnVar)[names(ReturnVar) == 'from_symbol_type'] <- from_symbol_type
-  }
-
-  #3. return output
-  return(ReturnVar)
-}
