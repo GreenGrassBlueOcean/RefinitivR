@@ -326,7 +326,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
   if ((isTRUE(cast) & !is.null(ReturnTimeSeries)) && (nrow(ReturnTimeSeries) > 0) ) {
     ReturnTimeSeries <- suppressWarnings(reshape2::dcast(unique(ReturnTimeSeries),  Date +  Security ~ Field, fill = NA_integer_, drop = FALSE, value.var = "Value"))
     ReturnTimeSeries <- ReturnTimeSeries[order(ReturnTimeSeries$Security),]
-    ReturnTimeSeries <- as.data.frame(ReturnTimeSeries) #remove dcast class as it has no use.
+    ReturnTimeSeries <- as.data.frame(ReturnTimeSeries, stringsAsFactors = FALSE) #remove dcast class as it has no use.
    }
 
   return(ReturnTimeSeries)
@@ -547,7 +547,7 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
                                           )
                          }
     }
-    ReturnVar <- do.call(rbind, returnList)
+    ReturnVar <- do.call("rbind", returnList)
     names(ReturnVar)[names(ReturnVar) == 'to_symbol_type'] <- to_symbol_type
     names(ReturnVar)[names(ReturnVar) == 'from_symbol_type'] <- from_symbol_type
   }

@@ -23,14 +23,14 @@ EikonErrorProcessor <- function(Eikon_get_data_Error, Chunked, ChunkRowStart){
   # 1. turn it in a list of list of data.frames
   Step1 <- lapply( X = Eikon_get_data_Error
                  , FUN = function(x){ lapply( X = x
-                                            , FUN = function(y, ncol){as.data.frame(matrix(y, ncol = ncol))}
+                                            , FUN = function(y, ncol){as.data.frame(matrix(y, ncol = ncol), stringsAsFactors = FALSE)}
                                             , ncol = 4
                  )
                  }
     )
   #2. turn it into a list of data.frames
   Step2 <- lapply( X = Step1
-                 , FUN = function(x){as.data.frame(do.call("rbind", x))}
+                 , FUN = function(x){as.data.frame(do.call("rbind", x), stringsAsFactors = FALSE)}
                  )
 
   #2.A set row number correct for one dataframe in stead a list of data.frames using ChunkRowStart
@@ -73,12 +73,13 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
 
     if (Chunked) {
       Eikon_get_data_pre <- lapply(Eikon_get_dataOuput, "[[", 1)
+      Eikon_get_data_pre <- lapply(Eikon_get_data_pre, as.data.frame, stringsAsFactors = FALSE)
       Eikon_get_data <- do.call("rbind",Eikon_get_data_pre)
       Eikon_get_data_Error <- lapply(Eikon_get_dataOuput, "[[", 2)
       ChunkRowStart <- cumsum(lapply(Eikon_get_data_pre, nrow))
       ChunkRowStart <- ChunkRowStart - ChunkRowStart[1]
 
-      # Eikon_Error_Data <- do.call("rbind",Eikon_get_data_Error_pre)
+      # Eikon_Error_Data <- do.call("rbind",Eikon_get_data_Error_pre, stringsAsFactors = FALSE)
     } else{
       Eikon_get_data <- Eikon_get_dataOuput[[1]]
       Eikon_get_data_Error <- Eikon_get_dataOuput[[2]]
@@ -87,8 +88,6 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
    # As the Python eikon get_data structure contains various list that are null these should be replaced
    #  with NA to prevent disasters when later handling the data.frame when using unlist Null elements
    #  are removed from the lists causing shorter vectors than expected.
-
-
 
      Eikon_get_datawithoutNULL <- as.data.frame(sapply(Eikon_get_data, function(x) ifelse(x == "NULL", NA, x)), stringsAsFactors = FALSE )
 
