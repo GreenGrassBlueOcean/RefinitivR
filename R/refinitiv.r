@@ -257,6 +257,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
   difftimeConversionTable <- data.frame( EikonTimeName = c('tick', 'minute', 'hour', 'daily', 'weekly', 'monthly', 'quarterly', 'yearly')
                                        , difftimeName = c(NA,  "mins", "hours","days", "weeks", NA, NA, NA)
                                        , limit = c(50000,50000,50000,3000,3000,3000,3000,3000)
+                                       , stringsAsFactors = FALSE
                                        )
 
 
@@ -265,7 +266,9 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
   if (interval %in% c('tick')) {
     warning("Intraday tick data chunking currently not supported, maximum 50.000 data points per request")
   } else if ( interval %in% c('minute', 'hour', 'daily', 'weekly')) {
-    Duration <- difftime(end_date, start_date, units = difftimeConversionTable[difftimeConversionTable$EikonTimeName == interval,]$difftimeName)[[1]]
+    Duration <- difftime(end_date, start_date
+                        , units = difftimeConversionTable[difftimeConversionTable$EikonTimeName == interval,]$difftimeName
+                        )[[1]]
     # remove weekends as these need not be to downloaded, public holidays ignored
     Duration <- Duration/7*5
   } else if (interval == "monthly") {

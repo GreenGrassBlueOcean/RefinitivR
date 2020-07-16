@@ -1,4 +1,4 @@
-#' Remove <NA> NaN "" from dataframes and replace with NA while retaining column class
+#' Remove NULL items, <NA>, NaN, and "" from dataframes and replace with NA while retaining column class
 #'
 #' the function only operates on character and numeric columns
 #' @param df data.frame with/without  <NA> NaN ""
@@ -13,10 +13,19 @@
 make.true.NA_df <- function(df){
 
 make.true.NA <- function(x){
+  if (identical(class(x), "list")){
+    x <- lapply(x, function(y){ifelse(is.null(y) , NA, y)} )
+    if ("numeric" %in% lapply(x, class)){
+      x <- unlist(x)
+      x <- as.numeric(x)
+    } else{
+      x <- unlist(x)
+    }
+  }
   if(is.character(x)||is.factor(x)){
-    is.na(x) <- x %in% c("NA", "<NA>", ""); x
+    is.na(x) <- x %in% c("NA", "<NA>", "", NULL); x
   } else if (is.numeric(x)){
-    is.na(x) <- x %in% c(NaN); x
+    is.na(x) <- x %in% c(NaN, NULL); x
   } else {
     return(x)}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataframeCleaner.r
 \name{make.true.NA_df}
 \alias{make.true.NA_df}
-\title{Remove <NA> NaN "" from data.table and replace with NA while retaining column class}
+\title{Remove NULL items, <NA>, NaN, and "" from dataframes and replace with NA while retaining column class}
 \usage{
 make.true.NA_df(df)
 }
@@ -13,9 +13,10 @@ make.true.NA_df(df)
 data.frame with only NA entries in the right column class
 }
 \description{
-Remove <NA> NaN "" from data.table and replace with NA while retaining column class
+the function only operates on character and numeric columns
 }
 \examples{
-dfr<-data.frame(A=c(1,2,NaN,3),B=c("a", "<NA>" ,"","d"))
+dfr<-data.frame(A=c(1,2,NaN,3),B=c("a", "<NA>" ,"","d")
+, C = c(as.Date("2012-01-01"), as.Date("2012-01-02"), as.Date("2012-01-03"), as.Date("2012-01-04")))
 make.true.NA_df(dfr)
 }

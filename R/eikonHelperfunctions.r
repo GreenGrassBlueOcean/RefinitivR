@@ -90,17 +90,18 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
    #  with NA to prevent disasters when later handling the data.frame when using unlist Null elements
    #  are removed from the lists causing shorter vectors than expected.
 
-     Eikon_get_datawithoutNULL <- as.data.frame(sapply(Eikon_get_data, function(x) ifelse(x == "NULL", NA, x)), stringsAsFactors = FALSE )
-
-     if(ncol(Eikon_get_datawithoutNULL) > 1){
-       # sapply returns a data.frame of lists go back to a data.frame of vectors using unlist
-       Eikon_get_dataFinal <- as.data.frame(lapply(Eikon_get_datawithoutNULL, unlist), stringsAsFactors = FALSE )
-     } else {
-       Eikon_get_dataFinal <- as.data.frame(t(Eikon_get_datawithoutNULL), stringsAsFactors = FALSE)
-       rownames(Eikon_get_dataFinal) <- NULL
-     }
+     # Eikon_get_datawithoutNULL <- as.data.frame(sapply(Eikon_get_data, function(x) ifelse(x == "NULL", NA, x)), stringsAsFactors = FALSE )
+     #
+     # if(ncol(Eikon_get_datawithoutNULL) > 1){
+     #   # sapply returns a data.frame of lists go back to a data.frame of vectors using unlist
+     #   Eikon_get_dataFinal <- as.data.frame(lapply(Eikon_get_datawithoutNULL, unlist), stringsAsFactors = FALSE )
+     # } else {
+     #   Eikon_get_dataFinal <- as.data.frame(t(Eikon_get_datawithoutNULL), stringsAsFactors = FALSE)
+     #   rownames(Eikon_get_dataFinal) <- NULL
+     # }
 
    # return human readable names
+   Eikon_get_dataFinal <- Eikon_get_data
    names(Eikon_get_dataFinal) <- EikonNameCleaner(names(Eikon_get_dataOuput[[1]][[1]]))
    Eikon_get_dataFinal <- make.true.NA_df(Eikon_get_dataFinal)
 
