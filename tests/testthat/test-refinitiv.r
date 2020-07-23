@@ -532,15 +532,6 @@ test_that("CondaExists returns a logical" , {
 ## test portfolio function
 
 
-check_Eikonapi()
-Eikon <- Refinitiv::EikonConnect()
-AvailableFund_TS <- EikonGetData( EikonObject = Eikon
-                                , rics = c("LU0805493342", "LU1074075299", "NL0000280501", "NL0013332554")
-                                , Eikonformulas = c("TR.NETASSETVAL.date", "TR.NETASSETVAL")
-                                , Parameters = list("SDate" = "-3Y", "EDate" = "0D")
-                                , verbose = TRUE
-                                )
-
 
 
 

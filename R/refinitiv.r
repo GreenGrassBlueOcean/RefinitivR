@@ -320,6 +320,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                                                )
 
     )})
+    CheckandReportEmptyDF(df = TimeSeriesList[[j]], functionname = "EikonGetTimeseries")
     Sys.sleep(time = 0.5)
   }
 
@@ -386,6 +387,7 @@ for (j in 1:length(ChunckedRics)) {
                                            , parameters = Parameters
                                            , debug = FALSE, raw_output = FALSE
   ))})
+  CheckandReportEmptyDF(df = EikonDataList[[j]], functionname = "EikonGetData")
   Sys.sleep(time = 0.5)
 }
 
@@ -471,6 +473,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                      , debug = FALSE
                                      , bestMatch = bestMatch
                                   ))})
+    CheckandReportEmptyDF(df = EikonSymbologyList[[j]], functionname = "EikonGetSymbology")
     Sys.sleep(time = 0.5)
   }
 
@@ -483,6 +486,36 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 
   return(ReturnElement)
 }
+
+
+
+
+#' function to check if a downloaded dataframe is empty
+#'
+#' @param df data.frame
+#' @param functionname functionname for errorreporting
+#'
+#' @return boolean
+#' @export
+#'
+#' @examples
+#' CheckandReportEmptyDF(data.frame(), functionname = "test")
+#' CheckandReportEmptyDF(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
+CheckandReportEmptyDF <- function(df, functionname){
+
+if(!is.data.frame(df) && is.list(df)){
+  df <- df[[1]]
+}
+
+if(is.null(df) || nrow(df) == 0 ){
+  message(paste0(functionname, " request returned empty dataframe"))
+  return(FALSE)
+} else{
+  return(TRUE)
+}
+
+}
+
 
 
 
