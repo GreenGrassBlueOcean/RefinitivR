@@ -394,7 +394,8 @@ for (j in 1:length(ChunckedRics)) {
                                            , parameters = Parameters
                                            , debug = FALSE, raw_output = FALSE
   ))})
-  CheckandReportEmptyDF(df = EikonDataList[[j]], functionname = "EikonGetData")
+
+  CheckandReportEmptyDF(df = ifelse(indexExists(EikonDataList, j), EikonDataList[[j]], NULL), functionname = "EikonGetData")
   Sys.sleep(time = 0.5)
 }
 

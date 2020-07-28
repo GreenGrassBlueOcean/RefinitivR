@@ -317,3 +317,23 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
 
 
 
+#' Check if an element of list exists or is NULL
+#'
+#' @param list a list
+#' @param index integer, indicating proposed list location
+#'
+#' @return boolean
+#' @export
+#'
+#' @examples
+#' Testlist <- list(NULL, 1)
+#' indexExists(Testlist, 1)
+indexExists <- function(list, index) {
+  tryCatch({
+    list[[index]]  # Efficiency if element does exist and is large??
+    TRUE
+  }, error = function(e) {
+    FALSE
+  })
+}
+
