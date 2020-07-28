@@ -327,7 +327,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                                                )
 
     )})
-    CheckandReportEmptyDF(df = TimeSeriesList[[j]], functionname = "EikonGetTimeseries")
+    CheckandReportEmptyDF(df = ifelse(indexExists(TimeSeriesList, j), TimeSeriesList[[j]], NULL), functionname = "EikonGetTimeseries")
     Sys.sleep(time = 0.5)
   }
 
@@ -481,7 +481,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                      , debug = FALSE
                                      , bestMatch = bestMatch
                                   ))})
-    CheckandReportEmptyDF(df = EikonSymbologyList[[j]], functionname = "EikonGetSymbology")
+    CheckandReportEmptyDF(df = ifelse(indexExists(EikonSymbologyList, j), EikonSymbologyList[[j]], NULL), functionname = "EikonGetSymbology")
     Sys.sleep(time = 0.5)
   }
 
@@ -515,7 +515,7 @@ if(!is.data.frame(df) && is.list(df)){
   df <- df[[1]]
 }
 
-if(is.null(df) || nrow(df) == 0 ){
+if(is.null(df) || !is.data.frame(df) || nrow(df) == 0 ){
   message(paste0(functionname, " request returned empty dataframe"))
   return(FALSE)
 } else{
