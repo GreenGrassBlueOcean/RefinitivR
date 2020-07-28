@@ -327,7 +327,8 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                                                )
 
     )})
-    CheckandReportEmptyDF(df = ifelse(indexExists(TimeSeriesList, j), TimeSeriesList[[j]], NULL), functionname = "EikonGetTimeseries")
+
+    CheckandReportEmptyDF(df = ifelse(indexExists(TimeSeriesList, j), TimeSeriesList[[j]], NA), functionname = "EikonGetTimeseries")
     Sys.sleep(time = 0.5)
   }
 
@@ -395,7 +396,7 @@ for (j in 1:length(ChunckedRics)) {
                                            , debug = FALSE, raw_output = FALSE
   ))})
 
-  CheckandReportEmptyDF(df = ifelse(indexExists(EikonDataList, j), EikonDataList[[j]], NULL), functionname = "EikonGetData")
+  CheckandReportEmptyDF(df = ifelse(indexExists(EikonDataList, j), EikonDataList[[j]], NA), functionname = "EikonGetData")
   Sys.sleep(time = 0.5)
 }
 
@@ -481,7 +482,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                      , debug = FALSE
                                      , bestMatch = bestMatch
                                   ))})
-    CheckandReportEmptyDF(df = ifelse(indexExists(EikonSymbologyList, j), EikonSymbologyList[[j]], NULL), functionname = "EikonGetSymbology")
+    CheckandReportEmptyDF(df = ifelse(indexExists(EikonSymbologyList, j), EikonSymbologyList[[j]], NA), functionname = "EikonGetSymbology")
     Sys.sleep(time = 0.5)
   }
 
@@ -510,6 +511,10 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 #' CheckandReportEmptyDF(data.frame(), functionname = "test")
 #' CheckandReportEmptyDF(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
 CheckandReportEmptyDF <- function(df, functionname){
+
+if(!all(is.data.frame(df)) && all(is.na(df))){
+  df <- NULL
+}
 
 if(!is.data.frame(df) && is.list(df)){
   df <- df[[1]]

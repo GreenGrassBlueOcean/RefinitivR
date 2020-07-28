@@ -132,6 +132,21 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
 
 
 
+testthat::test_that("Check EikonGetTimeseries works with empty ric list"
+                  , {check_Eikonapi()
+                     Eikon <- Refinitiv::EikonConnect()
+
+testtimeseries <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
+                                                , rics = c()
+                                                , interval= "daily"
+                                                , calender = "tradingdays"
+                                                , fields = c("TIMESTAMP","VOLUME","HIGH","LOW","OPEN","CLOSE")
+                                                , start_date =  "2020-07-21T01:00:00"
+                                                , end_date =  "2020-07-28T01:00:00")
+
+
+
+})
 
 
 testthat::test_that("Check EikonGetData returns expected data with multiple rics"

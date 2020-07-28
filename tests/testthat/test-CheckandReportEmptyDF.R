@@ -16,3 +16,12 @@ test_that("CheckandReportEmptyDF with complex eikon list structure",{
 
 
 })
+
+
+test_that("CheckandReportEmptyDF can work with NA",{
+
+
+  expect_false(CheckandReportEmptyDF(df = NA, functionname = 'test'))
+
+
+})
