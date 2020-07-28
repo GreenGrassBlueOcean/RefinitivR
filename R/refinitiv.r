@@ -162,13 +162,14 @@ EikonNameCleaner <- function(names){
 #' @param Eikonfields a list of the eikonfields to be requested default NULL, if eikonfields are supplied duration may not be supplied
 #' @param MaxCallsPerChunk the maximum amount of apicalls that can be made
 #' @param Duration a natural number denoting the amoount of rows asked for in a TimeSeries default NULL, if Duration is supplied Eikonfields may not be supplied
+#' @param MaxRicsperChunk  a natural number denoting the maximum amount of Rics that should be available in one call.
 #'
 #' @return a list of splitted RICS that can be returned to guarantee compliance with api limits.
 #' @export
 #' @references \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
 #'
 #' @examples
-EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Duration = NULL) {
+EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Duration = NULL, MaxRicsperChunk = NULL) {
 
   if (!is.null(Eikonfields) & is.null(Duration)) {
     totalDataPoints <- length(RICS) * length(Eikonfields)
@@ -189,6 +190,12 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
   ChunkLength <- length(RICS)/Chunks
 
   # ChosenSimulataneousRics <- length(Stoxx1800Constits$RIC)/chosenchunks
+  if(!is.null(MaxRicsperChunk)){
+    if(ChunkLength > MaxRicsperChunk){
+      ChunkLength <- MaxRicsperChunk - 1
+    }
+  }
+
   SplittedRics <-  split(RICS, ceiling(seq_along(RICS)/ChunkLength))
   return(SplittedRics)
 }
@@ -289,7 +296,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 
   if ( !is.null(Duration) && (Limit < Datapoints)) {
     message("The operation is too large for one api request and will be chunked in multiple requests")
-    ChunckedRics <- EikonChunker(RICS = rics, MaxCallsPerChunk = Limit, Duration =  ceiling(Duration) )
+    ChunckedRics <- EikonChunker(RICS = rics, MaxCallsPerChunk = Limit, Duration =  ceiling(Duration), MaxRicsperChunk = 300 )
   } else{
     ChunckedRics <- list(rics)
   }

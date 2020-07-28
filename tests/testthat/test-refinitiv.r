@@ -287,6 +287,88 @@ test_that("EikonChunker satisfies testcases", {
 })
 
 
+
+test_that("EikonChunker satisfies testcases no split required due to MaxRicsperChunk", {
+
+  expect_error({
+  CorrectSolution <- list(`1` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `2` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `3` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `4` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `5` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `6` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `7` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `8` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `9` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `10` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `11` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `12` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `13` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a")
+                         , `14` = c("a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a"))
+
+  SplittedRics <-EikonChunker(RICS = rep('a', times = 200), Duration= 7, MaxCallsPerChunk = 100, MaxRicsperChunk = 20)}, NA)
+
+  expect_equal( sum(unlist(lapply(SplittedRics, length))), 200)
+
+  expect_equal( SplittedRics
+              , CorrectSolution
+  )
+
+
+
+
+  CorrectSolution <- NULL
+})
+
+
+test_that("EikonChunker satisfies testcases split IS required due to MaxRicsperChunk", {
+
+  expect_error({
+    CorrectSolution <- list(`1` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `2` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `3` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `4` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `5` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `6` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `7` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `8` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `9` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `10` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `11` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `12` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `13` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `14` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `15` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `16` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `17` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `18` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `19` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `20` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `21` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `22` = c("a", "a", "a", "a", "a", "a", "a", "a", "a")
+                           , `23` = c("a", "a"))
+
+
+
+    SplittedRics <-EikonChunker(RICS = rep('a', times = 200), Duration= 7, MaxCallsPerChunk = 100, MaxRicsperChunk = 10)}, NA)
+
+  expect_equal( sum(unlist(lapply(SplittedRics, length))), 200)
+
+  expect_equal( SplittedRics
+                , CorrectSolution
+  )
+
+
+
+
+  CorrectSolution <- NULL
+})
+
+
+
+
+
+
 ## test EikonPostProcessor ----
 
 
