@@ -215,7 +215,7 @@ retry <- function(retryfun, max = 2, init = 0){
   suppressWarnings( tryCatch({
     if (init < max) retryfun
   }, error = function(e){message(paste0("api request failed, automatically retrying time ",init + 1, "/", max))
-                        ; Sys.sleep(time = 5); retry(retryfun, max, init = init + 1)}))
+                        ; Sys.sleep(time = 5); retry(retryfun, max, init = init + 1);return(NA)}))
 }
 
 
@@ -301,7 +301,8 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
     ChunckedRics <- list(rics)
   }
 
-  TimeSeriesList <- vector(mode = 'list', length = length(ChunckedRics))
+
+  TimeSeriesList <- as.list(rep(NA, times = length(ChunckedRics)))
   for (j in 1:length(ChunckedRics)) {
     TimeSeriesList[[j]] <- try({ if (verbose){  message(paste0(Sys.time(), "\n"
                                                                , " get_timeseries( rics = [\"", paste(ChunckedRics[[j]], collapse = "\",\""), "\"]\n"
@@ -328,14 +329,14 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 
     )})
 
-    CheckandReportEmptyDF(df = ifelse(indexExists(TimeSeriesList, j), TimeSeriesList[[j]], NA), functionname = "EikonGetTimeseries")
+    CheckandReportEmptyDF(df = TimeSeriesList[[j]], functionname = "EikonGetTimeseries")
     Sys.sleep(time = 0.5)
   }
 
   ReturnTimeSeries <- do.call("rbind", TimeSeriesList)
   ReturnTimeSeries <- make.true.NA_df(ReturnTimeSeries)
 
-  if ((isTRUE(cast) & !is.null(ReturnTimeSeries)) && (nrow(ReturnTimeSeries) > 0) ) {
+  if ((isTRUE(cast) & !all(is.na(ReturnTimeSeries))) && (nrow(ReturnTimeSeries) > 0) ) {
     ReturnTimeSeries <- suppressWarnings(reshape2::dcast(unique(ReturnTimeSeries),  Date +  Security ~ Field, fill = NA_integer_, drop = FALSE, value.var = "Value"))
     ReturnTimeSeries <- ReturnTimeSeries[order(ReturnTimeSeries$Security),]
     ReturnTimeSeries <- as.data.frame(ReturnTimeSeries, stringsAsFactors = FALSE) #remove dcast class as it has no use.
@@ -382,7 +383,8 @@ EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on tim
 # Divide RICS in chunks to satisfy api limits
 ChunckedRics <- Refinitiv::EikonChunker(RICS = rics, Eikonfields = Eikonformulas)
 
-EikonDataList <- vector(mode = 'list', length = length(ChunckedRics))
+
+EikonDataList <- as.list(rep(NA, times = length(ChunckedRics)))
 for (j in 1:length(ChunckedRics)) {
   EikonDataList[[j]] <- try({ if (verbose){  message(paste0(Sys.time(), "\n"
                                                     , " get_data( instruments = [\"", paste(ChunckedRics[[j]], collapse = "\",\""), "\"]\n"
@@ -396,7 +398,7 @@ for (j in 1:length(ChunckedRics)) {
                                            , debug = FALSE, raw_output = FALSE
   ))})
 
-  CheckandReportEmptyDF(df = ifelse(indexExists(EikonDataList, j), EikonDataList[[j]], NA), functionname = "EikonGetData")
+  CheckandReportEmptyDF(df = EikonDataList[[j]], functionname = "EikonGetData")
   Sys.sleep(time = 0.5)
 }
 
@@ -465,7 +467,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
   # Divide symbols in chunks to satisfy api limits
   ChunckedSymbols <- Refinitiv::EikonChunker(RICS = symbol, Eikonfields = to_symbol_type)
 
-  EikonSymbologyList <- vector(mode = 'list', length = length(ChunckedSymbols))
+  EikonSymbologyList <- as.list(rep(NA, times = length(ChunckedSymbols)))
   for (j in 1:length(ChunckedSymbols)) {
     EikonSymbologyList[[j]] <- try({ if (verbose){  message(paste0(Sys.time(), "\n"
                                                               , "get_symbology( symbol = [\"", paste(ChunckedSymbols[[j]], collapse = "\",\""), "\"]\n"
@@ -482,7 +484,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                      , debug = FALSE
                                      , bestMatch = bestMatch
                                   ))})
-    CheckandReportEmptyDF(df = ifelse(indexExists(EikonSymbologyList, j), EikonSymbologyList[[j]], NA), functionname = "EikonGetSymbology")
+    CheckandReportEmptyDF(df = EikonSymbologyList[[j]], functionname = "EikonGetSymbology")
     Sys.sleep(time = 0.5)
   }
 

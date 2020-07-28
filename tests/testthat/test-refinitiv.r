@@ -10,7 +10,7 @@ load(file="testdata.rda")
 
 testthat::test_that("retry", {
   testthat::expect_equal(retry(retryfun = sum(1,1)), sum(1,1))
-  testthat::expect_equal(retry(retryfun = sum(1,"a"), max = 1), NULL)
+  testthat::expect_equal(retry(retryfun = sum(1,"a"), max = 1), NA)
 })
 
 
@@ -129,6 +129,44 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
 )
 
 
+testthat::test_that("Check EikonGetTimeseries returns previously downloaded long timeseries"
+                    , {check_Eikonapi()
+                      Eikon <- Refinitiv::EikonConnect()
+
+
+
+
+
+                      CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
+                                                                 rics = c("AAPL.O"),
+                                                                 start_date = "2000-07-28T01:00:00",
+                                                                 end_date = "2010-07-28T23:59:00",
+                                                                 fields = )
+                      )
+
+
+                      testthat::expect_identical(lapply(CheckTimeSeries, class),list(Date = c("POSIXct", "POSIXt"), Security = "character", CLOSE = "numeric",
+                                                                                     HIGH = "numeric", LOW = "numeric", OPEN = "numeric", VOLUME = "numeric") )
+                      testthat::expect_identical(nrow(CheckTimeSeries), 2513L)
+                      testthat::expect_identical(min(CheckTimeSeries$Date), structure(965001600, class = c("POSIXct", "POSIXt")))
+                      testthat::expect_identical(max(CheckTimeSeries$Date), structure(1280275200, class = c("POSIXct", "POSIXt")))
+                      testthat::expect_equal(min(CheckTimeSeries$CLOSE), 0.9371419, tolerance = 1e-6)
+                      testthat::expect_equal(max(CheckTimeSeries$CLOSE), 39.15339, tolerance = 1e-6)
+                      testthat::expect_equal(min(CheckTimeSeries$VOLUME), 9866678, tolerance = 1e-6)
+                      testthat::expect_equal(max(CheckTimeSeries$VOLUME), 1856380856, tolerance = 1e-6)
+                      testthat::expect_equal(min(CheckTimeSeries$HIGH), 0.9421419, tolerance = 1e-6)
+                      testthat::expect_equal(max(CheckTimeSeries$HIGH), 39.85853, tolerance = 1e-6)
+                      testthat::expect_equal(min(CheckTimeSeries$LOW), 0.9085705, tolerance = 1e-6)
+                      testthat::expect_equal(max(CheckTimeSeries$LOW), 38.78568, tolerance = 1e-6)
+                      testthat::expect_equal(min(CheckTimeSeries$OPEN), 0.9278562, tolerance = 1e-6)
+                      testthat::expect_equal(max(CheckTimeSeries$OPEN), 39.66996, tolerance = 1e-6)
+                      testthat::expect_equal(unique(CheckTimeSeries$Security), "AAPL.O")
+                      }
+)
+
+
+
+
 
 
 
@@ -144,9 +182,41 @@ testtimeseries <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
                                                 , start_date =  "2020-07-21T01:00:00"
                                                 , end_date =  "2020-07-28T01:00:00")
 
-
+expect_equal(testtimeseries, structure(list(NA. = NA), class = "data.frame", row.names = c(NA, -1L)))
 
 })
+
+
+
+testthat::test_that("Check EikonGetTimeseries works with empty ric list"
+                    , {check_Eikonapi()
+                      Eikon <- Refinitiv::EikonConnect()
+
+                      Correct_timeseries <- structure(list(Date = structure(c(1595376000, 1595462400, 1595548800, 1595808000, 1595894400), class = c("POSIXct", "POSIXt"))
+                                     , Security = c("MMM", "MMM", "MMM", "MMM", "MMM")
+                                     , CLOSE = c(158.71, 159.29, 159.84, 163.24, 155.68)
+                                     , HIGH = c(159.93, 159.65, 161.6, 163.38, 157.48)
+                                     , LOW = c(157.02, 158.36, 158.7249, 159.33, 153.8)
+                                     , OPEN = c(157.43, 159, 160.05, 159.53, 155.47)
+                                     , VOLUME = c(1899582, 2695122, 2524854, 3198457, 5362971))
+                                , row.names = c(NA, 5L), class = "data.frame")
+
+
+
+                      testtimeseries <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
+                                                                       , rics = c("wrongRic", "MMM")
+                                                                       , interval= "daily"
+                                                                       , calender = "tradingdays"
+                                                                       , fields = c("TIMESTAMP","VOLUME","HIGH","LOW","OPEN","CLOSE")
+                                                                       , start_date =  "2020-07-21T01:00:00"
+                                                                       , end_date =  "2020-07-28T01:00:00")
+
+                      expect_equivalent(testtimeseries, Correct_timeseries, tolerance = 1e-1)
+
+                    })
+
+
+
 
 
 testthat::test_that("Check EikonGetData returns expected data with multiple rics"
@@ -189,6 +259,46 @@ testthat::test_that("Check EikonGetData returns expected data with only one ric"
                        testthat::expect_identical(CheckEikonData, GoodCheckEikonData)
                       }
  )
+
+#add test case when 0 ric is requested
+testthat::test_that("Check EikonGetData returns expected data with only one ric"
+                    , {check_Eikonapi()
+                      Eikon <- Refinitiv::EikonConnect()
+
+                      CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c(""),
+                                                         Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName")))
+
+
+                      testthat::expect_identical(CheckEikonData, data.frame())
+                    }
+)
+
+
+#add test case when 0 ric is requested
+testthat::test_that("Check EikonGetData returns expected data with only one good ric and one wrong RIC"
+                    , {check_Eikonapi()
+                      Eikon <- Refinitiv::EikonConnect()
+
+                      Correct_output <- list(PostProcessedEikonGetData = structure(list(Instrument = c("WRONGRIC",
+                                                                                     "MMM"), RDN_EXCHD2 = c(NA, "NYQ"), Company.Name = c(NA, "3M Co"
+                                                                                     )), class = "data.frame", row.names = c(NA, -2L)), Eikon_Error_Data = structure(list(
+                                                                                       code = c(251658243L, 416L), col = 1:2, message = c("'The record could not be found' for the instrument 'WRONGRIC'",
+                                                                                                                                          "Unable to collect data for the field 'TR.CompanyName' and some specific identifier(s)."
+                                                                                       ), row = c(0, 0)), class = "data.frame", row.names = c(NA,
+                                                                                                                                              -2L)))
+
+
+
+
+                      CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("wrongric", "MMM"),
+                                                         Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName")))
+
+
+                      testthat::expect_identical(CheckEikonData, Correct_output)
+                    }
+)
+
+
 
 
 
@@ -391,6 +501,7 @@ test_that("EikonPostProcessor satisfies testcases", {
 
     # GoodOutcomeEikonPostProcessor <- EikonPostProcessor(Eikon_get_dataOuput = StartTestEikonData)
     expect_equal(EikonPostProcessor(Eikon_get_dataOuput = StartTestEikonData), GoodOutcomeEikonPostProcessor)
+  expect_equal(EikonPostProcessor(Eikon_get_dataOuput = list(NA)), data.frame())
 
 })
 

@@ -67,6 +67,10 @@ EikonErrorProcessor <- function(Eikon_get_data_Error, Chunked, ChunkRowStart){
 #' @examples
 EikonPostProcessor <- function(Eikon_get_dataOuput){
 
+    if(identical(Eikon_get_dataOuput,list(NA))) {
+        return(data.frame())
+    }
+
     # check if chuncked list is returned
     # Non Chunked list satisfies 2 conditions:
     # 1. Result is list that consits out of two lists of whuich the first is a data.frame
@@ -316,24 +320,24 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
 
 
 
-
-#' Check if an element of list exists or is NULL
-#'
-#' @param list a list
-#' @param index integer, indicating proposed list location
-#'
-#' @return boolean
-#' @export
-#'
-#' @examples
-#' Testlist <- list(NULL, 1)
-#' indexExists(Testlist, 1)
-indexExists <- function(list, index) {
-  tryCatch({
-    list[[index]]  # Efficiency if element does exist and is large??
-    TRUE
-  }, error = function(e) {
-    FALSE
-  })
-}
-
+#
+# #' Check if an element of list exists or is NULL
+# #'
+# #' @param list a list
+# #' @param index integer, indicating proposed list location
+# #'
+# #' @return boolean
+# #' @export
+# #'
+# #' @examples
+# #' Testlist <- list(NULL, 1)
+# #' indexExists(Testlist, 1)
+# indexExists <- function(list, index) {
+#   tryCatch({
+#     list[[index]]  # Efficiency if element does exist and is large??
+#     TRUE
+#   }, error = function(e) {
+#     FALSE
+#   })
+# }
+#
