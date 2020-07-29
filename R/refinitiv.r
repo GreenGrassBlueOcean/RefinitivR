@@ -230,7 +230,7 @@ retry <- function(retryfun, max = 2, init = 0){
 #' @param fields a vector containing  any combination ('TIMESTAMP', 'VOLUME', 'HIGH', 'LOW', 'OPEN', 'CLOSE')
 #' @param start_date Starting date and time of the historical range. string format is: '\%Y-\%m-\%dT\%H:\%M:\%S'.
 #' @param end_date  End date and time of the historical range.  string format is: '\%Y-\%m-\%dT\%H:\%M:\%S'.
-#' @param cast  cast data from wide to long format using the reshape2::dcast function, Default: TRUE
+#' @param cast  cast data from wide to long format using the data.table::dcast function, Default: TRUE
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
 #' @param verbose boolean if TRUE prints out the python call to the console
 #'
@@ -238,6 +238,7 @@ retry <- function(retryfun, max = 2, init = 0){
 #' @export
 #'
 #' @references \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
+#' @importFrom  data.table rbindlist dcast
 #' @examples
 #' \dontrun{
 #' Eikon <- Refinitiv::EikonConnect()
@@ -330,19 +331,23 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
     )})
 
     CheckandReportEmptyDF(df = TimeSeriesList[[j]], functionname = "EikonGetTimeseries")
+    if(all(is.na(TimeSeriesList[[j]]))){TimeSeriesList[[j]] <- NULL}
     Sys.sleep(time = 0.5)
   }
 
-  ReturnTimeSeries <- do.call("rbind", TimeSeriesList)
+  # ReturnTimeSeries <- do.call("rbind", TimeSeriesList)
+  ReturnTimeSeries <- data.table::rbindlist(TimeSeriesList)
   ReturnTimeSeries <- make.true.NA_df(ReturnTimeSeries)
+  ReturnTimeSeries <- data.table::as.data.table(ReturnTimeSeries)
 
   if ((isTRUE(cast) & !all(is.na(ReturnTimeSeries))) && (nrow(ReturnTimeSeries) > 0) ) {
-    ReturnTimeSeries <- suppressWarnings(reshape2::dcast(unique(ReturnTimeSeries),  Date +  Security ~ Field, fill = NA_integer_, drop = FALSE, value.var = "Value"))
+    # ReturnTimeSeries <- reshape2::dcast(unique(ReturnTimeSeries),  Date + Security ~ Field, fill = NA_integer_, drop = FALSE, value.var = "Value")
+    ReturnTimeSeries <- data.table::dcast(unique(ReturnTimeSeries),  Date + Security ~ Field, fill = NA_integer_, drop = FALSE, value.var = "Value")
     ReturnTimeSeries <- ReturnTimeSeries[order(ReturnTimeSeries$Security),]
-    ReturnTimeSeries <- as.data.frame(ReturnTimeSeries, stringsAsFactors = FALSE) #remove dcast class as it has no use.
+
 
    }
-
+  ReturnTimeSeries <- as.data.frame(ReturnTimeSeries, stringsAsFactors = FALSE) #remove dcast class as it has no use.
   return(ReturnTimeSeries)
 }
 

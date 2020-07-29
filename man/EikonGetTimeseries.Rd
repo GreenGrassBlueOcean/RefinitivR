@@ -32,7 +32,7 @@ EikonGetTimeseries(
 
 \item{end_date}{End date and time of the historical range.  string format is: '\%Y-\%m-\%dT\%H:\%M:\%S'.}
 
-\item{cast}{cast data from wide to long format using the reshape2::dcast function, Default: TRUE}
+\item{cast}{cast data from wide to long format using the data.table::dcast function, Default: TRUE}
 
 \item{time_out}{set the maximum timeout to the Eikon server, default = 60}
 
