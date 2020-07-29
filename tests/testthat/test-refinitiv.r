@@ -58,7 +58,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                 , LOW = c(1107.5, 1090.5, 1074, 1086.5, 1075, 1083, 1085, 177.1356, 175.63, 176.35, 176.82, 177.65, 179.76, 180.14)
                                                                 , OPEN = c(1108, 1110.5, 1101, 1096.5, 1079.5, 1090.5, 1100, 177.68, 177.02, 177.15, 178.28, 178, 181.51, 181.61)
                                                                 , VOLUME = c(723692, 717234, 813990, 1163565, 1451744, 975325, 2377611, 3448335, 2467310, 1997981, 2176615, 2758339, 2746346, 2103818))
-                                                           , row.names = c(1L, 3L, 5L, 7L, 9L, 11L, 13L, 2L, 4L, 6L, 8L, 10L, 12L, 14L), class = "data.frame")
+                                                           , row.names =  c(NA, -14L), class = "data.frame")
 
 
 
@@ -83,7 +83,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                 , LOW = c(177.1356, 175.63, 176.35, 176.82, 177.65, 179.76, 180.14)
                                                                 , OPEN = c(177.68, 177.02, 177.15, 178.28, 178, 181.51, 181.61)
                                                                 , VOLUME = c(3448335, 2467310, 1997981, 2176615, 2758339, 2746346, 2103818))
-                                                           , row.names = c(NA, 7L), class = "data.frame")
+                                                           , row.names =  c(NA, -7L), class = "data.frame")
 
                       testthat::expect_identical(CheckTimeSeries, GoodCheckEikonTimeSeries)}
 )
@@ -124,7 +124,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                                   , class = c("POSIXct", "POSIXt"))
                                                                  , Security = c("III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
                                                                  , CLOSE = c(1116.5, 1108, 1088.5, 1086.5, 1088, 1094, 1088.5, 180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47))
-                                                            , row.names = c(1L, 3L, 5L, 7L, 9L, 11L, 13L, 2L, 4L, 6L, 8L, 10L, 12L, 14L), class = "data.frame")
+                                                            , row.names = c(NA, -14L), class = "data.frame")
                       testthat::expect_identical(CheckTimeSeries, GoodCheckEikonTimeSeries)}
 )
 
@@ -182,7 +182,7 @@ testtimeseries <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
                                                 , start_date =  "2020-07-21T01:00:00"
                                                 , end_date =  "2020-07-28T01:00:00")
 
-expect_equal(testtimeseries, structure(list(NA. = NA), class = "data.frame", row.names = c(NA, -1L)))
+expect_equal(testtimeseries, structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"))
 
 })
 
@@ -211,7 +211,7 @@ testthat::test_that("Check EikonGetTimeseries works with empty ric list"
                                                                        , start_date =  "2020-07-21T01:00:00"
                                                                        , end_date =  "2020-07-28T01:00:00")
 
-                      expect_equivalent(testtimeseries, Correct_timeseries, tolerance = 1e-1)
+                      expect_equivalent(testtimeseries, Correct_timeseries, tolerance = 1e0)
 
                     })
 
@@ -518,12 +518,33 @@ test_that( "empty downloaded data.frame can be processed", {
                                         , end_date = "2006-02-20T01:00:00"
   )
 
-  expected_outcome <- structure(list(VOLUME = character(0), HIGH = character(0), LOW = character(0),
-                                     OPEN = character(0), CLOSE = character(0))
-                                , class = "data.frame", row.names = character(0))
+
+  expect_equivalent(EikonTimeseries,structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame") )
+
+})
 
 
-  expect_equivalent(EikonTimeseries,expected_outcome )
+test_that( "empty downloaded data.frame can be processed", {
+
+  check_Eikonapi()
+  Eikon <- Refinitiv::EikonConnect()
+  EikonTimeseries <- EikonGetTimeseries(EikonObject = Eikon
+                                        , rics = list("ATM.NZ", "MMM")
+                                        , start_date = "2006-02-01T01:00:00"
+                                        , end_date = "2006-02-20T01:00:00"
+  )
+
+  EikonTimeseriesCorrect <- structure(list(Date = structure(c(1138838400, 1138924800, 1139184000, 1139270400, 1139356800, 1139443200, 1139529600, 1139788800, 1139875200, 1139961600, 1140048000, 1140134400), class = c("POSIXct", "POSIXt"))
+                 , Security = c("MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
+                 , CLOSE = c(72.15, 71.1, 71.17, 70.65, 71, 72.12, 72.61, 72.91, 73.7, 73.13, 73.05, 73.77)
+                 , HIGH = c(73.68, 72.09, 71.3, 71.29, 71.28, 72.88, 72.99, 73.42, 74.12, 74.18, 73.35, 74.15)
+                 , LOW = c(72.05, 71, 70.99, 70.57, 70.3, 71.25, 71.5, 72.64, 73.41, 73.09, 72.5, 73.08)
+                 , OPEN = c(73.16, 71.75, 71, 71.16, 70.65, 71.36, 72.29, 72.69, 73.5, 73.71, 73.2, 73.15)
+                 , VOLUME = c(3207100, 3258300, 2551500, 3133200, 2846100, 3798100, 2932400, 2310200, 3859400, 2672900, 2923000, 2338600))
+            , row.names = c(NA, -12L), class = "data.frame")
+
+
+  expect_equivalent(EikonTimeseries,EikonTimeseriesCorrect )
 
 })
 

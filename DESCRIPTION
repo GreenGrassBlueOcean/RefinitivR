@@ -20,7 +20,7 @@ Imports:
     DatastreamDSWS2R,
     httr,
     stringi,
-    reshape2
+    data.table
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:
