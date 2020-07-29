@@ -336,7 +336,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
   }
 
   # ReturnTimeSeries <- do.call("rbind", TimeSeriesList)
-  ReturnTimeSeries <- data.table::rbindlist(TimeSeriesList)
+  ReturnTimeSeries <- data.table::rbindlist(TimeSeriesList, use.names = TRUE, fill = TRUE)
   ReturnTimeSeries <- make.true.NA_df(ReturnTimeSeries)
   ReturnTimeSeries <- data.table::as.data.table(ReturnTimeSeries)
 
