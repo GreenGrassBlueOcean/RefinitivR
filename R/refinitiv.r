@@ -329,13 +329,13 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                                                )
 
     )})
-
     CheckandReportEmptyDF(df = TimeSeriesList[[j]], functionname = "EikonGetTimeseries")
-    if(all(is.na(TimeSeriesList[[j]]))){TimeSeriesList[[j]] <- NULL}
     Sys.sleep(time = 0.5)
   }
 
   # ReturnTimeSeries <- do.call("rbind", TimeSeriesList)
+  TimeSeriesList <- lapply(TimeSeriesList, FUN = function(x){if(all(is.na(x))){return(NULL)}})
+
   ReturnTimeSeries <- data.table::rbindlist(TimeSeriesList, use.names = TRUE, fill = TRUE)
   ReturnTimeSeries <- make.true.NA_df(ReturnTimeSeries)
   ReturnTimeSeries <- data.table::as.data.table(ReturnTimeSeries)
