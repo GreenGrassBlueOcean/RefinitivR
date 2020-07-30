@@ -261,15 +261,18 @@ testthat::test_that("Check EikonGetData returns expected data with only one ric"
  )
 
 #add test case when 0 ric is requested
-testthat::test_that("Check EikonGetData returns expected data with only one ric"
+testthat::test_that("Check EikonGetData returns expected data with empty ric"
                     , {check_Eikonapi()
                       Eikon <- Refinitiv::EikonConnect()
 
                       CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c(""),
                                                          Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName")))
 
+                      Correct_EikonData <- list(PostProcessedEikonGetData = structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"),
+                                                Eikon_Error_Data = structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"))
 
-                      testthat::expect_identical(CheckEikonData, data.frame())
+
+                      testthat::expect_identical(CheckEikonData, Correct_EikonData)
                     }
 )
 
@@ -561,7 +564,6 @@ test_that("one wrong ric does not blow if for the rest in EikonGetTimeseries", {
                             )
 
   expect_equal(lapply(test_problem_ts, class), list(Date = c("POSIXct", "POSIXt"), Security = "character", CLOSE = "numeric",HIGH = "numeric", LOW = "numeric", OPEN = "numeric", VOLUME = "numeric") )
-  expect_equal(nrow(test_problem_ts), 5050L)
   expect_false("FBHS.K" %in% test_problem_ts$Security)
 
 

@@ -162,14 +162,14 @@ EikonNameCleaner <- function(names){
 #' @param Eikonfields a list of the eikonfields to be requested default NULL, if eikonfields are supplied duration may not be supplied
 #' @param MaxCallsPerChunk the maximum amount of apicalls that can be made
 #' @param Duration a natural number denoting the amoount of rows asked for in a TimeSeries default NULL, if Duration is supplied Eikonfields may not be supplied
-#' @param MaxRicsperChunk  a natural number denoting the maximum amount of Rics that should be available in one call.
+#' @param MaxRicsperChunk  a natural number denoting the maximum amount of Rics that should be available in one call, default is 300.
 #'
 #' @return a list of splitted RICS that can be returned to guarantee compliance with api limits.
 #' @export
 #' @references \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
 #'
 #' @examples
-EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Duration = NULL, MaxRicsperChunk = NULL) {
+EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Duration = NULL, MaxRicsperChunk = 300) {
 
   if (!is.null(Eikonfields) & is.null(Duration)) {
     totalDataPoints <- length(RICS) * length(Eikonfields)
@@ -401,7 +401,7 @@ for (j in 1:length(ChunckedRics)) {
                                            , fields = as.list(Eikonformulas)
                                            , parameters = Parameters
                                            , debug = FALSE, raw_output = FALSE
-  ))})
+  ), max = 3)})
 
   CheckandReportEmptyDF(df = EikonDataList[[j]], functionname = "EikonGetData")
   Sys.sleep(time = 0.5)
@@ -409,6 +409,7 @@ for (j in 1:length(ChunckedRics)) {
 
 
 if (!raw_output) {
+  EikonDataList <- lapply(EikonDataList, FUN = function(x){if(all(is.na(x))){return(NULL)} else{return(x)}})
   ReturnElement <- EikonPostProcessor(EikonDataList)
 } else {
   ReturnElement <- EikonDataList
@@ -495,6 +496,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 
 
   if (!raw_output) {
+     EikonSymbologyList <- lapply(EikonSymbologyList, FUN = function(x){if(all(is.na(x))){return(NULL)} else{return(x)}})
      ReturnElement <- ProcessSymbology(EikonSymbologyList, from_symbol_type = from_symbol_type, to_symbol_type = to_symbol_type)
    } else {
      ReturnElement <- EikonSymbologyList
