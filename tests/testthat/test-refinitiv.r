@@ -188,7 +188,7 @@ expect_equal(testtimeseries, structure(list(), .Names = character(0), row.names 
 
 
 
-testthat::test_that("Check EikonGetTimeseries works with empty ric list"
+testthat::test_that("Check EikonGetTimeseries works with wrong ric in list"
                     , {check_Eikonapi()
                       Eikon <- Refinitiv::EikonConnect()
 
@@ -549,6 +549,24 @@ test_that( "empty downloaded data.frame can be processed", {
 })
 
 
+test_that("one wrong ric does not blow if for the rest in EikonGetTimeseries", {
+
+#"FBHS.K" does not exist for this timerange
+  check_Eikonapi()
+  Eikon <- Refinitiv::EikonConnect()
+  test_problem_ts <- EikonGetTimeseries( start_date = paste0(Sys.Date()-lubridate::years(20), "T01:00:00")
+                            , end_date =  paste0(Sys.Date()-lubridate::years(10), "T23:59:00")
+                            , rics = c("FORTUM.HE", "FBHS.K", "0656.HK")
+                            , EikonObject = Eikon
+                            )
+
+  expect_equal(lapply(test_problem_ts, class), list(Date = c("POSIXct", "POSIXt"), Security = "character", CLOSE = "numeric",HIGH = "numeric", LOW = "numeric", OPEN = "numeric", VOLUME = "numeric") )
+  expect_equal(nrow(test_problem_ts), 5050L)
+  expect_false("FBHS.K" %in% test_problem_ts$Security)
+
+
+})
+
 
 test_that( "ProcessSymbology works correctly", {
 
@@ -757,8 +775,6 @@ test_that("CondaExists returns a logical" , {
 
 })
 
-
-## test portfolio function
 
 
 
