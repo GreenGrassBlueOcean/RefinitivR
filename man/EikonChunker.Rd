@@ -9,7 +9,7 @@ EikonChunker(
   Eikonfields = NULL,
   MaxCallsPerChunk = 12000,
   Duration = NULL,
-  MaxRicsperChunk = NULL
+  MaxRicsperChunk = 300
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ EikonChunker(
 
 \item{Duration}{a natural number denoting the amoount of rows asked for in a TimeSeries default NULL, if Duration is supplied Eikonfields may not be supplied}
 
-\item{MaxRicsperChunk}{a natural number denoting the maximum amount of Rics that should be available in one call.}
+\item{MaxRicsperChunk}{a natural number denoting the maximum amount of Rics that should be available in one call, default is 300.}
 }
 \value{
 a list of splitted RICS that can be returned to guarantee compliance with api limits.
