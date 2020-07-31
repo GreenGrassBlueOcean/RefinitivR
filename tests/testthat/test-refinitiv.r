@@ -556,6 +556,7 @@ test_that("one wrong ric does not blow if for the rest in EikonGetTimeseries", {
 
 #"FBHS.K" does not exist for this timerange
   check_Eikonapi()
+  requireNamespace("lubridate", quietly = TRUE)
   Eikon <- Refinitiv::EikonConnect()
   test_problem_ts <- EikonGetTimeseries( start_date = paste0(Sys.Date()-lubridate::years(20), "T01:00:00")
                             , end_date =  paste0(Sys.Date()-lubridate::years(10), "T23:59:00")
