@@ -4,7 +4,12 @@
 \alias{install_eikon}
 \title{Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-reticulate}
 \usage{
-install_eikon(method = "auto", conda = "auto", envname = "r-reticulate")
+install_eikon(
+  method = "auto",
+  conda = "auto",
+  envname = "r-reticulate",
+  update = TRUE
+)
 }
 \arguments{
 \item{method}{Installation method. By default, "auto" automatically finds a method that will work in the local environment. Change the default to force a specific installation method. Note that the "virtualenv" method is not available on Windows.}
@@ -12,12 +17,14 @@ install_eikon(method = "auto", conda = "auto", envname = "r-reticulate")
 \item{conda}{The path to a conda executable. Use "auto" to allow reticulate to automatically find an appropriate conda binary. See Finding Conda in the reticulate package for more details}
 
 \item{envname}{the name for the conda environment that will be used, default  r-reticulate. Don't Change!}
+
+\item{update}{boolean, allow to rerun the command to update the packages required to update the python packages numpy and eikon defaults to true}
 }
 \value{
 None
 }
 \description{
-Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-reticulate
+This function can also be used to update the required python packages so that you can always use the latest version of the pyhton packages numpy and eikon.
 }
 \examples{
 \dontrun{

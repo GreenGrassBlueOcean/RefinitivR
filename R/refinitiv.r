@@ -19,9 +19,12 @@ CondaExists <- function(){
 
 #' Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-reticulate
 #'
+#' This function can also be used to update the required python packages so that you can always use the latest version of the pyhton packages numpy and eikon.
+#'
 #' @param method Installation method. By default, "auto" automatically finds a method that will work in the local environment. Change the default to force a specific installation method. Note that the "virtualenv" method is not available on Windows.
 #' @param conda  The path to a conda executable. Use "auto" to allow reticulate to automatically find an appropriate conda binary. See Finding Conda in the reticulate package for more details
 #' @param envname the name for the conda environment that will be used, default  r-reticulate. Don't Change!
+#' @param update boolean, allow to rerun the command to update the packages required to update the python packages numpy and eikon defaults to true
 #'
 #' @return None
 #' @importFrom utils installed.packages
@@ -31,7 +34,7 @@ CondaExists <- function(){
 #' \dontrun{
 #' install_eikon()
 #' }
-install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulate") {
+install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulate", update = TRUE) {
 
 # Check if a conda environment exists and install if not available
   if (CondaExists() == FALSE ) {
@@ -46,11 +49,11 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
 
   # reticulate::use_condaenv(condaenv = envname, conda = conda)
 
-  if (!reticulate::py_module_available("eikon")) {
+  if (!reticulate::py_module_available("eikon") || update ) {
       reticulate::py_install(packages = c("numpy", "eikon") , envname = envname,  method = method, conda = conda)
   }
 
-  return("Eikon Python interface successfully installed")
+  return("Eikon Python interface successfully installed or updated")
 }
 
 

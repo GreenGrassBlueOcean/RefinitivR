@@ -43,10 +43,10 @@ testthat::test_that("Check Eikon Connect is really a python object"
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with multiple rics"
                    , {check_Eikonapi()
                      Eikon <- Refinitiv::EikonConnect()
-                     CheckTimeSeries <- EikonGetTimeseries( EikonObject = Eikon,
+                     CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
                                                                 rics = c("MMM", "III.L"),
                                                                 start_date = "2020-01-01T01:00:00",
-                                                                end_date = "2020-01-10T01:00:00")
+                                                                end_date = "2020-01-10T01:00:00"))
 
                      GoodCheckEikonTimeSeries <- structure(list(Date = structure(c(1577923200, 1578009600, 1578268800,
                                                                                    1578355200, 1578441600, 1578528000, 1578614400, 1577923200, 1578009600,
@@ -141,7 +141,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded long
                                                                  rics = c("AAPL.O"),
                                                                  start_date = "2000-07-28T01:00:00",
                                                                  end_date = "2010-07-28T23:59:00",
-                                                                 fields = )
+                                                                 )
                       )
 
 
@@ -150,16 +150,16 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded long
                       testthat::expect_identical(nrow(CheckTimeSeries), 2513L)
                       testthat::expect_identical(min(CheckTimeSeries$Date), structure(965001600, class = c("POSIXct", "POSIXt")))
                       testthat::expect_identical(max(CheckTimeSeries$Date), structure(1280275200, class = c("POSIXct", "POSIXt")))
-                      testthat::expect_equal(min(CheckTimeSeries$CLOSE), 0.9371419, tolerance = 1e-6)
-                      testthat::expect_equal(max(CheckTimeSeries$CLOSE), 39.15339, tolerance = 1e-6)
-                      testthat::expect_equal(min(CheckTimeSeries$VOLUME), 9866678, tolerance = 1e-6)
-                      testthat::expect_equal(max(CheckTimeSeries$VOLUME), 1856380856, tolerance = 1e-6)
-                      testthat::expect_equal(min(CheckTimeSeries$HIGH), 0.9421419, tolerance = 1e-6)
-                      testthat::expect_equal(max(CheckTimeSeries$HIGH), 39.85853, tolerance = 1e-6)
-                      testthat::expect_equal(min(CheckTimeSeries$LOW), 0.9085705, tolerance = 1e-6)
-                      testthat::expect_equal(max(CheckTimeSeries$LOW), 38.78568, tolerance = 1e-6)
-                      testthat::expect_equal(min(CheckTimeSeries$OPEN), 0.9278562, tolerance = 1e-6)
-                      testthat::expect_equal(max(CheckTimeSeries$OPEN), 39.66996, tolerance = 1e-6)
+                      testthat::expect_equal(min(CheckTimeSeries$CLOSE), 0.2342855, tolerance = 1e-6)
+                      testthat::expect_equal(max(CheckTimeSeries$CLOSE), 9.788347, tolerance = 1e-6)
+                      testthat::expect_equal(min(CheckTimeSeries$VOLUME), 39466711, tolerance = 1e-6)
+                      testthat::expect_equal(max(CheckTimeSeries$VOLUME), 7425523426, tolerance = 1e-6)
+                      testthat::expect_equal(min(CheckTimeSeries$HIGH), 0.2355355, tolerance = 1e-6)
+                      testthat::expect_equal(max(CheckTimeSeries$HIGH),  9.964633, tolerance = 1e-6)
+                      testthat::expect_equal(min(CheckTimeSeries$LOW), 0.2271426, tolerance = 1e-6)
+                      testthat::expect_equal(max(CheckTimeSeries$LOW), 9.696419, tolerance = 1e-6)
+                      testthat::expect_equal(min(CheckTimeSeries$OPEN), 0.2319641, tolerance = 1e-6)
+                      testthat::expect_equal(max(CheckTimeSeries$OPEN), 9.91749, tolerance = 1e-6)
                       testthat::expect_equal(unique(CheckTimeSeries$Security), "AAPL.O")
                       }
 )
