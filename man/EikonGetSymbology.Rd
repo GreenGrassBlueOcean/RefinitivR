@@ -44,17 +44,23 @@ original python parameters raw_output and debug cannot be used due to int64 pyth
 \examples{
 \dontrun{
 Eikon <- Refinitiv::EikonConnect()
-EikonGetSymbology(EikonObject = Eikon, symbol =  "AAPL.O"
+ex1 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "AAPL.O"
  , to_symbol_type = "ISIN" )
-EikonGetSymbology(EikonObject = Eikon
+ex2 <- EikonGetSymbology(EikonObject = Eikon
 , symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
 ,  to_symbol_type = "RIC" , verbose = TRUE)
-EikonGetSymbology(EikonObject = Eikon
+ex3 <- EikonGetSymbology(EikonObject = Eikon
 , symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
 ,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
-EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.AS"
+ex4 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.AS"
 , to_symbol_type = "ISIN"  , verbose = TRUE)
-EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
+ex5 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
 , to_symbol_type = "ISIN"  , verbose = TRUE)
+ex6 <- EikonGetSymbology(EikonObject = Eikon
+, symbol =  c("GB00B03MLX29", "NL0015476987"), from_symbol_type = "ISIN"
+,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
+ex7 <- EikonGetSymbology(EikonObject = Eikon
+, symbol =  c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN"
+,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
 }
 }

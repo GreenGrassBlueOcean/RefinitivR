@@ -14,7 +14,7 @@ ProcessSymbology(EikonSymbologyResult, from_symbol_type, to_symbol_type)
 \item{to_symbol_type}{character use her same input as in EikonGetSymbology}
 }
 \value{
-data.frame containing 4 columns to_symbol_type, from_symbol_type, BestMatch (as defined by EIkon), error
+data.frame containing 4 columns to_symbol_type, from_symbol_type, BestMatch (as defined by Eikon), error
 }
 \description{
 Function to process raw output of python get_symbology to better in r readable format

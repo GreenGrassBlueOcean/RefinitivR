@@ -474,7 +474,7 @@ return(ReturnElement)
 #' ,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
 #' }
 EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to_symbol_type = c('CUSIP', 'ISIN', 'SEDOL', 'RIC', 'ticker', 'lipperID', 'IMO', 'OAPermID')
-                               , bestMatch = TRUE, time_out = 60, verbose = FALSE, raw_output = TRUE){
+                               , bestMatch = TRUE, time_out = 60, verbose = FALSE, raw_output = FALSE){
 
   #Make sure that Python object has api key
   EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
