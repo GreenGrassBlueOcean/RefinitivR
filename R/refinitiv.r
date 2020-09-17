@@ -491,17 +491,16 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                                               , "\t, from_symbol_type = [\"", paste(from_symbol_type, collapse = "\",\""),  "\"]\n"
                                                               , "\t, to_symbol_type = [\"", paste(to_symbol_type, collapse = "\",\""),  "\"]\n"
                                                               , "\t, bestMatch = ", ifelse(test = isTRUE(bestMatch), yes = "True", no = "False")  ,"\n"
-                                                              , "\t, debug = False, raw_output = False\n\t)"
+                                                              , "\t, debug = False, raw_output = True\n\t)"
     )
     )}
-      temp <-retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
+      retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
                                      , from_symbol_type = from_symbol_type
                                      , to_symbol_type = list(to_symbol_type)
                                      , raw_output = TRUE
                                      , debug = FALSE
                                      , bestMatch = bestMatch
                                   ))
-    # data.table::rbindlist(temp[[j]]$mappedSymbols, fill = TRUE)
     })
     CheckandReportEmptyDF(df = EikonSymbologyList[[j]], functionname = "EikonGetSymbology")
     Sys.sleep(time = 0.5)
