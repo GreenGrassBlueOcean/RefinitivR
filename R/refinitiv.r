@@ -406,6 +406,8 @@ for (j in 1:length(ChunckedRics)) {
                                            , debug = FALSE, raw_output = FALSE
   ), max = 3)})
 
+
+
   CheckandReportEmptyDF(df = EikonDataList[[j]], functionname = "EikonGetData")
   Sys.sleep(time = 0.5)
 }
@@ -452,21 +454,27 @@ return(ReturnElement)
 #' @examples
 #' \dontrun{
 #' Eikon <- Refinitiv::EikonConnect()
-#' EikonGetSymbology(EikonObject = Eikon, symbol =  "AAPL.O"
+#' ex1 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "AAPL.O"
 #'  , to_symbol_type = "ISIN" )
-#' EikonGetSymbology(EikonObject = Eikon
+#' ex2 <- EikonGetSymbology(EikonObject = Eikon
 #' , symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
 #' ,  to_symbol_type = "RIC" , verbose = TRUE)
-#' EikonGetSymbology(EikonObject = Eikon
+#' ex3 <- EikonGetSymbology(EikonObject = Eikon
 #' , symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
 #' ,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
-#' EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.AS"
+#' ex4 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.AS"
 #' , to_symbol_type = "ISIN"  , verbose = TRUE)
-#' EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
+#' ex5 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
 #' , to_symbol_type = "ISIN"  , verbose = TRUE)
+#' ex6 <- EikonGetSymbology(EikonObject = Eikon
+#' , symbol =  c("GB00B03MLX29", "NL0015476987"), from_symbol_type = "ISIN"
+#' ,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
+#' ex7 <- EikonGetSymbology(EikonObject = Eikon
+#' , symbol =  c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN"
+#' ,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
 #' }
 EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to_symbol_type = c('CUSIP', 'ISIN', 'SEDOL', 'RIC', 'ticker', 'lipperID', 'IMO', 'OAPermID')
-                               , bestMatch = TRUE, time_out = 60, verbose = FALSE, raw_output = FALSE){
+                               , bestMatch = TRUE, time_out = 60, verbose = FALSE, raw_output = TRUE){
 
   #Make sure that Python object has api key
   EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
@@ -486,13 +494,15 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                                               , "\t, debug = False, raw_output = False\n\t)"
     )
     )}
-      retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
+      temp <-retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
                                      , from_symbol_type = from_symbol_type
                                      , to_symbol_type = list(to_symbol_type)
-                                     , raw_output = FALSE
+                                     , raw_output = TRUE
                                      , debug = FALSE
                                      , bestMatch = bestMatch
-                                  ))})
+                                  ))
+    # data.table::rbindlist(temp[[j]]$mappedSymbols, fill = TRUE)
+    })
     CheckandReportEmptyDF(df = EikonSymbologyList[[j]], functionname = "EikonGetSymbology")
     Sys.sleep(time = 0.5)
   }
