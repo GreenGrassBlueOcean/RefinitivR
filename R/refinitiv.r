@@ -557,7 +557,7 @@ CheckandReportEmptyDF <- function(df, functionname){
 # }
 #
 # if(is.null(df) || !is.data.frame(df) || nrow(df) == 0 ){
-  message(paste0(functionname, " request returned the following dataframe: ",df))
+  message(paste0(functionname, " request returned the following dataframe: ",head(df,n=10)))
 #   return(FALSE)
 # } else{
 #   return(TRUE)
