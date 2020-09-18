@@ -545,8 +545,12 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 #' CheckandReportEmptyDF(data.frame(), functionname = "test")
 #' CheckandReportEmptyDF(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
 CheckandReportEmptyDF <- function(df, functionname){
+  if(class(df) == "logical" && is.na(df) ){
+    message(paste0(functionname, " request returned NA"))
+  }
+
  if(("error" %in% names(df))){
-    message(paste0(functionname, " request returned the following (and other) erors: ",capture.output(head(data.table::rbindlist(df$error),10))))
+    message(paste0(functionname, " request returned the following (and other) erors: ",paste(capture.output(head(data.table::rbindlist(df$error),10)), collapse = "\n" )))
   }
 
   if("totalRowsCount" %in% names(df) &&  "totalColumnsCount"  %in% names(df)  ){
