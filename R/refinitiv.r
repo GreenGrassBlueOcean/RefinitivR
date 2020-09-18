@@ -545,19 +545,16 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 #' CheckandReportEmptyDF(data.frame(), functionname = "test")
 #' CheckandReportEmptyDF(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
 CheckandReportEmptyDF <- function(df, functionname){
+ if(("error" %in% names(df))){
+    message(paste0(functionname, " request returned the following (and other) erors: ",head(data.table::rbindlist(df$error),10)))
+  }
 
-#
-#
-# if(!all(is.data.frame(df)) && all(is.na(df))){
-#   df <- NULL
-# }
-#
-# if(!is.data.frame(df) && is.list(df)){
-#   df <- df[[1]]
-# }
-#
-# if(is.null(df) || !is.data.frame(df) || nrow(df) == 0 ){
-  message(paste0(functionname, " request returned the following dataframe: ",head(df,n=10)))
+  if("totalRowsCount" %in% names(df) &&  "totalColumnsCount"  %in% names(df)  ){
+    message(paste0(functionname, " request returned the following data: ",df$totalColumnsCount, " columns and ",  df$totalRowsCount, " rows"))}
+
+  if(length(df)==0){
+    message(paste0(functionname, " request returned with length 0"))
+  }
 #   return(FALSE)
 # } else{
 #   return(TRUE)
