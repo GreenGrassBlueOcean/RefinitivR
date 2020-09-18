@@ -410,7 +410,7 @@ for (j in 1:length(ChunckedRics)) {
   EikonDataList[[j]] <- try({ if (verbose){  message(paste0(Sys.time(), "\n"
                                                     , " get_data( instruments = [\"", paste(ChunckedRics[[j]], collapse = "\",\""), "\"]\n"
                                                     , "\t, fields = [\"", paste(Eikonformulas, collapse = "\",\""),  "\"]\n"
-                                                    , "\t, debug = False, raw_output = False\n\t)"
+                                                    , "\t, debug = False, raw_output = True\n\t)"
                                                     )
                                                     )}
                              retry(EikonObject$get_data( instruments = ChunckedRics[[j]]
