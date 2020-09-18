@@ -552,7 +552,9 @@ CheckandReportEmptyDF <- function(df, functionname){
   if("totalRowsCount" %in% names(df) &&  "totalColumnsCount"  %in% names(df)  ){
     message(paste0(functionname, " request returned the following data: ",df$totalColumnsCount, " columns and ",  df$totalRowsCount, " rows"))}
 
-  if(length(df)==0){
+  if(length(df)!=0){
+    message(paste0(functionname, " request returned with length ", length(df)))
+  } else{
     message(paste0(functionname, " request returned with length 0"))
   }
 #   return(FALSE)
