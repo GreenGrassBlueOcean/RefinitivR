@@ -67,56 +67,83 @@ EikonErrorProcessor <- function(Eikon_get_data_Error, Chunked, ChunkRowStart){
 #' @examples
 EikonPostProcessor <- function(Eikon_get_dataOuput){
 
-    if(identical(Eikon_get_dataOuput,list(NA))) {
-        return(data.frame())
+  #0. helper functions
+  replaceInList <- function (x, FUN, ...)
+  {
+    if (is.list(x)) {
+      for (i in seq_along(x)) {
+        x[i] <- list(replaceInList(x[[i]], FUN, ...))
+      }
+      x
+    }
+    else FUN(x, ...)
+  }
+
+  #1. main program
+  if(identical(Eikon_get_dataOuput,list(NULL))) {
+    return(list( "PostProcessedEikonGetData" = data.frame()
+                 , "Eikon_Error_Data" = data.frame()))
+  }
+
+  getheaders <- function(data, requestnumber){
+    #replace null headers with NA headers
+    data[[requestnumber]][["headers"]] <- replaceInList(data[[requestnumber]][["headers"]], function(x)if(is.null(x))NA else x)
+
+    unlist(lapply( X = 1:length(data[[requestnumber]][["headers"]][[1]])
+                          , FUN = function(x,data){data[[1]][["headers"]][[1]][[x]][["displayName"]] }
+                          , data = data))
+
+  }
+
+  getData <- function(data, requestnumber) {
+
+    #1. Remove NULL values and replace with NA in nested list
+
+    data[[requestnumber]][["data"]] <- replaceInList(data[[requestnumber]][["data"]], function(x)if(is.null(x))NA else x)
+
+    #2. put list format in uniform way (don't mix up lists and vectors in one nested list)
+    flattenNestedlist <- function(data){
+      NestedListPos <- which(lapply(data, class) == "list")
+      data <- lapply(X = seq_along(data), FUN = function(x, data, NestedListPos){if(x %in% NestedListPos){unlist(data[[x]])}else{data[[x]]}}, data = data, NestedListPos=NestedListPos)
+      data <- lapply(X = seq_along(data), FUN = function(x, data){data.table::transpose(data.table::as.data.table(data[[x]]))}, data = data)
     }
 
-    # check if chuncked list is returned
-    # Non Chunked list satisfies 2 conditions:
-    # 1. Result is list that consits out of two lists of whuich the first is a data.frame
-    Chunked <- !(length(Eikon_get_dataOuput) == 2 && is.data.frame(Eikon_get_dataOuput[[1]]) )
+    data[[requestnumber]][["data"]] <- flattenNestedlist(data[[requestnumber]][["data"]])
 
-    if (Chunked) {
-      Eikon_get_data_pre <- lapply(Eikon_get_dataOuput, "[[", 1)
-      Eikon_get_data_pre <- lapply(Eikon_get_data_pre, as.data.frame, stringsAsFactors = FALSE)
-      Eikon_get_data <- do.call("rbind",Eikon_get_data_pre)
-      Eikon_get_data_Error <- lapply(Eikon_get_dataOuput, "[[", 2)
-      ChunkRowStart <- cumsum(lapply(Eikon_get_data_pre, nrow))
-      ChunkRowStart <- ChunkRowStart - ChunkRowStart[1]
-
-      # Eikon_Error_Data <- do.call("rbind",Eikon_get_data_Error_pre, stringsAsFactors = FALSE)
-    } else{
-      Eikon_get_data <- Eikon_get_dataOuput[[1]]
-      Eikon_get_data_Error <- Eikon_get_dataOuput[[2]]
+    if (length(data[[requestnumber]][["data"]]) > 1 ) {
+      RequestData <- data.table::rbindlist(data[[requestnumber]][["data"]])
+    } else {
+      RequestData <- data[[requestnumber]][["data"]][[1]]
     }
 
-   # As the Python eikon get_data structure contains various list that are null these should be replaced
-   #  with NA to prevent disasters when later handling the data.frame when using unlist Null elements
-   #  are removed from the lists causing shorter vectors than expected.
+     Requestheaders <- EikonNameCleaner(getheaders(data, requestnumber))
+     data.table::setnames(RequestData, Requestheaders)
+    return(RequestData)
+  }
 
-     # Eikon_get_datawithoutNULL <- as.data.frame(sapply(Eikon_get_data, function(x) ifelse(x == "NULL", NA, x)), stringsAsFactors = FALSE )
-     #
-     # if(ncol(Eikon_get_datawithoutNULL) > 1){
-     #   # sapply returns a data.frame of lists go back to a data.frame of vectors using unlist
-     #   Eikon_get_dataFinal <- as.data.frame(lapply(Eikon_get_datawithoutNULL, unlist), stringsAsFactors = FALSE )
-     # } else {
-     #   Eikon_get_dataFinal <- as.data.frame(t(Eikon_get_datawithoutNULL), stringsAsFactors = FALSE)
-     #   rownames(Eikon_get_dataFinal) <- NULL
-     # }
 
-   # return human readable names
-   Eikon_get_dataFinal <- Eikon_get_data
-   names(Eikon_get_dataFinal) <- EikonNameCleaner(names(Eikon_get_dataOuput[[1]][[1]]))
-   Eikon_get_dataFinal <- make.true.NA_df(Eikon_get_dataFinal)
+  RequestData <- lapply( X = 1:length(Eikon_get_dataOuput)
+                       , FUN = function(x, data){getData(data, requestnumber=x)}
+                       , data = Eikon_get_dataOuput
+                       )
 
-   EikonReturnError <-  EikonErrorProcessor(Eikon_get_data_Error, Chunked, ChunkRowStart)
+  RequestError <- lapply( X = 1:length(Eikon_get_dataOuput)
+                         , FUN = function(x, data){rbindlist(data[[x]][["error"]])}
+                         , data = Eikon_get_dataOuput
+  )
 
-   return(list( "PostProcessedEikonGetData" = Eikon_get_dataFinal
-              , "Eikon_Error_Data" = EikonReturnError
-              )
-         )
+  Eikon_Error_Data <- data.table::setDF(data.table::rbindlist(RequestError, use.names = TRUE, fill = TRUE))
+  PostProcessedEikonGetData <- data.table::setDF(data.table::rbindlist(RequestData, use.names = TRUE, fill = TRUE))
+
+  # return human readable names
+
+  return(list( "PostProcessedEikonGetData" = PostProcessedEikonGetData
+             , "Eikon_Error_Data" = Eikon_Error_Data
+  )
+  )
 
 }
+
 
 
 #' Often operating Mics are missing from the Eikon api, this function does repair these missing operating Mics based upon an internal list of codes.
@@ -348,3 +375,55 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
 #   return(ReturnVar)
 # }
 
+# EikonPostProcessor <- function(Eikon_get_dataOuput){
+#
+#     if(identical(Eikon_get_dataOuput,list(NA))) {
+#         return(data.frame())
+#     }
+#
+#     # check if chuncked list is returned
+#     # Non Chunked list satisfies 2 conditions:
+#     # 1. Result is list that consits out of two lists of whuich the first is a data.frame
+#     Chunked <- !(length(Eikon_get_dataOuput) == 2 && is.data.frame(Eikon_get_dataOuput[[1]]) )
+#
+#     if (Chunked) {
+#       Eikon_get_data_pre <- lapply(Eikon_get_dataOuput, "[[", 1)
+#       Eikon_get_data_pre <- lapply(Eikon_get_data_pre, as.data.frame, stringsAsFactors = FALSE)
+#       Eikon_get_data <- do.call("rbind",Eikon_get_data_pre)
+#       Eikon_get_data_Error <- lapply(Eikon_get_dataOuput, "[[", 2)
+#       ChunkRowStart <- cumsum(lapply(Eikon_get_data_pre, nrow))
+#       ChunkRowStart <- ChunkRowStart - ChunkRowStart[1]
+#
+#       # Eikon_Error_Data <- do.call("rbind",Eikon_get_data_Error_pre, stringsAsFactors = FALSE)
+#     } else{
+#       Eikon_get_data <- Eikon_get_dataOuput[[1]]
+#       Eikon_get_data_Error <- Eikon_get_dataOuput[[2]]
+#     }
+#
+#    # As the Python eikon get_data structure contains various list that are null these should be replaced
+#    #  with NA to prevent disasters when later handling the data.frame when using unlist Null elements
+#    #  are removed from the lists causing shorter vectors than expected.
+#
+#      # Eikon_get_datawithoutNULL <- as.data.frame(sapply(Eikon_get_data, function(x) ifelse(x == "NULL", NA, x)), stringsAsFactors = FALSE )
+#      #
+#      # if(ncol(Eikon_get_datawithoutNULL) > 1){
+#      #   # sapply returns a data.frame of lists go back to a data.frame of vectors using unlist
+#      #   Eikon_get_dataFinal <- as.data.frame(lapply(Eikon_get_datawithoutNULL, unlist), stringsAsFactors = FALSE )
+#      # } else {
+#      #   Eikon_get_dataFinal <- as.data.frame(t(Eikon_get_datawithoutNULL), stringsAsFactors = FALSE)
+#      #   rownames(Eikon_get_dataFinal) <- NULL
+#      # }
+#
+#    # return human readable names
+#    Eikon_get_dataFinal <- Eikon_get_data
+#    names(Eikon_get_dataFinal) <- EikonNameCleaner(names(Eikon_get_dataOuput[[1]][[1]]))
+#    Eikon_get_dataFinal <- make.true.NA_df(Eikon_get_dataFinal)
+#
+#    EikonReturnError <-  EikonErrorProcessor(Eikon_get_data_Error, Chunked, ChunkRowStart)
+#
+#    return(list( "PostProcessedEikonGetData" = Eikon_get_dataFinal
+#               , "Eikon_Error_Data" = EikonReturnError
+#               )
+#          )
+#
+# }

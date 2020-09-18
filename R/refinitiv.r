@@ -217,7 +217,7 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
 retry <- function(retryfun, max = 2, init = 0){
   suppressWarnings( tryCatch({
     if (init < max) retryfun
-  }, error = function(e){message(paste0("api request failed, automatically retrying time ",init + 1, "/", max))
+  }, error = function(e){message(paste0("api request failed, automatically retrying time ",init + 1, "/", max, " error received: ", e))
                         ; Sys.sleep(time = 5); retry(retryfun, max, init = init + 1);return(NA)}))
 }
 
@@ -245,7 +245,7 @@ retry <- function(retryfun, max = 2, init = 0){
 #' @examples
 #' \dontrun{
 #' Eikon <- Refinitiv::EikonConnect()
-#' EikonGetTimeseries(EikonObject = Eikon, rics = c("MMM", "III.L"),
+#' ex1 <- EikonGetTimeseries(EikonObject = Eikon, rics = c("MMM", "III.L"),
 #'                    start_date = "2020-01-01T01:00:00",
 #'                    end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE)
 #' }
@@ -315,11 +315,9 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                                                , "\t, fields = [\"", paste(fields, collapse = "\",\""),  "\"]\n"
                                                                , "\t, start_date =  \"", as.character(start_date,  "%Y-%m-%dT%H:%M:%S"), "\"\n"
                                                                , "\t, end_date =  \"", as.character(end_date,  "%Y-%m-%dT%H:%M:%S"), "\"\n"
-                                                               , "\t, normalize = False\n\t)"
+                                                               , "\t, normalize = True\n\t)"
     )
     )}
-
-
 
 
       retry(EikonObject$get_timeseries( rics = ChunckedRics[[j]]
@@ -329,6 +327,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                                                , start_date = as.character(start_date,  "%Y-%m-%dT%H:%M:%S")
                                                                , end_date = as.character(end_date,  "%Y-%m-%dT%H:%M:%S")
                                                                , normalize = TRUE
+                                                               , raw_output = FALSE
                                                                )
 
     )})
@@ -377,11 +376,25 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #' @examples
 #' \dontrun{
 #' Eikon <- Refinitiv::EikonConnect()
-#' EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
+#' ex1 <- EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
 #'              Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
 #'              , "TR.CompanyName"), verbose = TRUE)
 #' }
 EikonGetData <- function(EikonObject, rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60, verbose = FALSE){
+
+#
+#   replaceInList <- function (x, FUN, ...)
+#   {
+#     if (is.list(x)) {
+#       for (i in seq_along(x)) {
+#         x[i] <- list(replaceInList(x[[i]], FUN, ...))
+#       }
+#       x
+#     }
+#     else FUN(x, ...)
+#   }
+#   replaceInList(l, function(x)if(is.null(x))NA else x)
+
 
 #Make sure that Python object has api key
 EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
@@ -403,7 +416,7 @@ for (j in 1:length(ChunckedRics)) {
                              retry(EikonObject$get_data( instruments = ChunckedRics[[j]]
                                            , fields = as.list(Eikonformulas)
                                            , parameters = Parameters
-                                           , debug = FALSE, raw_output = FALSE
+                                           , debug = FALSE, raw_output = TRUE
   ), max = 3)})
 
 
@@ -533,20 +546,22 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 #' CheckandReportEmptyDF(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
 CheckandReportEmptyDF <- function(df, functionname){
 
-if(!all(is.data.frame(df)) && all(is.na(df))){
-  df <- NULL
-}
-
-if(!is.data.frame(df) && is.list(df)){
-  df <- df[[1]]
-}
-
-if(is.null(df) || !is.data.frame(df) || nrow(df) == 0 ){
-  message(paste0(functionname, " request returned empty dataframe"))
-  return(FALSE)
-} else{
-  return(TRUE)
-}
+#
+#
+# if(!all(is.data.frame(df)) && all(is.na(df))){
+#   df <- NULL
+# }
+#
+# if(!is.data.frame(df) && is.list(df)){
+#   df <- df[[1]]
+# }
+#
+# if(is.null(df) || !is.data.frame(df) || nrow(df) == 0 ){
+  message(paste0(functionname, " request returned the following dataframe: ",df))
+#   return(FALSE)
+# } else{
+#   return(TRUE)
+# }
 
 }
 

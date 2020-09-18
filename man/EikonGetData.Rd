@@ -38,7 +38,7 @@ The function automatically chunks the list of rics into chunks that comply with 
 \examples{
 \dontrun{
 Eikon <- Refinitiv::EikonConnect()
-EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
+ex1 <- EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
              Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
              , "TR.CompanyName"), verbose = TRUE)
 }

@@ -47,7 +47,7 @@ Automatically chunks the timeseries in seperate apicalls and binds them together
 \examples{
 \dontrun{
 Eikon <- Refinitiv::EikonConnect()
-EikonGetTimeseries(EikonObject = Eikon, rics = c("MMM", "III.L"),
+ex1 <- EikonGetTimeseries(EikonObject = Eikon, rics = c("MMM", "III.L"),
                    start_date = "2020-01-01T01:00:00",
                    end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE)
 }
