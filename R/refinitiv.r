@@ -236,6 +236,7 @@ retry <- function(retryfun, max = 2, init = 0){
 #' @param cast  cast data from wide to long format using the data.table::dcast function, Default: TRUE
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
 #' @param verbose boolean if TRUE prints out the python call to the console
+#' @param raw_output provide only the raw downloaded info from Eikon
 #'
 #' @return A data.frame containing time series from Eikon
 #' @export
@@ -250,7 +251,7 @@ retry <- function(retryfun, max = 2, init = 0){
 #'                    end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE)
 #' }
 EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender = "tradingdays", fields = c('TIMESTAMP', 'VOLUME', 'HIGH', 'LOW', 'OPEN', 'CLOSE')
-                              , start_date = "2020-01-01T01:00:00", end_date = paste0(Sys.Date(), "T01:00:00"), cast = TRUE, time_out = 60, verbose = FALSE){
+                              , start_date = "2020-01-01T01:00:00", end_date = paste0(Sys.Date(), "T01:00:00"), cast = TRUE, time_out = 60, verbose = FALSE, raw_output = FALSE){
 
   # Make sure that Python object has api key and change timeout
   EikonObject$set_timeout(timeout = time_out)
@@ -334,6 +335,8 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
     CheckandReportEmptyDF(df = TimeSeriesList[[j]], functionname = "EikonGetTimeseries")
     Sys.sleep(time = 0.5)
   }
+
+  if(raw_output){return(TimeSeriesList)}
 
   # ReturnTimeSeries <- do.call("rbind", TimeSeriesList)
   TimeSeriesList <- lapply(TimeSeriesList, FUN = function(x){if(all(is.na(x))){return(NULL)} else{return(x)}})

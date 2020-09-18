@@ -14,7 +14,8 @@ EikonGetTimeseries(
   end_date = paste0(Sys.Date(), "T01:00:00"),
   cast = TRUE,
   time_out = 60,
-  verbose = FALSE
+  verbose = FALSE,
+  raw_output = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ EikonGetTimeseries(
 \item{time_out}{set the maximum timeout to the Eikon server, default = 60}
 
 \item{verbose}{boolean if TRUE prints out the python call to the console}
+
+\item{raw_output}{provide only the raw downloaded info from Eikon}
 }
 \value{
 A data.frame containing time series from Eikon

@@ -281,12 +281,17 @@ testthat::test_that("Check EikonGetData returns expected data with empty ric"
 )
 
 
-#add test case when 0 ric is requested
+
+
+
+
+
+#add test case when not valid ric is requested
 testthat::test_that("Check EikonGetData returns expected data with only one good ric and one wrong RIC"
                     , {check_Eikonapi()
                       Eikon <- Refinitiv::EikonConnect()
 
-                      Correct_output <- list(PostProcessedEikonGetData = structure(list(Instrument = c("WRONGRIC",
+                      Correct_output <- list(PostProcessedEikonGetData = structure(list(Instrument = c("UNAa.AQXd",
                                                                                      "MMM"), RDN_EXCHD2 = c(NA, "NYQ"), Company.Name = c(NA, "3M Co"
                                                                                      )), class = "data.frame", row.names = c(NA, -2L)), Eikon_Error_Data = structure(list(
                                                                                        code = c(251658243L, 416L), col = 1:2, message = c("'The record could not be found' for the instrument 'WRONGRIC'",
@@ -296,8 +301,30 @@ testthat::test_that("Check EikonGetData returns expected data with only one good
 
 
 
+                      testtimeseries1 <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
+                                                                       , rics = c("UNAa.AQXd")
+                                                                       , interval= "daily"
+                                                                       , calender = "tradingdays"
+                                                                       , fields = c("TIMESTAMP","VOLUME","HIGH","LOW","OPEN","CLOSE")
+                                                                       , start_date =  "2020-07-21T01:00:00"
+                                                                       , end_date =  "2020-07-28T01:00:00"
+                                                                       , verbose = TRUE)
 
-                      CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("wrongric", "MMM"),
+
+
+                      testtimeseries2 <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
+                                                                        , rics = c("MMM")
+                                                                        , interval= "daily"
+                                                                        , calender = "tradingdays"
+                                                                        , fields = c("TIMESTAMP","VOLUME","HIGH","LOW","OPEN","CLOSE")
+                                                                        , start_date =  "2020-07-21T01:00:00"
+                                                                        , end_date =  "2020-07-28T01:00:00"
+                                                                        , verbose = TRUE)
+
+
+
+
+                      CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("UNAa.AQXd", "MMM"),
                                                          Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName")))
 
 
