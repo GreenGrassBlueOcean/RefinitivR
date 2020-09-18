@@ -218,7 +218,7 @@ retry <- function(retryfun, max = 2, init = 0){
   suppressWarnings( tryCatch({
     if (init < max) retryfun
   }, error = function(e){message(paste0("api request failed, automatically retrying time ",init + 1, "/", max, " error received: ", e))
-                        ; Sys.sleep(time = 5); retry(retryfun, max, init = init + 1);return(NA)}))
+                        ; Sys.sleep(time = 10); retry(retryfun, max, init = init + 1);return(NA)}))
 }
 
 
@@ -382,20 +382,6 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #' }
 EikonGetData <- function(EikonObject, rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60, verbose = FALSE){
 
-#
-#   replaceInList <- function (x, FUN, ...)
-#   {
-#     if (is.list(x)) {
-#       for (i in seq_along(x)) {
-#         x[i] <- list(replaceInList(x[[i]], FUN, ...))
-#       }
-#       x
-#     }
-#     else FUN(x, ...)
-#   }
-#   replaceInList(l, function(x)if(is.null(x))NA else x)
-
-
 #Make sure that Python object has api key
 EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
 EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on timeout error chance.
@@ -406,23 +392,46 @@ ChunckedRics <- Refinitiv::EikonChunker(RICS = rics, Eikonfields = Eikonformulas
 
 
 EikonDataList <- as.list(rep(NA, times = length(ChunckedRics)))
-for (j in 1:length(ChunckedRics)) {
-  EikonDataList[[j]] <- try({ if (verbose){  message(paste0(Sys.time(), "\n"
-                                                    , " get_data( instruments = [\"", paste(ChunckedRics[[j]], collapse = "\",\""), "\"]\n"
-                                                    , "\t, fields = [\"", paste(Eikonformulas, collapse = "\",\""),  "\"]\n"
-                                                    , "\t, debug = False, raw_output = True\n\t)"
-                                                    )
-                                                    )}
-                             retry(EikonObject$get_data( instruments = ChunckedRics[[j]]
-                                           , fields = as.list(Eikonformulas)
-                                           , parameters = Parameters
-                                           , debug = FALSE, raw_output = TRUE
-  ), max = 3)})
+
+DownloadCoordinator <- data.frame( index = 1:length(ChunckedRics)
+                                 , succes =  rep(FALSE, length(ChunckedRics))
+                                 , retries = rep(0L, length(ChunckedRics), stringsAsFactors = FALSE)
+                                 )
+
+while (!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)  ) {
+
+  ChunckedRicsTryList <- DownloadCoordinator$index[which(!DownloadCoordinator$succes)]
+
+  for (j in ChunckedRicsTryList){
+    #for (j in 1:length(ChunckedRics)) {
+      EikonDataList[[j]] <- try({ if (verbose){  message(paste0(Sys.time(), "\n"
+                                                                , " get_data( instruments = [\"", paste(ChunckedRics[[j]], collapse = "\",\""), "\"]\n"
+                                                                , "\t, fields = [\"", paste(Eikonformulas, collapse = "\",\""),  "\"]\n"
+                                                                , "\t, debug = False, raw_output = True\n\t)"
+      )
+      )}
+        retry(EikonObject$get_data( instruments = ChunckedRics[[j]]
+                                    , fields = as.list(Eikonformulas)
+                                    , parameters = Parameters
+                                    , debug = FALSE, raw_output = TRUE
+        ), max = 3)})
 
 
 
-  CheckandReportEmptyDF(df = EikonDataList[[j]], functionname = "EikonGetData")
-  Sys.sleep(time = 0.5)
+      CheckandReportEmptyDF(df = EikonDataList[[j]], functionname = "EikonGetData")
+      Sys.sleep(time = 0.5)
+
+
+
+  if (!identical(EikonDataList[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
+  }
+
+  DownloadCoordinator$retries[which(!DownloadCoordinator$succes)] <- DownloadCoordinator$retries[which(!DownloadCoordinator$succes)] + 1
+  message(paste0(capture.output(DownloadCoordinator), collapse = "\n"))
+}
+
+if(any(DownloadCoordinator$retries > 4L)){
+  stop("EikonGetData downloading data failed")
 }
 
 
@@ -547,6 +556,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 CheckandReportEmptyDF <- function(df, functionname){
   if(class(df) == "logical" && is.na(df) ){
     message(paste0(functionname, " request returned NA"))
+    # stop("Wrong output retrieved from Refinitiv")
   }
 
  if(("error" %in% names(df))){

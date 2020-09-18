@@ -265,13 +265,16 @@ testthat::test_that("Check EikonGetData returns expected data with empty ric"
                     , {check_Eikonapi()
                       Eikon <- Refinitiv::EikonConnect()
 
-                      CheckEikonData <- EikonGetData(EikonObject = Eikon, rics = c(""),raw_output = FALSE
+                      CheckEikonData <- EikonGetData(EikonObject = Eikon, rics = c("wronric"),raw_output = FALSE
                                                     ,  Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName"))
 
 
-                      Correct_EikonData <- list(PostProcessedEikonGetData = structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"),
-                                                Eikon_Error_Data = structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"))
-
+                      Correct_EikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = "WRONRIC", RDN_EXCHD2 = NA_character_, Company.Name = NA_character_)
+                                                                                      , row.names = c(NA,-1L), class = "data.frame")
+                                                , Eikon_Error_Data = structure(list(code = c(251658243L, 416L), col = 1:2
+                                                                                    , message = c( "'The record could not be found' for the instrument 'WRONRIC'"
+                                                                                                 , "Unable to collect data for the field 'TR.CompanyName' and some specific identifier(s).")
+                                                                                    , row = c(0L, 0L)), row.names = c(NA, -2L), class = "data.frame"))
 
                       testthat::expect_identical(CheckEikonData, Correct_EikonData)
                     }
