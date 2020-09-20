@@ -218,7 +218,7 @@ retry <- function(retryfun, max = 2, init = 0){
   suppressWarnings( tryCatch({
     if (init < max) retryfun
   }, error = function(e){message(paste0("api request failed, automatically retrying time ",init + 1, "/", max, " error received: ", e))
-                        ; Sys.sleep(time = 10); retry(retryfun, max, init = init + 1);return(NA)}))
+                        ; Sys.sleep(time = 0.5); retry(retryfun, max, init = init + 1);return(NA)}))
 }
 
 
@@ -237,6 +237,9 @@ retry <- function(retryfun, max = 2, init = 0){
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
 #' @param verbose boolean if TRUE prints out the python call to the console
 #' @param raw_output provide only the raw downloaded info from Eikon
+#'
+#' @importFrom utils capture.output head
+#' @importFrom data.table `:=`
 #'
 #' @return A data.frame containing time series from Eikon
 #' @export
@@ -308,7 +311,21 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 
 
   TimeSeriesList <- as.list(rep(NA, times = length(ChunckedRics)))
-  for (j in 1:length(ChunckedRics)) {
+
+  DownloadCoordinator <- data.frame( index = 1:length(ChunckedRics)
+                                     , succes =  rep(FALSE, length(ChunckedRics))
+                                     , retries = rep(0L, length(ChunckedRics), stringsAsFactors = FALSE)
+  )
+
+  while (!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)  ) {
+
+    ChunckedRicsTryList <- DownloadCoordinator$index[which(!DownloadCoordinator$succes)]
+
+
+
+
+
+  for (j in ChunckedRicsTryList) {
     TimeSeriesList[[j]] <- try({ if (verbose){  message(paste0(Sys.time(), "\n"
                                                                , " get_timeseries( rics = [\"", paste(ChunckedRics[[j]], collapse = "\",\""), "\"]\n"
                                                                , "\t, interval= \"", interval, "\"\n"
@@ -328,31 +345,82 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                                                , start_date = as.character(start_date,  "%Y-%m-%dT%H:%M:%S")
                                                                , end_date = as.character(end_date,  "%Y-%m-%dT%H:%M:%S")
                                                                , normalize = TRUE
-                                                               , raw_output = FALSE
+                                                               , raw_output = TRUE
                                                                )
 
     )})
-    CheckandReportEmptyDF(df = TimeSeriesList[[j]], functionname = "EikonGetTimeseries")
+    InspectRequest(df = TimeSeriesList[[j]], functionname = "EikonGetTimeseries", verbose = verbose)
     Sys.sleep(time = 0.5)
+
+
+    if (!identical(TimeSeriesList[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
+    if(verbose){
+      message(paste0("Download Status:\n", paste0(capture.output(DownloadCoordinator), collapse = "\n"), collapse = "\n") )
+    }
+  }
+
+  DownloadCoordinator$retries[which(!DownloadCoordinator$succes)] <- DownloadCoordinator$retries[which(!DownloadCoordinator$succes)] + 1
+}
+  if(any(DownloadCoordinator$retries > 4L)){
+    warning("EikonGetTimeseries downloading data failed for one or more Rics")
   }
 
   if(raw_output){return(TimeSeriesList)}
 
-  # ReturnTimeSeries <- do.call("rbind", TimeSeriesList)
-  TimeSeriesList <- lapply(TimeSeriesList, FUN = function(x){if(all(is.na(x))){return(NULL)} else{return(x)}})
+    GetSingleRicTimeSeries <- function(TS, ListPos){
 
-  ReturnTimeSeries <- data.table::rbindlist(TimeSeriesList, use.names = TRUE, fill = TRUE)
-  ReturnTimeSeries <- make.true.NA_df(ReturnTimeSeries)
-  ReturnTimeSeries <- data.table::as.data.table(ReturnTimeSeries)
-
-  if ((isTRUE(cast) & !all(is.na(ReturnTimeSeries))) && (nrow(ReturnTimeSeries) > 0) ) {
-    # ReturnTimeSeries <- reshape2::dcast(unique(ReturnTimeSeries),  Date + Security ~ Field, fill = NA_integer_, drop = FALSE, value.var = "Value")
-    ReturnTimeSeries <- data.table::dcast(unique(ReturnTimeSeries),  Date + Security ~ Field, fill = NA_integer_, drop = FALSE, value.var = "Value")
-    ReturnTimeSeries <- ReturnTimeSeries[order(ReturnTimeSeries$Security),]
+      if( identical(TS[["timeseriesData"]][[ListPos]][["statusCode"]],  "Error")){
+        message(paste0("Warning Instrument ", TS[["timeseriesData"]][[ListPos]][["ric"]],  ", error Code: "
+                      , TS[["timeseriesData"]][[ListPos]][["errorCode"]],"\n"
+                      , TS[["timeseriesData"]][[ListPos]][["errorMessage"]] ))
 
 
-   }
-  ReturnTimeSeries <- as.data.frame(ReturnTimeSeries, stringsAsFactors = FALSE) #remove dcast class as it has no use.
+        return(NULL)
+      }
+
+      if(identical(TS[["timeseriesData"]][[ListPos]][["dataPoints"]], list()) ){
+        return(NULL)
+      }
+
+      data <- data.table::rbindlist(TS[["timeseriesData"]][[ListPos]][["dataPoints"]])
+
+      headers <-  unlist(lapply( X = 1:length(TS[["timeseriesData"]][[ListPos]][["fields"]])
+                        , FUN = function(x,data){data[["timeseriesData"]][[ListPos]][["fields"]][[x]][["name"]] }
+                        , data = TS))
+
+      data.table::setnames(x = data, headers)
+      rics <- TS[["timeseriesData"]][[ListPos]][["ric"]]
+
+      Security <- Date <- TIMESTAMP <- NULL
+      data <- data[ , Security := rics
+                 ][ , Date := as.POSIXct(TIMESTAMP, origin = "1970-01-01", tz = "GMT", format = "%FT%H:%M:%SZ")
+                 ][ , TIMESTAMP := NULL]
+
+      data.table::setcolorder(data, intersect(c( "Date", "Security", "CLOSE", "HIGH", "LOW", "OPEN", "VOLUME"), names(data)))
+
+      return(data)
+  }
+
+  TimeSeriesList <- replaceInList(TimeSeriesList, function(x)if(is.null(x))NA else x)
+
+  TimeSeriesRequest <- function(RequestNumber, TS){
+   if(!is.null(names(TS[[RequestNumber]]))){
+      Return_DT <- lapply(X  = 1:length(TS[[RequestNumber]][["timeseriesData"]]) , FUN = GetSingleRicTimeSeries, TS = TS[[RequestNumber]])
+      Return_DT <- data.table::rbindlist(Return_DT, use.names = TRUE, fill = TRUE)
+   } else {return(data.table::data.table(NULL))}
+  }
+
+
+
+  ReturnTimeSeries <- lapply(X = 1:length(TimeSeriesList), FUN = TimeSeriesRequest, TS = TimeSeriesList)
+  if (identical(ReturnTimeSeries[[1]], data.table::data.table(NULL))) {return(data.frame())}
+  ReturnTimeSeries <- data.table::rbindlist(ReturnTimeSeries, use.names = TRUE, fill = TRUE)
+
+  Security <- Date <- NULL
+  ReturnTimeSeries <- ReturnTimeSeries[order(Security,Date)]
+
+  ReturnTimeSeries <- data.table::setDF(ReturnTimeSeries)
+
   return(ReturnTimeSeries)
 }
 
@@ -373,6 +441,8 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #' @param verbose boolean, set to true to print out the actual python call with time stamp for debugging.
 #'
 #' @return a data.frame containing data.from Eikon
+#' @importFrom utils capture.output
+#'
 #' @export
 #' @references \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
 #'
@@ -421,13 +491,16 @@ while (!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)
 
 
 
-      CheckandReportEmptyDF(df = EikonDataList[[j]], functionname = "EikonGetData")
+      InspectRequest(df = EikonDataList[[j]], functionname = "EikonGetData", verbose = verbose)
       Sys.sleep(time = 0.5)
 
 
 
   if (!identical(EikonDataList[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
+
+  if(!verbose){
       message(paste0("Download Status:\n", paste0(capture.output(DownloadCoordinator), collapse = "\n"), collapse = "\n") )
+  }
   }
 
   DownloadCoordinator$retries[which(!DownloadCoordinator$succes)] <- DownloadCoordinator$retries[which(!DownloadCoordinator$succes)] + 1
@@ -528,7 +601,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                      , bestMatch = bestMatch
                                   ))
     })
-    CheckandReportEmptyDF(df = EikonSymbologyList[[j]], functionname = "EikonGetSymbology")
+    InspectRequest(df = EikonSymbologyList[[j]], functionname = "EikonGetSymbology")
     Sys.sleep(time = 0.5)
   }
 
@@ -549,15 +622,21 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 #' function to check if a downloaded dataframe is empty
 #'
 #' @param df data.frame
-#' @param functionname functionname for errorreporting
+#' @param functionname function name for error reporting
+#' @param verbose Boolean print or not variable
 #'
+#' @importfrom utils capture.output head
 #' @return boolean
 #' @export
 #'
 #' @examples
-#' CheckandReportEmptyDF(data.frame(), functionname = "test")
-#' CheckandReportEmptyDF(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
-CheckandReportEmptyDF <- function(df, functionname){
+#' InspectRequest(data.frame(), functionname = "test")
+#' InspectRequest(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
+InspectRequest <- function(df, functionname, verbose = TRUE){
+  if(!verbose){
+    return(NULL)
+  }
+
   if(class(df) == "logical" && is.na(df) ){
     message(paste0(functionname, " request returned NA"))
     # stop("Wrong output retrieved from Refinitiv")
@@ -575,10 +654,6 @@ CheckandReportEmptyDF <- function(df, functionname){
   } else{
     message(paste0(functionname, " request returned with length 0"))
   }
-#   return(FALSE)
-# } else{
-#   return(TRUE)
-# }
 
 }
 

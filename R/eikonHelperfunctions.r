@@ -68,16 +68,6 @@ EikonErrorProcessor <- function(Eikon_get_data_Error, Chunked, ChunkRowStart){
 EikonPostProcessor <- function(Eikon_get_dataOuput){
 
   #0. helper functions
-  replaceInList <- function (x, FUN, ...)
-  {
-    if (is.list(x)) {
-      for (i in seq_along(x)) {
-        x[i] <- list(replaceInList(x[[i]], FUN, ...))
-      }
-      x
-    }
-    else FUN(x, ...)
-  }
 
   #1. main program
   if(identical(Eikon_get_dataOuput,list(NULL))) {
@@ -427,3 +417,29 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
 #          )
 #
 # }
+
+
+
+#' Replace items in nested list
+#'
+#' @param x list
+#' @param FUN function to operate on list
+#' @param ... pass through parameters
+#'
+#' @return list
+#'
+#' @examples
+#'  x <- list(list(NA, NULL, NULL), list("a", "b", "c"))
+#' test <- Refinitiv:::replaceInList(x, function(x)if(is.null(x))NA else x)
+replaceInList <- function (x, FUN, ...)
+{
+  if (is.list(x)) {
+    for (i in seq_along(x)) {
+      x[i] <- list(replaceInList(x[[i]], FUN, ...))
+    }
+    x
+  }
+  else FUN(x, ...)
+}
+
+
