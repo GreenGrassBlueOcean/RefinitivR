@@ -4,7 +4,7 @@
 \alias{DataStreamConnect}
 \title{Initialize DataStream Connection}
 \usage{
-DataStreamConnect(DatastreamUserName, DatastreamPassword)
+DataStreamConnect(DatastreamUserName = NA, DatastreamPassword = NA)
 }
 \arguments{
 \item{DatastreamUserName}{Refinitiv DataStream username}

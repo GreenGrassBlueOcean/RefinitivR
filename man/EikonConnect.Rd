@@ -4,10 +4,7 @@
 \alias{EikonConnect}
 \title{Initialize Eikon Python api}
 \usage{
-EikonConnect(
-  Eikonapplication_id = getOption(".EikonApiKey"),
-  Eikonapplication_port = 9000L
-)
+EikonConnect(Eikonapplication_id = NA, Eikonapplication_port = 9000L)
 }
 \arguments{
 \item{Eikonapplication_id}{eikon api key}

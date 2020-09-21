@@ -74,8 +74,20 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
 #' DatastreamPassword <- "Your datastream password"
 #' DataStream <- DataStreamConnect(DatastreamUserName, DatastreamPassword)
 #' }
-DataStreamConnect <- function(DatastreamUserName, DatastreamPassword){
+DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA){
 
+  # 1. check input ----
+  if (is.na(DatastreamUserName)){
+    try(DatastreamUserName <- getOption("Datastream.Username") )
+    if(is.null(DatastreamUserName)){stop("Please supply Datastream Username")}
+  }
+
+  if (is.na(DatastreamPassword)){
+    try(DatastreamPassword <- getOption("Datastream.Password") )
+    if (is.null(DatastreamPassword)){stop("Please supply Datastream Password")}
+  }
+
+  #2. Perform Main operation ----
   options(Datastream.Username = DatastreamUserName)
   options(Datastream.Password = DatastreamPassword)
   mydsws <- DatastreamDSWS2R::dsws$new()
@@ -97,8 +109,17 @@ DataStreamConnect <- function(DatastreamUserName, DatastreamPassword){
 #' \dontrun{
 #' Eikon <- EikonConnect(Eikonapplication_id = "your key", Eikonapplication_port = 9000L)
 #' }
-EikonConnect <- function(Eikonapplication_id = getOption(".EikonApiKey") , Eikonapplication_port = 9000L) {
+EikonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000L) {
 
+  # 1. check input ----
+  if (is.na(Eikonapplication_id)){
+    try(Eikonapplication_id <- getOption(".EikonApiKey") )
+    if(is.null(Eikonapplication_id)){stop("Please supply Eikonapplication_id")}
+  }
+
+  if(!CondaExists()){stop("Conda/reticulate does not seem to be available please run install_eikon")}
+
+  #2. Run main programme ---
   options(.EikonApiKey = Eikonapplication_id)
   options(.EikonApplicationPort = Eikonapplication_port)
 
