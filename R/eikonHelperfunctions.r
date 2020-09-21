@@ -286,3 +286,81 @@ replaceInList <- function (x, FUN, ...)
 }
 
 
+
+
+#' Postprocessor for raw Timeseries Requests
+#'
+#' @param RawTimeSeriesRequest raw return from eikon EikonGetTimeseries
+#'
+#' @return data.frame
+#'
+#' @examples
+#' \dontrun{
+#' RawTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
+#' rics = c("MMM"),
+#' start_date = "2020-01-01T01:00:00",
+#' end_date = "2020-01-10T01:00:00",
+#' fields = "CLOSE", raw = TRUE))1
+#' PostProcessTimeSeriesRequest(RawTimeSeries)
+#' }
+PostProcessTimeSeriesRequest <- function(RawTimeSeriesRequest){
+
+
+  GetSingleRicTimeSeries <- function(TS, ListPos){
+
+    if( identical(TS[["timeseriesData"]][[ListPos]][["statusCode"]],  "Error")){
+      message(paste0("Warning Instrument ", TS[["timeseriesData"]][[ListPos]][["ric"]],  ", error Code: "
+                     , TS[["timeseriesData"]][[ListPos]][["errorCode"]],"\n"
+                     , TS[["timeseriesData"]][[ListPos]][["errorMessage"]] ))
+
+
+      return(NULL)
+    }
+
+    if(identical(TS[["timeseriesData"]][[ListPos]][["dataPoints"]], list()) ){
+      return(NULL)
+    }
+
+    data <- data.table::rbindlist(TS[["timeseriesData"]][[ListPos]][["dataPoints"]])
+
+    headers <-  unlist(lapply( X = 1:length(TS[["timeseriesData"]][[ListPos]][["fields"]])
+                               , FUN = function(x,data){data[["timeseriesData"]][[ListPos]][["fields"]][[x]][["name"]] }
+                               , data = TS))
+
+    data.table::setnames(x = data, headers)
+    rics <- TS[["timeseriesData"]][[ListPos]][["ric"]]
+
+    Security <- Date <- TIMESTAMP <- NULL
+    data <- data[ , Security := rics
+    ][ , Date := as.POSIXct(TIMESTAMP, origin = "1970-01-01", tz = "GMT", format = "%FT%H:%M:%SZ")
+    ][ , TIMESTAMP := NULL]
+
+    data.table::setcolorder(data, intersect(c( "Date", "Security", "CLOSE", "HIGH", "LOW", "OPEN", "VOLUME"), names(data)))
+
+    return(data)
+  }
+
+  TimeSeriesList <- replaceInList(RawTimeSeriesRequest, function(x)if(is.null(x))NA else x)
+
+  TimeSeriesRequest <- function(RequestNumber, TS){
+    if(!is.null(names(TS[[RequestNumber]]))){
+      Return_DT <- lapply(X  = 1:length(TS[[RequestNumber]][["timeseriesData"]]) , FUN = GetSingleRicTimeSeries, TS = TS[[RequestNumber]])
+      Return_DT <- data.table::rbindlist(Return_DT, use.names = TRUE, fill = TRUE)
+    } else {return(data.table::data.table(NULL))}
+  }
+
+
+
+  ReturnTimeSeries <- lapply(X = 1:length(TimeSeriesList), FUN = TimeSeriesRequest, TS = TimeSeriesList)
+  if (identical(ReturnTimeSeries[[1]], data.table::data.table(NULL))) {return(data.frame())}
+  ReturnTimeSeries <- data.table::rbindlist(ReturnTimeSeries, use.names = TRUE, fill = TRUE)
+
+  Security <- Date <- NULL
+  ReturnTimeSeries <- ReturnTimeSeries[order(Security,Date)]
+
+  ReturnTimeSeries <- data.table::setDF(ReturnTimeSeries)
+
+  return(ReturnTimeSeries)
+}
+
+
