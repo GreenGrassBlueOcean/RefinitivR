@@ -35,4 +35,5 @@ Depends:
 Suggests: 
     testthat,
     covr,
-    lubridate
+    lubridate,
+    devtools

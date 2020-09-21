@@ -61,7 +61,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                            , row.names =  c(NA, -14L), class = "data.frame")
 
 
-                     testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries)}
+                     testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-4)}
                    )
 
 
@@ -84,7 +84,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                 , VOLUME = c(3448335, 2467310, 1997981, 2176615, 2758339, 2746346, 2103818))
                                                            , row.names =  c(NA, -7L), class = "data.frame")
 
-                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries)}
+                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-4)}
 )
 
 
@@ -105,7 +105,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                 , CLOSE = c(180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47))
                                                            , row.names = c(NA, 7L), class = "data.frame")
 
-                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries)}
+                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-4)}
 )
 
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with only 2 rics and one field"
@@ -124,7 +124,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                  , Security = c("III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
                                                                  , CLOSE = c(1116.5, 1108, 1088.5, 1086.5, 1088, 1094, 1088.5, 180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47))
                                                             , row.names = c(NA, -14L), class = "data.frame")
-                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries)}
+                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-4)}
 )
 
 
@@ -516,20 +516,24 @@ test_that("EikonChunker satisfies testcases split IS required due to MaxRicsperC
 })
 
 
-
-
-
-
 ## test EikonPostProcessor ----
 
 
-# test_that("EikonPostProcessor satisfies testcases", {
-#
-#     # GoodOutcomeEikonPostProcessor <- EikonPostProcessor(Eikon_get_dataOuput = StartTestEikonData)
-#     expect_equal(EikonPostProcessor(Eikon_get_dataOuput = StartTestEikonData), GoodOutcomeEikonPostProcessor)
-#   expect_equal(EikonPostProcessor(Eikon_get_dataOuput = list(NA)), data.frame())
-#
-# })
+test_that("EikonPostProcessor satisfies testcases", {
+
+  expect_equal(EikonPostProcessor(Eikon_get_dataOuput = StartTestEikonData), GoodOutcomeEikonPostProcessor)
+
+  # ## add data for testing as:
+  # # GoodCheckEikonData <- CheckEikonData
+  #save(StartTestEikonData, GoodOutcomeEikonPostProcessor ,  file = "./tests/testthat/testdata.rda")
+
+
+  expect_equal( EikonPostProcessor(Eikon_get_dataOuput = list(NULL))
+              , list(PostProcessedEikonGetData = structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"),
+                     Eikon_Error_Data = structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"))
+              )
+
+})
 
 
 ## TEST CASE PROBLEM ---
@@ -681,11 +685,4 @@ expect_equal(lapply(test$Eikon_Error_Data, class)
 
 })
 
-#
-#
-# ## add data for testing as:
-# # GoodCheckEikonTimeSeries <- CheckTimeSeries
-# # GoodCheckEikonData <- CheckEikonData
-# # save(StartTestEikonData, GoodOutcomeEikonPostProcessor , GoodCheckEikonTimeSeries, GoodCheckEikonData, file = "./tests/testthat/testdata.rda")
-#
-#
+
