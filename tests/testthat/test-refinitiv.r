@@ -61,7 +61,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                            , row.names =  c(NA, -14L), class = "data.frame")
 
 
-                     testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-4)}
+                     testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-2)}
                    )
 
 
@@ -84,7 +84,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                 , VOLUME = c(3448335, 2467310, 1997981, 2176615, 2758339, 2746346, 2103818))
                                                            , row.names =  c(NA, -7L), class = "data.frame")
 
-                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-4)}
+                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-2)}
 )
 
 
@@ -105,7 +105,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                 , CLOSE = c(180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47))
                                                            , row.names = c(NA, 7L), class = "data.frame")
 
-                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-4)}
+                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-2)}
 )
 
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with only 2 rics and one field"
@@ -124,7 +124,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                  , Security = c("III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
                                                                  , CLOSE = c(1116.5, 1108, 1088.5, 1086.5, 1088, 1094, 1088.5, 180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47))
                                                             , row.names = c(NA, -14L), class = "data.frame")
-                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-4)}
+                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-2)}
 )
 
 

@@ -32,3 +32,10 @@ test_that("InspectRequest with error structure",{
 
 
 })
+
+test_that("InspectRequest notfies on empty data.frame",{
+
+  expect_message(InspectRequest(df = NA, functionname = 'test', verbose = TRUE))
+
+})
+
