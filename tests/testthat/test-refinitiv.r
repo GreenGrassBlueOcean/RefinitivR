@@ -267,13 +267,12 @@ testthat::test_that("Check EikonGetData returns expected data with empty ric"
                                                     ,  Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName"))
 
 
-                      Correct_EikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = "WRONRIC", RDN_EXCHD2 = NA_character_, Company.Name = NA_character_)
-                                                                                      , row.names = c(NA,-1L), class = "data.frame")
+                      Correct_EikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = "WRONRIC", RDN_EXCHD2 = NA, Company.Name = NA)
+                                                                                      , row.names = c(NA, -1L), class = "data.frame")
                                                 , Eikon_Error_Data = structure(list(code = c(251658243L, 416L), col = 1:2
-                                                                                    , message = c( "'The record could not be found' for the instrument 'WRONRIC'"
-                                                                                                 , "Unable to collect data for the field 'TR.CompanyName' and some specific identifier(s).")
+                                                                                    , message = c("'The record could not be found' for the instrument 'WRONRIC'"
+                                                                                                  , "Unable to collect data for the field 'TR.CompanyName' and some specific identifier(s).")
                                                                                     , row = c(0L, 0L)), row.names = c(NA, -2L), class = "data.frame"))
-
                       testthat::expect_identical(CheckEikonData, Correct_EikonData)
                     }
 )
@@ -328,6 +327,40 @@ testthat::test_that("Check EikonGetData returns expected data with only 2 ric an
 )
 
 
+#add test case if only 2 rics and one field is requested
+testthat::test_that("Check EikonGetData returns expected data with only 2 ric and one field"
+                    , {check_Eikonapi()
+                      Eikon <- Refinitiv::EikonConnect()
+
+                      GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list( Instrument = c("MMM", "III.L")
+                                                                                            , CURRENCY = c("USD", "GBp")
+                                                                                            , `Average.Daily.Volume.-.6.Months` = c(3465640L, 1993000L)
+                                                                                            , Instrument.Type = c("Ordinary Shares", "Ordinary Shares")
+                                                                                            , Exchange.Name = c("NO MARKET (E.G. UNLISTED)", "LONDON STOCK EXCHANGE")
+                                                                                            , CF_EXCHNG = c("NYQ", "LSE")
+                                                                                            , Exchange.Market.Identifier.Code = c("XXXX", "XLON")
+                                                                                            , Instrument.Is.Active.Flag = c(TRUE, TRUE))
+                                                                                       , row.names = c(NA, -2L), class = "data.frame")
+                                                 , Eikon_Error_Data = structure(list(), class = "data.frame", row.names = integer(0), .Names = character(0)))
+
+
+                      CheckEikonData <- try(EikonGetData( EikonObject = Eikon, rics = c("MMM", "III.L")
+                                                        , Eikonformulas = c( "CURRENCY", "TR.AvgDailyVolume6M", "TR.InstrumentType", "TR.ExchangeName", "CF_EXCHNG", "TR.ExchangeMarketIdCode", "TR.InstrumentIsActive")
+                                                        , raw_output = FALSE
+                      )
+                      )
+
+
+                      testthat::expect_equal(CheckEikonData, GoodCheckEikonData, tolerance = 1e-2)
+                    }
+)
+
+
+
+
+
+
+
 
 #add test case if only 2 rics and one field is requested
 testthat::test_that("Check EikonGetData returns expected data with only 2 ric and one field"
@@ -372,7 +405,7 @@ test_that("EikonGetData does not crash when only one wrong RIC is requested with
   check_Eikonapi()
   Eikon <- Refinitiv::EikonConnect()
 
-  GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(V1 = "WrongRIC2", TR.COMPANYNAME = NA_character_)
+  GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(V1 = "WrongRIC2", TR.COMPANYNAME = NA)
                                                                    , row.names = c(NA, -1L), class = "data.frame"),
                              Eikon_Error_Data = structure(list(code = 412L, col = 1L,
                                                                message = "Unable to resolve all requested identifiers.",
@@ -676,9 +709,9 @@ PastandCurrentStocks_TS <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
 
 expect_equal(lapply(test$PostProcessedEikonGetData, class)
             , list(Instrument = "character", CURRENCY = "character", `Average.Daily.Volume.-.6.Months` = "character",
-                  Instrument.Type = "character", Exchange.Name = "character",
-                  CF_EXCHNG = "character", Exchange.Market.Identifier.Code = "character",
-                  Instrument.Is.Active.Flag = "character"))
+                   Instrument.Type = "character", Exchange.Name = "character",
+                   CF_EXCHNG = "character", Exchange.Market.Identifier.Code = "character",
+                   Instrument.Is.Active.Flag = "logical") )
 
 expect_equal(lapply(test$Eikon_Error_Data, class)
              , list(code = "integer", col = "integer", message = "character", row = "integer"))
