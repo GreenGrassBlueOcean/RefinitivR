@@ -365,17 +365,21 @@ PostProcessTimeSeriesRequest <- function(RawTimeSeriesRequest){
 
 
 
-#' Preprocessor for Eikon Get timeseries to automaticallt chunk pieces in the required length
+#' Preprocessor for Eikon Get timeseries to automatically chunk pieces in the required length
+#'
+#' This is a subfunction of EikonGetTimeseries
 #'
 #' @param interval character choose from  c('tick', 'minute', 'hour', 'daily', 'weekly', 'monthly', 'quarterly', 'yearly')
 #' @param rics character vector containing the Reuters unique stock indentifier
 #' @param start_date character start date in format "YYYY-MM-DD"
 #' @param end_date character end date in format "YYYY-MM-DD"
 #'
-#' @return
+#' @return list with chunked rics
+#' @seealso EikonGetTimeseries
 #'
 #' @examples
-#' test <- EikonTimeSeriesPreprocessor(interval = "daily", rics = rep(letters, 1000), start_date = "2015-01-01", end_date = "2018-01-01")
+#' test <- Refinitiv:::EikonTimeSeriesPreprocessor(interval = "daily"
+#' , rics = rep(letters, 1000), start_date = "2015-01-01", end_date = "2018-01-01")
 EikonTimeSeriesPreprocessor <- function(interval, rics, start_date, end_date){
 
   # Build dataframe for internal lookup of names and datapoints limits

@@ -2,7 +2,7 @@
 % Please edit documentation in R/eikonHelperfunctions.r
 \name{EikonTimeSeriesPreprocessor}
 \alias{EikonTimeSeriesPreprocessor}
-\title{Preprocessor for Eikon Get timeseries to automaticallt chunk pieces in the required length}
+\title{Preprocessor for Eikon Get timeseries to automatically chunk pieces in the required length}
 \usage{
 EikonTimeSeriesPreprocessor(interval, rics, start_date, end_date)
 }
@@ -16,11 +16,15 @@ EikonTimeSeriesPreprocessor(interval, rics, start_date, end_date)
 \item{end_date}{character end date in format "YYYY-MM-DD"}
 }
 \value{
-
+list with chunked rics
 }
 \description{
-Preprocessor for Eikon Get timeseries to automaticallt chunk pieces in the required length
+This is a subfunction of EikonGetTimeseries
 }
 \examples{
-test <- EikonTimeSeriesPreprocessor(interval = "daily", rics = rep(letters, 1000), start_date = "2015-01-01", end_date = "2018-01-01")
+test <- Refinitiv:::EikonTimeSeriesPreprocessor(interval = "daily"
+, rics = rep(letters, 1000), start_date = "2015-01-01", end_date = "2018-01-01")
+}
+\seealso{
+EikonGetTimeseries
 }
