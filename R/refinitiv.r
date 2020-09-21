@@ -268,47 +268,8 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
   start_date <- as.POSIXct(start_date, format = "%Y-%m-%dT%H:%M:%S")
   end_date <- as.POSIXlt(end_date, format = "%Y-%m-%dT%H:%M:%S")
 
-  # Build dataframe for internal lookup of names and datapoints limits
-  difftimeConversionTable <- data.frame( EikonTimeName = c('tick', 'minute', 'hour', 'daily', 'weekly', 'monthly', 'quarterly', 'yearly')
-                                       , difftimeName = c(NA,  "mins", "hours","days", "weeks", NA, NA, NA)
-                                       , limit = c(50000,50000,50000,3000,3000,3000,3000,3000)
-                                       , stringsAsFactors = FALSE
-                                       )
 
-
-  #check if chunking is required
-  # CalculateDuration based on weekends
-  if (interval %in% c('tick')) {
-    warning("Intraday tick data chunking currently not supported, maximum 50.000 data points per request")
-  } else if ( interval %in% c('minute', 'hour', 'daily', 'weekly')) {
-    Duration <- difftime(end_date, start_date
-                        , units = difftimeConversionTable[difftimeConversionTable$EikonTimeName == interval,]$difftimeName
-                        )[[1]]
-    # remove weekends as these need not be to downloaded, public holidays ignored
-    Duration <- Duration/7*5
-  } else if (interval == "monthly") {
-    Duration <- (zoo::as.yearmon(end_date) - zoo::as.yearmon(start_date))*12
-  } else if (interval == "quarterly") {
-    Duration <- (zoo::as.yearqtr(end_date) - zoo::as.yearqtr(start_date))*4
-  } else if (interval == "yearly") {
-    Duration <- difftime(end_date, start_date, units = "days")[[1]]
-    Duration <- as.double(Duration)/365 # absolute years
-  }
-
- # Now calculate amount of datapoints, these are calculated as used rows
-
-  if (!is.null(Duration)) {
-    Datapoints <- ceiling(Duration) * length(rics)
-    Limit <- difftimeConversionTable[difftimeConversionTable$EikonTimeName == interval,]$limit
-  }
-
-  if ( !is.null(Duration) && (Limit < Datapoints)) {
-    message("The operation is too large for one api request and will be chunked in multiple requests")
-    ChunckedRics <- EikonChunker(RICS = rics, MaxCallsPerChunk = Limit, Duration =  ceiling(Duration), MaxRicsperChunk = 300 )
-  } else{
-    ChunckedRics <- list(rics)
-  }
-
+  ChunckedRics <- EikonTimeSeriesPreprocessor(interval = interval, rics = rics, start_date = start_date, end_date = end_date)
 
   TimeSeriesList <- as.list(rep(NA, times = length(ChunckedRics)))
 
