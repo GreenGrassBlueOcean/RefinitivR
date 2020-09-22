@@ -55,13 +55,17 @@ getData <- function(data, requestnumber) {
   #2. put list format in uniform way (don't mix up lists and vectors in one nested list)
   flattenNestedlist <- function(data){
     NestedListPos <- which(lapply(data, class) == "list")
-
+    .SD <- NULL
     data2 <- lapply( X = seq_along(data)
                    , FUN = function(x, data, NestedListPos){
                           if (x %in% NestedListPos){
-                                  data.table::as.data.table(data[[x]])}
-                          else{data.table::transpose(data.table::as.data.table(data[[x]]))}}
-                          , data = data, NestedListPos = NestedListPos)
+                            data.table::as.data.table(data[[x]])}
+                          else{
+                            data.table::transpose(data.table::as.data.table(data[[x]]))[, lapply(.SD, function(x) replace(x, which( x ==""), NA))]
+                            }}
+                   , data = data
+                   , NestedListPos = NestedListPos
+                   )
 
   }
 
@@ -75,6 +79,8 @@ getData <- function(data, requestnumber) {
 
   Requestheaders <- EikonNameCleaner(getheaders(data, requestnumber))
   data.table::setnames(RequestData, Requestheaders)
+  #RequestData <- RequestData[, lapply(.SD, function(x) replace(x, which( x ==""), NA))]
+
   return(RequestData)
 }
 

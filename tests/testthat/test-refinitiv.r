@@ -624,9 +624,28 @@ test_that("EikonPostProcessor can process empty strings without turning the enti
 
 })
 
+test_that("EikonPostProcessor can process combinations of nested and non nested lists", {
 
 
+test <- list(list( columnHeadersCount = 1L
+          , data = list( c("NL0000280501", "LP60073160"), c("NL0009538784", ""), list("NL0013040330", NULL), list("NL0013495534", NULL), c("NL0014270233", "LP68611200"))
+          , error = list( list(code = 416L, col = 1L, message = "Unable to collect data for the field 'TR.LipperRICCode' and some specific identifier(s).", row = 3L)
+                         , list(code = 416L, col = 1L, message = "Unable to collect data for the field 'TR.LipperRICCode' and some specific identifier(s).", row = 4L))
+          , headerOrientation = "horizontal", headers = list(list(list(displayName = "Instrument"), list(displayName = "Lipper RIC", field = "TR.LIPPERRICCODE"))), rowHeadersCount = 1L
+          , totalColumnsCount = 2L, totalRowsCount = 5L))
 
+Goodoutcome <- list(PostProcessedEikonGetData = structure(list(Instrument = c("NL0000280501", "NL0009538784", "NL0013040330", "NL0013495534", "NL0014270233")
+                                                               , Lipper.RIC = c("LP60073160", NA, NA, NA, "LP68611200")), row.names = c(NA, -5L), class = "data.frame")
+                    , Eikon_Error_Data = structure(list(code = c(416L, 416L), col = c(1L, 1L)
+                                                        , message = c( "Unable to collect data for the field 'TR.LipperRICCode' and some specific identifier(s)."
+                                                                     , "Unable to collect data for the field 'TR.LipperRICCode' and some specific identifier(s)."), row = 3:4)
+                                                   , row.names = c(NA, -2L), class = "data.frame"))
+
+
+expect_identical(EikonPostProcessor(test), Goodoutcome)
+
+
+})
 
 
 
@@ -779,5 +798,11 @@ expect_equal(lapply(test$Eikon_Error_Data, class)
              , list(code = "integer", col = "integer", message = "character", row = "integer"))
 
 })
+
+
+
+
+
+
 
 
