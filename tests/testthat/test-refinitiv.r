@@ -351,7 +351,7 @@ testthat::test_that("Check EikonGetData returns expected data with only 2 ric an
                       )
 
 
-                      testthat::expect_equal(CheckEikonData, GoodCheckEikonData, tolerance = 1e-2)
+                      testthat::expect_equal(CheckEikonData, GoodCheckEikonData, tolerance = 1e-1)
                     }
 )
 
@@ -556,6 +556,7 @@ test_that("EikonPostProcessor satisfies testcases", {
 
   expect_equal(EikonPostProcessor(Eikon_get_dataOuput = StartTestEikonData), GoodOutcomeEikonPostProcessor)
 
+  #load(file="./tests/testthat/testdata.rda")
   # ## add data for testing as:
   # # GoodCheckEikonData <- CheckEikonData
   #save(StartTestEikonData, GoodOutcomeEikonPostProcessor ,  file = "./tests/testthat/testdata.rda")
@@ -567,6 +568,67 @@ test_that("EikonPostProcessor satisfies testcases", {
               )
 
 })
+
+
+test_that("EikonPostProcessor can process empty strings without turning the entire column in to character", {
+
+  testinput <- list(list(columnHeadersCount = 1L, data = list( list("LP68237734", "EUR", "", "Open-Ended Fund", "", "LIP", NULL, TRUE)
+                                                             , list("NL0000280501=DAp", NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+                                                             , list("LP60073160^F20", NULL, "", "", "", NULL, NULL, ""))
+                         , error = list( list(code = 251658243L, col = 1L, message = "'The record could not be found' for the instrument 'NL0000280501=DAp'", row = 1L)
+                                        , list(code = 416L, col = 2L, message = "Unable to collect data for the field 'TR.AvgDailyVolume6M' and some specific identifier(s).", row = 1L)
+                                        , list(code = 416L, col = 3L, message = "Unable to collect data for the field 'TR.InstrumentType' and some specific identifier(s).", row = 1L)
+                                        , list(code = 416L, col = 4L, message = "Unable to collect data for the field 'TR.ExchangeName' and some specific identifier(s).", row = 1L)
+                                        , list(code = 251658243L, col = 5L, message = "'The record could not be found' for the instrument 'NL0000280501=DAp'", row = 1L)
+                                        , list(code = 416L, col = 6L, message = "Unable to collect data for the field 'TR.ExchangeMarketIdCode' and some specific identifier(s).", row = 1L)
+                                        , list(code = 416L, col = 7L, message = "Unable to collect data for the field 'TR.InstrumentIsActive' and some specific identifier(s).", row = 1L)
+                                        , list(code = 251658243L, col = 1L, message = "'The record could not be found' for the instrument 'LP60073160^F20'", row = 2L)
+                                        , list(code = 251658243L, col = 5L, message = "'The record could not be found' for the instrument 'LP60073160^F20'", row = 2L))
+                         , headerOrientation = "horizontal", headers = list(list(list(displayName = "Instrument"), list(displayName = "CURRENCY", field = "CURRENCY")
+                                                                                 , list(displayName = "Average Daily Volume - 6 Months", field = "TR.AVGDAILYVOLUME6M")
+                                                                                 , list(displayName = "Instrument Type", field = "TR.INSTRUMENTTYPE"), list(displayName = "Exchange Name", field = "TR.EXCHANGENAME"), list(displayName = "CF_EXCHNG", field = "CF_EXCHNG")
+                                                                                 , list(displayName = "Exchange Market Identifier Code", field = "TR.EXCHANGEMARKETIDCODE"), list(displayName = "Instrument Is Active Flag", field = "TR.INSTRUMENTISACTIVE")))
+                         , rowHeadersCount = 1L, totalColumnsCount = 8L, totalRowsCount = 4L))
+
+
+  GoodOutcomeEikonPostProcessor <- list(PostProcessedEikonGetData = structure(list( Instrument = c("LP68237734", "NL0000280501=DAp", "LP60073160^F20"), CURRENCY = c("EUR", NA, NA)
+                                                 , `Average.Daily.Volume.-.6.Months` = c(NA, NA, NA), Instrument.Type = c("Open-Ended Fund", NA, NA)
+                                                 , Exchange.Name = c(NA, NA, NA), CF_EXCHNG = c("LIP", NA, NA)
+                                                 , Exchange.Market.Identifier.Code = c(NA, NA, NA), Instrument.Is.Active.Flag = c(TRUE, NA, NA))
+                                             , row.names = c(NA, -3L), class = "data.frame")
+       , Eikon_Error_Data = structure(list(code = c(251658243L, 416L, 416L, 416L, 251658243L, 416L, 416L, 251658243L, 251658243L)
+                                           , col = c(1L, 2L, 3L, 4L, 5L, 6L, 7L, 1L, 5L)
+                                           , message = c("'The record could not be found' for the instrument 'NL0000280501=DAp'"
+                                                         , "Unable to collect data for the field 'TR.AvgDailyVolume6M' and some specific identifier(s)."
+                                                         , "Unable to collect data for the field 'TR.InstrumentType' and some specific identifier(s)."
+                                                         , "Unable to collect data for the field 'TR.ExchangeName' and some specific identifier(s)."
+                                                         , "'The record could not be found' for the instrument 'NL0000280501=DAp'"
+                                                         , "Unable to collect data for the field 'TR.ExchangeMarketIdCode' and some specific identifier(s)."
+                                                         , "Unable to collect data for the field 'TR.InstrumentIsActive' and some specific identifier(s)."
+                                                         , "'The record could not be found' for the instrument 'LP60073160^F20'"
+                                                         , "'The record could not be found' for the instrument 'LP60073160^F20'")
+                                           , row = c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 2L, 2L)), row.names = c(NA, -9L), class = "data.frame"))
+
+
+  expect_equal(EikonPostProcessor(Eikon_get_dataOuput = testinput), GoodOutcomeEikonPostProcessor)
+
+  # ## add data for testing as:
+  # # GoodCheckEikonData <- CheckEikonData
+  #save(StartTestEikonData, GoodOutcomeEikonPostProcessor ,  file = "./tests/testthat/testdata.rda")
+
+
+  expect_equal( EikonPostProcessor(Eikon_get_dataOuput = list(NULL))
+                , list(PostProcessedEikonGetData = structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"),
+                       Eikon_Error_Data = structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame"))
+  )
+
+})
+
+
+
+
+
+
 
 
 ## TEST CASE PROBLEM ---
@@ -708,7 +770,7 @@ PastandCurrentStocks_TS <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
 
 
 expect_equal(lapply(test$PostProcessedEikonGetData, class)
-            , list(Instrument = "character", CURRENCY = "character", `Average.Daily.Volume.-.6.Months` = "character",
+            , list(Instrument = "character", CURRENCY = "character", `Average.Daily.Volume.-.6.Months` = "integer",
                    Instrument.Type = "character", Exchange.Name = "character",
                    CF_EXCHNG = "character", Exchange.Market.Identifier.Code = "character",
                    Instrument.Is.Active.Flag = "logical") )

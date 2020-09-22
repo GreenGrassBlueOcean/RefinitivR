@@ -50,7 +50,7 @@ getData <- function(data, requestnumber) {
 
   #1. Remove NULL values and replace with NA in nested list
 
-  data[[requestnumber]][["data"]] <- replaceInList(data[[requestnumber]][["data"]], function(x)if(is.null(x))NA else x)
+  data[[requestnumber]][["data"]] <- replaceInList(data[[requestnumber]][["data"]], function(x)if(is.null(x) || identical(x,""))NA else x)
 
   #2. put list format in uniform way (don't mix up lists and vectors in one nested list)
   flattenNestedlist <- function(data){
@@ -80,7 +80,7 @@ getData <- function(data, requestnumber) {
 
 getheaders <- function(data, requestnumber){
   #replace null headers with NA headers
-  data[[requestnumber]][["headers"]] <- replaceInList(data[[requestnumber]][["headers"]], function(x)if(is.null(x))NA else x)
+  data[[requestnumber]][["headers"]] <- replaceInList(data[[requestnumber]][["headers"]], function(x)if(is.null(x) || identical(x,"") )NA else x)
 
   unlist(lapply( X = 1:length(data[[requestnumber]][["headers"]][[1]])
                , FUN = function(x,data,requestnumber){data[[requestnumber]][["headers"]][[1]][[x]][["displayName"]] }
@@ -351,7 +351,7 @@ PostProcessTimeSeriesRequest <- function(RawTimeSeriesRequest){
     return(data)
   }
 
-  TimeSeriesList <- replaceInList(RawTimeSeriesRequest, function(x)if(is.null(x))NA else x)
+  TimeSeriesList <- replaceInList(RawTimeSeriesRequest, function(x)if(is.null(x) || identical(x,"") )NA else x)
 
   TimeSeriesRequest <- function(RequestNumber, TS){
     if(!is.null(names(TS[[RequestNumber]]))){
