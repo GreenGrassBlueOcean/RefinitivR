@@ -424,7 +424,7 @@ while (!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)
 
   if (!identical(EikonDataList[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
 
-  if(!verbose){
+  if(verbose){
       message(paste0("Download Status:\n", paste0(capture.output(DownloadCoordinator), collapse = "\n"), collapse = "\n") )
   }
   }

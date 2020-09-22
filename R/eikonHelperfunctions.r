@@ -20,9 +20,6 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
                  , "Eikon_Error_Data" = data.frame()))
   }
 
-
-
-
   #1. main program ----
 
   RequestData <- lapply( X = 1:length(Eikon_get_dataOuput)
