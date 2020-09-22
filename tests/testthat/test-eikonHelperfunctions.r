@@ -83,8 +83,8 @@ test_that("ProcessSymbology satisfies testcases", {
 
 #run test cases 2
 
-Ex1Outcome <- list(list(mappedSymbols = list(list(bestMatch = list(ISIN = "US0378331005"),symbol = "AAPL.O"))))
-Ex2Outcome <- list(list(mappedSymbols = list(list(bestMatch = list(RIC = "RDSa.AS"),symbol = "GB00B03MLX29"))))
+Ex1Outcome <- list(list(mappedSymbols = list(list(bestMatch = c(ISIN = "US0378331005"),symbol = "AAPL.O"))))
+Ex2Outcome <- list(list(mappedSymbols = list(list(bestMatch = c(RIC = "RDSa.AS"),symbol = "GB00B03MLX29"))))
 Ex3Outcome <- list(list(mappedSymbols = list(list(RICs = c("RDSa.AS", "RDSaEUR.xbo",
                                              "RDSaGBP.xbo", "RDSa.L", "RDSa.F", "RDSa.DE", "RDSAl.BS", "RDSAa.CHI",
                                              "RDSAa.BS", "RDSAl.CHI", "RDSa.BE", "RDSAa.TQ", "RDSAl.TQ", "RDSa.S",
@@ -107,10 +107,10 @@ Ex3Outcome <- list(list(mappedSymbols = list(list(RICs = c("RDSa.AS", "RDSaEUR.x
                                              "RDSAd.NXT^F19", "RDSa.rEUR^J09", "RDSa.rGBP^J09", "RDSa.MB^L17",
                                              "RDSa.mGBP^L14", "RDSaEUR.Ip^G19", "RDSaGBP.Ip^G19", "RDSaGBP.PZp^B09",
                                              "RDSAnl.PZ^A12")
-                                    , bestMatch = list(RIC = "RDSa.AS"), symbol = "GB00B03MLX29"))))
+                                    , bestMatch = c(RIC = "RDSa.AS"), symbol = "GB00B03MLX29"))))
 
-Ex4Outcome <- list(list(mappedSymbols = list(list(bestMatch = list(ISIN = "GB00B03MLX29"), symbol = "RDSa.AS"))))
-Ex5Outcome <- list(list(mappedSymbols = list(list(bestMatch = list(ISIN = "GB00B03MLX29"), symbol = "RDSa.L"))))
+Ex4Outcome <- list(list(mappedSymbols = list(list(bestMatch = c(ISIN = "GB00B03MLX29"), symbol = "RDSa.AS"))))
+Ex5Outcome <- list(list(mappedSymbols = list(list(bestMatch = c(ISIN = "GB00B03MLX29"), symbol = "RDSa.L"))))
 
 Ex6Outcome <- list(list(mappedSymbols = list(list(RICs = c("RDSa.AS", "RDSaEUR.xbo","RDSaGBP.xbo", "RDSa.L", "RDSa.F", "RDSa.DE", "RDSAl.BS", "RDSAa.CHI",
                                              "RDSAa.BS", "RDSAl.CHI", "RDSa.BE", "RDSAa.TQ", "RDSAl.TQ", "RDSa.S",
@@ -132,7 +132,7 @@ Ex6Outcome <- list(list(mappedSymbols = list(list(RICs = c("RDSa.AS", "RDSaEUR.x
                                              "RDSa.PO^L08", "RDSade.CHI^J08", "RDSa.VIf^F20", "RDSaEUR.VIp^J18",
                                              "RDSAd.NXT^F19", "RDSa.rEUR^J09", "RDSa.rGBP^J09", "RDSa.MB^L17",
                                              "RDSa.mGBP^L14", "RDSaEUR.Ip^G19", "RDSaGBP.Ip^G19", "RDSaGBP.PZp^B09",
-                                             "RDSAnl.PZ^A12"), bestMatch = list(RIC = "RDSa.AS"), symbol = "GB00B03MLX29"),
+                                             "RDSAnl.PZ^A12"), bestMatch = c(RIC = "RDSa.AS"), symbol = "GB00B03MLX29"),
                                list(bestMatch = list(error = "No best match available"),
                                     error = "Unknown symbol", symbol = "NL0015476987"))))
 
@@ -157,7 +157,7 @@ Ex7Outcome <- list(list(mappedSymbols = list(list(RICs = c("RDSa.AS", "RDSaEUR.x
                                                            "RDSa.PO^L08", "RDSade.CHI^J08", "RDSa.VIf^F20", "RDSaEUR.VIp^J18",
                                                            "RDSAd.NXT^F19", "RDSa.rEUR^J09", "RDSa.rGBP^J09", "RDSa.MB^L17",
                                                            "RDSa.mGBP^L14", "RDSaEUR.Ip^G19", "RDSaGBP.Ip^G19", "RDSaGBP.PZp^B09",
-                                                           "RDSAnl.PZ^A12"), bestMatch = list(RIC = "RDSa.AS"), symbol = "GB00B03MLX29"),
+                                                           "RDSAnl.PZ^A12"), bestMatch = c(RIC = "RDSa.AS"), symbol = "GB00B03MLX29"),
                                              list(RICs = c("AAPL.O", "AAPLEUR.xbo", "0R2V.L", "AAPL.OQ",
                                                            "AAPL.DG", "AAPL.Z", "AAPL.F", "AAPL.DE", "AAPL.B", "AAPL.BE",
                                                            "AAPL-RM.MM", "AAPL.MU", "AAPL.SG", "AAPL.D", "AAPLE.MI",
@@ -179,7 +179,7 @@ Ex7Outcome <- list(list(mappedSymbols = list(list(RICs = c("RDSa.AS", "RDSaEUR.x
                                                            "AAPLEUR.PAp^B17", "AAPLGBP.PAp^F11", "0HDZ.L^A08", "AAPLEUR.Lp^F08",
                                                            "0HDZ.L^L08", "0JQ4.L^D10", "AAPLUSD.DEp^D13", "AAPLEUR.DEp^D13",
                                                            "AAPL.DEU^A04", "AAPLUSD.PAp^B17", "AAPL.S^K08", "AAPL.SI^D02",
-                                                           "AAPL.B^J07"), bestMatch = list(RIC = "AAPL.O"), symbol = "US0378331005"))))
+                                                           "AAPL.B^J07"), bestMatch = c(RIC = "AAPL.O"), symbol = "US0378331005"))))
 
 
 
@@ -193,8 +193,8 @@ testEx6 <- ProcessSymbology(EikonSymbologyResult = Ex6Outcome, from_symbol_type=
 testEx7 <- ProcessSymbology(EikonSymbologyResult = Ex7Outcome, from_symbol_type= "ISIN", to_symbol_type = "RIC")
 
 
-expect_equal(testEx1, structure(list(ISIN = list("US0378331005"), RIC = "AAPL.O"), row.names = c(NA, -1L), class = "data.frame") )
-expect_equal(testEx2, structure(list(RIC = list("RDSa.AS"), ISIN = "GB00B03MLX29"), row.names = c(NA, -1L), class = "data.frame"))
+expect_equal(testEx1, structure(list(ISIN = "US0378331005", RIC = "AAPL.O"), row.names = c(NA, -1L), class = "data.frame") )
+expect_equal(testEx2, structure(list(RIC = "RDSa.AS", ISIN = "GB00B03MLX29"), row.names = c(NA, -1L), class = "data.frame"))
 expect_equal(testEx3, structure(list(RICs = c("RDSa.AS", "RDSaEUR.xbo", "RDSaGBP.xbo",
                                               "RDSa.L", "RDSa.F", "RDSa.DE", "RDSAl.BS", "RDSAa.CHI", "RDSAa.BS",
                                               "RDSAl.CHI", "RDSa.BE", "RDSAa.TQ", "RDSAl.TQ", "RDSa.S", "RDSa.MU",
@@ -217,7 +217,7 @@ expect_equal(testEx3, structure(list(RICs = c("RDSa.AS", "RDSaEUR.xbo", "RDSaGBP
                                               "RDSAd.NXT^F19", "RDSa.rEUR^J09", "RDSa.rGBP^J09", "RDSa.MB^L17",
                                               "RDSa.mGBP^L14", "RDSaEUR.Ip^G19", "RDSaGBP.Ip^G19", "RDSaGBP.PZp^B09",
                                               "RDSAnl.PZ^A12")
-                                     , bestMatch = list("RDSa.AS", "RDSa.AS", "RDSa.AS",
+                                     , bestMatch = c("RDSa.AS", "RDSa.AS", "RDSa.AS",
                                                         "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
                                                         "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
                                                         "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
@@ -261,8 +261,8 @@ expect_equal(testEx3, structure(list(RICs = c("RDSa.AS", "RDSaEUR.xbo", "RDSaGBP
                                               "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29", "GB00B03MLX29"
                                      )), row.names = c(NA, -99L), class = "data.frame")
              )
-expect_equal(testEx4, structure(list(ISIN = list("GB00B03MLX29"), RIC = "RDSa.AS"), row.names = c(NA, -1L), class = "data.frame"))
-expect_equal(testEx5, structure(list(ISIN = list("GB00B03MLX29"), RIC = "RDSa.L"), row.names = c(NA, -1L), class = "data.frame"))
+expect_equal(testEx4, structure(list(ISIN = c("GB00B03MLX29"), RIC = "RDSa.AS"), row.names = c(NA, -1L), class = "data.frame"))
+expect_equal(testEx5, structure(list(ISIN = c("GB00B03MLX29"), RIC = "RDSa.L"), row.names = c(NA, -1L), class = "data.frame"))
 
 
 expect_equal(testEx6, structure(list(RICs = c("RDSa.AS", "RDSaEUR.xbo", "RDSaGBP.xbo",
@@ -286,7 +286,7 @@ expect_equal(testEx6, structure(list(RICs = c("RDSa.AS", "RDSaEUR.xbo", "RDSaGBP
                                      "RDSa.PO^L08", "RDSade.CHI^J08", "RDSa.VIf^F20", "RDSaEUR.VIp^J18",
                                      "RDSAd.NXT^F19", "RDSa.rEUR^J09", "RDSa.rGBP^J09", "RDSa.MB^L17",
                                      "RDSa.mGBP^L14", "RDSaEUR.Ip^G19", "RDSaGBP.Ip^G19", "RDSaGBP.PZp^B09",
-                                     "RDSAnl.PZ^A12", NA), bestMatch = list("RDSa.AS", "RDSa.AS",
+                                     "RDSAnl.PZ^A12", NA), bestMatch = c("RDSa.AS", "RDSa.AS",
                                                                             "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
                                                                             "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
                                                                             "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
@@ -378,7 +378,7 @@ expect_equal(testEx7, structure(list(RICs = c("RDSa.AS", "RDSaEUR.xbo", "RDSaGBP
                                               "AAPLEUR.DEp^A10", "AAPLGBP.DEp^A10", "AAPLEUR.PAp^B17", "AAPLGBP.PAp^F11",
                                               "0HDZ.L^A08", "AAPLEUR.Lp^F08", "0HDZ.L^L08", "0JQ4.L^D10", "AAPLUSD.DEp^D13",
                                               "AAPLEUR.DEp^D13", "AAPL.DEU^A04", "AAPLUSD.PAp^B17", "AAPL.S^K08",
-                                              "AAPL.SI^D02", "AAPL.B^J07"), bestMatch = list("RDSa.AS", "RDSa.AS",
+                                              "AAPL.SI^D02", "AAPL.B^J07"), bestMatch = c("RDSa.AS", "RDSa.AS",
                                                                                              "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
                                                                                              "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",
                                                                                              "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS", "RDSa.AS",

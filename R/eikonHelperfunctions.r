@@ -259,7 +259,9 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
 
   #2. Run main function
   EikonSymbologyResult2 <- data.table::rbindlist(EikonSymbologyResult, fill = TRUE)
-
+  if("bestMatch" %in% names(EikonSymbologyResult2)){
+    EikonSymbologyResult2$bestMatch <- as.character(EikonSymbologyResult2$bestMatch)
+  }
    if(BestMatch){
      data.table::setnames(EikonSymbologyResult2, old = c("bestMatch","symbol") , new = c(BestMatchName, from_symbol_type) )
 
