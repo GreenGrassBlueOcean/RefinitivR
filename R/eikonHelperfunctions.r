@@ -14,6 +14,62 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
 
   #0. helper functions ----
 
+  getData <- function(data, requestnumber) {
+
+    #1. Remove NULL values and replace with NA in nested list
+
+    data[[requestnumber]][["data"]] <- replaceInList(data[[requestnumber]][["data"]], function(x)if(is.null(x) || identical(x,""))NA else x)
+
+    #2. put list format in uniform way (don't mix up lists and vectors in one nested list)
+
+    data[[requestnumber]][["data"]] <- flattenNestedlist(data[[requestnumber]][["data"]])
+
+    if (length(data[[requestnumber]][["data"]]) > 1 ) {
+      RequestData <- data.table::rbindlist(data[[requestnumber]][["data"]])
+    } else {
+      RequestData <- data[[requestnumber]][["data"]][[1]]
+    }
+
+    Requestheaders <- EikonNameCleaner(getheaders(data, requestnumber))
+    data.table::setnames(RequestData, Requestheaders)
+    #RequestData <- RequestData[, lapply(.SD, function(x) replace(x, which( x ==""), NA))]
+
+    return(RequestData)
+  }
+
+  getheaders <- function(data, requestnumber){
+    #replace null headers with NA headers
+    data[[requestnumber]][["headers"]] <- replaceInList(data[[requestnumber]][["headers"]], function(x)if(is.null(x) || identical(x,"") )NA else x)
+
+    unlist(lapply( X = 1:length(data[[requestnumber]][["headers"]][[1]])
+                   , FUN = function(x,data,requestnumber){data[[requestnumber]][["headers"]][[1]][[x]][["displayName"]] }
+                   , data = data
+                   , requestnumber = requestnumber))
+
+  }
+
+
+  flattenNestedlist <- function(data){
+    NestedListPos <- which(lapply(data, class) == "list")
+    .SD <- NULL
+    data2 <- lapply( X = seq_along(data)
+                     , FUN = function(x, data, NestedListPos){
+                       if (x %in% NestedListPos){
+                         return(data.table::as.data.table(data[[x]])
+                         )
+                       } else{
+                         return(data.table::transpose(data.table::as.data.table(data[[x]])
+                         )[, lapply(.SD, function(x) replace(x, which( x == ""), NA))
+                         ][, lapply(.SD, function(x) {if("NaN" %in% x){as.numeric(x)} else{x} })
+                         ])
+                       }}
+                     , data = data
+                     , NestedListPos = NestedListPos
+    )
+
+  }
+
+  #1. Check Input
 
   if(identical(Eikon_get_dataOuput,list(NULL))) {
     return(list( "PostProcessedEikonGetData" = data.frame()
@@ -46,54 +102,6 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
 
 
 
-getData <- function(data, requestnumber) {
-
-  #1. Remove NULL values and replace with NA in nested list
-
-  data[[requestnumber]][["data"]] <- replaceInList(data[[requestnumber]][["data"]], function(x)if(is.null(x) || identical(x,""))NA else x)
-
-  #2. put list format in uniform way (don't mix up lists and vectors in one nested list)
-  flattenNestedlist <- function(data){
-    NestedListPos <- which(lapply(data, class) == "list")
-    .SD <- NULL
-    data2 <- lapply( X = seq_along(data)
-                   , FUN = function(x, data, NestedListPos){
-                          if (x %in% NestedListPos){
-                            data.table::as.data.table(data[[x]])}
-                          else{
-                            data.table::transpose(data.table::as.data.table(data[[x]]))[, lapply(.SD, function(x) replace(x, which( x ==""), NA))]
-                            }}
-                   , data = data
-                   , NestedListPos = NestedListPos
-                   )
-
-  }
-
-  data[[requestnumber]][["data"]] <- flattenNestedlist(data[[requestnumber]][["data"]])
-
-  if (length(data[[requestnumber]][["data"]]) > 1 ) {
-    RequestData <- data.table::rbindlist(data[[requestnumber]][["data"]])
-  } else {
-    RequestData <- data[[requestnumber]][["data"]][[1]]
-  }
-
-  Requestheaders <- EikonNameCleaner(getheaders(data, requestnumber))
-  data.table::setnames(RequestData, Requestheaders)
-  #RequestData <- RequestData[, lapply(.SD, function(x) replace(x, which( x ==""), NA))]
-
-  return(RequestData)
-}
-
-getheaders <- function(data, requestnumber){
-  #replace null headers with NA headers
-  data[[requestnumber]][["headers"]] <- replaceInList(data[[requestnumber]][["headers"]], function(x)if(is.null(x) || identical(x,"") )NA else x)
-
-  unlist(lapply( X = 1:length(data[[requestnumber]][["headers"]][[1]])
-               , FUN = function(x,data,requestnumber){data[[requestnumber]][["headers"]][[1]][[x]][["displayName"]] }
-               , data = data
-               , requestnumber = requestnumber))
-
-}
 
 
 

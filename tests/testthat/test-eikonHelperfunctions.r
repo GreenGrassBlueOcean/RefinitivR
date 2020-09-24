@@ -466,6 +466,40 @@ expect_equal(testEx7, structure(list(RICs = c("RDSa.AS", "RDSaEUR.xbo", "RDSaGBP
 })
 
 
+test_that("Eikon PostProcessor can convert \"Nan\" without converting the entire column to charachter" , {
+
+
+  Input <- list(list( columnHeadersCount = 1L
+                      , data = list( list("0003.HK", -77.5771974231085)
+                                     , c("0005.HK", "NaN")
+                                     , list("0006.HK", -234.700219075903)
+                                     , list("0008.HK", 7.05992084592517)
+                      )
+                      , headerOrientation = "horizontal"
+                      , headers = list(list( list( displayName = "Instrument")
+                                            , list(displayName = "TR.COMPANYMARKETCAP(SDATE=0D,CURN=USD)/TR.FreeCashFlow(Period=LTM,SDate=0D,Curn=USD)/*Price to Free Cash Flow*/",
+                                                   field = "TR.COMPANYMARKETCAP(SDATE=0D,CURN=USD)/TR.FreeCashFlow(Period=LTM,SDate=0D,Curn=USD)/*Price to Free Cash Flow*/")))
+                      , rowHeadersCount = 1L
+                      , totalColumnsCount = 2L
+                      , totalRowsCount = 4L
+  ))
+
+    GoodOutcome <- list(PostProcessedEikonGetData = structure(list( Instrument = c("0003.HK", "0005.HK", "0006.HK", "0008.HK")
+                                                  , Price.to.Free.Cash.Flow = c(-77.5771974231085, NaN, -234.700219075903, 7.05992084592517))
+                                             , row.names = c(NA, -4L), class = "data.frame")
+       , Eikon_Error_Data = structure(list(), class = "data.frame", row.names = integer(0), .Names = character(0)))
+
+
+
+
+    expect_identical(EikonPostProcessor(Eikon_get_dataOuput = Input)  , GoodOutcome)
+
+})
+
+
+
+
+
 
 #' ex1 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "AAPL.O"
 #'  , to_symbol_type = "ISIN" )
