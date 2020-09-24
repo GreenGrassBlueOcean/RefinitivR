@@ -32,7 +32,6 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
 
     Requestheaders <- EikonNameCleaner(getheaders(data, requestnumber))
     data.table::setnames(RequestData, Requestheaders)
-    #RequestData <- RequestData[, lapply(.SD, function(x) replace(x, which( x ==""), NA))]
 
     return(RequestData)
   }
@@ -52,20 +51,18 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
   flattenNestedlist <- function(data){
     NestedListPos <- which(lapply(data, class) == "list")
     .SD <- NULL
+    data2 <- vector(mode = "list", length = length(data))
     data2 <- lapply( X = seq_along(data)
                      , FUN = function(x, data, NestedListPos){
                        if (x %in% NestedListPos){
                          return(data.table::as.data.table(data[[x]])
                          )
                        } else{
-                         return(data.table::transpose(data.table::as.data.table(data[[x]])
-                         )[, lapply(.SD, function(x) replace(x, which( x == ""), NA))
-                         ][, lapply(.SD, function(x) {if("NaN" %in% x){as.numeric(x)} else{x} })
-                         ])
+                         return(data.table::transpose(data.table::as.data.table(data[[x]])))
                        }}
                      , data = data
                      , NestedListPos = NestedListPos
-    )
+                     )
 
   }
 
@@ -77,7 +74,7 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
   }
 
   #1. main program ----
-
+  RequestData <- RequestError <- vector(mode = "list", length = length(Eikon_get_dataOuput))
   RequestData <- lapply( X = 1:length(Eikon_get_dataOuput)
                        , FUN = function(x, data){getData(data, requestnumber=x)}
                        , data = Eikon_get_dataOuput
@@ -88,17 +85,30 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
                          , data = Eikon_get_dataOuput
   )
 
-  Eikon_Error_Data <- data.table::setDF(data.table::rbindlist(RequestError, use.names = TRUE, fill = TRUE))
-  PostProcessedEikonGetData <- data.table::setDF(data.table::rbindlist(RequestData, use.names = TRUE, fill = TRUE))
+  Eikon_Error_Data <- data.table::rbindlist(RequestError, use.names = TRUE, fill = TRUE)
+  PostProcessedEikonGetData <- data.table::rbindlist(RequestData, use.names = TRUE, fill = TRUE)
 
-  # return human readable names
+  #2. Clean output ----
+  .SD <- NULL
+  PostProcessedEikonGetData2 <- PostProcessedEikonGetData[, lapply(.SD, function(x) replace(x, which( x == ""), NA))
+                                                        ][, lapply(.SD, function(x) {if("NaN" %in% x){as.numeric(x)} else{x} })
+                                                        ][, suppressWarnings(lapply(.SD, function(x){
+                                                                if ( any(is.logical(x))  ){as.logical(x)}
+                                                                else if(all(is.na(as.numeric(x))) != TRUE){as.numeric(x)}
+                                                                else {x}
+                                                          }))
+                                                        ]
 
-  return(list( "PostProcessedEikonGetData" = PostProcessedEikonGetData
-             , "Eikon_Error_Data" = Eikon_Error_Data
+
+    # return human readable names
+
+  return(list( "PostProcessedEikonGetData" = data.table::setDF(PostProcessedEikonGetData2)
+             , "Eikon_Error_Data" = data.table::setDF(Eikon_Error_Data)
   )
   )
 
 }
+
 
 
 

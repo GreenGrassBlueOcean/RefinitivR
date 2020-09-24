@@ -591,10 +591,14 @@ test_that("EikonPostProcessor can process empty strings without turning the enti
                          , rowHeadersCount = 1L, totalColumnsCount = 8L, totalRowsCount = 4L))
 
 
-  GoodOutcomeEikonPostProcessor <- list(PostProcessedEikonGetData = structure(list( Instrument = c("LP68237734", "NL0000280501=DAp", "LP60073160^F20"), CURRENCY = c("EUR", NA, NA)
-                                                 , `Average.Daily.Volume.-.6.Months` = c(NA, NA, NA), Instrument.Type = c("Open-Ended Fund", NA, NA)
-                                                 , Exchange.Name = c(NA, NA, NA), CF_EXCHNG = c("LIP", NA, NA)
-                                                 , Exchange.Market.Identifier.Code = c(NA, NA, NA), Instrument.Is.Active.Flag = c(TRUE, NA, NA))
+  GoodOutcomeEikonPostProcessor <- list(PostProcessedEikonGetData = structure(list( Instrument = c("LP68237734", "NL0000280501=DAp", "LP60073160^F20")
+                                                                                  , CURRENCY = c("EUR", NA, NA)
+                                                                                  , `Average.Daily.Volume.-.6.Months` = c(NA, NA, NA)
+                                                                                  , Instrument.Type = c("Open-Ended Fund", NA, NA)
+                                                                                  , Exchange.Name = c(NA, NA, NA)
+                                                                                  , CF_EXCHNG = c("LIP", NA, NA)
+                                                                                  , Exchange.Market.Identifier.Code = c(NA, NA, NA)
+                                                                                  , Instrument.Is.Active.Flag = c(TRUE, NA, NA))
                                              , row.names = c(NA, -3L), class = "data.frame")
        , Eikon_Error_Data = structure(list(code = c(251658243L, 416L, 416L, 416L, 251658243L, 416L, 416L, 251658243L, 251658243L)
                                            , col = c(1L, 2L, 3L, 4L, 5L, 6L, 7L, 1L, 5L)
@@ -776,20 +780,8 @@ test_that("EikonGetTimeseries can handle long requests gracefully", {
 
 test <- EikonGetData(EikonObject = Eikon, rics = Rics, Eikonformulas = fields, raw_output = FALSE)
 
-
-PastandCurrentStocks_TS <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
-                                                        , verbose = TRUE
-                                                        , rics = head(Rics, n =4)
-                                                        , start_date = paste0("2014-01-01", "T01:00:00")
-                                                        , end_date = paste0(Sys.Date(), "T01:00:00")
-                                                        , raw_output = FALSE
-
-) # %>% data.table::as.data.table()
-
-
-
 expect_equal(lapply(test$PostProcessedEikonGetData, class)
-            , list(Instrument = "character", CURRENCY = "character", `Average.Daily.Volume.-.6.Months` = "integer",
+            , list(Instrument = "character", CURRENCY = "character", `Average.Daily.Volume.-.6.Months` = "numeric",
                    Instrument.Type = "character", Exchange.Name = "character",
                    CF_EXCHNG = "character", Exchange.Market.Identifier.Code = "character",
                    Instrument.Is.Active.Flag = "logical") )
