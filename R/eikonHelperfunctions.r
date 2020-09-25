@@ -93,7 +93,7 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
   PostProcessedEikonGetData2 <- PostProcessedEikonGetData[, lapply(.SD, function(x) replace(x, which( x == ""), NA))
                                                         ][, lapply(.SD, function(x) {if("NaN" %in% x){as.numeric(x)} else{x} })
                                                         ][, suppressWarnings(lapply(.SD, function(x){
-                                                                if ( any(is.logical(x))  ){as.logical(x)}
+                                                                if (is.logical(x)){as.logical(x)}
                                                                 else if(all(is.na(as.numeric(x))) != TRUE){as.numeric(x)}
                                                                 else {x}
                                                           }))
