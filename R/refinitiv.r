@@ -51,7 +51,7 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
 
   if (!reticulate::py_module_available("eikon") || update ) {
     try(reticulate::conda_remove(packages = c("httpx", "numpy", "eikon") , envname = envname,  conda = conda ))
-    reticulate::py_install(packages = c("httpx==0.14.2", "numpy", "eikon") , envname = envname,  method = method, conda = conda, pip = TRUE )
+    reticulate::py_install(packages = c("httpx==0.14.2", "numpy", "eikon==1.1.6post2") , envname = envname,  method = method, conda = conda, pip = TRUE )
   }
 
   return("Eikon Python interface successfully installed or updated")
@@ -359,6 +359,12 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #'
 #' The function automatically chunks the list of rics into chunks that comply with the api limitations and in the end rebuilds the chunks again into a single data.frame.
 #'
+#' Currently there is a known bug in the reticulate package with large integers.
+#' If a request is made that returns large integers the reticulate package will return -1 for these integers.
+#' See also this issue \url{https://github.com/rstudio/reticulate/issues/323}
+#' or try for yourself as indicated here \url{https://community.rstudio.com/t/large-integer-conversion-from-python-to-r/82568}
+#'
+#'
 #' @param EikonObject Eikon object created using EikonConnect function
 #' @param rics a vector containing the instrument RICS
 #' @param Eikonformulas a vector containing character string of Eikon Formulas
@@ -379,6 +385,23 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #' ex1 <- EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
 #'              Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
 #'              , "TR.CompanyName"), verbose = TRUE)
+#'
+#' ex2 <- EikonGetData( EikonObject = Eikon, rics = "AAPL.O"
+#'                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
+#'                    )
+#'
+#' # ex2 will return -1 which is most likely not the current market cap of apple")
+#' # a workaround is to scale back the output to millions
+#'
+#' ex2a <- EikonGetData( EikonObject = Eikon, rics = "AAPL.O"
+#'                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
+#'                    , Parameters = list("scale" = 6)
+#'                    )
+#' # or for more complex formula's
+#' # scale back in the formula itself
+#' ex2b <- EikonGetData( EikonObject = Eikon, rics = "AAPL.O"
+#'                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D, scale=6)/*Market Cap*/"
+#'                    )
 #' }
 EikonGetData <- function(EikonObject, rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60, verbose = FALSE){
 
