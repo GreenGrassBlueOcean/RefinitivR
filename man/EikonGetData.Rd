@@ -48,20 +48,20 @@ ex1 <- EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
              Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
              , "TR.CompanyName"), verbose = TRUE)
 
-ex2 <- EikonGetData( EikonObject = Eikon, rics = "AAPl.O"
+ex2 <- EikonGetData( EikonObject = Eikon, rics = "AAPL.O"
                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
                    )
 
 # ex2 will return -1 which is most likely not the current market cap of apple")
 # a workaround is to scale back the output to millions
 
-ex2a <- EikonGetData( EikonObject = Eikon, rics = "AAPl.O"
+ex2a <- EikonGetData( EikonObject = Eikon, rics = "AAPL.O"
                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
                    , Parameters = list("scale" = 6)
                    )
 # or for more complex formula's
 # scale back in the formula itself
-ex2b <- EikonGetData( EikonObject = Eikon, rics = "AAPl.O"
+ex2b <- EikonGetData( EikonObject = Eikon, rics = "AAPL.O"
                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D, scale=6)/*Market Cap*/"
                    )
 }

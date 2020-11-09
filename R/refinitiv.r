@@ -50,8 +50,9 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
   # reticulate::use_condaenv(condaenv = envname, conda = conda)
 
   if (!reticulate::py_module_available("eikon") || update ) {
-    try(reticulate::conda_remove(packages = c("httpx", "numpy", "eikon") , envname = envname,  conda = conda ))
-    reticulate::py_install(packages = c("httpx==0.14.2", "numpy", "eikon==1.1.6post2") , envname = envname,  method = method, conda = conda, pip = TRUE )
+    try(reticulate::conda_remove(packages = c("numpy", "pandas", "eikon") , envname = envname,  conda = conda ))
+    # reticulate::py_install(packages = c("httpx==0.14.2", "numpy", "eikon==1.1.6post2") , envname = envname,  method = method, conda = conda, pip = TRUE )
+    reticulate::py_install(packages = c("numpy==1.19.3", "pandas","eikon") , envname = envname,  method = method, conda = conda, pip = TRUE )
   }
 
   return("Eikon Python interface successfully installed or updated")
@@ -125,8 +126,8 @@ EikonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000
   options(.EikonApplicationPort = Eikonapplication_port)
 
   reticulate::use_condaenv(condaenv = "r-reticulate", conda = "auto") # set virtual environment right
+  # PythonEK <- reticulate::import(module = "refinitiv.dataplatform.eikon") # import python eikon module
   PythonEK <- reticulate::import(module = "eikon") # import python eikon module
-
   PythonEK$set_port_number(.Options$.EikonApplicationPort)
   PythonEK$set_app_key(app_key = .Options$.EikonApiKey)
 
@@ -259,6 +260,7 @@ retry <- function(retryfun, max = 2, init = 0){
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
 #' @param verbose boolean if TRUE prints out the python call to the console
 #' @param raw_output provide only the raw downloaded info from Eikon
+#' @param corax possible values 'adjusted', 'unadjusted'. Default: 'adjusted'
 #'
 #' @importFrom utils capture.output head
 #' @importFrom data.table `:=`
@@ -275,11 +277,11 @@ retry <- function(retryfun, max = 2, init = 0){
 #'                    start_date = "2020-01-01T01:00:00",
 #'                    end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE)
 #' }
-EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender = "tradingdays", fields = c('TIMESTAMP', 'VOLUME', 'HIGH', 'LOW', 'OPEN', 'CLOSE')
+EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender = "tradingdays", corax = "adjusted", fields = c('TIMESTAMP', 'VOLUME', 'HIGH', 'LOW', 'OPEN', 'CLOSE')
                               , start_date = "2020-01-01T01:00:00", end_date = paste0(Sys.Date(), "T01:00:00"), cast = TRUE, time_out = 60, verbose = FALSE, raw_output = FALSE){
 
   # Make sure that Python object has api key and change timeout
-  EikonObject$set_timeout(timeout = time_out)
+  # EikonObject$set_timeout(timeout = time_out)
   EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
 
 
@@ -325,6 +327,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                                                , end_date = as.character(end_date,  "%Y-%m-%dT%H:%M:%S")
                                                                , normalize = TRUE
                                                                , raw_output = TRUE
+                                                               , corax = corax
                                                                )
 
     )})
@@ -407,7 +410,7 @@ EikonGetData <- function(EikonObject, rics, Eikonformulas, Parameters = NULL, ra
 
 #Make sure that Python object has api key
 EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
-EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on timeout error chance.
+# EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on timeout error chance.
 
 
 # Divide RICS in chunks to satisfy api limits
@@ -527,7 +530,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 
   #Make sure that Python object has api key
   EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
-  EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on timeout error chance.
+  # EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on timeout error chance.
 
 
   # Divide symbols in chunks to satisfy api limits

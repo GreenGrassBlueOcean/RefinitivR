@@ -131,16 +131,12 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded long timeseries"
                     , {check_Eikonapi()
                       Eikon <- Refinitiv::EikonConnect()
-
-
-
-
-
-                      CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
+                       CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("AAPL.O"),
                                                                  start_date = "2000-07-28T01:00:00",
                                                                  end_date = "2010-07-28T23:59:00",
-                                                                 )
+                                                                 corax = "adjusted"
+                      )
                       )
 
 
@@ -334,7 +330,6 @@ testthat::test_that("Check EikonGetData returns expected data with only 2 ric an
 
                       GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list( Instrument = c("MMM", "III.L")
                                                                                             , CURRENCY = c("USD", "GBp")
-                                                                                            , `Average.Daily.Volume.-.6.Months` = c(3465640L, 1993000L)
                                                                                             , Instrument.Type = c("Ordinary Shares", "Ordinary Shares")
                                                                                             , Exchange.Name = c("NO MARKET (E.G. UNLISTED)", "LONDON STOCK EXCHANGE")
                                                                                             , CF_EXCHNG = c("NYQ", "LSE")
@@ -345,7 +340,7 @@ testthat::test_that("Check EikonGetData returns expected data with only 2 ric an
 
 
                       CheckEikonData <- try(EikonGetData( EikonObject = Eikon, rics = c("MMM", "III.L")
-                                                        , Eikonformulas = c( "CURRENCY", "TR.AvgDailyVolume6M", "TR.InstrumentType", "TR.ExchangeName", "CF_EXCHNG", "TR.ExchangeMarketIdCode", "TR.InstrumentIsActive")
+                                                        , Eikonformulas = c( "CURRENCY", "TR.InstrumentType", "TR.ExchangeName", "CF_EXCHNG", "TR.ExchangeMarketIdCode", "TR.InstrumentIsActive")
                                                         , raw_output = FALSE
                       )
                       )

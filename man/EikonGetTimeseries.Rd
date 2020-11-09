@@ -9,6 +9,7 @@ EikonGetTimeseries(
   rics,
   interval = "daily",
   calender = "tradingdays",
+  corax = "adjusted",
   fields = c("TIMESTAMP", "VOLUME", "HIGH", "LOW", "OPEN", "CLOSE"),
   start_date = "2020-01-01T01:00:00",
   end_date = paste0(Sys.Date(), "T01:00:00"),
@@ -26,6 +27,8 @@ EikonGetTimeseries(
 \item{interval}{Data interval. Possible values: 'tick', 'minute', 'hour', 'daily', 'weekly', 'monthly', 'quarterly', 'yearly'  Default: 'daily'}
 
 \item{calender}{Possible values: 'native', 'tradingdays', 'calendardays'., Default: 'tradingdays'}
+
+\item{corax}{possible values 'adjusted', 'unadjusted'. Default: 'adjusted'}
 
 \item{fields}{a vector containing  any combination ('TIMESTAMP', 'VOLUME', 'HIGH', 'LOW', 'OPEN', 'CLOSE')}
 
