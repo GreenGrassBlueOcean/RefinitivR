@@ -20,7 +20,8 @@ Imports:
     DatastreamDSWS2R,
     httr,
     stringi,
-    data.table
+    data.table,
+    magrittr
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:

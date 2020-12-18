@@ -5,16 +5,19 @@
 #' are removed from the lists causing shorter vectors than expected.
 #'
 #' @param Eikon_get_dataOuput a single Eikon$get_data result or a list of Eikon$get_data results.
+#' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."
 #'
 #' @return a list of a data.frame with cleaned output and the resulting error data.frame
 #' @export
 #'
+#' @seealso EikonNameCleaner
+#'
 #' @examples
-EikonPostProcessor <- function(Eikon_get_dataOuput){
+EikonPostProcessor <- function(Eikon_get_dataOuput, SpaceConvertor = "."){
 
   #0. helper functions ----
 
-  getData <- function(data, requestnumber) {
+  getData <- function(data, requestnumber, SpaceConvertor) {
 
     #1. Remove NULL values and replace with NA in nested list
 
@@ -30,7 +33,7 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
       RequestData <- data[[requestnumber]][["data"]][[1]]
     }
 
-    Requestheaders <- EikonNameCleaner(getheaders(data, requestnumber))
+    Requestheaders <- EikonNameCleaner(getheaders(data, requestnumber), SpaceConvertor = SpaceConvertor)
     data.table::setnames(RequestData, Requestheaders)
 
     return(RequestData)
@@ -76,7 +79,7 @@ EikonPostProcessor <- function(Eikon_get_dataOuput){
   #1. main program ----
   RequestData <- RequestError <- vector(mode = "list", length = length(Eikon_get_dataOuput))
   RequestData <- lapply( X = 1:length(Eikon_get_dataOuput)
-                       , FUN = function(x, data){getData(data, requestnumber=x)}
+                       , FUN = function(x, data){getData(data, requestnumber=x, SpaceConvertor = SpaceConvertor)}
                        , data = Eikon_get_dataOuput
                        )
 
@@ -282,6 +285,7 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
   }
 
   #2. Run main function
+  EikonSymbologyResult2 <- data.table::rbindlist(EikonSymbologyResult, fill = TRUE)
   EikonSymbologyResult2 <- data.table::rbindlist(EikonSymbologyResult, fill = TRUE)
   if("bestMatch" %in% names(EikonSymbologyResult2)){
     EikonSymbologyResult2$bestMatch <- as.character(EikonSymbologyResult2$bestMatch)

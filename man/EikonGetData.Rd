@@ -11,7 +11,8 @@ EikonGetData(
   Parameters = NULL,
   raw_output = FALSE,
   time_out = 60,
-  verbose = FALSE
+  verbose = FALSE,
+  SpaceConvertor = "."
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ EikonGetData(
 \item{time_out}{set the maximum timeout to the Eikon server, default = 60}
 
 \item{verbose}{boolean, set to true to print out the actual python call with time stamp for debugging.}
+
+\item{SpaceConvertor}{converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."}
 }
 \value{
 a data.frame containing data.from Eikon

@@ -437,12 +437,7 @@ testthat::test_that("Check EikonShowAttributes returns expected vector of possib
 
 
 
-## Test EikonNameCleaner ----
 
-test_that("EikonNameCleaner satisfies testcases", {
-  expect_equal(EikonNameCleaner(c("Instrument","Company Name","RDN_EXCHD2","Operating MIC")), c("Instrument","Company.Name","RDN_EXCHD2","Operating.MIC"))
-  expect_equal(EikonNameCleaner(c("TR.ShortInterest(SDate=0D)/TR.SharesFreeFloat(SDate=0D)/*Short Interest as % of Float*/")), c("Short.Interest.as.%.of.Float"))
-})
 
 
 ## Test EikonChunker ----

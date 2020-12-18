@@ -157,26 +157,49 @@ EikonShowAttributes <- function(EikonObject){
 
 
 
-#' Convert eikon formula's in human readable names
+#' Convert Eikon formula's in human readable names
 #'
 #' @param names vector of data.frame column names
+#' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."
 #'
 #' @return a data.frame in which the Eikon formula's are replaced with the Eikon display Name which is the last part of the formula.
 #' @export
 #'
+#' @details
+#' The variables returned by the Eikon API are not always easily guessable upfront.
+#' There is no fixed way how variables are returned. EikonNameCleaner improves this by returning UpperCamel case variable names.
+#' It does however not turn capitalized words back into lowercase. So e.g. RDN_EXCHD2 will stay RDN_EXCHD2 and "Dividend yield"
+#' will return as "Dividend.Yield" (if SpaceConvertor is set as ".")
+#'
+#' The parameter SpaceConvertor converts spaces into any of the following characters ".", "," , "-", "_".
+#' Setting SpaceConvertor to another value will cause no conversion of spaces in the variable names.
+#' Space Conversion is highly advisable due to the fact that otherwise issues could occur with accessing columnnames in the returned data.frame
+#' as an example "Dividend yield" will turn into "Dividend.Yield" with SpaceConvertor being set as "."
+#'
 #' @examples
-EikonNameCleaner <- function(names){
+#' EikonNameCleaner(c("Instrument","Company Name","RDN_EXCHD2","Operating MIC"))
+EikonNameCleaner <- function(names, SpaceConvertor = "."){
 
-  returnNames <-  lapply( names
-                        , FUN = function(x){TryCleanName <- unlist(qdapRegex::rm_between(x, '/*', '*/', extract = TRUE));
-                                            return(ifelse(test = !is.na(TryCleanName), yes = TryCleanName, no = x ))
-                                           }
+  #0. Helper Functions ----
+  firstup <- function(x) {
+              substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+              x
+  }
 
-                        )
-  #replace spaces with "." to have better data.frame columnnames
-  returnNames <- gsub(x = returnNames, pattern = " ", replacement = ".")
+  #1. Main Function ----
+
+  returnNames <- unlist(qdapRegex::rm_between(names, '/*', '*/', extract = TRUE))
+
+  returnNames[is.na(returnNames)] <- stringi::stri_split(str = names[is.na(returnNames)], fixed = " ") %>%
+                                     lapply(FUN =  firstup) %>%
+                                     lapply(FUN = paste, collapse = " ")
+
+
+  if(SpaceConvertor %in% c(".", "," , "-", "_") ){
+    returnNames <- gsub(x = returnNames, pattern = " ", replacement = SpaceConvertor, perl = TRUE)
+  }
+
   returnNames <- stringi::stri_trans_general(returnNames, "latin-ascii")
-
   return(returnNames)
 }
 
@@ -375,6 +398,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #' @param raw_output to return the raw list by chunk for debugging purposes, default = FALSE
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
 #' @param verbose boolean, set to true to print out the actual python call with time stamp for debugging.
+#' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."
 #'
 #' @return a data.frame containing data.from Eikon
 #' @importFrom utils capture.output
@@ -406,7 +430,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 #'                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D, scale=6)/*Market Cap*/"
 #'                    )
 #' }
-EikonGetData <- function(EikonObject, rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60, verbose = FALSE){
+EikonGetData <- function(EikonObject, rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60, verbose = FALSE, SpaceConvertor = "."){
 
 #Make sure that Python object has api key
 EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
@@ -467,7 +491,7 @@ if(any(DownloadCoordinator$retries > 4L)){
 
 if (!raw_output) {
   EikonDataList <- lapply(EikonDataList, FUN = function(x){if(all(is.na(x))){return(NULL)} else{return(x)}})
-  ReturnElement <- EikonPostProcessor(EikonDataList)
+  ReturnElement <- EikonPostProcessor(EikonDataList, SpaceConvertor)
 } else {
   ReturnElement <- EikonDataList
 }
@@ -578,7 +602,8 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 #' @param functionname function name for error reporting
 #' @param verbose Boolean print or not variable
 #'
-#' @importfrom utils capture.output head
+#' @importFrom utils capture.output
+#' @importFrom utils head
 #' @return boolean
 #' @export
 #'
