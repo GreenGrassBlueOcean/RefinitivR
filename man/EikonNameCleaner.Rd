@@ -2,31 +2,31 @@
 % Please edit documentation in R/refinitiv.r
 \name{EikonNameCleaner}
 \alias{EikonNameCleaner}
-\title{Convert eikon formula's in human readable names}
+\title{Convert Eikon formula's in human readable names}
 \usage{
 EikonNameCleaner(names, SpaceConvertor = ".")
 }
 \arguments{
 \item{names}{vector of data.frame column names}
 
-\item{SpaceConvertor}{converst spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."}
+\item{SpaceConvertor}{converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."}
 }
 \value{
 a data.frame in which the Eikon formula's are replaced with the Eikon display Name which is the last part of the formula.
 }
 \description{
-Convert eikon formula's in human readable names
+Convert Eikon formula's in human readable names
 }
 \details{
 The variables returned by the Eikon API are not always easily guessable upfront.
-There is no fixed way how variables are returned. EikonNameCleaner improves this by returning UpperCamel case variablenames.
+There is no fixed way how variables are returned. EikonNameCleaner improves this by returning UpperCamel case variable names.
 It does however not turn capitalized words back into lowercase. So e.g. RDN_EXCHD2 will stay RDN_EXCHD2 and "Dividend yield"
 will return as "Dividend.Yield" (if SpaceConvertor is set as ".")
 
 The parameter SpaceConvertor converts spaces into any of the following characters ".", "," , "-", "_".
 Setting SpaceConvertor to another value will cause no conversion of spaces in the variable names.
-Space Conversion is highly advisable due to the fact that otherwise issues could occur with column names etc of the returned data.frame
-as an example "RDN_EXCHD2" will turn into "RDN.EXCHD2" with SpaceConvetor being set as "."
+Space Conversion is highly advisable due to the fact that otherwise issues could occur with accessing columnnames in the returned data.frame
+as an example "Dividend yield" will turn into "Dividend.Yield" with SpaceConvertor being set as "."
 }
 \examples{
 EikonNameCleaner(c("Instrument","Company Name","RDN_EXCHD2","Operating MIC"))

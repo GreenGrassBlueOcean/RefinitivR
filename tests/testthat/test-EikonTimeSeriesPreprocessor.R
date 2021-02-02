@@ -1,12 +1,12 @@
 test_that("EikonTimeSeriesPreprocessor works", {
 
-
   test <- EikonTimeSeriesPreprocessor(interval = "daily", rics = letters, start_date = "2015-01-01", end_date = "2018-01-01")
 
-  expected_outcome <- list( `1` = c("a", "b", "c"), `2` = c("d", "e", "f", "g"), `3` = c("h", "i", "j", "k")
-                          , `4` = c("l", "m", "n"), `5` = c("o", "p", "q", "r"), `6` = c("s", "t", "u", "v")
-                          , `7` = c("w", "x", "y", "z"))
-
+  expected_outcome <- list(`1` = c("a", "b", "c"), `2` = c("d", "e", "f")
+                          , `3` = c("g", "h", "i"), `4` = c("j", "k", "l")
+                          , `5` = c("m", "n", "o"), `6` = c("p", "q", "r")
+                          , `7` = c("s", "t", "u"), `8` = c("v", "w", "x")
+                          , `9` = c("y", "z"))
   expect_identical(test, expected_outcome)
 })
 
@@ -67,10 +67,11 @@ test_that("EikonTimeSeriesPreprocessor works for hour interval", {
 
   test <- EikonTimeSeriesPreprocessor(interval = "hour", rics = letters, start_date = "2015-01-01", end_date = "2018-01-01")
 
-  expected_outcome <- list( `1` = c("a", "b"), `2` = c("c", "d", "e"), `3` = c("f", "g"), `4` = c("h", "i", "j")
-                          , `5` = c("k", "l", "m"), `6` = c("n", "o"), `7` = c("p", "q", "r"), `8` = c("s", "t")
-                          , `9` = c("u", "v", "w"), `10` = c("x", "y", "z"))
-
+  expected_outcome <- list(`1` = c("a", "b"), `2` = c("c", "d"), `3` = c("e", "f"),
+                           `4` = c("g", "h"), `5` = c("i", "j"), `6` = c("k", "l"),
+                           `7` = c("m", "n"), `8` = c("o", "p"), `9` = c("q", "r"),
+                           `10` = c("s", "t"), `11` = c("u", "v"), `12` = c("w", "x"
+                           ), `13` = c("y", "z"))
   expect_identical(test, expected_outcome)
 })
 

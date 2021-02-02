@@ -245,10 +245,9 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
     }
   }
 
-  SplittedRics <-  split(RICS, ceiling(seq_along(RICS)/ChunkLength))
+  SplittedRics <-  split(RICS, ceiling(seq_along(RICS)/floor(ChunkLength)))
   return(SplittedRics)
 }
-
 
 #' Function to retry failed functions after a time out of 5 seconds. Especially useful for failed api calls.
 #'
