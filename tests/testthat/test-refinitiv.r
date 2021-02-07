@@ -400,12 +400,11 @@ test_that("EikonGetData does not crash when only one wrong RIC is requested with
   check_Eikonapi()
   Eikon <- Refinitiv::EikonConnect()
 
-  GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(V1 = "WrongRIC2", TR.COMPANYNAME = NA)
-                                                                   , row.names = c(NA, -1L), class = "data.frame"),
+  GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(`NA` = "WrongRIC2",
+                                                                        TR.COMPANYNAME = NA), row.names = c(NA, -1L), class = "data.frame"),
                              Eikon_Error_Data = structure(list(code = 412L, col = 1L,
                                                                message = "Unable to resolve all requested identifiers.",
                                                                row = 0L), row.names = c(NA, -1L), class = "data.frame"))
-
   CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("WrongRIC2"),
                                      Eikonformulas = "TR.CompanyName", raw_output = FALSE))
 
