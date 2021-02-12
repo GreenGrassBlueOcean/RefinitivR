@@ -27,11 +27,13 @@ Refinitiv::install_eikon()
 ```
 
 # Connecting to the Eikonapi
-```r
-If one wants to use the Python Eikon Package:
-Eikon <- EikonConnect(Eikonapplication_id = "YOUR EIKON API KEY", Eikonapplication_port = 9000L, PythonModule = "Eikon")
 
-If one wants to use  the Python Refinitiv Dataplatform Package:
+If one wants to use the Python Eikon Package:
+```r
+Eikon <- EikonConnect(Eikonapplication_id = "YOUR EIKON API KEY", Eikonapplication_port = 9000L, PythonModule = "Eikon")
+```
+If one wants to use  the Python Refinitiv Dataplatform Package (RDP):
+```r
 Eikon <- EikonConnect(Eikonapplication_id = "YOUR EIKON API KEY", PythonModule = "RDP")
 ```
 
