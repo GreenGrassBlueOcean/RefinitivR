@@ -74,6 +74,7 @@ jobs:
         run: |
           Rscript -e "reticulate::install_miniconda()"
           Rscript -e "reticulate::conda_create('r-reticulate')"
+        shell: Rscript {0}
 
       - name: Session info
         run: |
