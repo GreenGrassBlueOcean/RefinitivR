@@ -4,12 +4,18 @@
 \alias{EikonConnect}
 \title{Initialize Eikon Python api}
 \usage{
-EikonConnect(Eikonapplication_id = NA, Eikonapplication_port = 9000L)
+EikonConnect(
+  Eikonapplication_id = NA,
+  Eikonapplication_port = 9000L,
+  PythonModule = "Eikon"
+)
 }
 \arguments{
 \item{Eikonapplication_id}{eikon api key}
 
 \item{Eikonapplication_port}{proxy port id}
+
+\item{PythonModule}{character choose between Eikon or RDP for Refinitiv Data Platform}
 }
 \value{
 a Python module that is an EikonObject
@@ -19,6 +25,9 @@ Initialize Eikon Python api
 }
 \examples{
 \dontrun{
-Eikon <- EikonConnect(Eikonapplication_id = "your key", Eikonapplication_port = 9000L)
+Eikon <- EikonConnect(Eikonapplication_id = "your key", Eikonapplication_port = 9000L
+, PythonModule = "Eikon")
+Eikon <- EikonConnect(Eikonapplication_id = "your key", Eikonapplication_port = 9000L
+, PythonModule = "RDP")
 }
 }

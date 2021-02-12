@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 R/test_eikonobject.r
+*.log
