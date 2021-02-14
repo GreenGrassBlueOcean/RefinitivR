@@ -53,7 +53,7 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
     # try(reticulate::conda_remove(packages = c("numpy", "pandas", "nest-asyncio","eikon") , envname = envname,  conda = conda ))
     # reticulate::py_install(packages = c("httpx==0.14.2", "numpy", "eikon==1.1.6post2") , envname = envname,  method = method, conda = conda, pip = TRUE )
     reticulate::py_install(packages = c("numpy==1.19.3", "pandas", "nest-asyncio==1.3.0","eikon") , envname = envname,  method = method, conda = conda, pip = TRUE, update = TRUE )
-    reticulate::py_install(packages = "refinitiv.dataplatform", envname = 'r-reticulate', method = "auto", conda = "auto", update = TRUE, pip = TRUE)
+    reticulate::py_install(packages = "refinitiv.dataplatform", envname = envname, method = method, conda = conda, update = TRUE, pip = TRUE)
   }
 
   return("Eikon Python interface successfully installed or updated")
@@ -124,20 +124,28 @@ EikonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000
     if(is.null(Eikonapplication_id)){stop("Please supply Eikonapplication_id")}
   }
 
+  if (is.na(PythonModule)){
+    try(PythonModule <- getOption(".RefinitivAPI") )
+    if(is.null(PythonModule)){stop("Please supply name of PythonModule: Eikon or RDP")}
+  }
+
+
+
   if(!CondaExists()){stop("Conda/reticulate does not seem to be available please run install_eikon")}
 
   #2. Run main programme ---
   options(.EikonApiKey = Eikonapplication_id)
   options(.EikonApplicationPort = Eikonapplication_port)
+  options(.RefinitivAPI = PythonModule)
 
   reticulate::use_condaenv(condaenv = "r-reticulate", conda = "auto") # set virtual environment right
   # PythonEK <- reticulate::import(module = "refinitiv.dataplatform.eikon") # import python eikon module
 
-  if (identical(PythonModule, "Eikon")){
+  if (identical(.Options$.RefinitivAPI, "Eikon")){
     PythonEK <- reticulate::import(module = "eikon") # import python eikon module
     PythonEK$set_port_number(.Options$.EikonApplicationPort)
     PythonEK$set_app_key(app_key = .Options$.EikonApiKey)
-  } else if (identical(PythonModule, "RDP")){
+  } else if (identical(.Options$.RefinitivAPI, "RDP")){
     PythonEK <- reticulate::import(module = "refinitiv.dataplatform.eikon") # import python eikon module
     PythonEK$set_app_key(app_key = .Options$.EikonApiKey)
   } else {
