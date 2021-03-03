@@ -55,7 +55,7 @@ Data <- EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
 
 ## Retrieving large integers with EikonGetData
 
-there is currently an issue with the reticulate package handling large integers (like e.g. market capatilization) from python to r.
+There is currently an issue with the reticulate package handling large integers (like e.g. market capatilization) from python to r.
 This issue is described [here](https://github.com/rstudio/reticulate/issues/323) 
 and try for yourself [here](https://community.rstudio.com/t/large-integer-conversion-from-python-to-r/82568)
 
@@ -98,6 +98,6 @@ DSResult <- DataStream$snapshotRequest(instrument = c("ABF","RIO","WPP"),
                                        requestDate = "0D")
 
 ```
-for further details on accesing datastream see https://github.com/CharlesCara/DatastreamDSWS2R
+For further details on accesing datastream see https://github.com/CharlesCara/DatastreamDSWS2R.
 
 licensing see LICENSE File!
