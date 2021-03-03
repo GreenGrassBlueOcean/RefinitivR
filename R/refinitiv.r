@@ -129,11 +129,9 @@ EikonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000
     if(is.null(PythonModule)){stop("Please supply name of PythonModule: Eikon or RDP")}
   }
 
-
-
   if(!CondaExists()){stop("Conda/reticulate does not seem to be available please run install_eikon")}
 
-  #2. Run main programme ---
+  #2. Run main programme ----
   options(.EikonApiKey = Eikonapplication_id)
   options(.EikonApplicationPort = Eikonapplication_port)
   options(.RefinitivAPI = PythonModule)
@@ -636,21 +634,21 @@ InspectRequest <- function(df, functionname, verbose = TRUE){
   }
 
   if(class(df) == "logical" && is.na(df) ){
-    message(paste0(functionname, " request returned NA"))
+    try(message(paste0(functionname, " request returned NA")))
     # stop("Wrong output retrieved from Refinitiv")
   }
 
  if(("error" %in% names(df))){
-    message(paste0(functionname, " request returned the following (and other) erors: ",paste(capture.output(head(data.table::rbindlist(df$error),10)), collapse = "\n" )))
+    try(message(paste0(functionname, " request returned the following (and other) erors: ",paste(capture.output(head(data.table::rbindlist(df$error),10)), collapse = "\n" ))))
   }
 
   if("totalRowsCount" %in% names(df) &&  "totalColumnsCount"  %in% names(df)  ){
-    message(paste0(functionname, " request returned the following data: ",df$totalColumnsCount, " columns and ",  df$totalRowsCount, " rows"))}
+    try(message(paste0(functionname, " request returned the following data: ",df$totalColumnsCount, " columns and ",  df$totalRowsCount, " rows")))}
 
   if(length(df)!=0){
-    message(paste0(functionname, " request returned with length ", length(df)))
+    try(message(paste0(functionname, " request returned with length ", length(df))))
   } else{
-    message(paste0(functionname, " request returned with length 0"))
+    try(message(paste0(functionname, " request returned with length 0")))
   }
 
 }

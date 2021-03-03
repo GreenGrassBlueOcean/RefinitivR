@@ -7,7 +7,7 @@ test_that("EikonGetSymbology works", {
     print("Eikon API available performing test")
   }
   check_Eikonapi()
-  Eikon <- Refinitiv::EikonConnect()
+  Eikon <- Refinitiv::EikonConnect(PythonModule = NA)
 
 
   #ex1
