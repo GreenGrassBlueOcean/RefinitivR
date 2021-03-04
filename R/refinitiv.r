@@ -634,7 +634,6 @@ InspectRequest <- function(df, functionname, verbose = TRUE){
   }
 
   try(message(str(df)))
-  try(message(summary(df)))
 
   if(class(df) == "logical" && is.na(df) ){
     try(message(paste0(functionname, " request returned NA")))
