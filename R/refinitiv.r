@@ -622,6 +622,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 #'
 #' @importFrom utils capture.output
 #' @importFrom utils head
+#' @importFrom utils str
 #' @return boolean
 #' @export
 #'
@@ -633,7 +634,13 @@ InspectRequest <- function(df, functionname, verbose = TRUE){
     return(NULL)
   }
 
-  try(message(str(df)))
+
+  try({
+  x <- str(df)
+  Encoding(x) <- "UTF-8"
+  message(iconv(x, "UTF-8", "UTF-8",sub='')) ## replace any non UTF-8 by ''
+  })
+
 
   if(class(df) == "logical" && is.na(df) ){
     try(message(paste0(functionname, " request returned NA")))
