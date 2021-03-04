@@ -635,12 +635,10 @@ InspectRequest <- function(df, functionname, verbose = TRUE){
   }
 
 
-  try({
-  x <- str(df)
-  Encoding(x) <- "UTF-8"
-  message(iconv(x, "UTF-8", "UTF-8",sub='')) ## replace any non UTF-8 by ''
-  })
-
+  try(message(class(df)))
+  try(message(lapply(df, class)))
+  try(message(names(df)))
+  try(message(lapply(df, names)))
 
   if(class(df) == "logical" && is.na(df) ){
     try(message(paste0(functionname, " request returned NA")))
