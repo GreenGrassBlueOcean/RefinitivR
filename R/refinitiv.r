@@ -52,7 +52,7 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
   if (!reticulate::py_module_available("eikon") || update ) {
     # try(reticulate::conda_remove(packages = c("numpy", "pandas", "nest-asyncio","eikon") , envname = envname,  conda = conda ))
     # reticulate::py_install(packages = c("httpx==0.14.2", "numpy", "eikon==1.1.6post2") , envname = envname,  method = method, conda = conda, pip = TRUE )
-    reticulate::py_install(packages = c("numpy==1.19.3", "pandas", "nest-asyncio==1.3.0","eikon") , envname = envname,  method = method, conda = conda, pip = TRUE, update = TRUE )
+    reticulate::py_install(packages = c("numpy", "pandas", "nest-asyncio","eikon", "scipy") , envname = envname,  method = method, conda = conda, pip = TRUE, update = TRUE )
     reticulate::py_install(packages = "refinitiv.dataplatform", envname = envname, method = method, conda = conda, update = TRUE, pip = TRUE)
   }
 
