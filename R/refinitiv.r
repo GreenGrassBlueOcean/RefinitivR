@@ -572,8 +572,6 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 
   #Make sure that Python object has api key
   EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
-  # EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on timeout error chance.
-
 
   # Divide symbols in chunks to satisfy api limits
   ChunckedSymbols <- Refinitiv::EikonChunker(RICS = symbol, Eikonfields = to_symbol_type)
@@ -588,13 +586,22 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                                               , "\t, debug = False, raw_output = True\n\t)"
     )
     )}
-      retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
+       if(identical(getOption(".RefinitivAPI"), "Eikon")){
+        retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
                                      , from_symbol_type = from_symbol_type
                                      , to_symbol_type = list(to_symbol_type)
                                      , raw_output = TRUE
                                      , debug = FALSE
-                                     , bestMatch = bestMatch
-                                  ))
+                                     , bestMatch = bestMatch))
+        } else if(identical(getOption(".RefinitivAPI"), "RDP")) {
+         retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
+                                            , from_symbol_type = from_symbol_type
+                                            , to_symbol_type = list(to_symbol_type)
+                                            , raw_output = TRUE
+                                            , debug = FALSE
+                                            , best_match  = bestMatch))
+         }
+
     })
     InspectRequest(df = EikonSymbologyList[[j]], functionname = "EikonGetSymbology")
     Sys.sleep(time = 0.5)
