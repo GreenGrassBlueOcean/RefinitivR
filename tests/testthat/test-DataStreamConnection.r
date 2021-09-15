@@ -5,7 +5,7 @@ test_that("TestDataStreamCredentials fails when it should", {
 
 
 test_that("TestDataStreamCredentials satisfies test cases", {
-  expect_warning(expect_false(isTRUE(TestDataStreamCredentials(DatastreamUsername = "wrong username", DatastreamPassword = "wrong Password"))))
+  expect_error(expect_false(isTRUE(TestDataStreamCredentials(DatastreamUsername = "wrong username", DatastreamPassword = "wrong Password"))))
 })
 
 

@@ -27,14 +27,27 @@ token_url <- paste("http://product.datastream.com/DSWSClient/V1/DSService.svc/re
                    "&password=",
                    DatastreamPassword,
                    sep="")
-test <- httr::GET(token_url, httr::timeout(300))
+browser()
+test <- tryCatch({httr::GET(token_url, httr::timeout(5))},
+                  error=function(cond) {
+                        message(paste("URL does not seem to exist:", token_url, "Either the service is down or the credentials are false"))
+                        message("Here's the original error message:")
+                        message(cond)
+                        # Choose a return value in case of error
+                        return(list(val = NA, ErrorMessage = cond))
+}, expectation_success=class)
 
 
 #3. Interpret status ----
-if(test$status_code == 200){
-  message("DataStreamCredentials are working ok")
-  return(TRUE)
-} else
-  warning(paste0("DataStream Credentials username \"", DatastreamUsername, "\" and password \"", DatastreamPassword, "\" are not ok.\n HTTP message:\n ", paste(test, collapse = "\n" )))
-  return(test)
+if(is.na(test$val) || test$status_code != 200  ){
+    switch <- ifelse(("ErrorMessage" %in% names(test)), yes = test$ErrorMessage, no = test)
+    warning(paste0("Most likely DataStream Credentials username \"", DatastreamUsername, "\" and password \"", DatastreamPassword, "\" are not ok.\n HTTP message:\n ", paste(switch, collapse = "\n" )))
+    return(FALSE)
+  } else if(test$status_code == 200){
+    message("DataStreamCredentials are working ok")
+    return(TRUE)
+  }
 }
+
+
+
