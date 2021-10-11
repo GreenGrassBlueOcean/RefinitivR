@@ -74,7 +74,7 @@ jobs:
       - name: Install reticulate dependencies
         run: |
           Rscript -e "reticulate::install_miniconda()"
-          Rscript -e "reticulate::conda_create('r-reticulate')"
+          Rscript -e "reticulate::conda_create(envname = 'r-reticulate', python_version = "3.9")"
 
       - name: Session info
         run: |
