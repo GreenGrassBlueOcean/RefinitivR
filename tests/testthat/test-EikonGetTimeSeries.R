@@ -44,7 +44,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                  end_date = "2020-01-10T01:00:00"))
 
                       GoodCheckEikonTimeSeries <-structure(list(Date = structure(c(1577923200, 1578009600, 1578268800, 1578355200, 1578441600, 1578528000, 1578614400)
-                                                                                 , class = c("POSIXct", "POSIXt"))
+                                                                                 , class = c("POSIXct", "POSIXt"), tzone = "GMT")
                                                                 , Security = c("MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
                                                                 , CLOSE = c(180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47)
                                                                 , HIGH = c(180.01, 178.66, 178.71, 178.51, 181.5, 181.59, 182.18)
@@ -53,7 +53,8 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                                                                 , VOLUME = c(3448335, 2467310, 1997981, 2176615, 2758339, 2746346, 2103818))
                                                            , row.names =  c(NA, -7L), class = "data.frame")
 
-                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-2)}
+                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-2)
+                      }
 )
 
 
@@ -69,7 +70,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                       )
 
                       GoodCheckEikonTimeSeries <-structure(list(Date = structure(c(1577923200, 1578009600, 1578268800, 1578355200, 1578441600, 1578528000, 1578614400)
-                                                                                 , class = c("POSIXct", "POSIXt"))
+                                                                                 , class = c("POSIXct", "POSIXt"), tzone = "GMT")
                                                                 , Security = c("MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
                                                                 , CLOSE = c(180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47))
                                                            , row.names = c(NA, 7L), class = "data.frame")
@@ -89,7 +90,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
 
                       GoodCheckEikonTimeSeries <- structure(list(Date = structure(c(1577923200, 1578009600, 1578268800, 1578355200, 1578441600, 1578528000, 1578614400, 1577923200, 1578009600,
                                                                                     1578268800, 1578355200, 1578441600, 1578528000, 1578614400)
-                                                                                  , class = c("POSIXct", "POSIXt"))
+                                                                                  , class = c("POSIXct", "POSIXt"), tzone = "GMT")
                                                                  , Security = c("III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "III.L", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
                                                                  , CLOSE = c(1116.5, 1108, 1088.5, 1086.5, 1088, 1094, 1088.5, 180, 178.45, 178.62, 177.9, 180.63, 181.2, 180.47))
                                                             , row.names = c(NA, -14L), class = "data.frame")
@@ -157,7 +158,7 @@ testthat::test_that("Check EikonGetTimeseries works with wrong ric in list"
                     , {check_Eikonapi()
                       Eikon <- Refinitiv::EikonConnect()
 
-                      Correct_timeseries <- structure(list(Date = structure(c(1595376000, 1595462400, 1595548800, 1595808000, 1595894400), class = c("POSIXct", "POSIXt"))
+                      Correct_timeseries <- structure(list(Date = structure(c(1595376000, 1595462400, 1595548800, 1595808000, 1595894400), class = c("POSIXct", "POSIXt"), tzone = "GMT")
                                                            , Security = c("MMM", "MMM", "MMM", "MMM", "MMM")
                                                            , CLOSE = c(158.71, 159.29, 159.84, 163.24, 155.68)
                                                            , HIGH = c(159.93, 159.65, 161.6, 163.38, 157.48)
@@ -262,13 +263,14 @@ test_that( "empty downloaded data.frame can be processed", {
                                         , end_date = "2006-02-20T01:00:00"
   )
 
-  EikonTimeseriesCorrect <- structure(list(Date = structure(c(1138838400, 1138924800, 1139184000, 1139270400, 1139356800, 1139443200, 1139529600, 1139788800, 1139875200, 1139961600, 1140048000, 1140134400), class = c("POSIXct", "POSIXt"))
-                                           , Security = c("MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
-                                           , CLOSE = c(72.15, 71.1, 71.17, 70.65, 71, 72.12, 72.61, 72.91, 73.7, 73.13, 73.05, 73.77)
-                                           , HIGH = c(73.68, 72.09, 71.3, 71.29, 71.28, 72.88, 72.99, 73.42, 74.12, 74.18, 73.35, 74.15)
-                                           , LOW = c(72.05, 71, 70.99, 70.57, 70.3, 71.25, 71.5, 72.64, 73.41, 73.09, 72.5, 73.08)
-                                           , OPEN = c(73.16, 71.75, 71, 71.16, 70.65, 71.36, 72.29, 72.69, 73.5, 73.71, 73.2, 73.15)
-                                           , VOLUME = c(3207100, 3258300, 2551500, 3133200, 2846100, 3798100, 2932400, 2310200, 3859400, 2672900, 2923000, 2338600))
+  EikonTimeseriesCorrect <- structure(list( Date = structure(c(1138838400, 1138924800, 1139184000, 1139270400, 1139356800, 1139443200, 1139529600, 1139788800
+                                                               , 1139875200, 1139961600, 1140048000, 1140134400), class = c("POSIXct", "POSIXt"), tzone = "GMT")
+                                          , Security = c("MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM")
+                                          , CLOSE = c(72.15, 71.1, 71.17, 70.65, 71, 72.12, 72.61, 72.91, 73.7, 73.13, 73.05, 73.77)
+                                          , HIGH = c(73.68, 72.09, 71.3, 71.29, 71.28, 72.88, 72.99, 73.42, 74.12, 74.18, 73.35, 74.15)
+                                          , LOW = c(72.05, 71, 70.99, 70.57, 70.3, 71.25, 71.5, 72.64, 73.41, 73.09, 72.5, 73.08)
+                                          , OPEN = c(73.16, 71.75, 71, 71.16, 70.65, 71.36, 72.29, 72.69, 73.5, 73.71, 73.2, 73.15)
+                                          , VOLUME = c(3207100, 3258300, 2551500, 3133200, 2846100, 3798100, 2932400, 2310200, 3859400, 2672900, 2923000, 2338600))
                                       , row.names = c(NA, -12L), class = "data.frame")
 
 
@@ -285,13 +287,13 @@ test_that("one wrong ric does not blow it for the rest in EikonGetTimeseries", {
   Eikon <- Refinitiv::EikonConnect()
   expect_warning(test_problem_ts <- EikonGetTimeseries( start_date = paste0(Sys.Date()-lubridate::years(20), "T01:00:00")
                                                         , end_date =  paste0(Sys.Date()-lubridate::years(10), "T23:59:00")
-                                                        , rics = c("FORTUM.HE", "FBHS.K", "0656.HK")
+                                                        , rics = c("FORTUM.HE", "WrongRIC", "0656.HK")
                                                         , EikonObject = Eikon
                                                         , raw_output = FALSE
   ))
 
   expect_equal(lapply(test_problem_ts, class), list(Date = c("POSIXct", "POSIXt"), Security = "character", CLOSE = "numeric",HIGH = "numeric", LOW = "numeric", OPEN = "numeric", VOLUME = "numeric") )
-  expect_false("FBHS.K" %in% test_problem_ts$Security)
+  expect_false("WrongRIC" %in% test_problem_ts$Security)
 
 
 })

@@ -27,7 +27,6 @@ token_url <- paste("http://product.datastream.com/DSWSClient/V1/DSService.svc/re
                    "&password=",
                    DatastreamPassword,
                    sep="")
-browser()
 test <- tryCatch({httr::GET(token_url, httr::timeout(5))},
                   error=function(cond) {
                         message(paste("URL does not seem to exist:", token_url, "Either the service is down or the credentials are false"))

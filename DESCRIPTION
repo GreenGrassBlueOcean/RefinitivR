@@ -27,10 +27,11 @@ Remotes:
 Config/reticulate:
   list(
     packages = list(
-      list(package = "eikon", version = "1.1.2", pip = FALSE)
+      list(package = "eikon", version = "1.1.2", pip = FALSE),
+      list(package = "refinitiv.dataplatform", version = "1.1.2", pip = FALSE)
     )
   )
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Depends: 
     R (>= 3.5.0),
 Suggests: 

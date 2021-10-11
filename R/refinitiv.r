@@ -132,7 +132,7 @@ EikonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000
   options(.EikonApplicationPort = Eikonapplication_port)
   options(.RefinitivAPI = PythonModule)
 
-  reticulate::use_condaenv(condaenv = "r-reticulate", conda = "auto") # set virtual environment right
+  suppressWarnings(reticulate::use_condaenv(condaenv = "r-reticulate", conda = "auto", required = T)) # set virtual environment right
   # PythonEK <- reticulate::import(module = "refinitiv.dataplatform.eikon") # import python eikon module
 
   if (identical(.Options$.RefinitivAPI, "Eikon")){
@@ -582,21 +582,13 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                                               , "\t, debug = False, raw_output = True\n\t)"
     )
     )}
-       if(identical(getOption(".RefinitivAPI"), "Eikon")){
-        retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
+       retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
                                      , from_symbol_type = from_symbol_type
                                      , to_symbol_type = list(to_symbol_type)
                                      , raw_output = TRUE
                                      , debug = FALSE
-                                     , bestMatch = bestMatch))
-        } else if(identical(getOption(".RefinitivAPI"), "RDP")) {
-         retry(EikonObject$get_symbology( symbol = ChunckedSymbols[[j]]
-                                            , from_symbol_type = from_symbol_type
-                                            , to_symbol_type = list(to_symbol_type)
-                                            , raw_output = TRUE
-                                            , debug = FALSE
-                                            , best_match  = bestMatch))
-         }
+                                     , best_match = bestMatch))
+
 
     })
     InspectRequest(df = EikonSymbologyList[[j]], functionname = "EikonGetSymbology")
