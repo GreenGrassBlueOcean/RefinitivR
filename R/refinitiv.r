@@ -142,6 +142,13 @@ EikonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000
   } else if (identical(.Options$.RefinitivAPI, "RDP")){
     PythonEK <- reticulate::import(module = "refinitiv.dataplatform.eikon") # import python eikon module
     PythonEK$set_app_key(app_key = .Options$.EikonApiKey)
+
+    # test Connection as set_app_key does not provide a interceptable error when no connection is available
+
+    tryCatch({
+    PythonEK$get_data(instruments = "SPY", fields = "DSPLY_NAME", raw_output=TRUE )
+    }, error = function(e) {stop("Eikon RDP Error: no proxy address identified. Check if Desktop is running.")})
+
   } else {
     stop(paste("variable PythonModule is now", PythonModule, "but should only be 'Eikon' or 'RDP'." ))
   }
