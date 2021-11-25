@@ -8,11 +8,12 @@
 #' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."
 #'
 #' @return a list of a data.frame with cleaned output and the resulting error data.frame
-#' @export
+#' @keywords internal
 #'
 #' @seealso EikonNameCleaner
 #'
 #' @examples
+#' \dontrun{"internal function no examples"}
 EikonPostProcessor <- function(Eikon_get_dataOuput, SpaceConvertor = "."){
 
   #0. helper functions ----
@@ -124,7 +125,7 @@ EikonPostProcessor <- function(Eikon_get_dataOuput, SpaceConvertor = "."){
 #' @param Fundamentals_Data a data.frame containing at leasts the columns "RDN_EXCHD2" and "Operating MIC"
 #'
 #' @return the corrected data.frame in which the column "Operating MIC" empty string and NA elements are replaced with an operating MIC based on RDN_EXCHD2
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -252,7 +253,7 @@ return(FieldList)
 #' @param to_symbol_type character use her same input as in EikonGetSymbology
 #'
 #' @return data.frame containing 4 columns to_symbol_type, from_symbol_type, BestMatch (as defined by Eikon), error
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -311,6 +312,7 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
 #' @param ... pass through parameters
 #'
 #' @return list
+#' @keywords internal
 #'
 #' @examples
 #'  x <- list(list(NA, NULL, NULL), list("a", "b", "c"))
@@ -334,6 +336,7 @@ replaceInList <- function (x, FUN, ...)
 #' @param RawTimeSeriesRequest raw return from eikon EikonGetTimeseries
 #'
 #' @return data.frame
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
@@ -417,6 +420,8 @@ PostProcessTimeSeriesRequest <- function(RawTimeSeriesRequest){
 #'
 #' @return list with chunked rics
 #' @seealso EikonGetTimeseries
+#'
+#' @keywords internal
 #'
 #' @examples
 #' test <- Refinitiv:::EikonTimeSeriesPreprocessor(interval = "daily"

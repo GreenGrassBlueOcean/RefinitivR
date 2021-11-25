@@ -19,6 +19,10 @@ As the Python eikon get_data structure contains various list that are null these
 with NA to prevent disasters when later handling the data.frame. For example when using the unlist function Null elements
 are removed from the lists causing shorter vectors than expected.
 }
+\examples{
+\dontrun{"internal function no examples"}
+}
 \seealso{
 EikonNameCleaner
 }
+\keyword{internal}

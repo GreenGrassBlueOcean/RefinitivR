@@ -29,5 +29,6 @@ Space Conversion is highly advisable due to the fact that otherwise issues could
 as an example "Dividend yield" will turn into "Dividend.Yield" with SpaceConvertor being set as "."
 }
 \examples{
-EikonNameCleaner(c("Instrument","Company Name","RDN_EXCHD2","Operating MIC"))
+Refinitiv:::EikonNameCleaner(c("Instrument","Company Name","RDN_EXCHD2","Operating MIC"))
 }
+\keyword{internal}

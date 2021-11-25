@@ -28,3 +28,4 @@ test <- Refinitiv:::EikonTimeSeriesPreprocessor(interval = "daily"
 \seealso{
 EikonGetTimeseries
 }
+\keyword{internal}

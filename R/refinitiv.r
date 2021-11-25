@@ -157,6 +157,35 @@ EikonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000
 }
 
 
+#' RDP connection function to refinitiv Dataplatform libraries
+#'
+#' @param application_id refinitiv dataplatform api key
+#'
+#' @return rdp opbject
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' rdp <- RDPConnect(application_id = "your key")
+#' }
+RDPConnect <- function(application_id = NA) {
+
+  # 1. check input ----
+  if (is.na(application_id)){
+    try(application_id <- getOption(".EikonApiKey") )
+    if(is.null(application_id)){stop("Please supply application_id")}
+  }
+
+  if(!CondaExists()){stop("Conda/reticulate does not seem to be available please run install_eikon")}
+
+  #2. Run main programme ----
+  options(.EikonApiKey = application_id)
+  rdp <- reticulate::import(module = "refinitiv.dataplatform", convert = F)
+  rdp$open_desktop_session(application_id)
+
+  return(rdp)
+}
+
 #' Show the attributes of the Python Eikon
 #'
 #' Function that the returns the names of the python Eikon api attributes that can be used as commands in R.
@@ -174,7 +203,7 @@ EikonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000
 EikonShowAttributes <- function(EikonObject){
   PossibleAttributes <- reticulate::py_list_attributes(EikonObject)
   return(PossibleAttributes)
-  }
+}
 
 
 
@@ -185,7 +214,7 @@ EikonShowAttributes <- function(EikonObject){
 #' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."
 #'
 #' @return a data.frame in which the Eikon formula's are replaced with the Eikon display Name which is the last part of the formula.
-#' @export
+#' @keywords internal
 #'
 #' @details
 #' The variables returned by the Eikon API are not always easily guessable upfront.
@@ -199,7 +228,7 @@ EikonShowAttributes <- function(EikonObject){
 #' as an example "Dividend yield" will turn into "Dividend.Yield" with SpaceConvertor being set as "."
 #'
 #' @examples
-#' EikonNameCleaner(c("Instrument","Company Name","RDN_EXCHD2","Operating MIC"))
+#' Refinitiv:::EikonNameCleaner(c("Instrument","Company Name","RDN_EXCHD2","Operating MIC"))
 EikonNameCleaner <- function(names, SpaceConvertor = "."){
 
   #0. Helper Functions ----
@@ -236,10 +265,11 @@ EikonNameCleaner <- function(names, SpaceConvertor = "."){
 #' @param MaxRicsperChunk  a natural number denoting the maximum amount of Rics that should be available in one call, default is 300.
 #'
 #' @return a list of splitted RICS that can be returned to guarantee compliance with api limits.
-#' @export
+#' @keywords internal
 #' @references \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
 #'
 #' @examples
+#' \dontrun{"internal function no examples"}
 EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Duration = NULL, MaxRicsperChunk = 300) {
 
   if (!is.null(Eikonfields) & is.null(Duration)) {
@@ -459,7 +489,7 @@ EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
 
 
 # Divide RICS in chunks to satisfy api limits
-ChunckedRics <- Refinitiv::EikonChunker(RICS = rics, Eikonfields = Eikonformulas)
+ChunckedRics <- EikonChunker(RICS = rics, Eikonfields = Eikonformulas)
 
 
 EikonDataList <- as.list(rep(NA, times = length(ChunckedRics)))
@@ -577,7 +607,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
   EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
 
   # Divide symbols in chunks to satisfy api limits
-  ChunckedSymbols <- Refinitiv::EikonChunker(RICS = symbol, Eikonfields = to_symbol_type)
+  ChunckedSymbols <- EikonChunker(RICS = symbol, Eikonfields = to_symbol_type)
 
   EikonSymbologyList <- as.list(rep(NA, times = length(ChunckedSymbols)))
   for (j in 1:length(ChunckedSymbols)) {
@@ -626,11 +656,11 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
 #' @importFrom utils head
 #' @importFrom utils str
 #' @return boolean
-#' @export
+#' @keywords internal
 #'
 #' @examples
-#' InspectRequest(data.frame(), functionname = "test")
-#' InspectRequest(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
+#' Refinitiv:::InspectRequest(data.frame(), functionname = "test")
+#' Refinitiv:::InspectRequest(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
 InspectRequest <- function(df, functionname, verbose = TRUE){
   if(!verbose){
     return(NULL)

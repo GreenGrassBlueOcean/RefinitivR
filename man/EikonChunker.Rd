@@ -29,6 +29,10 @@ a list of splitted RICS that can be returned to guarantee compliance with api li
 \description{
 Returns a list of chunked Rics so that api limits can be satisfied
 }
+\examples{
+\dontrun{"internal function no examples"}
+}
 \references{
 \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
 }
+\keyword{internal}

@@ -25,3 +25,4 @@ fields = "CLOSE", raw = TRUE))1
 PostProcessTimeSeriesRequest(RawTimeSeries)
 }
 }
+\keyword{internal}

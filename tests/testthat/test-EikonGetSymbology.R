@@ -13,7 +13,8 @@ test_that("EikonGetSymbology works", {
   #ex1
   expect_equal( EikonGetSymbology( EikonObject = Eikon, symbol =  "AAPL.O"
                                  , to_symbol_type = "ISIN" )
-              , structure(list(ISIN = "US0378331005", RIC = "AAPL.O"), row.names = c(NA, -1L), class = "data.frame")
+              , structure(list(ISIN = "US0378331005", RIC = "AAPL.O")
+                         , row.names = c(NA, -1L), class = "data.frame")
               )
 
   #ex2
@@ -27,27 +28,28 @@ test_that("EikonGetSymbology works", {
 
   #ex3
   ex3 <- EikonGetSymbology( EikonObject = Eikon, symbol =  "GB00B03MLX29"
-                                 , from_symbol_type = "ISIN"
-                                 ,  to_symbol_type = "RIC"
-                                 , verbose = TRUE, bestMatch = FALSE)
+                          , from_symbol_type = "ISIN"
+                          , to_symbol_type = "RIC"
+                          , verbose = TRUE, bestMatch = FALSE
+                          )
 
   expect_equal(names(ex3), c("RICs", "bestMatch", "ISIN"))
   expect_equal(unique(ex3$ISIN), "GB00B03MLX29")
   expect_equal(class(ex3), "data.frame")
 
   #ex4
-  expect_equal(EikonGetSymbology( EikonObject = Eikon
+  expect_equal( EikonGetSymbology( EikonObject = Eikon
                                 , symbol =  "RDSa.AS", to_symbol_type = "ISIN")
-               , structure(list(ISIN = "GB00B03MLX29", RIC = "RDSa.AS")
-                           , row.names = c(NA, -1L), class = "data.frame")
+               , structure( list(ISIN = "GB00B03MLX29", RIC = "RDSa.AS")
+                          , row.names = c(NA, -1L), class = "data.frame")
                )
 
   #ex5
   expect_equal(EikonGetSymbology( EikonObject = Eikon
                                 , symbol =  "RDSa.L"
                                 , to_symbol_type = "ISIN")
-              , structure(list(ISIN = "GB00B03MLX29", RIC = "RDSa.L")
-                          , row.names = c(NA, -1L), class = "data.frame")
+              , structure( list(ISIN = "GB00B03MLX29", RIC = "RDSa.L")
+                         , row.names = c(NA, -1L), class = "data.frame")
               )
 
   #ex6
@@ -62,7 +64,10 @@ test_that("EikonGetSymbology works", {
   expect_equal(unique(ex6$ISIN), c("GB00B03MLX29", "NL0015476987"))
 
   #ex7
-  ex7 <- EikonGetSymbology(EikonObject = Eikon, symbol =  c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN" ,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
+  ex7 <- EikonGetSymbology( EikonObject = Eikon
+                          , symbol =  c("GB00B03MLX29", "US0378331005")
+                          , from_symbol_type = "ISIN" ,  to_symbol_type = "RIC"
+                          , verbose = TRUE, bestMatch = FALSE)
 
   expect_equal(class(ex7), "data.frame")
   expect_equal(names(ex7), c("RICs", "bestMatch", "ISIN"))
