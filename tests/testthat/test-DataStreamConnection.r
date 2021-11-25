@@ -4,8 +4,19 @@ test_that("TestDataStreamCredentials fails when it should", {
 })
 
 
+
+
 test_that("TestDataStreamCredentials satisfies test cases", {
-  expect_error(expect_false(isTRUE(TestDataStreamCredentials(DatastreamUsername = "wrong username", DatastreamPassword = "wrong Password"))))
+
+  is.bad <- function(code) {
+    isTRUE(tryCatch(code,
+                    error = function(c) TRUE,
+                    warning = function(c) TRUE
+    ))
+  }
+
+  expect_true(is.bad(TestDataStreamCredentials(DatastreamUsername = "wrong username", DatastreamPassword = "wrong Password")))
+
 })
 
 
