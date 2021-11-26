@@ -127,6 +127,7 @@ return(r_df)
 #' @param group_count optional numeric number of items displayed per group
 #' @param navigators optional character string e.g.
 #' @param features optional character, meaning not clear from refinitiv documentation
+#' @param Arglist
 #'
 #' @seealso RDPShowAvailableSearchViews()
 #' @return data.frame with search results
@@ -179,25 +180,35 @@ return(r_df)
 #'                                      , ",AssetName,AISStatus,"
 #'                                      , "VesselCurrentPortRIC,IMO")
 #'                     )
+#'
+#' ListedSearch <- RDPsearch(Arglist = list(query = "president", view = "People"))
+#'
 #'}
-RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL, select = NULL, top = NULL, filter = NULL, boost= NULL, order_by = NULL, group_by = NULL,  group_count = NULL, navigators = NULL, features = NULL){
-
-  # Prepare search ----
+#'
+RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL, select = NULL, top = NULL, filter = NULL, boost= NULL, order_by = NULL, group_by = NULL,  group_count = NULL, navigators = NULL, features = NULL, Arglist = list()){
 
   #Build Argument list
-  Arglist <- as.list(match.call(expand.dots=FALSE))
-  Arglist[[1]] <- NULL
+  if(!exists("Arglist") || identical(list(),Arglist)){
+    Arglist <- as.list(match.call(expand.dots=FALSE))
+    Arglist[[1]] <- NULL
+  }
 
   if("view" %in% names(Arglist)){
     Arglist$view <- RDP$SearchViews[[Arglist$view]]
   }
 
-  #Build Searcher
-  Searcher <- RDP$search
+  if("top" %in% names(Arglist)){
+    Arglist$top <- as.numeric(Arglist$top)
+  }
+
+  if("group_count" %in% names(Arglist)){
+    Arglist$group_count <- as.numeric(Arglist$group_count)
+  }
 
   #Execute search ----
-  python_SearchResult <- do.call("Searcher", Arglist)
 
+  # Searcher <- rdp$search
+  python_SearchResult <- do.call(what = RDP[["search"]], args = Arglist)
   # check search outcome
   if(identical(class(python_SearchResult),c("python.builtin.NoneType", "python.builtin.object"))){
     warning("RDPsearch did not provide any result, check query")

@@ -16,7 +16,8 @@ RDPsearch(
   group_by = NULL,
   group_count = NULL,
   navigators = NULL,
-  features = NULL
+  features = NULL,
+  Arglist = NULL
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ RDPsearch(
 \item{navigators}{optional character string e.g.}
 
 \item{features}{optional character, meaning not clear from refinitiv documentation}
+
+\item{Arglist}{}
 }
 \value{
 data.frame with search results
@@ -98,6 +101,7 @@ Vessels <- RDPsearch( view = "VesselPhysicalAssets"
                                      , "VesselCurrentPortRIC,IMO")
                     )
 }
+
 }
 \seealso{
 RDPShowAvailableSearchViews()

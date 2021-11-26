@@ -178,9 +178,10 @@ RDPConnect <- function(application_id = NA) {
 
   if(!CondaExists()){stop("Conda/reticulate does not seem to be available please run install_eikon")}
 
+  suppressWarnings(reticulate::use_condaenv(condaenv = "r-reticulate", conda = "auto", required = T))
   #2. Run main programme ----
   options(.EikonApiKey = application_id)
-  rdp <- reticulate::import(module = "refinitiv.dataplatform", convert = F)
+  rdp <- reticulate::import(module = "refinitiv.dataplatform", convert = F, delay_load = F)
   rdp$open_desktop_session(application_id)
 
   return(rdp)
