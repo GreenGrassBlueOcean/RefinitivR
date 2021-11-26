@@ -160,10 +160,10 @@ return(r_df)
 #'                       , top = 1000)
 #'
 #' EquitiesSearch <-  RDPsearch( view = "EquityQuotes"
-#'                             , filter = paste0("Eps gt 6.0 and ",
+#'                             , filter = paste0("Eps gt 6.0 and "
 #'                                       , "RCSTRBC2012Name eq 'Personal & "
 #'                                       , "Household Products & Services' "
-#'                                       , "and MktCapTotalUsd gt 100000000 ",
+#'                                       , "and MktCapTotalUsd gt 100000000 "
 #'                                       , "and IsPrimaryRIC eq true")
 #'                             , top =  10000
 #'                             , select = paste0("DocumentTitle , RIC, Eps,"
@@ -171,8 +171,8 @@ return(r_df)
 #'
 #'
 #' Vessels <- RDPsearch( view = "VesselPhysicalAssets"
-#'                     , filter = paste0( "RCSAssetTypeLeaf eq 'tanker'",
-#'                                , " and RCSRegionLeaf eq 'Gulf of Mexico'"
+#'                     , filter = paste0( "RCSAssetTypeLeaf eq 'tanker'"
+#'                                , " and RCSRegionLeaf eq 'Gulf of Mexico'")
 #'                     , top =  10000
 #'                     , navigators = "OriginPort"
 #'                     , select = paste0( "DocumentTitle,RIC,OriginPort"
@@ -184,7 +184,6 @@ return(r_df)
 #' ListedSearch <- RDPsearch(Arglist = list(query = "president", view = "People"))
 #'
 #'}
-#'
 RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL, select = NULL, top = NULL, filter = NULL, boost= NULL, order_by = NULL, group_by = NULL,  group_count = NULL, navigators = NULL, features = NULL, Arglist = list()){
 
   #Build Argument list

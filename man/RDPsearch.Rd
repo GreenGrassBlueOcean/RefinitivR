@@ -17,7 +17,7 @@ RDPsearch(
   group_count = NULL,
   navigators = NULL,
   features = NULL,
-  Arglist = NULL
+  Arglist = list()
 )
 }
 \arguments{
@@ -80,10 +80,10 @@ reporates <- RDPsearch( view = "IndicatorQuotes"
                       , top = 1000)
 
 EquitiesSearch <-  RDPsearch( view = "EquityQuotes"
-                            , filter = paste0("Eps gt 6.0 and ",
+                            , filter = paste0("Eps gt 6.0 and "
                                       , "RCSTRBC2012Name eq 'Personal & "
                                       , "Household Products & Services' "
-                                      , "and MktCapTotalUsd gt 100000000 ",
+                                      , "and MktCapTotalUsd gt 100000000 "
                                       , "and IsPrimaryRIC eq true")
                             , top =  10000
                             , select = paste0("DocumentTitle , RIC, Eps,"
@@ -91,8 +91,8 @@ EquitiesSearch <-  RDPsearch( view = "EquityQuotes"
 
 
 Vessels <- RDPsearch( view = "VesselPhysicalAssets"
-                    , filter = paste0( "RCSAssetTypeLeaf eq 'tanker'",
-                               , " and RCSRegionLeaf eq 'Gulf of Mexico'"
+                    , filter = paste0( "RCSAssetTypeLeaf eq 'tanker'"
+                               , " and RCSRegionLeaf eq 'Gulf of Mexico'")
                     , top =  10000
                     , navigators = "OriginPort"
                     , select = paste0( "DocumentTitle,RIC,OriginPort"
@@ -100,8 +100,10 @@ Vessels <- RDPsearch( view = "VesselPhysicalAssets"
                                      , ",AssetName,AISStatus,"
                                      , "VesselCurrentPortRIC,IMO")
                     )
-}
 
+ListedSearch <- RDPsearch(Arglist = list(query = "president", view = "People"))
+
+}
 }
 \seealso{
 RDPShowAvailableSearchViews()
