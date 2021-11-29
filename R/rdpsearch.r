@@ -127,7 +127,7 @@ return(r_df)
 #' @param group_count optional numeric number of items displayed per group
 #' @param navigators optional character string e.g.
 #' @param features optional character, meaning not clear from refinitiv documentation
-#' @param Arglist
+#' @param Arglist optional named list pass the above parameters as a named list withouding needing to use to do.call.
 #'
 #' @seealso RDPShowAvailableSearchViews()
 #' @return data.frame with search results

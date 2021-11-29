@@ -45,7 +45,7 @@ RDPsearch(
 
 \item{features}{optional character, meaning not clear from refinitiv documentation}
 
-\item{Arglist}{}
+\item{Arglist}{optional named list pass the above parameters as a named list withouding needing to use to do.call.}
 }
 \value{
 data.frame with search results
