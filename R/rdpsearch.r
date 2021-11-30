@@ -181,10 +181,18 @@ return(r_df)
 #'                                      , "VesselCurrentPortRIC,IMO")
 #'                     )
 #'
+#'
 #' ListedSearch <- RDPsearch(Arglist = list(query = "president", view = "People"))
 #'
+#' SearchQuery = "aapl.o"
+#' ListedSearch <- RDPsearch(query = SearchQuery)
+#'
 #'}
-RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL, select = NULL, top = NULL, filter = NULL, boost= NULL, order_by = NULL, group_by = NULL,  group_count = NULL, navigators = NULL, features = NULL, Arglist = list()){
+RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL
+                     , select = NULL, top = NULL, filter = NULL
+                     , boost= NULL, order_by = NULL, group_by = NULL
+                     ,  group_count = NULL, navigators = NULL, features = NULL
+                     , Arglist = list()){
 
   #Build Argument list
   if(!exists("Arglist") || identical(list(),Arglist)){
@@ -203,6 +211,9 @@ RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL, select = N
   if("group_count" %in% names(Arglist)){
     Arglist$group_count <- as.numeric(Arglist$group_count)
   }
+
+  #Make sure all arguments are evaluated before passing to the search api
+  Arglist <- lapply(X = Arglist, function(x){eval.parent(x)})
 
   #Execute search ----
 

@@ -101,7 +101,11 @@ Vessels <- RDPsearch( view = "VesselPhysicalAssets"
                                      , "VesselCurrentPortRIC,IMO")
                     )
 
+
 ListedSearch <- RDPsearch(Arglist = list(query = "president", view = "People"))
+
+SearchQuery = "aapl.o"
+ListedSearch <- RDPsearch(query = SearchQuery)
 
 }
 }

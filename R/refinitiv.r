@@ -182,6 +182,9 @@ RDPConnect <- function(application_id = NA) {
   #2. Run main programme ----
   options(.EikonApiKey = application_id)
   rdp <- reticulate::import(module = "refinitiv.dataplatform", convert = F, delay_load = F)
+
+
+
   rdp$open_desktop_session(application_id)
 
   return(rdp)
