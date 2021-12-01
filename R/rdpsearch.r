@@ -213,7 +213,9 @@ RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL
   }
 
   #Make sure all arguments are evaluated before passing to the search api
-  Arglist <- lapply(X = Arglist, function(x){eval.parent(x)})
+  Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
+
+
 
   #Execute search ----
 
