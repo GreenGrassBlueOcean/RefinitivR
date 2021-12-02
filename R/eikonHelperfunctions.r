@@ -52,25 +52,7 @@ EikonPostProcessor <- function(Eikon_get_dataOuput, SpaceConvertor = "."){
   }
 
 
-  flattenNestedlist <- function(data){
-    NestedListPos <- which(lapply(data, class) == "list")
-    .SD <- NULL
-    data2 <- vector(mode = "list", length = length(data))
-    data2 <- lapply( X = seq_along(data)
-                     , FUN = function(x, data, NestedListPos){
-                       if (x %in% NestedListPos){
-                         return(data.table::as.data.table(data[[x]])
-                         )
-                       } else{
-                         return(data.table::transpose(data.table::as.data.table(data[[x]])))
-                       }}
-                     , data = data
-                     , NestedListPos = NestedListPos
-                     )
-
-  }
-
-  #1. Check Input
+    #1. Check Input
 
   if(identical(Eikon_get_dataOuput,list(NULL))) {
     return(list( "PostProcessedEikonGetData" = data.frame()
@@ -316,7 +298,7 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
 #'
 #' @examples
 #'  x <- list(list(NA, NULL, NULL), list("a", "b", "c"))
-#' test <- Refinitiv:::replaceInList(x, function(x)if(is.null(x))NA else x)
+#' # test <- Refinitiv:::replaceInList(x, function(x)if(is.null(x))NA else x)
 replaceInList <- function (x, FUN, ...)
 {
   if (is.list(x)) {
@@ -472,4 +454,33 @@ EikonTimeSeriesPreprocessor <- function(interval, rics, start_date, end_date){
   return(ChunckedRics)
 }
 
+
+
+
+#' Flatten a nested list put list format in data.table format way (don't mix up lists and vectors in one nested list)
+#'
+#' @param data a nested list
+#'
+#' @return a list
+#' @keywords internal
+#'
+#' @examples
+#' # Refinitiv:::flattenNestedlist(list(list("a", "b"), c(1,2)))
+flattenNestedlist <- function(data){
+  NestedListPos <- which(lapply(data, class) == "list")
+  .SD <- NULL
+  data2 <- vector(mode = "list", length = length(data))
+  data2 <- lapply( X = seq_along(data)
+                   , FUN = function(x, data, NestedListPos){
+                     if (x %in% NestedListPos){
+                       return(data.table::as.data.table(data[[x]])
+                       )
+                     } else{
+                       return(data.table::transpose(data.table::as.data.table(data[[x]])))
+                     }}
+                   , data = data
+                   , NestedListPos = NestedListPos
+  )
+
+}
 

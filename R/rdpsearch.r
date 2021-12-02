@@ -238,4 +238,90 @@ RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL
 
 
 
+#' Get RDP option analytics
+#'
+#' @param OptionRics character vector with option rics
+#' @param raw return raw data from RDP call
+#' @param RDP Refinitiv DataPlatform Connection object, defaults to  RDPConnect()
+#'
+#' @return data.frame with option data
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' RDPGetOptionAnalytics(OptionRics = c("AAPLL032112500.U", "AAPLL032113700.U"))
+#' }
+RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = FALSE){
+
+  if(is.null(OptionRics) || !is.character(OptionRics)){
+    stop("OptionRics should be supplied currently is not supplied or is in the wrong format")
+  }
+
+  Py_optionAnalytics <- RDP$ipa$FinancialContracts$get_option_analytics(universe = OptionRics)
+  r_IPA_output <- reticulate::py_to_r(Py_optionAnalytics$data$raw)
+
+  if(raw){
+    return(r_IPA_output)
+  } else {
+    return(ProcessIPAOutput(r_IPA_output))
+  }
+}
+
+
+#' Process output of RDP IPA calls
+#'
+#' @param IPAoutput output to a python call RDP$ipa$FinancialContracts
+#'
+#' @return data.frame
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' ipa_output <- RDPGetOptionAnalytics(
+#'  OptionRics = c("AAPLL032112500.U", "AAPLL032113700.U")
+#' , raw = TRUE)
+#' ProcessIPAOutput(ipa_output)
+#' }
+ProcessIPAOutput <- function(IPAoutput){
+
+  #0. Internal functions ----
+  getheaders <- function(data){
+
+    #replace null headers with NA headers
+    data[["headers"]] <- Refinitiv:::replaceInList(data[["headers"]], function(x)if(is.null(x) || identical(x,"") )NA else x)
+
+    unlist(lapply( X = 1:length(data[["headers"]])
+                   , FUN = function(x,data){data[["headers"]][[x]][["name"]] }
+                   , data = data
+    ))
+
+  }
+
+  getData <- function(data, SpaceConvertor) {
+
+    #1. Remove NULL values and replace with NA in nested list
+
+    data[["data"]] <- replaceInList(data[["data"]], function(x)if(is.null(x) || identical(x,""))NA else x)
+
+    #2. put list format in uniform way (don't mix up lists and vectors in one nested list)
+
+    data[["data"]] <- flattenNestedlist(data[["data"]])
+
+    if (length(data[["data"]]) > 1 ) {
+      RequestData <- data.table::rbindlist(data[["data"]])
+    } else {
+      RequestData <- data[["data"]][[1]]
+    }
+
+    Requestheaders <- EikonNameCleaner(getheaders(data), SpaceConvertor = SpaceConvertor)
+    RequestData <- data.table::setDF(data.table::setnames(RequestData, Requestheaders))
+
+    return(RequestData)
+  }
+
+
+  #1. Main Programme ----
+  Data <- getData(IPAoutput, SpaceConvertor = ".")
+  return(Data)
+}
 

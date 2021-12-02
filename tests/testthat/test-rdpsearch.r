@@ -10,18 +10,19 @@ test_that("Basic RDP search works", {
 
 
   test1 <- try(RDPsearch(query =  "AAPL.O"))
+  test1 <- test1[order(names(test1))]
 
   expect_error(test1,NA)
   expect_equal( lapply(test1, class)
-              , list( PermID = "character", PI = "character"
-                    , DocumentTitle = "character"
-                    , BusinessEntity = "character", RIC = "character")
-              )
+              , list(BusinessEntity = "character", DocumentTitle = "character",
+                     PermID = "character", PI = "character", RIC = "character"))
   expect_equal(class(test1), "data.frame")
 
 
 
   test2 <- try(RDPsearch(query =  "AAPL.O", select = "ContractType,RIC"))
+  test2 <- test2[order(names(test2))]
+
 
   expect_error(test2,NA)
   expect_equal(lapply(test2, class)
@@ -41,6 +42,8 @@ test_that("Basic RDP search works", {
                     , navigators = 'HullType'
                     , features = 'spell'
                     )
+  test3 <- test3[order(names(test3))]
+
 
   expect_error(test3,NA)
   expect_equal(lapply(test3, class)
@@ -57,11 +60,12 @@ test_that("Basic RDP search works", {
                         , top = 1000
                         )
 
+  test4 <- test4[order(names(test4))]
+
   expect_error(test4,NA)
   expect_equal(lapply(test4, class)
-               , list( ObservationValue = "numeric"
-                     , CentralBankName = "character", RIC = "character"
-                     , DocumentTitle = "character")
+               , list(CentralBankName = "character", DocumentTitle = "character",
+                      ObservationValue = "numeric", RIC = "character")
   )
   expect_equal(class(test4), "data.frame")
 
@@ -76,11 +80,12 @@ test_that("Basic RDP search works", {
                      , select = "DocumentTitle , RIC, Eps, MktCapTotalUsd"
                      )
 
+  test5 <- test5[order(names(test5))]
 
   expect_error(test5,NA)
   expect_equal(lapply(test5, class)
-               , list( Eps = "numeric", MktCapTotalUsd = "numeric"
-                     , RIC = "character", DocumentTitle = "character")
+               , list(DocumentTitle = "character", Eps = "numeric", MktCapTotalUsd = "numeric",
+                      RIC = "character")
   )
   expect_equal(class(test5), "data.frame")
 
@@ -98,14 +103,14 @@ test_that("Basic RDP search works", {
                                        , "VesselCurrentPortRIC,IMO")
                       )
 
+  test6 <- test6[order(names(test6))]
+
+
   expect_error(test6,NA)
   expect_equal(lapply(test6, class)
-              , list( AISStatus = "character", DestinationPort = "character"
-                    , IMO = "character", DocumentTitle = "character"
-                    , AssetName = "character", OriginPort = "character"
-                    , RCSFlagLeaf = "character"
-                    , VesselCurrentPortRIC = "character", RIC = "character")
-              )
+              , list(AISStatus = "character", AssetName = "character", DestinationPort = "character",
+                     DocumentTitle = "character", IMO = "character", OriginPort = "character",
+                     RCSFlagLeaf = "character", RIC = "character", VesselCurrentPortRIC = "character"))
   expect_equal(class(test6), "data.frame")
 
 })
