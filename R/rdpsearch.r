@@ -250,26 +250,52 @@ RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL
 #' @examples
 #' \dontrun{
 #' RDPGetOptionAnalytics(OptionRics = c("AAPLL032112500.U", "AAPLL032113700.U"))
+#' RDPGetOptionAnalytics(OptionRics = rics)
 #' }
-RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = FALSE){
-
+RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = FALSE, verbose = T){
+# browser()
   if(is.null(OptionRics) || !is.character(OptionRics)){
     stop("OptionRics should be supplied currently is not supplied or is in the wrong format")
   }
+  ChunckedRics <- Refinitiv:::EikonChunker(OptionRics, MaxCallsPerChunk = 500, Eikonfields = c("OptionRics"))
+  OptionAnalytics <- as.list(rep(NA, times = length(ChunckedRics)))
+  DownloadCoordinator <- data.frame( index = 1:length(ChunckedRics)
+                                     , succes =  rep(FALSE, length(ChunckedRics))
+                                     , retries = rep(0L, length(ChunckedRics), stringsAsFactors = FALSE)
+  )
 
-  Py_optionAnalytics <- RDP$ipa$FinancialContracts$get_option_analytics(universe = OptionRics)
+  while (!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)  ) {
 
-  if(!identical(names(Py_optionAnalytics$error_message), character(0))){
-    stop(paste(Py_optionAnalytics$error_message))
+    ChunckedRicsTryList <- DownloadCoordinator$index[which(!DownloadCoordinator$succes)]
+
+    for (j in ChunckedRicsTryList) {
+      OptionAnalytics[[j]] <- try( retry( RDP$ipa$FinancialContracts$get_option_analytics(universe = ChunckedRics[[j]])))
+      # browser()
+      if(!identical(names(OptionAnalytics[[j]]$error_message), character(0))){
+        warning(try(paste(OptionAnalytics[[j]]$error_code, OptionAnalytics[[j]]$error_message)))
+      }
+      #InspectRequest(df = OptionAnalytics[[j]], functionname = "EikonGetTimeseries", verbose = verbose)
+      Sys.sleep(time = 0.00001)
+
+      if (!identical(OptionAnalytics[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
+      if(verbose){
+        message(paste0("Download Status:\n", paste0(capture.output(DownloadCoordinator), collapse = "\n"), collapse = "\n") )
+      }
+    }
+
+    DownloadCoordinator$retries[which(!DownloadCoordinator$succes)] <- DownloadCoordinator$retries[which(!DownloadCoordinator$succes)] + 1
+  }
+  if(any(DownloadCoordinator$retries > 4L)){
+    warning("RDPGetOptionAnalytics downloading data failed for one or more Rics")
   }
 
-  r_IPA_output <- reticulate::py_to_r(Py_optionAnalytics$data$raw)
-
+  r_IPA_output <- lapply(OptionAnalytics, function(x){reticulate::py_to_r(x$data$raw)})
+  # browser()
   if(raw){
     return(r_IPA_output)
   } else {
-    Output_list <- ProcessIPAOutput(r_IPA_output)
-    return(Output_list)
+    Output_DT <- data.table::rbindlist(lapply(r_IPA_output, FUN = "ProcessIPAOutput"))
+    return(data.table::setDF(Output_DT))
   }
 }
 

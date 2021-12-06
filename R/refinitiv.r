@@ -362,14 +362,9 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
   # EikonObject$set_timeout(timeout = time_out)
   EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
 
-
-
-
-
   # Convert as posix
   start_date <- as.POSIXct(start_date, format = "%Y-%m-%dT%H:%M:%S")
   end_date <- as.POSIXlt(end_date, format = "%Y-%m-%dT%H:%M:%S")
-
 
   ChunckedRics <- EikonTimeSeriesPreprocessor(interval = interval, rics = rics, start_date = start_date, end_date = end_date)
 
