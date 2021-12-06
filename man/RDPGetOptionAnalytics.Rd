@@ -4,7 +4,12 @@
 \alias{RDPGetOptionAnalytics}
 \title{Get RDP option analytics}
 \usage{
-RDPGetOptionAnalytics(RDP = RDPConnect(), OptionRics = NULL, raw = FALSE)
+RDPGetOptionAnalytics(
+  RDP = RDPConnect(),
+  OptionRics = NULL,
+  raw = FALSE,
+  verbose = T
+)
 }
 \arguments{
 \item{RDP}{Refinitiv DataPlatform Connection object, defaults to  RDPConnect()}
@@ -12,6 +17,8 @@ RDPGetOptionAnalytics(RDP = RDPConnect(), OptionRics = NULL, raw = FALSE)
 \item{OptionRics}{character vector with option rics}
 
 \item{raw}{return raw data from RDP call}
+
+\item{verbose}{boolean, print download progress or not}
 }
 \value{
 data.frame with option data
@@ -22,5 +29,6 @@ Get RDP option analytics
 \examples{
 \dontrun{
 RDPGetOptionAnalytics(OptionRics = c("AAPLL032112500.U", "AAPLL032113700.U"))
+RDPGetOptionAnalytics(OptionRics = rics)
 }
 }

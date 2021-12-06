@@ -243,6 +243,7 @@ RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL
 #' @param OptionRics character vector with option rics
 #' @param raw return raw data from RDP call
 #' @param RDP Refinitiv DataPlatform Connection object, defaults to  RDPConnect()
+#' @param verbose boolean, print download progress or not
 #'
 #' @return data.frame with option data
 #' @export
