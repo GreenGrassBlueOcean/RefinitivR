@@ -264,8 +264,7 @@ RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = F
     return(r_IPA_output)
   } else {
     Output_list <- ProcessIPAOutput(r_IPA_output)
-    Output_df <-  data.table::setDF(data.table::rbindlist(list(Output_list)))
-    return(Output_df)
+    return(Output_list)
   }
 }
 
