@@ -258,6 +258,11 @@ RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = F
   }
 
   Py_optionAnalytics <- RDP$ipa$FinancialContracts$get_option_analytics(universe = OptionRics)
+
+  if(!identical(names(Py_optionAnalytics$error_message), character(0))){
+    stop(paste(Py_optionAnalytics$error_message))
+  }
+
   r_IPA_output <- reticulate::py_to_r(Py_optionAnalytics$data$raw)
 
   if(raw){
