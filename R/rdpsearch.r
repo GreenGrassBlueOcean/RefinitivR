@@ -270,7 +270,7 @@ RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = F
     ChunckedRicsTryList <- DownloadCoordinator$index[which(!DownloadCoordinator$succes)]
 
     for (j in ChunckedRicsTryList) {
-      OptionAnalytics[[j]] <- try( retry( RDP$ipa$FinancialContracts$get_option_analytics(universe = ChunckedRics[[j]])))
+      OptionAnalytics[[j]] <- try(RDP$ipa$FinancialContracts$get_option_analytics(universe = ChunckedRics[[j]]))
       # browser()
       if(!identical(names(OptionAnalytics[[j]]$error_message), character(0))){
         warning(try(paste(OptionAnalytics[[j]]$error_code, OptionAnalytics[[j]]$error_message)))
