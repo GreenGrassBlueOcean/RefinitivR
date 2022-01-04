@@ -75,7 +75,7 @@ jobs:
         run: |
           Rscript -e "reticulate::install_miniconda()"
           Rscript -e "reticulate::conda_create(envname = 'r-eikon', python_version = '3.8')"
-
+          Rscript -e "reticulate::use_miniconda(condaenv = 'r-eikon', required = T)"
 
       - name: Session info
         run: |
