@@ -36,6 +36,7 @@ CondaExists <- function(){
 #' }
 install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulate", update = TRUE) {
 
+
 # Check if a conda environment exists and install if not available
   if (CondaExists() == FALSE ) {
       message("installing MiniConda, if this fails retry by running r/rstudio with windows administrative powers/linux elevated permissions")
@@ -44,14 +45,22 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
 
   }
  if (!(envname %in% reticulate::conda_list()$name)) {
-     reticulate::conda_create(envname = envname, python_version = "3.9" )
+      py_version <- "3.9"
+      reticulate::conda_create(envname = envname, python_version = py_version )
     }
 
- if (!reticulate::py_module_available("eikon") || update ) {
-    reticulate::py_install(packages = c("numpy", "pandas", "nest-asyncio","eikon", "scipy") , envname = envname,  method = method, conda = conda, pip = TRUE, update = TRUE )
-    reticulate::py_install(packages = "refinitiv.dataplatform", envname = envname, method = method, conda = conda, update = TRUE, pip = TRUE)
+  reticulate::use_miniconda(condaenv = "r-reticulate", required = T)
+
+
+  if(!reticulate::py_module_available("eikon") || update ) {
+     reticulate::py_install(packages = c("numpy", "pandas", "nest-asyncio","eikon", "scipy") , envname = envname,  method = method, conda = conda, pip = TRUE, update = TRUE )
   }
 
+  if (!reticulate::py_module_available("refinitiv.dataplatform") || update ) {
+   reticulate::py_install(packages = "refinitiv.dataplatform", envname = envname, method = method, conda = conda, update = TRUE, pip = TRUE)
+  }
+
+  print(reticulate::py_config())
   return("Eikon Python interface successfully installed or updated")
 }
 
