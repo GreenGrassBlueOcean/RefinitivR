@@ -24,12 +24,13 @@ Imports:
     magrittr,
     jsonlite
 Remotes:
-    github::CharlesCara/DatastreamDSWS2R
+    github::CharlesCara/DatastreamDSWS2R,
+    github::rstudio/reticulate
 Config/reticulate:
   list(
     packages = list(
-      list(package = "eikon", version = "1.1.2", pip = FALSE),
-      list(package = "refinitiv.dataplatform", version = "1.1.2", pip = FALSE)
+      list(package = "eikon", pip = TRUE),
+      list(package = "refinitiv.dataplatform", pip = TRUE)
     )
   )
 RoxygenNote: 7.1.2

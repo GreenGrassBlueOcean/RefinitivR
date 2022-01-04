@@ -17,13 +17,13 @@ CondaExists <- function(){
 }
 
 
-#' Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-reticulate
+#' Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-eikon
 #'
 #' This function can also be used to update the required python packages so that you can always use the latest version of the pyhton packages numpy and eikon.
 #'
 #' @param method Installation method. By default, "auto" automatically finds a method that will work in the local environment. Change the default to force a specific installation method. Note that the "virtualenv" method is not available on Windows.
 #' @param conda  The path to a conda executable. Use "auto" to allow reticulate to automatically find an appropriate conda binary. See Finding Conda in the reticulate package for more details
-#' @param envname the name for the conda environment that will be used, default  r-reticulate. Don't Change!
+#' @param envname the name for the conda environment that will be used, default  r-eikon. Don't Change!
 #' @param update boolean, allow to rerun the command to update the packages required to update the python packages numpy and eikon defaults to true
 #'
 #' @return None
@@ -34,8 +34,7 @@ CondaExists <- function(){
 #' \dontrun{
 #' install_eikon()
 #' }
-install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulate", update = TRUE) {
-
+install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", update = TRUE) {
 
 # Check if a conda environment exists and install if not available
   if (CondaExists() == FALSE ) {
@@ -45,20 +44,39 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-reticulat
 
   }
  if (!(envname %in% reticulate::conda_list()$name)) {
-      py_version <- "3.9"
+      py_version <- "3.8"
       reticulate::conda_create(envname = envname, python_version = py_version )
     }
 
-  reticulate::use_miniconda(condaenv = "r-reticulate", required = T)
+  reticulate::use_miniconda(condaenv = envname, required = T)
 
 
   if(!reticulate::py_module_available("eikon") || update ) {
-     reticulate::py_install(packages = c("numpy", "pandas", "nest-asyncio","eikon", "scipy") , envname = envname,  method = method, conda = conda, pip = TRUE, update = TRUE )
+    message("installing Eikon")
+    reticulate::conda_install(packages = c("numpy", "pandas", "nest-asyncio"
+                                          ,"eikon", "scipy")
+                             , envname = envname,  method = method
+                             , conda = conda, pip = TRUE, update = TRUE )
   }
 
-  if (!reticulate::py_module_available("refinitiv.dataplatform") || update ) {
-   reticulate::py_install(packages = "refinitiv.dataplatform", envname = envname, method = method, conda = conda, update = TRUE, pip = TRUE)
+  #Verify that eikon is really available
+  if(!(reticulate::py_module_available("eikon"))){
+    stop("Installation of python module eikon failed")
   }
+
+
+  if (!reticulate::py_module_available("refinitiv.dataplatform") || update ) {
+   message("installing RDP")
+   reticulate::conda_install( packages = "refinitiv.dataplatform"
+                            , envname = envname, method = method
+                            , conda = conda, update = TRUE, pip = TRUE)
+  }
+
+  #Verify that RDP is really available
+  if(!(reticulate::py_module_available("refinitiv.dataplatform"))){
+    stop("Installation of python module refinitiv.dataplatform failed")
+  }
+
 
   print(reticulate::py_config())
   return("Eikon Python interface successfully installed or updated")
@@ -141,7 +159,7 @@ EikonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000
   options(.EikonApplicationPort = Eikonapplication_port)
   options(.RefinitivAPI = PythonModule)
 
-  suppressWarnings(reticulate::use_condaenv(condaenv = "r-reticulate", conda = "auto", required = T)) # set virtual environment right
+  suppressWarnings(reticulate::use_miniconda(condaenv = "r-eikon", required = T)) # set virtual environment right
   # PythonEK <- reticulate::import(module = "refinitiv.dataplatform.eikon") # import python eikon module
 
   if (identical(.Options$.RefinitivAPI, "Eikon")){
@@ -187,7 +205,8 @@ RDPConnect <- function(application_id = NA) {
 
   if(!CondaExists()){stop("Conda/reticulate does not seem to be available please run install_eikon")}
 
-  suppressWarnings(reticulate::use_condaenv(condaenv = "r-reticulate", conda = "auto", required = T))
+
+  suppressWarnings(reticulate::use_miniconda(condaenv = "r-eikon", required = T))
   #2. Run main programme ----
   options(.EikonApiKey = application_id)
   rdp <- reticulate::import(module = "refinitiv.dataplatform", convert = F, delay_load = F)

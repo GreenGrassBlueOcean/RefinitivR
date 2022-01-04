@@ -2,12 +2,12 @@
 % Please edit documentation in R/refinitiv.r
 \name{install_eikon}
 \alias{install_eikon}
-\title{Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-reticulate}
+\title{Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-eikon}
 \usage{
 install_eikon(
   method = "auto",
   conda = "auto",
-  envname = "r-reticulate",
+  envname = "r-eikon",
   update = TRUE
 )
 }
@@ -16,7 +16,7 @@ install_eikon(
 
 \item{conda}{The path to a conda executable. Use "auto" to allow reticulate to automatically find an appropriate conda binary. See Finding Conda in the reticulate package for more details}
 
-\item{envname}{the name for the conda environment that will be used, default  r-reticulate. Don't Change!}
+\item{envname}{the name for the conda environment that will be used, default  r-eikon. Don't Change!}
 
 \item{update}{boolean, allow to rerun the command to update the packages required to update the python packages numpy and eikon defaults to true}
 }

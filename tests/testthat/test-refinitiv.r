@@ -239,7 +239,8 @@ test_that("EikonGetData does not crash when only one wrong RIC is requested with
   CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("WrongRIC2"),
                                      Eikonformulas = "TR.CompanyName", raw_output = FALSE))
 
-  testthat::expect_identical(CheckEikonData, GoodCheckEikonData)
+  testthat::expect_identical(CheckEikonData$PostProcessedEikonGetData
+                            , GoodCheckEikonData$PostProcessedEikonGetData)
 })
 
 
