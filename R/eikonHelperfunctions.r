@@ -107,7 +107,7 @@ EikonPostProcessor <- function(Eikon_get_dataOuput, SpaceConvertor = "."){
 #' @param Fundamentals_Data a data.frame containing at leasts the columns "RDN_EXCHD2" and "Operating MIC"
 #'
 #' @return the corrected data.frame in which the column "Operating MIC" empty string and NA elements are replaced with an operating MIC based on RDN_EXCHD2
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' \dontrun{
