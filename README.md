@@ -1,5 +1,5 @@
 # Important message
-if you update the package: also run Refinitiv::install_eikon() again as some changes to the conda environment had to be made!
+if you update the package: also run `Refinitiv::install_eikon()` again as some changes to the conda environment had to be made!
 
 
 
