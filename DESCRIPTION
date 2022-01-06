@@ -24,8 +24,7 @@ Imports:
     magrittr,
     jsonlite
 Remotes:
-    github::CharlesCara/DatastreamDSWS2R,
-    github::rstudio/reticulate
+    github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:
   list(
     packages = list(

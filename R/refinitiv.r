@@ -24,7 +24,8 @@ CondaExists <- function(){
 #' @param method Installation method. By default, "auto" automatically finds a method that will work in the local environment. Change the default to force a specific installation method. Note that the "virtualenv" method is not available on Windows.
 #' @param conda  The path to a conda executable. Use "auto" to allow reticulate to automatically find an appropriate conda binary. See Finding Conda in the reticulate package for more details
 #' @param envname the name for the conda environment that will be used, default  r-eikon. Don't Change!
-#' @param update boolean, allow to rerun the command to update the packages required to update the python packages numpy and eikon defaults to true
+#' @param update boolean, allow to rerun the command to update the miniconda environment and the packages required to update the python packages numpy,eikon, and refinitiv dataplatform defaults to TRUE
+#' @param reset boolean, this will remove the miniconda r-eikon environment and reinstall miniconda, the conda environment and relevant packages.
 #'
 #' @return None
 #' @importFrom utils installed.packages
@@ -34,15 +35,41 @@ CondaExists <- function(){
 #' \dontrun{
 #' install_eikon()
 #' }
-install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", update = TRUE) {
+install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", update = TRUE, reset = FALSE) {
+
+  #check input
+  if(!is.logical(reset)){
+    stop(paste("reset variable should be boolean but has currently value", reset))
+  }
+  if(!is.logical(update)){
+    stop(paste("update variable should be boolean but has currently value", update))
+  }
+
+  if(CondaExists() && (envname %in% reticulate::conda_list()$name) && reset){
+    message(paste0("Removing conda environment ", envname))
+    reticulate::conda_remove(envname = envname, conda = conda)
+  }
+
 
 # Check if a conda environment exists and install if not available
-  if (CondaExists() == FALSE ) {
+  if (CondaExists() == FALSE || reset ) {
       message("installing MiniConda, if this fails retry by running r/rstudio with windows administrative powers/linux elevated permissions")
       reticulate::install_miniconda(update = TRUE, force = TRUE)
       message('Miniconda installed')
 
+  } else if(update){
+    message("updating conda environment")
+    # resolve conda
+    conda_BIN <- reticulate::conda_binary(conda)
+
+    # compute base path
+    prefix <- system2(conda_BIN, c("info", "--base"), stdout = TRUE)
+
+    # attempt update
+    system2(conda_BIN, c("update", "--prefix", shQuote(prefix), "--yes", "conda"))
   }
+
+
  if (!(envname %in% reticulate::conda_list()$name)) {
       py_version <- "3.8"
       reticulate::conda_create(envname = envname, python_version = py_version )
@@ -79,7 +106,7 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
 
 
   print(reticulate::py_config())
-  return("Eikon Python interface successfully installed or updated")
+  return("Eikon/RDP Python interface successfully installed or updated")
 }
 
 

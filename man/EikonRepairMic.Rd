@@ -28,4 +28,3 @@ EikonDataWithFailingOPeratingMics <- EikonGetData(EikonObject = Eikon,
 EikonDataWithRepairedOPeratingMics <- EikonRepairMic(EikonDataWithFailingOPeratingMics)
 }
 }
-\keyword{internal}

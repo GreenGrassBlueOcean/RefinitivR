@@ -8,7 +8,8 @@ install_eikon(
   method = "auto",
   conda = "auto",
   envname = "r-eikon",
-  update = TRUE
+  update = TRUE,
+  reset = FALSE
 )
 }
 \arguments{
@@ -18,7 +19,9 @@ install_eikon(
 
 \item{envname}{the name for the conda environment that will be used, default  r-eikon. Don't Change!}
 
-\item{update}{boolean, allow to rerun the command to update the packages required to update the python packages numpy and eikon defaults to true}
+\item{update}{boolean, allow to rerun the command to update the miniconda environment and the packages required to update the python packages numpy,eikon, and refinitiv dataplatform defaults to TRUE}
+
+\item{reset}{boolean, this will remove the miniconda r-eikon environment and reinstall miniconda, the conda environment and relevant packages.}
 }
 \value{
 None
