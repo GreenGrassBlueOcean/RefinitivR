@@ -270,10 +270,15 @@ RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = F
     ChunckedRicsTryList <- DownloadCoordinator$index[which(!DownloadCoordinator$succes)]
 
     for (j in ChunckedRicsTryList) {
-      OptionAnalytics[[j]] <- try(RDP$ipa$FinancialContracts$get_option_analytics(universe = ChunckedRics[[j]]))
+      OptionAnalytics[[j]] <- tryCatch({RDP$ipa$FinancialContracts$get_option_analytics(universe = ChunckedRics[[j]])}
+                                       , error = function(cond){return(NA)}
+                                       )
       Sys.sleep(time = 0.00001)
 
-      if (!identical(OptionAnalytics[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
+      if (!identical(OptionAnalytics[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE
+      } else { if(verbose){message("Python call failed, but managing")}
+               next
+             }
       if(verbose){
         message(paste0("Download Status:\n", paste0(capture.output(DownloadCoordinator), collapse = "\n"), collapse = "\n") )
       }
