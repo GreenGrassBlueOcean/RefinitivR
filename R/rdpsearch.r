@@ -271,16 +271,14 @@ RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = F
 
     for (j in ChunckedRicsTryList) {
       OptionAnalytics[[j]] <- try(RDP$ipa$FinancialContracts$get_option_analytics(universe = ChunckedRics[[j]]))
-      # browser()
-      if(!identical(names(OptionAnalytics[[j]]$error_message), character(0))){
-        warning(try(paste(OptionAnalytics[[j]]$error_code, OptionAnalytics[[j]]$error_message)))
-      }
-      #InspectRequest(df = OptionAnalytics[[j]], functionname = "EikonGetTimeseries", verbose = verbose)
       Sys.sleep(time = 0.00001)
 
       if (!identical(OptionAnalytics[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
       if(verbose){
         message(paste0("Download Status:\n", paste0(capture.output(DownloadCoordinator), collapse = "\n"), collapse = "\n") )
+      }
+      if(!identical(names(OptionAnalytics[[j]]$error_message), character(0))){
+        warning(try(paste(OptionAnalytics[[j]]$error_code, OptionAnalytics[[j]]$error_message)))
       }
     }
 
