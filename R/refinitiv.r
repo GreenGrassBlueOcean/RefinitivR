@@ -20,6 +20,7 @@ CondaExists <- function(){
 #' Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-eikon
 #'
 #' This function can also be used to update the required python packages so that you can always use the latest version of the pyhton packages numpy and eikon.
+#' For a pure reinstall of miniconda and the refinitiv python libraries set set reset = T and update = F
 #'
 #' @param method Installation method. By default, "auto" automatically finds a method that will work in the local environment. Change the default to force a specific installation method. Note that the "virtualenv" method is not available on Windows.
 #' @param conda  The path to a conda executable. Use "auto" to allow reticulate to automatically find an appropriate conda binary. See Finding Conda in the reticulate package for more details
@@ -35,6 +36,11 @@ CondaExists <- function(){
 #' \dontrun{
 #' install_eikon()
 #' }
+#'
+#' \dontrun{
+#' # when you get the error the refinitiv library cannot be found anymore or errors during installation:
+#' install_eikon(update = F, reset = T)
+#' }
 install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", update = TRUE, reset = FALSE) {
 
   #check input
@@ -46,6 +52,7 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
   }
 
   if(CondaExists() && (envname %in% reticulate::conda_list()$name) && reset){
+    reticulate::use_miniconda(condaenv = envname, required = T)
     message(paste0("Removing conda environment ", envname))
     reticulate::conda_remove(envname = envname, conda = conda)
   }
@@ -53,9 +60,13 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
 
 # Check if a conda environment exists and install if not available
   if (CondaExists() == FALSE || reset ) {
-      message("installing MiniConda, if this fails retry by running r/rstudio with windows administrative powers/linux elevated permissions")
-      reticulate::install_miniconda(update = TRUE, force = TRUE)
-      message('Miniconda installed')
+     if(reset){
+       message("uninstalling MiniConda")
+       try(reticulate::miniconda_uninstall(), silent = T)
+     }
+    message("installing MiniConda, if this fails retry by running r/rstudio with windows administrative powers/linux elevated permissions")
+    reticulate::install_miniconda(update = update, force = TRUE)
+    message('Miniconda installed')
 
   } else if(update){
     message("updating conda environment")
@@ -80,10 +91,19 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
 
   if(!reticulate::py_module_available("eikon") || update ) {
     message("installing Eikon")
-    reticulate::conda_install(packages = c("numpy", "pandas", "nest-asyncio"
+    reticulate::conda_install(packages = c("httpx==0.19.0", "numpy", "pandas"
+                                          , "nest-asyncio==1.3.3"
                                           ,"eikon", "scipy")
                              , envname = envname,  method = method
-                             , conda = conda, pip = TRUE, update = TRUE )
+                             , conda = conda, pip = TRUE, update = update )
+    # for now also install in r-reticulate as long
+    # as https://github.com/rstudio/reticulate/issues/1147 is not resolved
+    reticulate::conda_install(packages = c("httpx==0.19.0", "numpy", "pandas"
+                                          , "nest-asyncio==1.3.3"
+                                          , "eikon", "scipy")
+                              , envname = "r-reticulate",  method = method
+                              , conda = conda, pip = TRUE, update = update )
+
   }
 
   #Verify that eikon is really available
@@ -96,7 +116,14 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
    message("installing RDP")
    reticulate::conda_install( packages = "refinitiv.dataplatform"
                             , envname = envname, method = method
-                            , conda = conda, update = TRUE, pip = TRUE)
+                            , conda = conda, update = update, pip = TRUE)
+
+   # for now also install in r-reticulate as long
+   # as https://github.com/rstudio/reticulate/issues/1147 is not resolved
+   reticulate::conda_install( packages = "refinitiv.dataplatform"
+                              , envname = "r-reticulate", method = method
+                              , conda = conda, update = update, pip = TRUE)
+
   }
 
   #Verify that RDP is really available
