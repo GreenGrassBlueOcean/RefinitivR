@@ -91,6 +91,33 @@ ex2b <- EikonGetData( EikonObject = Eikon, rics = "AAPl.O"
                     )
  ```
 
+# Working with RDP libraries
+
+Making a search request:
+```r
+ RDPConnect('your api key')
+ test <- RDPsearch(query =  "AAPL.O")
+ test <- RDPsearch(query =  "AAPL.O", select = "ContractType,RIC")
+
+ Presidents <- RDPsearch( view = "People", query = 'president'
+                        , filter = "startswith(LastName,'H')"
+                        , select = 'DocumentTitle'
+                        , boost = ''
+                        , order_by = 'DocumentTitle asc'
+                        , group_by = 'FirstName'
+                        , group_count = 2
+                        , top = 20
+                        )
+```
+
+Get a streaming price snapshot
+
+```r
+rdp <- RDPConnect('your api key')
+streamObject <- rdp_streaming_prices(rdp, universe = c("EUR=","JPY="), fields = c('DSPLY_NAME', 'BID', 'ASK'))
+rdp_get_snapshot(streamObject)
+```
+
 # Performing a DataStream request
 
 ```r
