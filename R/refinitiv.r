@@ -91,15 +91,15 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
 
   if(!reticulate::py_module_available("eikon") || update ) {
     message("installing Eikon")
-    reticulate::conda_install(packages = c("httpx==0.19.0", "numpy", "pandas"
-                                          , "nest-asyncio==1.3.3"
+    reticulate::conda_install(packages = c("httpx", "numpy", "pandas" # httpx==0.19.0
+                                          , "nest-asyncio" # nest-asyncio==1.3.3
                                           ,"eikon", "scipy")
                              , envname = envname,  method = method
                              , conda = conda, pip = TRUE, update = update )
     # for now also install in r-reticulate as long
     # as https://github.com/rstudio/reticulate/issues/1147 is not resolved
-    reticulate::conda_install(packages = c("httpx==0.19.0", "numpy", "pandas"
-                                          , "nest-asyncio==1.3.3"
+    reticulate::conda_install(packages = c("httpx", "numpy", "pandas"
+                                          , "nest-asyncio"
                                           , "eikon", "scipy")
                               , envname = "r-reticulate",  method = method
                               , conda = conda, pip = TRUE, update = update )

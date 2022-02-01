@@ -28,9 +28,15 @@ None
 }
 \description{
 This function can also be used to update the required python packages so that you can always use the latest version of the pyhton packages numpy and eikon.
+For a pure reinstall of miniconda and the refinitiv python libraries set set reset = T and update = F
 }
 \examples{
 \dontrun{
 install_eikon()
+}
+
+\dontrun{
+# when you get the error the refinitiv library cannot be found anymore or errors during installation:
+install_eikon(update = F, reset = T)
 }
 }
