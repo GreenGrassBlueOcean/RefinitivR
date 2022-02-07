@@ -38,7 +38,8 @@ CondaExists <- function(){
 #' }
 #'
 #' \dontrun{
-#' # when you get the error the refinitiv library cannot be found anymore or errors during installation:
+#' # when you get the error the refinitiv library cannot
+#' # be found anymore or errors during installation:
 #' install_eikon(update = F, reset = T)
 #' }
 install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", update = TRUE, reset = FALSE) {
@@ -52,7 +53,6 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
   }
 
   if(CondaExists() && (envname %in% reticulate::conda_list()$name) && reset){
-    reticulate::use_miniconda(condaenv = envname, required = T)
     message(paste0("Removing conda environment ", envname))
     reticulate::conda_remove(envname = envname, conda = conda)
   }

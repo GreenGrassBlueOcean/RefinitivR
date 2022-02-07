@@ -17,8 +17,9 @@ Retrieve a real-time snapshot from a previously defined stream object
 }
 \examples{
 \dontrun{
-rdp <- Refinitiv::RDPConnect("your key")
-streamObject <- rdp_streaming_prices(rdp, universe = c("EUR=","JPY="), fields = c('DSPLY_NAME', 'BID', 'ASK', 'CF_TIME'))
+rdp <- RDPConnect("your key")
+streamObject <- rdp_streaming_prices(rdp, universe = c("EUR=","JPY=")
+, fields = c('DSPLY_NAME', 'BID', 'ASK', 'CF_TIME'))
 rdp_get_snapshot(streamObject)
 }
 }

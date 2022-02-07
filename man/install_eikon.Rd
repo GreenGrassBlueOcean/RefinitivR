@@ -36,7 +36,8 @@ install_eikon()
 }
 
 \dontrun{
-# when you get the error the refinitiv library cannot be found anymore or errors during installation:
+# when you get the error the refinitiv library cannot
+# be found anymore or errors during installation:
 install_eikon(update = F, reset = T)
 }
 }

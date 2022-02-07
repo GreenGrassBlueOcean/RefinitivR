@@ -11,7 +11,7 @@ rdp_streaming_prices(
 )
 }
 \arguments{
-\item{rdpObject}{refinitiv dataplatform object result from a call to Refinitiv::RDPConnect}
+\item{rdpObject}{refinitiv dataplatform object result from a call to RDPConnect}
 
 \item{universe}{list of instruments to be subscribed}
 
@@ -25,9 +25,11 @@ Define a streaming prices object for use in the get_snapshot function
 }
 \examples{
 \dontrun{
-rdp <- Refinitiv::RDPConnect("your key")
-streamObject <- rdp_streaming_prices(rdp, universe = c("EUR=","JPY="), fields = c('DSPLY_NAME', 'BID', 'ASK'))
-EquityStream <- rdp_streaming_prices(rdp, universe = c("FLOW.AS"), fields = c('DSPLY_NAME', 'BID', 'ASK'))
+rdp <- RDPConnect("your key")
+streamObject <- rdp_streaming_prices(rdp, universe = c("EUR=","JPY=")
+, fields = c('DSPLY_NAME', 'BID', 'ASK'))
+EquityStream <- rdp_streaming_prices(rdp, universe = c("FLOW.AS")
+, fields = c('DSPLY_NAME', 'BID', 'ASK'))
 }
 }
 \seealso{
