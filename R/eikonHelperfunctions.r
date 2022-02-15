@@ -151,26 +151,6 @@ EikonRepairMic <- function(Fundamentals_Data){
 }
 
 
-
-#' Download Operating mic definitions from the isowebsite
-#'
-#' @return a data.frame with details of the operating mics from www.iso20022.org
-#' @export
-#'
-#' @examples GetISO103883_MIC()
-#' @references \url{"https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv"}
-GetISO103883_MIC <- function(){
-   OperatingMics_df <- utils::read.csv(file = "https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.csv")
-
-   colnames(OperatingMics_df)[which(names(OperatingMics_df) == "OPERATING.MIC")] <- "OPERATINGMIC"
-   #Change countrycode to 3 digit format
-   OperatingMics_df$iso3c <- suppressWarnings(countrycode::countrycode(sourcevar = OperatingMics_df$COUNTRY, origin = 'country.name', destination = "iso3c"))
-   OperatingMics_df <- stats::na.omit(OperatingMics_df)
-   return(OperatingMics_df)
-}
-
-
-
 #' Helper function to build the Eikonformulas parameter for the EikonGetData function.
 #'
 #' @param Field_name string Field name to request. You can find the list in Data Item Browser.

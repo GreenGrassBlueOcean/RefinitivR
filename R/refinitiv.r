@@ -81,6 +81,11 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
   }
 
 
+
+
+  #conda update -n base -c defaults conda
+
+
  if (!(envname %in% reticulate::conda_list()$name)) {
       py_version <- "3.8"
       reticulate::conda_create(envname = envname, python_version = py_version )

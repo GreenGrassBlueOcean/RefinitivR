@@ -55,19 +55,6 @@ test_that("EikonRepairMic satisfies testcases", {
 
 })
 
-## GetISO103883_MIC -----------------
-
-test_that("GetISO103883_MIC satisfies testcases", {
-  test <- NULL
-  test <- GetISO103883_MIC()
-  expect_true(all(c("MIC","OPERATINGMIC", "iso3c") %in% names(test)))
-  expect_identical(class(test), "data.frame")
-
-})
-
-
-
-
 
 test_that("ProcessSymbology returns an error when it should", {
   expect_error(ProcessSymbology(EikonSymbologyResult = list(data.frame()), from_symbol_type = "ISIN", to_symbol_type = "RIC")
