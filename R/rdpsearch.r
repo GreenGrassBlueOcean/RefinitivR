@@ -62,7 +62,7 @@ return(r_df)
 #' @examples
 #' utils <- Refinitiv:::ImportCustomPythonutils()
 ImportCustomPythonutils <- function(){
-reticulate::use_miniconda(condaenv = "r-eikon", required = T)
+try(reticulate::use_miniconda(condaenv = "r-eikon"), silent = TRUE)
 refinitiv_utils <- reticulate::import_from_path( module = "refinitiv_utils"
                                                , convert = F, delay_load = F
                                                , path =  dirname(system.file("python/utils/refinitiv_utils.py"
