@@ -4,3 +4,4 @@
 .Ruserdata
 R/test_eikonobject.r
 *.log
+*.pyc

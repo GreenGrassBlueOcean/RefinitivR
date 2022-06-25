@@ -96,10 +96,9 @@ testthat::test_that("Check EikonGetData returns expected data with empty ric"
 
                       Correct_EikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = "WRONRIC", RDN_EXCHD2 = NA, Company.Name = NA)
                                                                                       , row.names = c(NA, -1L), class = "data.frame")
-                                                , Eikon_Error_Data = structure(list(code = c(251658243L, 416L), col = 1:2
-                                                                                    , message = c("'The record could not be found' for the instrument 'WRONRIC'"
-                                                                                                  , "Unable to collect data for the field 'TR.CompanyName' and some specific identifier(s).")
-                                                                                    , row = c(0L, 0L)), row.names = c(NA, -2L), class = "data.frame"))
+                                                , Eikon_Error_Data = structure(list(code = 251658243L, col = 1L
+                                                                                    , message = "'The record could not be found' for the instrument 'WRONRIC'", row = 0L), row.names = c(NA, -1L)
+                                                                               , class = "data.frame"))
                       testthat::expect_identical(CheckEikonData, Correct_EikonData)
                     }
 )
@@ -115,14 +114,13 @@ testthat::test_that("Check EikonGetData returns expected data with only one good
                     , {check_Eikonapi()
                       Eikon <- Refinitiv::EikonConnect()
 
-                      Correct_output <- list(PostProcessedEikonGetData = structure(list(Instrument = c("WRONGRIC",
-                                                                                     "MMM"), RDN_EXCHD2 = c(NA, "NYQ"), Company.Name = c(NA, "3M Co"
-                                                                                     )), class = "data.frame", row.names = c(NA, -2L)), Eikon_Error_Data = structure(list(
-                                                                                       code = c(251658243L, 416L), col = 1:2, message = c("'The record could not be found' for the instrument 'WRONGRIC'",
-                                                                                                                                          "Unable to collect data for the field 'TR.CompanyName' and some specific identifier(s)."
-                                                                                       ), row = c(0, 0)), class = "data.frame", row.names = c(NA,
-                                                                                                                                              -2L)))
-
+                      Correct_output <- list(PostProcessedEikonGetData = structure(list(Instrument = c("WRONGRIC", "MMM")
+                                                                                        , RDN_EXCHD2 = c(NA, "NYQ")
+                                                                                        , Company.Name = c(NA, "3M Co"))
+                                                                                   , row.names = c(NA, -2L), class = "data.frame")
+                                             , Eikon_Error_Data = structure(list(code = 251658243L, col = 1L
+                                                                                 , message = "'The record could not be found' for the instrument 'WRONGRIC'", row = 0L)
+                                                                            , row.names = c(NA, -1L), class = "data.frame"))
 
                       CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("WRONGRIC", "MMM"),
                                                          Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName")))

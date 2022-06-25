@@ -390,8 +390,15 @@ PostProcessTimeSeriesRequest <- function(RawTimeSeriesRequest){
 #' , rics = rep(letters, 1000), start_date = "2015-01-01", end_date = "2018-01-01")
 EikonTimeSeriesPreprocessor <- function(interval, rics, start_date, end_date){
 
+  AllowedIntervals <-  c('tick', 'minute', 'hour', 'daily', 'weekly', 'monthly', 'quarterly', 'yearly')
+
+  if(!(interval %in% AllowedIntervals)){
+    stop(paste("Parameter Interval is", interval, "but should be one of ", paste(AllowedIntervals, collapse = ", ") ))
+  }
+
+
   # Build dataframe for internal lookup of names and datapoints limits
-  difftimeConversionTable <- data.frame( EikonTimeName = c('tick', 'minute', 'hour', 'daily', 'weekly', 'monthly', 'quarterly', 'yearly')
+  difftimeConversionTable <- data.frame( EikonTimeName = AllowedIntervals
                                          , difftimeName = c(NA,  "mins", "hours","days", "weeks", NA, NA, NA)
                                          , limit = c(50000,50000,50000,3000,3000,3000,3000,3000)
                                          , stringsAsFactors = FALSE

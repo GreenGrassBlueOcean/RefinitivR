@@ -478,19 +478,32 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
     )
     )}
 
+    if(is.null(fields) | length(fields) == 0L ){
+          retry(EikonObject$get_timeseries( rics = ChunckedRics[[j]]
+                                          , interval = interval
+                                          , calendar = calender
+                                          , start_date = as.character(start_date,  "%Y-%m-%dT%H:%M:%S")
+                                          , end_date = as.character(end_date,  "%Y-%m-%dT%H:%M:%S")
+                                          , normalize = TRUE
+                                          , raw_output = TRUE
+                                          , corax = corax
+                                          )
 
-      retry(EikonObject$get_timeseries( rics = ChunckedRics[[j]]
-                                                               , interval = interval
-                                                               , calendar = calender
-                                                               , fields = fields
-                                                               , start_date = as.character(start_date,  "%Y-%m-%dT%H:%M:%S")
-                                                               , end_date = as.character(end_date,  "%Y-%m-%dT%H:%M:%S")
-                                                               , normalize = TRUE
-                                                               , raw_output = TRUE
-                                                               , corax = corax
-                                                               )
 
-    )})
+          )} else {
+            retry(EikonObject$get_timeseries( rics = ChunckedRics[[j]]
+                                            , interval = interval
+                                            , calendar = calender
+                                            , fields = fields
+                                            , start_date = as.character(start_date,  "%Y-%m-%dT%H:%M:%S")
+                                            , end_date = as.character(end_date,  "%Y-%m-%dT%H:%M:%S")
+                                            , normalize = TRUE
+                                            , raw_output = TRUE
+                                            , corax = corax
+            ))
+
+      }
+    })
     InspectRequest(df = TimeSeriesList[[j]], functionname = "EikonGetTimeseries", verbose = verbose)
     Sys.sleep(time = 0.5)
 

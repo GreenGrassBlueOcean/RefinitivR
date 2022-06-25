@@ -194,15 +194,14 @@ testthat::test_that("EikonGetTimeseries satisfies corax conditions and can switc
                                 , corax = "adjusted"
                                 )
 
-  Correct_AdjustedTS <- structure(list(Date = structure(c(1546387200, 1546473600, 1546560000, 1546819200, 1546905600, 1546992000, 1547078400)
-                                                         , class = c("POSIXct","POSIXt"), tzone = "GMT")
-                                        , Security = c("AIRP.PA", "AIRP.PA","AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA")
-                                        , CLOSE = c(96.4545551,94.68182765, 97.31819155, 96.77273695, 96.9091006, 95.59091865, 94.545464)
-                                        , HIGH = c(97.0000097, 96.04546415, 97.6363734, 98.0000098, 98.13637345, 97.272737, 94.9091004)
-                                        , LOW = c(95.77273685, 94.68182765, 95.1818277, 96.13637325, 96.50000965, 95.59091865, 93.77273665)
-                                        , OPEN = c(96.95455515, 95.7272823, 95.5454641, 97.68182795, 96.50000965, 96.95455515, 94.7272822)
-                                        , VOLUME = c(748225.425177458,855101.414489859, 856816.314318369, 659402.634059737, 843492.015650798, 1159483.48405165, 859889.714011029))
-                                   , row.names = c(NA, -7L), class = "data.frame")
+  Correct_AdjustedTS <- structure(list( Date = structure(c(1546387200, 1546473600, 1546560000, 1546819200, 1546905600, 1546992000, 1547078400), class = c("POSIXct","POSIXt"), tzone = "GMT")
+                                      , Security = c("AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA")
+                                      , CLOSE = c(87.6859679504141,86.0743973801661, 88.471092074381, 87.9752242066124, 88.0991911735546,86.9008438264472, 85.950430413224)
+                                      , HIGH = c(88.1818358181827,87.3140670495876, 88.7603483305794, 89.0909269090918, 89.214893876034,88.429769752067, 86.2810089917364)
+                                      , LOW = c(87.0661331157033, 86.0743973801661, 86.5289429256207, 87.3967116942157, 87.7272902727282, 86.9008438264472, 85.2479509338851)
+                                      , OPEN = c(88.1405134958686, 87.0248107933893, 86.8595215041331, 88.8016706528934, 87.7272902727282, 88.1405134958686, 86.1157197024802)
+                                      , VOLUME = c(823047.885390415,940611.461877698, 942497.85150042, 725342.824931428, 927841.124431766, 1275431.70491365, 945878.590824272))
+                                  , row.names = c(NA, -7L), class = "data.frame")
   testthat::expect_equivalent(AdjustedTS, Correct_AdjustedTS, tolerance = 1e-4)
 
   UnAdjustedTS <- Refinitiv::EikonGetTimeseries(EikonObject = Eikon
@@ -212,15 +211,13 @@ testthat::test_that("EikonGetTimeseries satisfies corax conditions and can switc
                                                , corax = "unadjusted"
                                                )
 
-  Correct_UnAdjustedTS <- structure(list( Date = structure(c(1546387200, 1546473600, 1546560000, 1546819200, 1546905600, 1546992000, 1547078400), class = c("POSIXct",  "POSIXt"), tzone = "GMT")
-                                        , Security = c("AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA")
+  Correct_UnAdjustedTS <- structure(list( Date = structure(c(1546387200, 1546473600, 1546560000, 1546819200, 1546905600, 1546992000, 1547078400), class = c("POSIXct", "POSIXt"), tzone = "GMT")
+                                        , Security = c("AIRP.PA", "AIRP.PA","AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA", "AIRP.PA")
                                         , CLOSE = c(106.1, 104.15, 107.05, 106.45, 106.6, 105.15, 104)
-                                        , HIGH = c(106.7,105.65, 107.4, 107.8, 107.95, 107, 104.4)
+                                        , HIGH = c(106.7, 105.65, 107.4, 107.8, 107.95, 107, 104.4)
                                         , LOW = c(105.35, 104.15, 104.7, 105.75, 106.15, 105.15, 103.15)
-                                        , OPEN = c(106.65, 105.3, 105.1, 107.45, 106.15, 106.65, 104.2)
-                                        , VOLUME = c(680205L, 777365L, 778924L, 599457L, 766811L, 1054076L, 781718L))
-                                    , row.names = c(NA, -7L), class = "data.frame")
-
+                                        , OPEN = c(106.65, 105.3,105.1, 107.45, 106.15, 106.65, 104.2)
+                                        , VOLUME = c(680205L, 777365L,778924L, 599457L, 766811L, 1054076L, 781718L)), row.names = c(NA, -7L), class = "data.frame")
   testthat::expect_equivalent(UnAdjustedTS, Correct_UnAdjustedTS, tolerance = 1e-4)
 
   AdjustedTS <- Refinitiv::EikonGetTimeseries(EikonObject = Eikon
@@ -297,4 +294,20 @@ test_that("one wrong ric does not blow it for the rest in EikonGetTimeseries", {
 
 
 })
+
+
+test_that("monthly economic timeseries can be downloaded", {
+  check_Eikonapi()
+  requireNamespace("lubridate", quietly = TRUE)
+  Eikon <- Refinitiv::EikonConnect()
+
+  testEconSeries <- EikonGetTimeseries(EikonObject = Eikon, rics = "USCPI=ECI", start_date = paste0(Sys.Date()-lubridate::years(5), "T01:00:00"), interval = "monthly", fields = c())
+  expect_equal(lapply(testEconSeries, class), list(Date = c("POSIXct", "POSIXt"), Security = "character", VALUE = "numeric") )
+  expect_true("USCPI=ECI" == unique(testEconSeries$Security))
+
+
+  }
+
+  )
+
 
