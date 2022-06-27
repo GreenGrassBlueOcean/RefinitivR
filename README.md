@@ -52,6 +52,18 @@ Timeseries <- EikonGetTimeseries( EikonObject = Eikon, rics = c("MMM", "III.L"),
                                 )
 ```
 
+# Performing a request for a monthly economic timeseries
+```r
+  EconTimeSeries <- EikonGetTimeseries( EikonObject = Eikon
+                                      , rics = "USCPI=ECI"
+                                      , interval = "monthly"
+                                      , fields = c()
+                                      , start_date = "2020-01-01T01:00:00",
+                                      , end_date = paste0(Sys.Date(), "T01:00:00")
+                                      )
+```
+
+
 # Performing a data request
 ```r
 Data <- EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
