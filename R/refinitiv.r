@@ -482,6 +482,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
           retry(EikonObject$get_timeseries( rics = ChunckedRics[[j]]
                                           , interval = interval
                                           , calendar = calender
+                                          , fields = c()
                                           , start_date = as.character(start_date,  "%Y-%m-%dT%H:%M:%S")
                                           , end_date = as.character(end_date,  "%Y-%m-%dT%H:%M:%S")
                                           , normalize = TRUE

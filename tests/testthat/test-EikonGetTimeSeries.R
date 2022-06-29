@@ -301,7 +301,8 @@ test_that("monthly economic timeseries can be downloaded", {
   requireNamespace("lubridate", quietly = TRUE)
   Eikon <- Refinitiv::EikonConnect()
 
-  testEconSeries <- EikonGetTimeseries(EikonObject = Eikon, rics = "USCPI=ECI", start_date = paste0(Sys.Date()-lubridate::years(5), "T01:00:00"), interval = "monthly", fields = c())
+  testEconSeries <- EikonGetTimeseries(EikonObject = Eikon, rics = "USCPI=ECI", start_date = paste0(Sys.Date()-lubridate::years(5), "T01:00:00")
+                                       , interval = "monthly", fields = c())
   expect_equal(lapply(testEconSeries, class), list(Date = c("POSIXct", "POSIXt"), Security = "character", VALUE = "numeric") )
   expect_true("USCPI=ECI" == unique(testEconSeries$Security))
 
@@ -310,4 +311,19 @@ test_that("monthly economic timeseries can be downloaded", {
 
   )
 
+
+test_that("works fields = NULL", {
+  check_Eikonapi()
+  requireNamespace("lubridate", quietly = TRUE)
+  Eikon <- Refinitiv::EikonConnect()
+
+  testEconSeries <- EikonGetTimeseries(EikonObject = Eikon, rics = "USCPI=ECI", start_date = paste0(Sys.Date()-lubridate::years(5), "T01:00:00")
+                                       , interval = "monthly", fields = NULL)
+  expect_equal(lapply(testEconSeries, class), list(Date = c("POSIXct", "POSIXt"), Security = "character", VALUE = "numeric") )
+  expect_true("USCPI=ECI" == unique(testEconSeries$Security))
+
+
+}
+
+)
 
