@@ -424,7 +424,7 @@ EikonTimeSeriesPreprocessor <- function(interval, rics, start_date, end_date){
     Duration <- as.double(Duration)/365 # absolute years
   }
 
-  # Now calculate amount of datapoints, these are calculated as used rows
+  # Now calculate amount of data points, these are calculated as used rows
 
   if (!is.null(Duration)) {
     Datapoints <- ceiling(Duration) * length(rics)
