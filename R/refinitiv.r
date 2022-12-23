@@ -768,11 +768,11 @@ InspectRequest <- function(df, functionname, verbose = TRUE){
 
 
   try(message(class(df)))
-  try(message(lapply(df, class)))
+  # try(message(lapply(df, class)))
   try(message(names(df)))
   try(message(lapply(df, names)))
 
-  if(class(df) == "logical" && is.na(df) ){
+  if( is.logical(df) && is.na(df) ){
     try(message(paste0(functionname, " request returned NA")))
     # stop("Wrong output retrieved from Refinitiv")
   }

@@ -258,7 +258,7 @@ RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = F
   if(is.null(OptionRics) || !is.character(OptionRics)){
     stop("OptionRics should be supplied currently is not supplied or is in the wrong format")
   }
-  ChunckedRics <- Refinitiv:::EikonChunker(OptionRics, MaxCallsPerChunk = 500, Eikonfields = c("OptionRics"))
+  ChunckedRics <- EikonChunker(OptionRics, MaxCallsPerChunk = 500, Eikonfields = c("OptionRics")) #Refinitiv:::
   OptionAnalytics <- as.list(rep(NA, times = length(ChunckedRics)))
   DownloadCoordinator <- data.frame( index = 1:length(ChunckedRics)
                                      , succes =  rep(FALSE, length(ChunckedRics))
@@ -324,7 +324,7 @@ ProcessIPAOutput <- function(IPAoutput){
   getheaders <- function(data){
 
     #replace null headers with NA headers
-    data[["headers"]] <- Refinitiv:::replaceInList(data[["headers"]], function(x)if(is.null(x) || identical(x,"") )NA else x)
+    data[["headers"]] <- replaceInList(data[["headers"]], function(x)if(is.null(x) || identical(x,"") )NA else x)  #Refinitiv:::
 
     unlist(lapply( X = 1:length(data[["headers"]])
                    , FUN = function(x,data){data[["headers"]][[x]][["name"]] }

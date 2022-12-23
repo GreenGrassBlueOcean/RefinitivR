@@ -12,11 +12,8 @@ LazyData: true
 Imports: 
     qdapRegex,
     reticulate,
-    countrycode,
     zoo,
-    dplyr,
     methods,
-    stats,
     DatastreamDSWS2R,
     httr,
     stringi,
@@ -39,4 +36,6 @@ Suggests:
     testthat,
     covr,
     lubridate,
-    devtools
+    devtools,
+    countrycode,
+    dplyr

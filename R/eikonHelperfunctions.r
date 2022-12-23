@@ -175,17 +175,17 @@ TR_Field <- function(Field_name = NULL, Parameters = NULL, sort_dir = NULL, sort
   }
 
   # check Parameters
-  if(!is.null(Parameters) && (class(Parameters) != "list" | is.null(names(Parameters)))){
+  if(!is.null(Parameters) && (!is.list(Parameters) | is.null(names(Parameters)))){
     stop("Parameters should be a named list")
   }
 
   # check sort_dir
-  if(!is.null(sort_dir) && ((class(sort_dir) != "character") | (!((sort_dir) %in% c("asc", "desc"))))){
+  if(!is.null(sort_dir) && ( !is.character(sort_dir) | (!((sort_dir) %in% c("asc", "desc"))))){
     stop("sort_dir parameter should be character \"asc\" or \"desc\"")
   }
 
   # Check sort_priority
-  if(!is.null(sort_priority) && (class(sort_priority) != "numeric" )){
+  if(!is.null(sort_priority) && ( !is.numeric(sort_priority))){
     stop("sort_priority parameter should be integer")
   }
 
