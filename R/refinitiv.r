@@ -100,14 +100,18 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
                                           , "nest-asyncio" # nest-asyncio==1.3.3
                                           ,"eikon", "scipy")
                              , envname = envname,  method = method
-                             , conda = conda, pip = TRUE, update = update, pip_options = ("--user") )
+                             , conda = conda, pip = TRUE, update = update
+                             #, pip_options = ("--user")
+                             )
     # for now also install in r-reticulate as long
     # as https://github.com/rstudio/reticulate/issues/1147 is not resolved
     reticulate::conda_install( packages = c("httpx", "numpy", "pandas"
                                           , "nest-asyncio"
                                           , "eikon", "scipy")
                              , envname = "r-reticulate",  method = method
-                             , conda = conda, pip = TRUE, update = update, pip_options = ("--user") )
+                             , conda = conda, pip = TRUE, update = update
+                             #, pip_options = ("--user")
+                             )
 
   }
 
@@ -121,13 +125,17 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
    message("installing RDP")
    reticulate::conda_install( packages = "refinitiv.dataplatform"
                             , envname = envname, method = method
-                            , conda = conda, update = update, pip = TRUE, pip_options = ("--user"))
+                            , conda = conda, update = update, pip = TRUE
+                            #, pip_options = ("--user")
+                            )
 
    # for now also install in r-reticulate as long
    # as https://github.com/rstudio/reticulate/issues/1147 is not resolved
    reticulate::conda_install( packages = "refinitiv.dataplatform"
                               , envname = "r-reticulate", method = method
-                              , conda = conda, update = update, pip = TRUE, pip_options = ("--user"))
+                              , conda = conda, update = update
+                              #, pip = TRUE, pip_options = ("--user")
+                              )
 
   }
 
