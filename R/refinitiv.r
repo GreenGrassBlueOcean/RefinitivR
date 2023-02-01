@@ -133,8 +133,8 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
    # as https://github.com/rstudio/reticulate/issues/1147 is not resolved
    reticulate::conda_install( packages = "refinitiv.dataplatform"
                               , envname = "r-reticulate", method = method
-                              , conda = conda, update = update
-                              #, pip = TRUE, pip_options = ("--user")
+                              , conda = conda, update = update, pip = TRUE
+                              #, pip_options = ("--user")
                               )
 
   }
