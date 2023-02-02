@@ -96,57 +96,61 @@ install_eikon <- function(method = "auto", conda = "auto", envname= "r-eikon", u
 
   if(!reticulate::py_module_available("eikon") || update ) {
     message("installing Eikon")
-    reticulate::conda_install(packages = c("httpx", "numpy", "pandas" # httpx==0.19.0
+    try(reticulate::conda_install(packages = c("httpx", "numpy", "pandas" # httpx==0.19.0
                                           , "nest-asyncio" # nest-asyncio==1.3.3
                                           ,"eikon", "scipy")
                              , envname = envname,  method = method
                              , conda = conda, pip = TRUE, update = update
                              #, pip_options = ("--user")
-                             )
+                             ))
     # for now also install in r-reticulate as long
     # as https://github.com/rstudio/reticulate/issues/1147 is not resolved
-    reticulate::conda_install( packages = c("httpx", "numpy", "pandas"
+    try(reticulate::conda_install( packages = c("httpx", "numpy", "pandas"
                                           , "nest-asyncio"
                                           , "eikon", "scipy")
                              , envname = "r-reticulate",  method = method
                              , conda = conda, pip = TRUE, update = update
                              #, pip_options = ("--user")
-                             )
+                             ))
 
   }
 
   #Verify that eikon is really available
   if(!(reticulate::py_module_available("eikon"))){
-    stop("Installation of python module eikon failed")
+    warning("Installation of python module eikon failed")
+  } else {
+    message("Installation of python module eikon successful")
   }
 
 
   if (!reticulate::py_module_available("refinitiv.dataplatform") || update ) {
    message("installing RDP")
-   reticulate::conda_install( packages = " refinitiv-dataplatform==1.0.0a19"
+   try(reticulate::conda_install( packages = " refinitiv-dataplatform==1.0.0a19"
                             , envname = envname, method = method
                             , conda = conda, update = update, pip = TRUE
-                            #, pip_options = ("--user")
-                            )
+                            #, pip_options = ("--user") # don't use this
+                            ))
 
    # for now also install in r-reticulate as long
    # as https://github.com/rstudio/reticulate/issues/1147 is not resolved
-   reticulate::conda_install( packages = " refinitiv-dataplatform==1.0.0a19"
+   try(reticulate::conda_install( packages = " refinitiv-dataplatform==1.0.0a19"
                               , envname = "r-reticulate", method = method
                               , conda = conda, update = update, pip = TRUE
                               #, pip_options = ("--user")
-                              )
+                              ))
 
   }
 
   #Verify that RDP is really available
   if(!(reticulate::py_module_available("refinitiv.dataplatform"))){
-    stop("Installation of python module refinitiv.dataplatform failed")
+      warning("Installation of python module refinitiv.dataplatform failed")
+    } else {
+      message("Installation of python module refinitiv.dataplatform successfull")
   }
 
 
   print(reticulate::py_config())
-  return("Eikon/RDP Python interface successfully installed or updated")
+  return("Eikon/RDP Python installation is finished, check log which modules were succesfull")
 }
 
 
