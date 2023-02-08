@@ -189,7 +189,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                              'requests' = list(
                                                list(
                                                  'instruments' = jsonlistbuilder(instruments),
-                                                 'fields' = lapply(fields, \(x) list("name" = x)),
+                                                 'fields' = lapply(fields, function(x){list("name" = x)}),
                                                  'parameters' = parameters
                                                )
                                              )
@@ -199,7 +199,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                              'requests' = list(
                                                list(
                                                  'instruments' = jsonlistbuilder(instruments),
-                                                 'fields' = lapply(fields, \(x) list("name" = x))
+                                                 'fields' = lapply(fields, function(x){ list("name" = x)})
                                                )
                                              )
                                            )
