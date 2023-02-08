@@ -19,5 +19,8 @@ Function that the returns the names of the python Eikon api attributes that can 
 \dontrun{
 Eikon <- EikonConnect(Eikonapplication_id = "your key", Eikonapplication_port = 9000L)
 EikonShowAttributes(EikonObject = Eikon)
+
+EikonShowAttributes(EikonObject = RefinitivJsonConnect())
+
 }
 }

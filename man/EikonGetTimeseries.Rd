@@ -57,6 +57,18 @@ ex1 <- EikonGetTimeseries(EikonObject = Eikon, rics = c("MMM", "III.L"),
                    start_date = "2020-01-01T01:00:00",
                    end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE)
 }
+
+\dontrun{
+  EikonJson <- RefinitivJsonConnect()
+  ex1 <- EikonGetTimeseries(EikonObject = EikonJson, rics = c("MMM", "III.L"),
+                   start_date = "2020-01-01T01:00:00",
+                   end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE)
+}
+
+
+
+
+
 }
 \references{
 \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}

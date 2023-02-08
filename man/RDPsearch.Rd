@@ -5,7 +5,7 @@
 \title{RDP search function is a wrapper for the pyton rdp.search function}
 \usage{
 RDPsearch(
-  RDP = RDPConnect(),
+  RDP = RefinitivJsonConnect(),
   query = NULL,
   view = NULL,
   select = NULL,
@@ -106,8 +106,14 @@ ListedSearch <- RDPsearch(Arglist = list(query = "president", view = "People"))
 
 SearchQuery = "aapl.o"
 ListedSearch <- RDPsearch(query = SearchQuery)
+}
+
+\dontrun{
+  SearchQuery = "aapl.o"
+  ListedSearch <- RDPsearch(RDP = RefinitivJsonConnect(), query = SearchQuery)
 
 }
+
 }
 \seealso{
 RDPShowAvailableSearchViews()

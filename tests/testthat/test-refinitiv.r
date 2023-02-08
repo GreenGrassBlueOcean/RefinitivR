@@ -33,10 +33,15 @@ check_Eikonapi <- function() {
 
 
 testthat::test_that("Check Eikon Connect is really a python object"
-                   , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
-                      testthat::expect_equal(class(Eikon), c("python.builtin.module", "python.builtin.object"),
-                   )})
+                    , {check_Eikonapi()
+                       Eikon <- Refinitiv::EikonConnect()
+
+
+
+                       testthat::expect_true(all(c("search", "get_data", "get_symbology","get_search_metadata"
+                        , "get_timeseries") %in% names(Eikon)))
+
+                       })
 
 
 
@@ -90,7 +95,7 @@ testthat::test_that("Check EikonGetData returns expected data with empty ric"
                     , {check_Eikonapi()
                       Eikon <- Refinitiv::EikonConnect()
 
-                      CheckEikonData <- EikonGetData(EikonObject = Eikon, rics = c("wronric"),raw_output = FALSE
+                      CheckEikonData <- EikonGetData(EikonObject = Eikon, rics = c("WRONRIC"),raw_output = FALSE
                                                     ,  Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName"))
 
 
@@ -248,7 +253,8 @@ test_that("EikonGetData does not crash when only one wrong RIC is requested with
 ## Test EikonNameCleaner ----
 
 test_that("EikonShowAttributes returns an error when it should", {
-  expect_error(EikonShowAttributes(EikonObject = NULL))
+  expect_error( EikonShowAttributes(EikonObject = NULL)
+              , "EikonObject should be supplied in function EikonShowAttributes")
 })
 
 testthat::test_that("Check EikonShowAttributes returns expected vector of possibilities"
@@ -546,7 +552,7 @@ expect_equal(lapply(test$Eikon_Error_Data, class)
 
 
 
-
+print("Eikon finished")
 
 
 

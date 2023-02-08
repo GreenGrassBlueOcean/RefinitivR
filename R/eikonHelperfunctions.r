@@ -361,6 +361,10 @@ PostProcessTimeSeriesRequest <- function(RawTimeSeriesRequest){
   if (identical(ReturnTimeSeries[[1]], data.table::data.table(NULL))) {return(data.frame())}
   ReturnTimeSeries <- data.table::rbindlist(ReturnTimeSeries, use.names = TRUE, fill = TRUE)
 
+  # if("VOLUME" %in% names(ReturnTimeSeries) && !is.integer(ReturnTimeSeries$VOLUME)){
+  #   ReturnTimeSeries$VOLUME <- as.integer(ReturnTimeSeries$VOLUME)
+  # }
+
   Security <- Date <- NULL
   ReturnTimeSeries <- ReturnTimeSeries[order(Security,Date)]
 
