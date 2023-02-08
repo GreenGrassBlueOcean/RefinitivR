@@ -68,6 +68,17 @@ ex2b <- EikonGetData( EikonObject = Eikon, rics = "AAPL.O"
                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D, scale=6)/*Market Cap*/"
                    )
 }
+
+
+\dontrun{
+EikonJson <- RefinitivJsonConnect()
+ex1 <- EikonGetData(EikonObject = EikonJson, rics = c("MMM", "III.L"),
+             Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
+             , "TR.CompanyName"), verbose = TRUE)
+
+}
+
+
 }
 \references{
 \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}

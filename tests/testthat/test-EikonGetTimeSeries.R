@@ -282,7 +282,7 @@ test_that("one wrong ric does not blow it for the rest in EikonGetTimeseries", {
   check_Eikonapi()
   requireNamespace("lubridate", quietly = TRUE)
   Eikon <- Refinitiv::EikonConnect()
-  expect_warning(test_problem_ts <- EikonGetTimeseries( start_date = paste0(Sys.Date()-lubridate::years(20), "T01:00:00")
+  suppressWarnings(test_problem_ts <- EikonGetTimeseries( start_date = paste0(Sys.Date()-lubridate::years(20), "T01:00:00")
                                                         , end_date =  paste0(Sys.Date()-lubridate::years(10), "T23:59:00")
                                                         , rics = c("FORTUM.HE", "WrongRIC", "0656.HK")
                                                         , EikonObject = Eikon

@@ -7,7 +7,8 @@
 EikonConnect(
   Eikonapplication_id = NA,
   Eikonapplication_port = 9000L,
-  PythonModule = "Eikon"
+  PythonModule = "JSON",
+  TestConnection = FALSE
 )
 }
 \arguments{
@@ -15,7 +16,9 @@ EikonConnect(
 
 \item{Eikonapplication_port}{proxy port id}
 
-\item{PythonModule}{character choose between Eikon or RDP for Refinitiv Data Platform}
+\item{PythonModule}{character choose between Eikon (python),RDP (python),JSON (direct JSON message without python)}
+
+\item{TestConnection}{boolean, TRUE or FALSE test connection after initiating contact with Eikon terminal}
 }
 \value{
 a Python module that is an EikonObject

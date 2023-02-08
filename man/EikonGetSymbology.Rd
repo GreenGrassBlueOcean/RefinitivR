@@ -63,4 +63,13 @@ ex7 <- EikonGetSymbology(EikonObject = Eikon
 , symbol =  c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN"
 ,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
 }
+
+\dontrun{
+ EikonJson <- RefinitivJsonConnect()
+ ex1 <- EikonGetSymbology(EikonObject = EikonJson, symbol =  "AAPL.O"
+ , to_symbol_type = "ISIN" )
+}
+
+
+
 }

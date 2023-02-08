@@ -13,7 +13,10 @@ test_that("Basic RDP search works", {
   test1 <- test1[order(names(test1))]
 
   expect_error(test1,NA)
-  expect_equal( lapply(test1, class)
+
+  test1class <- lapply(test1, class)
+
+  expect_equal( test1class[order(names(test1class))]
               , list(BusinessEntity = "character", DocumentTitle = "character",
                      PermID = "character", PI = "character", RIC = "character"))
   expect_equal(class(test1), "data.frame")
@@ -25,7 +28,9 @@ test_that("Basic RDP search works", {
 
 
   expect_error(test2,NA)
-  expect_equal(lapply(test2, class)
+  test2class <- lapply(test2, class)
+
+  expect_equal(test2class[order(names(test2class))]
                 , list(ContractType = "character", RIC = "character")
   )
   expect_equal(class(test2), "data.frame")
@@ -46,8 +51,10 @@ test_that("Basic RDP search works", {
 
 
   expect_error(test3,NA)
-  expect_equal(lapply(test3, class)
-               , list(DocumentTitle = "character")
+  test3class <- lapply(test3, class)
+
+  expect_equal( test3class[order(names(test3class))]
+              , list(DocumentTitle = "character")
   )
   expect_equal(class(test3), "data.frame")
 
@@ -63,7 +70,9 @@ test_that("Basic RDP search works", {
   test4 <- test4[order(names(test4))]
 
   expect_error(test4,NA)
-  expect_equal(lapply(test4, class)
+  test4class <- lapply(test4, class)
+
+    expect_equal(test4class[order(names(test4class))]
                , list(CentralBankName = "character", DocumentTitle = "character",
                       ObservationValue = "numeric", RIC = "character")
   )
@@ -83,7 +92,9 @@ test_that("Basic RDP search works", {
   test5 <- test5[order(names(test5))]
 
   expect_error(test5,NA)
-  expect_equal(lapply(test5, class)
+
+  test5class <- lapply(test5, class)
+  expect_equal(test5class[order(names(test5class))]
                , list(DocumentTitle = "character", Eps = "numeric", MktCapTotalUsd = "numeric",
                       RIC = "character")
   )
@@ -92,7 +103,8 @@ test_that("Basic RDP search works", {
 
 
 
-  test6 <- RDPsearch( view = "VesselPhysicalAssets"
+  test6 <- RDPsearch( RDP = RDPConnect(PythonModule = "RDP")
+                      , view = "VesselPhysicalAssets"
                       , filter = paste0("RCSAssetTypeLeaf eq 'tanker' "
                                        ,"and RCSRegionLeaf eq 'Gulf of Mexico'")
                       , top =  10000
@@ -107,9 +119,10 @@ test_that("Basic RDP search works", {
 
 
   expect_error(test6,NA)
-  expect_equal(lapply(test6, class)
+  test6class <- lapply(test6, class)
+  expect_equal(test6class[order(names(test6class))]
               , list(AISStatus = "character", AssetName = "character", DestinationPort = "character",
-                     DocumentTitle = "character", IMO = "character", OriginPort = "character",
+                    DocumentTitle = "character", IMO = "character", OriginPort = "character",
                      RCSFlagLeaf = "character", RIC = "character", VesselCurrentPortRIC = "character"))
   expect_equal(class(test6), "data.frame")
 
@@ -131,6 +144,7 @@ test_that("RDPget_search_metadata works", {
 
   expect_error(test,NA)
   expect_equal(class(test), "data.frame")
+
   expect_equal(lapply(test, class)
               , list( Refinitiv_index = "character", Type = "character"
                     , Searchable = "logical", Sortable = "logical"

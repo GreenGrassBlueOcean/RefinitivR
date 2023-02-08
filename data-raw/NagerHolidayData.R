@@ -6,7 +6,7 @@ years <- seq(from = 1990, to = as.numeric(format(Sys.Date(), "%Y")) + 10, by = 1
 
 NagerHolidayDataAllList <- vector(mode = "list", length = length(years))
 for (j in years) {
-print(j)
+#print(j)
   NagerHolidayDatayear <- vector(mode = "list", length = length(Countries$key))
   for (i in 1:length(Countries$key)) {
     NagerHolidayDatayear[[i]] <- jsonlite::fromJSON(paste0("https://date.nager.at/api/v2/publicholidays/", j, "/", Countries$key[i] ))

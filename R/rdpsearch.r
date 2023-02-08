@@ -92,21 +92,31 @@ RDPget_search_metadata <- function(RDP = RDPConnect(), searchView = NULL){
     searchView <- "SearchAll"
   }
 
-  refinitiv_utils <- ImportCustomPythonutils()
+  # In case RDP is python make connection to python module
+  if(all(class(RDP)==c("python.builtin.module", "python.builtin.object"))){
+    refinitiv_utils <- ImportCustomPythonutils()
+    # Perform Python request ----
+    metadata_python_df <- RDP$get_search_metadata(view = RDP$SearchViews[[searchView]])
+    index <- metadata_python_df$index
+    python_index_col <- refinitiv_utils$split_tupple_list(index)
+    metadata_python_df$insert(0L, "Refinitiv_index", python_index_col)
+    metadata_python_df$reset_index(drop=TRUE, inplace=TRUE)
+    python_json <- metadata_python_df$to_json()
 
-  # Perform Python request ----
-  metadata_python_df <- RDP$get_search_metadata(view = RDP$SearchViews[[searchView]])
-  index <- metadata_python_df$index
-  python_index_col <- refinitiv_utils$split_tupple_list(index)
-  metadata_python_df$insert(0L, "Refinitiv_index", python_index_col)
-  metadata_python_df$reset_index(drop=TRUE, inplace=TRUE)
-  python_json <- metadata_python_df$to_json()
-
-  # Save python request for unit testing ----
+    # Save python request for unit testing ----
     #reticulate::py_save_object(object = python_json, filename = "test.py")
 
-  # Post Process python request ----
-  r_df <- Process_RDP_output(python_json)
+    # Post Process python request ----
+    r_df <- Process_RDP_output(python_json)
+
+  } else {
+    r_df <- RDP$get_search_metadata(searchView = searchView)
+
+
+  }
+
+
+
 
 return(r_df)
 }
@@ -186,9 +196,16 @@ return(r_df)
 #'
 #' SearchQuery = "aapl.o"
 #' ListedSearch <- RDPsearch(query = SearchQuery)
-#'
 #'}
-RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL
+#'
+#' \dontrun{
+#'   SearchQuery = "aapl.o"
+#'   ListedSearch <- RDPsearch(RDP = RefinitivJsonConnect(), query = SearchQuery)
+#'
+#' }
+#'
+RDPsearch <- function(RDP = RefinitivJsonConnect() #RDConnect()
+                     , query =  NULL, view = NULL
                      , select = NULL, top = NULL, filter = NULL
                      , boost= NULL, order_by = NULL, group_by = NULL
                      ,  group_count = NULL, navigators = NULL, features = NULL
@@ -215,12 +232,23 @@ RDPsearch <- function(RDP = RDPConnect(), query =  NULL, view = NULL
   #Make sure all arguments are evaluated before passing to the search api
   Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
 
+  # remove RDP from arglist if this is in it.
+  if("RDP" %in% names(Arglist)){
+    Arglist$RDP <- NULL
+  }
 
 
   #Execute search ----
 
   # Searcher <- rdp$search
-  python_SearchResult <- do.call(what = RDP[["search"]], args = Arglist)
+  SearchResult <- do.call(what = RDP[["search"]], args = Arglist)
+
+  if(data.table::is.data.table(SearchResult)){
+    return(data.table::setDF(SearchResult))
+  } else {
+    python_SearchResult <- SearchResult
+  }
+
   # check search outcome
   if(identical(class(python_SearchResult),c("python.builtin.NoneType", "python.builtin.object"))){
     warning("RDPsearch did not provide any result, check query")
