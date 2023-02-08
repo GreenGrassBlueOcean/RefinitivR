@@ -4,7 +4,7 @@
 \alias{RDPConnect}
 \title{RDP connection function to refinitiv Dataplatform libraries}
 \usage{
-RDPConnect(application_id = NA, PythonModule = "JSON")
+RDPConnect(application_id = NA, PythonModule = NA)
 }
 \arguments{
 \item{application_id}{refinitiv dataplatform api key}
