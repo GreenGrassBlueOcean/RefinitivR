@@ -1,6 +1,6 @@
-# Important message
-if you update the package: also run `Refinitiv::install_eikon()` again as some changes to the conda environment had to be made!
-
+# Important messages:
+1. Python is now optional, the package can now also send direct JSON messages to the terminal. (with exception of streaming data.)
+2. When using the pyton libraries and if you update the package: also run `Refinitiv::install_eikon()` again.
 
 
 [![Codecov test coverage](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR/branch/master/graph/badge.svg)](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR?branch=master)
@@ -9,15 +9,13 @@ if you update the package: also run `Refinitiv::install_eikon()` again as some c
 # RefinitivR
 An R interface to Refinitv Eikon and Refinitiv DataStream.
 
-RefinitivR is an R interface to the Eikon Python api using the reticulate package and to DataStream using the DatastreamDSWS2R package. This package is in no way affiliated with Thomson Reuters,Refinitv, Eikon or Datastream. A subscription to EIkon and Datastream is required to use this package. Use of the package is at own risk!
+RefinitivR is an R interface to Refinitiv Eikon by using direct JSON messages or the reticulate package (Python Eikon/RDP api). It also provides access to DataStream using the DatastreamDSWS2R package. This package is in no way affiliated with Thomson Reuters,Refinitv, Eikon or Datastream. A subscription to EIkon and Datastream is required to use this package. Use of the package is at own risk!
 This package uses the DatastreamDSWS2R package from CharlesCara (https://github.com/CharlesCara/DatastreamDSWS2R) for the DataStream Connections.
 
-The reason that this package was developed is that the existing eikonapir package has stability issues leading to dropped api calls. The python api is much more stable and therefore interfacing with the python api will result in a much more stable api connection. Furthermore the package tries to be as robust as possible by automatically chunking long requests in api limit compliant pieces and retries failed requests in order to overcome http 400 errors.
+The reason that this package was developed is that the existing eikonapir package has stability issues leading to dropped api calls. This package gives multiple options for connecting with the Refinitiv API and retries also dropped api calls which will result in a much more stable api connection. Furthermore the package tries to be as robust as possible by automatically chunking long requests in api limit compliant pieces and retries failed requests in order to overcome http 400 errors.
 
 An interface to the R datastream package DatastreamDSWS2R is also provided to allow for easy retrieval of information so that both Eikon and Datastream commands can be used from a single r package.
 
-# Installation of the package
-(Run Rstudio with elevated permissions or as Administrator for the installation of the python libraries)
 ```r
 install.packages("devtools")
 devtools::install_github("GreenGrassBlueOcean/RefinitivR")
@@ -26,19 +24,31 @@ load the package
 ```r
 library(Refinitiv)
 ```
-Install the reticulate MiniConda environment r-eikon so that the python module eikon can be used by the r package.
+
+# Connecting to Refinitiv Eikon directly 
+When using the direct JSON method no python installation is necessary:
+```r
+Eikon <- EikonConnect(Eikonapplication_id = "YOUR EIKON API KEY", PythonModule = "JSON")
+```
+Streaming Prices is not possible with JSON.
+
+# Connecting to Refinitiv Eikon through the official Refinitiv python API
+
+If one wants to use the Python Eikon/RDP Packages:
+Install the reticulate MiniConda environment r-eikon so that the python module eikon and RDP can be used by the r-package.
+The python refinitiv-data package is not supported.
+
+Installation of the python packages
+(Run Rstudio with elevated permissions or as Administrator for the installation of the python libraries)
+
 ```r
 Refinitiv::install_eikon()
 ```
 
-# Connecting to the Eikonapi
-
-If one wants to use the Python Eikon Package:
 ```r
-Eikon <- EikonConnect(Eikonapplication_id = "YOUR EIKON API KEY", Eikonapplication_port = 9000L,
-                      PythonModule = "Eikon")
+Eikon <- EikonConnect(Eikonapplication_id = "YOUR EIKON API KEY", PythonModule = "Eikon")
 ```
-If one wants to use  the Python Refinitiv Dataplatform Package (RDP):
+or If one wants to use  the Python Refinitiv Dataplatform Package (RDP):
 ```r
 Eikon <- EikonConnect(Eikonapplication_id = "YOUR EIKON API KEY", PythonModule = "RDP")
 ```
@@ -70,7 +80,7 @@ Data <- EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
                      Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/", "TR.CompanyName"))
 ```
 
-## Retrieving large integers with EikonGetData
+## Retrieving large integers with EikonGetData (Python only, not for JSON method)
 
 There is currently an issue with the reticulate package handling large integers (like e.g. market capatilization) from python to r.
 This issue is described [here](https://github.com/rstudio/reticulate/issues/323) 
@@ -107,7 +117,14 @@ ex2b <- EikonGetData( EikonObject = Eikon, rics = "AAPl.O"
 
 Making a search request:
 ```r
- RDPConnect('your api key')
+ RDPConnect('your api key', PythonModule = "JSON")
+```
+or
+```r
+ RDPConnect('your api key', PythonModule = "RDP")
+```
+
+```r
  test <- RDPsearch(query =  "AAPL.O")
  test <- RDPsearch(query =  "AAPL.O", select = "ContractType,RIC")
 
@@ -125,7 +142,7 @@ Making a search request:
 Get a streaming price snapshot
 
 ```r
-rdp <- RDPConnect('your api key')
+rdp <- RDPConnect('your api key', PythonModule = "RDP") # direct JSON not possible
 streamObject <- rdp_streaming_prices(rdp, universe = c("EUR=","JPY="), fields = c('DSPLY_NAME', 'BID', 'ASK'))
 rdp_get_snapshot(streamObject)
 ```
