@@ -60,15 +60,18 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
   # Fetches the url to send data requests to
   Construct_url <- function(service="eikon") {
     if(tolower(service)=="eikon"){
-      url <- paste0( .pkgglobalenv$ek$base_url, ":"
-                     , .pkgglobalenv$ek$eikon_port
-                     , .pkgglobalenv$ek$eikon_api)
+      url <- paste0( getOption("refinitiv_base_url"), ":"
+                   , getOption("eikon_port")
+                   , getOption("eikon_api")
+                   )
+
       #print(url)
     } else if(tolower(service) == "rdp") {
-      url <- paste0( .pkgglobalenv$ek$base_url, ":"
-                     , .pkgglobalenv$ek$rdp_port
-                     , .pkgglobalenv$ek$rdp_api
-                     , EndPoint)
+      url <- paste0( getOption("refinitiv_base_url"), ":"
+                     , getOption("rdp_port")
+                     , getOption("rdp_api")
+                     , EndPoint
+                     )
 
     } else{
       stop(paste0("wrong service selected in function Construct_url, only rdp or eikon allowed but "

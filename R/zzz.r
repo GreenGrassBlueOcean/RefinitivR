@@ -5,32 +5,39 @@
   #reticulate::configure_environment(pkgname)
   options(reticulate.long_as_bit64=TRUE)
   options(reticulate.ulong_as_bit64=TRUE)
+  options(refinitiv_base_url = 'http://localhost')
+  options(eikon_port = 9000L)
+  options(eikon_api = '/api/v1/data')
+  options(rdp_api = '/api/rdp/discovery/')
+  options(rdp_port=9060L)
 
-
-  .pkgglobalenv$ek <- list(
-    base_url = 'http://127.0.0.1',
-    eikon_port = 9000L,
-    eikon_api = '/api/v1/data',
-    rdp_api = '/api/rdp/discovery/',
-    rdp_port = 9060L,
-    api_key = NULL
-  )
-
-
-  .pkgglobalenv$rd <- list(
-    searchViewParams = c(
-      "Query",
-      "Filter",
-      "View",
-      "OrderBy",
-      "Boost",
-      "Select",
-      "Top",
-      "Skip",
-      "GroupBy",
-      "GroupCount"
-    )
-  )
+# #
+# #
+# #
+# #   .pkgglobalenv$ek <- list(
+# #     ,
+# #     eikon_port = 9000L,
+# #     ,
+# #
+# #     rdp_port = 9060L,
+# #     api_key = NULL
+# #   )
+#
+#
+#   .pkgglobalenv$rd <- list(
+#     searchViewParams = c(
+#       "Query",
+#       "Filter",
+#       "View",
+#       "OrderBy",
+#       "Boost",
+#       "Select",
+#       "Top",
+#       "Skip",
+#       "GroupBy",
+#       "GroupCount"
+#     )
+#   )
 }
 
 
