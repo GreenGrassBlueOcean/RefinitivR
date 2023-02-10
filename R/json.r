@@ -77,6 +77,7 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
       stop(paste0("wrong service selected in function Construct_url, only rdp or eikon allowed but "
                   , service, " is chosen"))
     }
+    # print(url)
     return(url)
   }
 
@@ -104,14 +105,22 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
     }
 
     tryresults <- httr::content(query)
+    if("responses" %in% names(tryresults)){
+       tryresults <- tryresults$responses[[1]]
+    }
 
     # Fetches the content from the query
     # Checks for ErrorCode and then aborts after printing message
-     if (is.numeric(tryresults$ErrorCode)) {
-
-        if (tryresults$ErrorCode %in% c(2504,500,400)) {
+    if (is.numeric(tryresults$ErrorCode) || is.numeric(tryresults$estimatedDuration)) {
+        if (is.numeric(tryresults$ErrorCode) && tryresults$ErrorCode %in% c(2504,500,400)) {
+          print(tryresults$ErrorCode)
           Sys.sleep(5)
           counter <- counter + 1
+        } else if(is.numeric(tryresults$estimatedDuration)){
+          WaitTime <- tryresults$estimatedDuration/1000
+          print(paste("request not ready, server is asking to wait for",WaitTime, "seconds so waiting patiently"))
+          Sys.sleep(WaitTime)
+          counter <- Counter + 1
         } else {
          stop(paste0("Error code: ", tryresults$ErrorCode, " ", tryresults$ErrorMessage))
      }
@@ -120,7 +129,7 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
        break
     }
 }
-  # Returns the results
+
   results
 }
 
@@ -210,7 +219,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                          #print(payload)
                                          json <- json_builder(directions, payload)
                                          returnvar <- send_json_request(json)
-                                         return(returnvar$responses[[1]])
+                                         return(returnvar)
                         }
                        , get_symbology = function( symbol, from_symbol_type
                                                  , to_symbol_type, raw_output

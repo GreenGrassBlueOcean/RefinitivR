@@ -281,7 +281,7 @@ EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 900
   if(TestConnection){
     # test Connection as set_app_key does not provide a interceptable error when no connection is available
     tryCatch({PythonEK$get_data(instruments = "SPY", fields = "DSPLY_NAME", raw_output=TRUE )
-    }, error = function(e) {stop("Eikon RDP Error: no proxy address identified. Check if Desktop is running.")})
+    }, error = function(e) {stop("Eikon/RDP Error: no proxy address identified. Check if Desktop is running.")})
   }
 
   return(PythonEK)
