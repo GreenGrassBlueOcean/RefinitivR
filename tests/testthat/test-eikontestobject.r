@@ -1,4 +1,4 @@
-#Build an EIkontestobject
+#Build an EikonTestObject 
 # when using covr::report() or using online coverage checks like e.g. codecov.io an connection with Eikon is not available.
 # However we can make a test connection that behaves exactly the same and can mimic this connection
 

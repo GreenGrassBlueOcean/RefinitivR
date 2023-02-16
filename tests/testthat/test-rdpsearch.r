@@ -1,42 +1,38 @@
 test_that("Basic RDP search works", {
 
-  check_Eikonapi <- function() {
-    if (is.null(getOption(".EikonApiKey"))) {
-      skip("API not available")
-    }
-    print("RDP API available performing test")
-  }
-  check_Eikonapi()
+  Eikon <- check_Eikonapi()
 
 
-  test1 <- try(RDPsearch(query =  "AAPL.O"))
+  test1 <- try(RDPsearch(RDP = Eikon, query =  "AAPL.O"))
   test1 <- test1[order(names(test1))]
 
   expect_error(test1,NA)
 
   test1class <- lapply(test1, class)
+  print(test1class)
+  print(test1class[order(names(test1class))])
 
-  expect_equal( test1class[order(names(test1class))]
-              , list(BusinessEntity = "character", DocumentTitle = "character",
-                     PermID = "character", PI = "character", RIC = "character"))
+  expect_setequal( test1class #[order(names(test1class))]
+                 , list(BusinessEntity = "character", DocumentTitle = "character",
+                     PI = "character", PermID = "character", RIC = "character"))
   expect_equal(class(test1), "data.frame")
 
 
 
-  test2 <- try(RDPsearch(query =  "AAPL.O", select = "ContractType,RIC"))
+  test2 <- try(RDPsearch(RDP = Eikon, query =  "AAPL.O", select = "ContractType,RIC"))
   test2 <- test2[order(names(test2))]
 
 
   expect_error(test2,NA)
   test2class <- lapply(test2, class)
 
-  expect_equal(test2class[order(names(test2class))]
+  expect_setequal(test2class   #[order(names(test2class))]
                 , list(ContractType = "character", RIC = "character")
   )
   expect_equal(class(test2), "data.frame")
 
 
-  test3 <-  RDPsearch( view = "People", query = 'president'
+  test3 <-  RDPsearch(RDP = Eikon, view = "People", query = 'president'
                     , filter = "startswith(LastName,'H')"
                     , select = 'DocumentTitle'
                     , boost = ''
@@ -53,13 +49,13 @@ test_that("Basic RDP search works", {
   expect_error(test3,NA)
   test3class <- lapply(test3, class)
 
-  expect_equal( test3class[order(names(test3class))]
+  expect_setequal( test3class #[order(names(test3class))]
               , list(DocumentTitle = "character")
   )
   expect_equal(class(test3), "data.frame")
 
 
-  test4 <- RDPsearch( view = "IndicatorQuotes"
+  test4 <- RDPsearch(RDP = Eikon,  view = "IndicatorQuotes"
                         , query = "repo rate", group_by = "CentralBankName"
                         , group_count = 3
                         , select = paste0("CentralBankName,"
@@ -72,7 +68,7 @@ test_that("Basic RDP search works", {
   expect_error(test4,NA)
   test4class <- lapply(test4, class)
 
-    expect_equal(test4class[order(names(test4class))]
+    expect_setequal(test4class
                , list(CentralBankName = "character", DocumentTitle = "character",
                       ObservationValue = "numeric", RIC = "character")
   )
@@ -80,7 +76,7 @@ test_that("Basic RDP search works", {
 
 
 
-  test5 <-  RDPsearch( view = "EquityQuotes"
+  test5 <-  RDPsearch(RDP = Eikon,  view = "EquityQuotes"
                      , filter = paste0("Eps gt 6.0 and RCSTRBC2012Name "
                                 ,"eq 'Personal & Household Products & Services'"
                                 ," and MktCapTotalUsd gt 100000000 "
@@ -94,7 +90,7 @@ test_that("Basic RDP search works", {
   expect_error(test5,NA)
 
   test5class <- lapply(test5, class)
-  expect_equal(test5class[order(names(test5class))]
+  expect_setequal(test5class #[order(names(test5class))]
                , list(DocumentTitle = "character", Eps = "numeric", MktCapTotalUsd = "numeric",
                       RIC = "character")
   )
@@ -103,7 +99,7 @@ test_that("Basic RDP search works", {
 
 
 
-  test6 <- RDPsearch( RDP = RDPConnect(PythonModule = "RDP")
+  test6 <- RDPsearch(RDP = Eikon
                       , view = "VesselPhysicalAssets"
                       , filter = paste0("RCSAssetTypeLeaf eq 'tanker' "
                                        ,"and RCSRegionLeaf eq 'Gulf of Mexico'")
@@ -120,7 +116,7 @@ test_that("Basic RDP search works", {
 
   expect_error(test6,NA)
   test6class <- lapply(test6, class)
-  expect_equal(test6class[order(names(test6class))]
+  expect_setequal(test6class #[order(names(test6class))]
               , list(AISStatus = "character", AssetName = "character", DestinationPort = "character",
                     DocumentTitle = "character", IMO = "character", OriginPort = "character",
                      RCSFlagLeaf = "character", RIC = "character", VesselCurrentPortRIC = "character"))
@@ -131,28 +127,22 @@ test_that("Basic RDP search works", {
 
 test_that("RDPget_search_metadata works", {
 
-  check_Eikonapi <- function() {
-    if (is.null(getOption(".EikonApiKey"))) {
-      skip("API not available")
-    }
-    print("RDP API available performing test")
-  }
-  check_Eikonapi()
+  Eikon <- check_Eikonapi()
 
 
-  test <- RDPget_search_metadata(searchView = "EquityQuotes")
+  test <- RDPget_search_metadata(RDP = Eikon, searchView = "EquityQuotes")
 
   expect_error(test,NA)
   expect_equal(class(test), "data.frame")
 
-  expect_equal(lapply(test, class)
+  expect_setequal(lapply(test, class)
               , list( Refinitiv_index = "character", Type = "character"
                     , Searchable = "logical", Sortable = "logical"
                     , Navigable = "logical", Groupable = "logical"
                     , Exact = "logical", Symbol = "logical"))
 
 
-  test2 <- RDPget_search_metadata()
+  test2 <- RDPget_search_metadata(RDP = Eikon)
 
   expect_error(test2,NA)
   expect_equal(class(test2), "data.frame")

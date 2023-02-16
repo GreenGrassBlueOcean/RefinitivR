@@ -14,29 +14,11 @@ testthat::test_that("retry", {
 })
 
 
-# travis CI does not like this!
-# testthat::test_that("check if install_eikon works", {
-#   testthat::expect_equal(install_eikon(), "Eikon Python interface successfully installed")
-# })
-
-
-#As this package requires an api key testing is of api function is only possible when having an actual api key.
-# Therefore best to run these after setting the EikonConnect function with the right password.
-
-
-check_Eikonapi <- function() {
-  if (is.null(getOption(".EikonApiKey"))) {
-    skip("API not available")
-  }
-  print("Eikon API available performing test")
-}
 
 
 testthat::test_that("Check Eikon Connect is really a python object"
-                    , {check_Eikonapi()
-                       Eikon <- Refinitiv::EikonConnect()
-
-
+                    , {
+                       Eikon <- check_Eikonapi()
 
                        testthat::expect_true(all(c("search", "get_data", "get_symbology","get_search_metadata"
                         , "get_timeseries") %in% names(Eikon)))
@@ -50,8 +32,8 @@ testthat::test_that("Check Eikon Connect is really a python object"
 
 
 testthat::test_that("Check EikonGetData returns expected data with multiple rics"
-                    , {check_Eikonapi()
-                       Eikon <- Refinitiv::EikonConnect()
+                    , {
+                       Eikon <- check_Eikonapi()
                        CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
                                                           Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName")))
 
@@ -74,8 +56,8 @@ testthat::test_that("Check EikonGetData returns expected data with multiple rics
 
 #add test case if only one ric is requested
 testthat::test_that("Check EikonGetData returns expected data with only one ric"
-                    , {check_Eikonapi()
-                       Eikon <- Refinitiv::EikonConnect()
+                    , {
+                       Eikon <- check_Eikonapi()
 
                        GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = "MMM", RDN_EXCHD2 = "NYQ", Company.Name = "3M Co")
                                                                                         , row.names = c(NA, -1L), class = "data.frame")
@@ -92,8 +74,8 @@ testthat::test_that("Check EikonGetData returns expected data with only one ric"
 
 #add test case when 0 ric is requested
 testthat::test_that("Check EikonGetData returns expected data with empty ric"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {
+                      Eikon <- check_Eikonapi()
 
                       CheckEikonData <- EikonGetData(EikonObject = Eikon, rics = c("WRONRIC"),raw_output = FALSE
                                                     ,  Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName"))
@@ -116,8 +98,8 @@ testthat::test_that("Check EikonGetData returns expected data with empty ric"
 
 #add test case when not valid ric is requested
 testthat::test_that("Check EikonGetData returns expected data with only one good ric and one wrong RIC"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {
+                      Eikon <- check_Eikonapi()
 
                       Correct_output <- list(PostProcessedEikonGetData = structure(list(Instrument = c("WRONGRIC", "MMM")
                                                                                         , RDN_EXCHD2 = c(NA, "NYQ")
@@ -141,8 +123,8 @@ testthat::test_that("Check EikonGetData returns expected data with only one good
 
 #add test case if only 2 rics and one field is requested
 testthat::test_that("Check EikonGetData returns expected data with only 2 ric and one field"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {
+                      Eikon <- check_Eikonapi()
 
                       GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = c("MMM", "III.L")
                                                                                             , Company.Name = c("3M Co", "3i Group PLC")), class = "data.frame", row.names = c(NA, -2L))
@@ -159,10 +141,8 @@ testthat::test_that("Check EikonGetData returns expected data with only 2 ric an
 
 #add test case if only 2 rics and one field is requested
 testthat::test_that("Check EikonGetData returns expected data with only 2 ric and one field"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
-
-                      GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list( Instrument = c("MMM", "III.L")
+                    , { Eikon <- check_Eikonapi()
+                        GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list( Instrument = c("MMM", "III.L")
                                                                                             , CURRENCY = c("USD", "GBp")
                                                                                             , Instrument.Type = c("Ordinary Shares", "Ordinary Shares")
                                                                                             , Exchange.Name = c("NO MARKET (E.G. UNLISTED)", "LONDON STOCK EXCHANGE")
@@ -193,9 +173,8 @@ testthat::test_that("Check EikonGetData returns expected data with only 2 ric an
 
 #add test case if only 2 rics and one field is requested
 testthat::test_that("Check EikonGetData returns expected data with only 2 ric and one field"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
-
+                    , {
+                      Eikon <- check_Eikonapi()
                       GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = c("MMM", "III.L")
                                                                                             , Company.Name = c("3M Co", "3i Group PLC"))
                                                                                        , class = "data.frame", row.names = c(NA, -2L))
@@ -213,8 +192,8 @@ testthat::test_that("Check EikonGetData returns expected data with only 2 ric an
 
 #add test case if only 1 ric and one field is requested
 testthat::test_that("Check EikonGetData returns expected data with only 1 ric and one field"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {
+                      Eikon <- check_Eikonapi()
 
                       GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = "MMM", Company.Name = "3M Co")
                                                                                        , class = "data.frame", row.names = c(NA, -1L))
@@ -231,8 +210,8 @@ testthat::test_that("Check EikonGetData returns expected data with only 1 ric an
 
 #add test case if only 1 EikonGetData does not crash when only one wrong RIC is requested with one field
 test_that("EikonGetData does not crash when only one wrong RIC is requested with one field" , {
-  check_Eikonapi()
-  Eikon <- Refinitiv::EikonConnect()
+
+  Eikon <- check_Eikonapi()
 
   GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(`NA` = "WrongRIC2",
                                                                         TR.COMPANYNAME = NA), row.names = c(NA, -1L), class = "data.frame"),
@@ -258,8 +237,8 @@ test_that("EikonShowAttributes returns an error when it should", {
 })
 
 testthat::test_that("Check EikonShowAttributes returns expected vector of possibilities"
-                    , { check_Eikonapi()
-                        Eikon <- Refinitiv::EikonConnect()
+                    , {
+                        Eikon <- check_Eikonapi()
                         test <- EikonShowAttributes(Eikon)
                         expect_identical(class(test), "character")
                         expect_true(is.vector(test))
@@ -495,8 +474,8 @@ test_that("CondaExists returns a logical" , {
 
 test_that("EikonGetData can handle long requests gracefully", {
 
-  check_Eikonapi()
-  Eikon <- Refinitiv::EikonConnect()
+
+  Eikon <- check_Eikonapi()
 
 
  fields <- c("CURRENCY","TR.AvgDailyVolume6M","TR.InstrumentType","TR.ExchangeName","CF_EXCHNG","TR.ExchangeMarketIdCode","TR.InstrumentIsActive")

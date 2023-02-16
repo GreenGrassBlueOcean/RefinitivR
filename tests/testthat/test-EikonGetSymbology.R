@@ -1,14 +1,6 @@
 test_that("EikonGetSymbology works", {
 
-  check_Eikonapi <- function() {
-    if (is.null(getOption(".EikonApiKey"))) {
-      skip("API not available")
-    }
-    print("Eikon API available performing test")
-  }
-  check_Eikonapi()
-  Eikon <- Refinitiv::EikonConnect(PythonModule = NA)
-
+  Eikon <- check_Eikonapi()
 
   #ex1
   expect_equal( EikonGetSymbology( EikonObject = Eikon, symbol =  "AAPL.O"

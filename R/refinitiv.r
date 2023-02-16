@@ -572,7 +572,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 
   # Make sure that Python object has api key and change timeout
   # EikonObject$set_timeout(timeout = time_out)
-  try(EikonObject$set_app_key(app_key = .Options$.EikonApiKey))
+  try(EikonObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
 
   #In case no rics are supplied return nothing
   if(is.null(rics)){

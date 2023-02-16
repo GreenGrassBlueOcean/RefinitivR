@@ -6,3 +6,4 @@ R/test_eikonobject.r
 *.log
 *.pyc
 problem.Rdata
+.httr-oauth

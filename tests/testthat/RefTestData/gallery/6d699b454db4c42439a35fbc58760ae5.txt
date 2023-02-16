@@ -1,0 +1,21 @@
+                                                                                          DocumentTitle            RIC
+1:             MARITIME COMITY, Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone|Texas|United States C}KM7309878156
+2:              BOW OLYMPUS, Chemical Tanker, ODFJELL MANAGEMENT AS, Gulf of Mexico|US Gulf Tanker Zone C}KI7309851573
+3:                BOW ORION, Chemical Tanker, ODFJELL MANAGEMENT AS, Gulf of Mexico|US Gulf Tanker Zone C}KI7309851574
+4:                                       HARMONICS, Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone C}KM7309844124
+5:                          SOLAR SKYLER, Gasoline; Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone C}KI7309914241
+6: SULPHUR ENTERPRISE, Chemical Tanker, SAVAGE MARINE MANAGEMENT CO, Gulf of Mexico|US Gulf Tanker Zone C}KI7309471154
+                                               OriginPort                             DestinationPort      RCSFlagLeaf
+1: Southtex Lightering\\Galveston Outer Anchg North (HOU)                           USGLS [Galveston]        Singapore
+2:                 Gatun\\Balboa (Panama Canal) Anchorage                             USHOU [Houston]           Norway
+3:     Point Comfort\\Point Comfort Liquid Cargo Terminal                           HOUSTON [Houston]           Norway
+4:  Texas City\\Public Dock 16 (Marathon, Nustar, Valero)                           US GALVESTON ANCH        Singapore
+5:                        Rotterdam\\Miami Passage (test)                           HOUSTON [Houston] Marshall Islands
+6:                            Tampa\\BP Tank Berths Tampa SABINE PASS [Sabine Pass LNG (Port Arthur)]             <NA>
+            AssetName             AISStatus VesselCurrentPortRIC     IMO
+1:    MARITIME COMITY                Moored       C}TS7309531755 9848326
+2:        BOW OLYMPUS Underway Using Engine                 <NA> 9818527
+3:          BOW ORION             At Anchor                 <NA> 9818515
+4:          HARMONICS             At Anchor                 <NA> 9799680
+5:       SOLAR SKYLER Underway Using Engine                 <NA> 9877640
+6: SULPHUR ENTERPRISE Underway Using Engine                 <NA> 9077044

@@ -120,7 +120,7 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
           WaitTime <- tryresults$estimatedDuration/1000
           print(paste("request not ready, server is asking to wait for",WaitTime, "seconds so waiting patiently"))
           Sys.sleep(WaitTime)
-          counter <- Counter + 1
+          counter <- counter + 1
         } else {
          stop(paste0("Error code: ", tryresults$ErrorCode, " ", tryresults$ErrorMessage))
      }
@@ -284,6 +284,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                                             , idcol = "Refinitiv_index")
 
                          for (i in seq_along(return_DT)) data.table::set(return_DT, i=which(is.na(return_DT[[i]])), j=i, value=FALSE)
+
                          Properties <-NULL
                          if("Properties" %in% names(return_DT)){
                            return_DT <- return_DT[,Properties := NULL]

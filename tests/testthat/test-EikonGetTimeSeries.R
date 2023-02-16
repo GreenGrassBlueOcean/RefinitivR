@@ -1,17 +1,10 @@
 test_that( "",{ expect_equal(1,1)
 })
 
-check_Eikonapi <- function() {
-  if (is.null(getOption(".EikonApiKey"))) {
-    skip("API not available")
-  }
-  print("Eikon API available performing test")
-}
-
 
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with multiple rics"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {
+                      Eikon <- check_Eikonapi()
                       CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("MMM", "III.L"),
                                                                  start_date = "2020-01-01T01:00:00",
@@ -36,8 +29,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
 
 
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with only one ric"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {Eikon <- check_Eikonapi()
                       CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("MMM"),
                                                                  start_date = "2020-01-01T01:00:00",
@@ -60,8 +52,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
 
 
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with only one ric and one field"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {Eikon <- check_Eikonapi()
                       CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("MMM"),
                                                                  start_date = "2020-01-01T01:00:00",
@@ -79,8 +70,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
 )
 
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with only 2 rics and one field"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {Eikon <- check_Eikonapi()
                       CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("MMM", "III.L"),
                                                                  start_date = "2020-01-01T01:00:00",
@@ -99,8 +89,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
 
 
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded long timeseries"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {Eikon <- check_Eikonapi()
                       CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("AAPL.O"),
                                                                  start_date = "2000-07-28T01:00:00",
@@ -136,8 +125,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded long
 
 
 testthat::test_that("Check EikonGetTimeseries fails with empty ric list"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {Eikon <- check_Eikonapi()
 
                       expect_warning({ checkEikonTS <- Refinitiv::EikonGetTimeseries( EikonObject = Eikon
                                                                                       , rics = c()
@@ -155,8 +143,7 @@ testthat::test_that("Check EikonGetTimeseries fails with empty ric list"
 
 
 testthat::test_that("Check EikonGetTimeseries works with wrong ric in list"
-                    , {check_Eikonapi()
-                      Eikon <- Refinitiv::EikonConnect()
+                    , {Eikon <- check_Eikonapi()
 
                       Correct_timeseries <- structure(list(Date = structure(c(1595376000, 1595462400, 1595548800, 1595808000, 1595894400), class = c("POSIXct", "POSIXt"), tzone = "GMT")
                                                            , Security = c("MMM", "MMM", "MMM", "MMM", "MMM")
@@ -185,8 +172,7 @@ testthat::test_that("Check EikonGetTimeseries works with wrong ric in list"
 
 testthat::test_that("EikonGetTimeseries satisfies corax conditions and can switch", {
 
-  check_Eikonapi()
-  Eikon <- Refinitiv::EikonConnect()
+  Eikon <- check_Eikonapi()
   AdjustedTS <- Refinitiv::EikonGetTimeseries(EikonObject = Eikon
                                 , rics = c("AIRP.PA")
                                 , start_date = as.Date("2019-01-01")
@@ -236,8 +222,7 @@ testthat::test_that("EikonGetTimeseries satisfies corax conditions and can switc
 
 test_that( "empty downloaded data.frame can be processed", {
 
-  check_Eikonapi()
-  Eikon <- Refinitiv::EikonConnect()
+  Eikon <- check_Eikonapi()
   EikonTimeseries <- EikonGetTimeseries(EikonObject = Eikon
                                         , rics = list("ATM.NZ")
                                         , start_date = "2006-02-01T01:00:00"
@@ -252,8 +237,7 @@ test_that( "empty downloaded data.frame can be processed", {
 
 test_that( "empty downloaded data.frame can be processed", {
 
-  check_Eikonapi()
-  Eikon <- Refinitiv::EikonConnect()
+  Eikon <- check_Eikonapi()
   EikonTimeseries <- EikonGetTimeseries(EikonObject = Eikon
                                         , rics = list("ATM.NZ", "MMM")
                                         , start_date = "2006-02-01T01:00:00"
@@ -279,9 +263,8 @@ test_that( "empty downloaded data.frame can be processed", {
 test_that("one wrong ric does not blow it for the rest in EikonGetTimeseries", {
 
   #"FBHS.K" does not exist for this timerange
-  check_Eikonapi()
+  Eikon <- check_Eikonapi()
   requireNamespace("lubridate", quietly = TRUE)
-  Eikon <- Refinitiv::EikonConnect()
   suppressWarnings(test_problem_ts <- EikonGetTimeseries( start_date = paste0(Sys.Date()-lubridate::years(20), "T01:00:00")
                                                         , end_date =  paste0(Sys.Date()-lubridate::years(10), "T23:59:00")
                                                         , rics = c("FORTUM.HE", "WrongRIC", "0656.HK")
@@ -297,9 +280,9 @@ test_that("one wrong ric does not blow it for the rest in EikonGetTimeseries", {
 
 
 test_that("monthly economic timeseries can be downloaded", {
-  check_Eikonapi()
+
   requireNamespace("lubridate", quietly = TRUE)
-  Eikon <- Refinitiv::EikonConnect()
+  Eikon <- check_Eikonapi()
 
   testEconSeries <- EikonGetTimeseries(EikonObject = Eikon, rics = "USCPI=ECI", start_date = paste0(Sys.Date()-lubridate::years(5), "T01:00:00")
                                        , interval = "monthly", fields = c())
@@ -313,9 +296,8 @@ test_that("monthly economic timeseries can be downloaded", {
 
 
 test_that("works fields = NULL", {
-  check_Eikonapi()
   requireNamespace("lubridate", quietly = TRUE)
-  Eikon <- Refinitiv::EikonConnect()
+  Eikon <- check_Eikonapi()
 
   testEconSeries <- EikonGetTimeseries(EikonObject = Eikon, rics = "USCPI=ECI", start_date = paste0(Sys.Date()-lubridate::years(5), "T01:00:00")
                                        , interval = "monthly", fields = NULL)

@@ -39,4 +39,6 @@ Suggests:
     lubridate,
     devtools,
     countrycode,
-    dplyr
+    dplyr,
+    archivist,
+    digest

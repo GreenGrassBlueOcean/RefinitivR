@@ -1,0 +1,14 @@
+         CentralBankName                                                                              DocumentTitle
+1: Reserve Bank of India                India, Policy Rates, Repo Rate, Reuters Polls, Daily, Reserve Bank of India
+2: Reserve Bank of India        India, Policy Rates, Reverse Repo Rate, Reuters Polls, Daily, Reserve Bank of India
+3: Reserve Bank of India                               India, Reverse Repo Rate-High, Reuters Polls, Daily, Reuters
+4:     Sveriges Riksbank Sweden, Policy Rates, Repo Rate (Effective Dates), Reuters Polls, Daily, Sveriges Riksbank
+5:     Sveriges Riksbank            Sweden, REPO RATE (EFFECTIVE DATES) - SCOTIABANK, Reuters Polls, Daily, Reuters
+6:     Sveriges Riksbank                   Sweden, REPO RATE (EFFECTIVE DATES) - RGE, Reuters Polls, Daily, Reuters
+                  RIC ObservationValue
+1:         INREPO=ECI             6.50
+2:         INRREP=ECI             3.35
+3:          pINRREP=H             3.50
+4:         SERATE=ECI             3.00
+5: pSERATE=4296010337             0.00
+6: pSERATE=5001224535            -0.50

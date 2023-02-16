@@ -1,0 +1,7 @@
+                                                              DocumentTitle     RIC       Eps MktCapTotalUsd
+1:                               L'Oreal SA, Ordinary Share, Euronext Paris OREP.PA  10.64630   222771205737
+2:                    Shiseido Co Ltd, Ordinary Share, Tokyo Stock Exchange  4911.T  85.59824    19102719033
+3:                           Kao Corp, Ordinary Share, Tokyo Stock Exchange  4452.T 183.46463    18065941087
+4:                      Unicharm Corp, Ordinary Share, Tokyo Stock Exchange  8113.T 113.59931    24280061206
+5: Hindustan Unilever Ltd, Ordinary Share, National Stock Exchange of India  HLL.NS  41.81128    73384899499
+6:                          Kose Corp, Ordinary Share, Tokyo Stock Exchange  4922.T 329.00882     7052349371
