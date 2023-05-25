@@ -612,8 +612,8 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                                                , "\t, interval= \"", interval, "\"\n"
                                                                , "\t, interval= \"", calender, "\"\n"
                                                                , "\t, fields = [\"", paste(fields, collapse = "\",\""),  "\"]\n"
-                                                               , "\t, start_date =  \"", as.character(start_date,  "%Y-%m-%dT%H:%M:%S"), "\"\n"
-                                                               , "\t, end_date =  \"", as.character(end_date,  "%Y-%m-%dT%H:%M:%S"), "\"\n"
+                                                               , "\t, start_date =  \"", format(start_date, format = "%Y-%m-%dT%H:%M:%S"), "\"\n"
+                                                               , "\t, end_date =  \"", format(end_date, format =  "%Y-%m-%dT%H:%M:%S"), "\"\n"
                                                                , "\t, normalize = True\n\t)"
     )
     )}
@@ -623,8 +623,8 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                           , interval = interval
                                           , calendar = calender
                                           , fields = c()
-                                          , start_date = as.character(start_date,  "%Y-%m-%dT%H:%M:%S")
-                                          , end_date = as.character(end_date,  "%Y-%m-%dT%H:%M:%S")
+                                          , start_date = format(start_date, format = "%Y-%m-%dT%H:%M:%S")
+                                          , end_date = format(end_date, format =  "%Y-%m-%dT%H:%M:%S")
                                           , normalize = TRUE
                                           , raw_output = TRUE
                                           , corax = corax
@@ -636,8 +636,8 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
                                             , interval = interval
                                             , calendar = calender
                                             , fields = fields
-                                            , start_date = as.character(start_date,  "%Y-%m-%dT%H:%M:%S")
-                                            , end_date = as.character(end_date,  "%Y-%m-%dT%H:%M:%S")
+                                            , start_date = format(start_date, format = "%Y-%m-%dT%H:%M:%S")
+                                            , end_date = format(end_date, format = "%Y-%m-%dT%H:%M:%S")
                                             , normalize = TRUE
                                             , raw_output = TRUE
                                             , corax = corax
