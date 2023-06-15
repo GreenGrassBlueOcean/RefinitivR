@@ -162,3 +162,19 @@ DSResult <- DataStream$snapshotRequest(instrument = c("ABF","RIO","WPP"),
 For further details on accessing datastream see https://github.com/CharlesCara/DatastreamDSWS2R.
 
 licensing see LICENSE File!
+
+
+# Adding a conda binary manually to reticulate
+
+![image](https://github.com/GreenGrassBlueOcean/RefinitivR/assets/43173895/218d0fcc-4c31-48b6-9e49-dfe0926f58d2)
+
+
+
+```r
+options(reticulate.conda_binary = "path to conda")
+```
+
+so in this case:
+```r
+options(reticulate.conda_binary = "C:\\Users\\XXXX\\AppData\\Local\\miniconda3\\Scripts\\conda.exe")
+```
