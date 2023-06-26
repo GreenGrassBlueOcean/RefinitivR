@@ -2,7 +2,7 @@ test_that("json_builder works", {
 
   directions <- 'DataGrid_StandardAsync'
   payload <- list('requests' = list(list('instruments' = list("TSLA.O"),
-        'fields' = lapply(list("TR.RICCode"), \(x) list("name" = x))
+        'fields' = lapply(list("TR.RICCode"), function(x) list("name" = x))
       )))
 
   TestOutcome <- json_builder(directions, payload)
