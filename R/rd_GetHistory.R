@@ -24,6 +24,7 @@
 #'  The vector of adjustment types (comma delimiter) that tells the system whether
 #'  to apply or not apply CORAX (Corporate Actions) events or
 #'  exchange/manual corrections to historical time series data.
+#'
 #'  The supported values of adjustments :
 #'\itemize{
 #'  \item{"unadjusted"}   {Not apply both exchange/manual corrections and CORAX}
