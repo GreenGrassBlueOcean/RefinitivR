@@ -1,10 +1,14 @@
 test_that("install_eikon works and libraries can be successfully loaded", {
 
-  my_packages <- library()$results[,1]
+  #some special handling for windows
+  if (Sys.info()["sysname"] == "Windows") {
 
-  if("Refinitiv" %in% my_packages){
-        print("Refinitiv Package loaded so install should not work")
-        expect_error( install_eikon())
+    # avoid DLL in use errors
+    if (reticulate::py_available()) {
+      skip()
+    } else {
+      expect_error(install_eikon(), NA)
+    }
   } else {
     expect_error(install_eikon(), NA)
   }
