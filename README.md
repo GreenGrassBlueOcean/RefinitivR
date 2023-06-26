@@ -147,6 +147,20 @@ streamObject <- rdp_streaming_prices(rdp, universe = c("EUR=","JPY="), fields = 
 rdp_get_snapshot(streamObject)
 ```
 
+# Perfoming a RD request
+
+Currently rd.get_history requests from the python package refinitiv.data are now also possible.
+As the get_history command makes 3 seperate json requests this is currently not supported in directjson.
+but this might be included in the future once refinitiv provides better documentation of these api's
+
+```r
+RDConnect("your api key here")
+timeseries1 <-  rd_GetHistory(universe=c("AAPL.O", "NVDA.O"))
+
+Datarequest <- rd_GetHistory(universe = c("GOOG.O","AAPL.O")
+                        , fields = c("TR.Revenue","TR.GrossProfit")
+                        , parameters = list("SDate" = "0CY", "Curn" = "CAD"))
+```
 # Performing a DataStream request
 
 ```r
