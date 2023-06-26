@@ -12,3 +12,7 @@ coverage:
         target: auto
         threshold: 1%
         informational: true
+
+# sample regex patterns
+ignore:
+  - "**/zzz.r"         # glob accepted
