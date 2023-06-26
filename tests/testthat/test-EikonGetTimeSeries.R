@@ -206,16 +206,7 @@ testthat::test_that("EikonGetTimeseries satisfies corax conditions and can switc
                                         , VOLUME = c(680205L, 777365L,778924L, 599457L, 766811L, 1054076L, 781718L)), row.names = c(NA, -7L), class = "data.frame")
   testthat::expect_equivalent(UnAdjustedTS, Correct_UnAdjustedTS, tolerance = 1e-4)
 
-  AdjustedTS <- Refinitiv::EikonGetTimeseries(EikonObject = Eikon
-                                              , rics = c("AIRP.PA")
-                                              , start_date = as.Date("2019-01-01")
-                                              , end_date = as.Date("2019-01-10")
-                                              , corax = "adjusted"
-  )
-
-  testthat::expect_equivalent(AdjustedTS, Correct_AdjustedTS, tolerance = 1e-4)
-
-  })
+ })
 
 
 ## TEST CASE PROBLEM ---

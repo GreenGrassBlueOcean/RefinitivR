@@ -18,6 +18,56 @@ json_builder <- function(directions, payload) {
 }
 
 
+#' Takes a list with elements and converts them to a json string
+#'
+#' @param payload a list for constructing a json string from
+#'
+#' @return character json string
+#' @noRd
+#' @examples
+#' payload <- list(universe = "AAPL.O", fields = c("BID", "ASK"))
+#' payload <- list(universe = "AAPL.O", fields = c("TR.Revenue", "TR.GrossProfit")
+#' , parameters = list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01"))
+#' jsonDataGridConstructor(payload)
+jsonDataGridConstructor <- function(payload){
+  #
+  # lapply(list("TR.RICCode"), \(x) list("name" = x))
+  #
+  # json <- "{ \"universe\": [ \"TRI.N\", \"IBM.N\" ], \"fields\": [ \"TR.Revenue\", \"TR.GrossProfit\" ] }"
+  Escaper <- function(x){
+    if(length(x) !=1 && !is.character(x)){
+      stop("function escaper can only be used for single character")
+    }
+
+    return(paste0("\"",x,"\""))
+  }
+
+  body <- paste("{", paste(lapply( X = 1: length(payload)
+                                   , function(x, payload){if(names(payload)[x] != "parameters"){
+                                                           return(paste(Escaper(names(payload)[x]), ": [", paste(lapply(X = payload[[x]], Escaper), collapse = ",") ,"]"))
+                                                          } else {
+                                                            parameterlist <- lapply(X = 1:length(payload[x][[1]])
+                                                                                  , FUN = function(x, parameters){paste(Escaper(names(parameters)[x]), ":" , Escaper(parameters[x]))}
+                                                                                  , parameters = payload[x][[1]])
+                                                            parameterstring <- paste(Escaper(names(payload)[x]),  ": {", paste(parameterlist, collapse = " , "), "}")
+                                                            return(parameterstring)
+
+                                     }}
+                                   , payload = payload) , collapse = " , ") , "}" )
+
+  return(body)
+}
+
+
+
+
+# { "universe": ["GOOG.O","AAPL.O"],
+#   "fields": ["TR.Revenue","TR.GrossProfit"],
+#   "parameters": {"SDate": "0CY","Curn": "CAD"}
+# }
+
+
+
 #' Send JSON POST request to the given service
 #'
 #' Sends a POST request to the given service with a json like object
@@ -238,8 +288,9 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                           ,  select = NULL, top = NULL, filter = NULL
                                           ,  boost= NULL, order_by = NULL, group_by = NULL
                                           ,  group_count = NULL, navigators = NULL, features = NULL){
-                         EndPoint = "search/v1/"
+                         EndPoint = "discovery/search/v1/"
                          payload <- NULL
+
                          payload <- list( 'Query'= query
                                         , 'View'= view
                                         , 'Select'=select
@@ -277,7 +328,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                        , get_search_metadata = function(RDP, searchView){
 
 
-                         EndPoint <- paste0("search/v1/metadata/views/",searchView)
+                         EndPoint <- paste0("discovery/search/v1/metadata/views/",searchView)
                          returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint)
 
                          return_DT <- data.table::rbindlist(returnvar$Properties, fill = TRUE, use.names = TRUE
@@ -293,6 +344,62 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                          return(data.table::setDF(return_DT))
 
                        }
+                       , get_history = function(RDP, universe=NULL, fields=NULL, parameters=NULL,interval=NULL, start=NULL, end=NULL, adjustments=NULL, count = NULL
+                                                , use_field_names_in_headers = NULL){
+                         if(is.null(use_field_names_in_headers)){
+                           use_field_names_in_headers <- FALSE
+                         }
+
+                         # if(is.null(fields)){
+                         #   fields = list("BID", 'TRDPRC_1', 'HIGH_1', 'LOW_1', 'ACVOL_UNS', 'OPEN_PRC', 'BID', 'ASK',
+                         #              'TRNOVR_UNS', 'VWAP', 'BLKCOUNT', 'BLKVOLUM', 'NUM_MOVES', 'TRD_STATUS',
+                         #              'SALTIM', 'NAVALUE')
+                         # }
+
+                         payload <- list( 'universe' = universe
+                                        , 'fields'= fields
+                                        , 'parameters'= parameters
+                                        , 'interval' = interval
+                                        , 'start'= start
+                                        , 'end' = end
+                                        , 'adjustments' = adjustments
+                                        , 'count' = count
+                                        )
+
+                         payload[sapply(payload, is.null)] <- NULL
+
+                         EndPoint <- "data/datagrid/beta1/"
+                         response <- send_json_request(jsonDataGridConstructor(payload), service = "rdp", request_type = "POST", EndPoint =  EndPoint)
+
+                         Data_DT <- data.table::rbindlist(response$data)
+
+                         if(use_field_names_in_headers){
+                           colnames <- unlist(lapply(response$headers, FUN = function(x)(x[["name"]])))
+                          } else {
+                            colnames <- unlist(lapply(response$headers, FUN = function(x)(x[["title"]])))
+                          }
+
+                           data.table::setnames(x = Data_DT, new = colnames)
+
+                           return(Data_DT)
+
+                         # Check for lists columns with null inside and fix those
+                         # ListCols <- names(which(lapply(return_DT, class) == "list"))
+                         #
+                         # if(!identical(ListCols, character(0))){
+                         #   NullRemover <- function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y )}
+                         #   for (i in 1:length(ListCols)){
+                         #     return_DT[[ListCols[i] ]] <- unlist(NullRemover( return_DT[[ListCols[i] ]] ))
+                         #   }
+                         #
+                         #
+                         # }
+                         #
+                         # return(return_DT)
+
+
+                       }
+
 
                        )
 

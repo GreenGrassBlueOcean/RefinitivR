@@ -20,7 +20,9 @@ Imports:
     data.table,
     magrittr,
     jsonlite,
-    rlang
+    rlang,
+    here,
+    rstudioapi
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:
@@ -42,3 +44,4 @@ Suggests:
     dplyr,
     archivist,
     digest
+   

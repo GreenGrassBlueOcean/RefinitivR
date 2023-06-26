@@ -8,7 +8,7 @@
   options(refinitiv_base_url = 'http://localhost')
   options(eikon_port = 9000L)
   options(eikon_api = '/api/v1/data')
-  options(rdp_api = '/api/rdp/discovery/')
+  options(rdp_api = '/api/rdp/')
   options(rdp_port=9060L)
 
 # #

@@ -1,0 +1,139 @@
+#' The get_history function allows you to retrieve pricing history, as well as Fundamental and Reference data history through a single function call.
+#'
+#' @param RD Refinitiv data object (currently only RDconnect())
+#' @param universe Instruments to request	str or vector
+#' @param fields Fields to request	str or vector
+#' @param parameters a named key value list for setting parameters, Default: NULL
+#' @param interval Date interval. Supported intervals are: ["minute", "1min", "5min", "10min", "30min", "60min", "hourly", "1h", "daily", "1d", "1D", "7D", "7d", "weekly", "1W", "monthly", "1M", "quarterly", "3M", "6M", "yearly", "12M", "1Y"]
+#' @param start The start date and timestamp of the requested history	str, date
+#' @param end The end date and timestamp of the requested history	str, date
+#' @param adjustments Tells the system whether to apply or not apply CORAX (Corporate Actions) events or exchange/manual corrections or price and volume adjustment according to trade/quote qualifier summarization actions to historical time series data. Possible values are ["exchangeCorrection", "manualCorrection", "CCH", "CRE", "RTS", "RPO", "unadjusted", "qualifiers"]
+#' @param count The maximum number of data points returned. Values range: 1 - 10000
+#' @param use_field_names_in_headers boolean 	If True - returns field name as column headers for data instead of title
+#'
+#'
+#' @return data.frame
+#' @export
+#'
+#' @details
+#'
+#'  This function is currently work in progress and only works with RDConnect (python), directJson is not available for this function.
+#'
+#'  #section regarding adjustments parameters:
+#'
+#'  The vector of adjustment types (comma delimiter) that tells the system whether
+#'  to apply or not apply CORAX (Corporate Actions) events or
+#'  exchange/manual corrections to historical time series data.
+#'  The supported values of adjustments :
+#'\itemize{
+#'  \item{"unadjusted"}   {Not apply both exchange/manual corrections and CORAX}
+#'  \item{"exchangeCorrection"}   {Apply exchange correction adjustment to historical pricing}
+#'  \item{"manualCorrection"}   {Apply manual correction adjustment to historical pricing i.e. annotations made by content analysts}
+#'  \item{"CCH"}  {Apply Capital Change adjustment to historical Pricing due to Corporate Actions e.g. stock split}
+#'  \item{"CRE"}  {Apply Currency Redenomination adjustment when there is redenomination of currency}
+#'  \item{"RPO"}  {Apply Reuters Price Only adjustment to adjust historical price only not volume}
+#'  \item{"RTS"}  {Apply Reuters TimeSeries adjustment to adjust both historical price and volume}
+#'  \item{"qualifiers"}   {Apply price or volume adjustment to historical pricing according to trade/quote qualifier summarization actions}
+#' }
+#'
+#'
+#' @examples
+#' \dontrun{
+#' RDConnect("your api key here")
+#' timeseries1 <-  rd_GetHistory(universe=c("AAPL.O", "NVDA.O"))
+#' timeseries2 <- rd_GetHistory(universe="GOOG.O"
+#'                             ,fields = c("BID", "ASK"),interval="tick",count=5)
+#'
+#' test <- rd_GetHistory(universe= "AAPL.O"
+#'                      , fields = c("TR.IssueMarketCap(Scale=6,ShType=FFL)"
+#'                        ,"TR.FreeFloatPct()/100/*FreefloatWeight*/"
+#'                        ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/"
+#'                        ,"TR.CLOSEPRICE(Adjusted=0)/*close*/")
+#'                      , parameters = list("Curn" = "USD"
+#'                      , "SDate" = "2020-10-27", "EDate" = "2020-12-01"))
+#'
+#' test <- rd_GetHistory(universe = c("GOOG.O","AAPL.O")
+#'                        , fields = c("TR.Revenue","TR.GrossProfit")
+#'                        , parameters = list("SDate" = "0CY", "Curn" = "CAD"))
+#' test <-  rd_GetHistory(universe = c("GOOG.O","AAPL.O")
+#'                       , fields = c("TR.PriceTargetMean(SDate:0CY)","TR.LOWPRICE(SDate:0d)"))
+#'
+#'
+#' test <- rd_GetHistory( universe = c("GOOG.O","MSFT.O","FB.O","AMZN.O")
+#'                      ,fields = c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
+#'                      ,parameters = list("Scale" = 6,"SDate" = 0
+#'                      ,"EDate" = -3,"FRQ" = "FY", "Curn" = "EUR"))
+#' }
+rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
+                         , universe = NULL
+                         , fields = NULL
+                         , parameters = NULL
+                         , interval = NULL
+                         , start = NULL
+                         , end = NULL
+                         , adjustments = NULL
+                         , count = NULL
+                         , use_field_names_in_headers = NULL
+                         ){
+
+  #Build Argument list
+  if(!exists("Arglist") || identical(list(),Arglist)){
+    Arglist <- as.list(match.call(expand.dots=FALSE))
+    Arglist[[1]] <- NULL
+  }
+
+  if(!("universe" %in% names(Arglist))){
+    stop("Parameter universe should be supplied and is not")
+  }
+
+  if("count" %in% names(Arglist)){
+    if (count <= 0){
+      stop("count should be integer > 0")
+    } else {
+      Arglist$count <- as.integer(Arglist$count)
+    }
+  }
+
+
+  #Make sure all arguments are evaluated before passing to the gethistory api
+  Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
+
+  # remove RDP from arglist if this is in it.
+  if("RD" %in% names(Arglist)){
+    Arglist$RDP <- NULL
+  }
+
+  #Execute get_history
+
+  # Searcher <- rdp$search
+  PyCall <- do.call(what = RD[["get_history"]], args = Arglist)
+
+  Melted <- PyCall$melt(ignore_index = FALSE)
+  returnthing <- Melted$to_csv()
+  Converted <- data.table::fread(reticulate::py_to_r(returnthing))
+
+  # Improve column names and add names that are not in
+  if("variable_1" %in% names(Converted)){
+    data.table::setnames(x= Converted, old = c("variable_0", "variable_1"), new = c("Instrument", "variable"))
+  } else if(length(universe) == 1 && universe %in% names(Converted)){
+    Instrument <- NULL
+    Converted <- Converted[, Instrument := universe]
+    data.table::setnames(x= Converted, old = universe, new = "variable")
+  }
+
+  # convert value to character (otherwise always different formats character or numeric)
+  value <- NULL
+  Converted2 <- Converted[value != "",][, value := as.character(value)]
+
+  # Set columns in correct sequence for return
+  if("Date" %in% names(Converted2)){
+    ColorderSequence <-c("Date", "Instrument", "variable", "value")
+  } else  if("Timestamp" %in% names(Converted2)){
+    ColorderSequence <-c("Timestamp", "Instrument", "variable", "value")
+  }
+
+  #make sure column order is consistent
+  data.table::setcolorder(x = Converted2, neworder = ColorderSequence)
+
+  return(data.table::setDF(Converted2))
+}

@@ -30,7 +30,6 @@ check_Eikonapi <- function(testMode = "replay") {
   return(Eikon)
 }
 
-
 #' Dummy Eikon Object used for testing
 #'
 #' This Object can record and replay previously recorded python api responses using archivist package

@@ -26,3 +26,16 @@ test_that("RDPConnect does not work without application id", {
 
 })
 
+test_that("RDConnect does not work without application id", {
+
+  originalOptionValue = getOption(".EikonApiKey")
+  options(.EikonApiKey = NULL)
+
+  if (is.null(getOption(".EikonApiKey"))){
+    expect_error( RDConnect()
+                  , "Please supply application_id")
+  }
+
+  options(.EikonApiKey = originalOptionValue)
+
+})

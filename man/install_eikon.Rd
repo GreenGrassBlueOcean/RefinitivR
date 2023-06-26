@@ -5,11 +5,12 @@
 \title{Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-eikon}
 \usage{
 install_eikon(
-  method = "auto",
+  method = "conda",
   conda = "auto",
   envname = "r-eikon",
   update = TRUE,
-  reset = FALSE
+  reset = FALSE,
+  restart_session = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ install_eikon(
 \item{update}{boolean, allow to rerun the command to update the miniconda environment and the packages required to update the python packages numpy,eikon, and refinitiv dataplatform defaults to TRUE}
 
 \item{reset}{boolean, this will remove the miniconda r-eikon environment and reinstall miniconda, the conda environment and relevant packages.}
+
+\item{restart_session}{boolean, Restart R session after installing (note this will only occur within RStudio).}
 }
 \value{
 None
