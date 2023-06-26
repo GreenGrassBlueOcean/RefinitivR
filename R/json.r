@@ -59,15 +59,6 @@ jsonDataGridConstructor <- function(payload){
 }
 
 
-
-
-# { "universe": ["GOOG.O","AAPL.O"],
-#   "fields": ["TR.Revenue","TR.GrossProfit"],
-#   "parameters": {"SDate": "0CY","Curn": "CAD"}
-# }
-
-
-
 #' Send JSON POST request to the given service
 #'
 #' Sends a POST request to the given service with a json like object
@@ -350,12 +341,6 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                            use_field_names_in_headers <- FALSE
                          }
 
-                         # if(is.null(fields)){
-                         #   fields = list("BID", 'TRDPRC_1', 'HIGH_1', 'LOW_1', 'ACVOL_UNS', 'OPEN_PRC', 'BID', 'ASK',
-                         #              'TRNOVR_UNS', 'VWAP', 'BLKCOUNT', 'BLKVOLUM', 'NUM_MOVES', 'TRD_STATUS',
-                         #              'SALTIM', 'NAVALUE')
-                         # }
-
                          payload <- list( 'universe' = universe
                                         , 'fields'= fields
                                         , 'parameters'= parameters
@@ -383,19 +368,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
                            return(Data_DT)
 
-                         # Check for lists columns with null inside and fix those
-                         # ListCols <- names(which(lapply(return_DT, class) == "list"))
-                         #
-                         # if(!identical(ListCols, character(0))){
-                         #   NullRemover <- function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y )}
-                         #   for (i in 1:length(ListCols)){
-                         #     return_DT[[ListCols[i] ]] <- unlist(NullRemover( return_DT[[ListCols[i] ]] ))
-                         #   }
-                         #
-                         #
-                         # }
-                         #
-                         # return(return_DT)
+
 
 
                        }
@@ -406,8 +379,3 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
   return(JSON_EK)
 }
 
-#
-# http://localhost:9060/api/rdp/discovery/search/v1/
-#   POST
-# {'Content-Type': 'application/json'}
-# {'Query': 'aapl.o', 'View': <Views.SEARCH_ALL: 'SearchAll'>, 'Top': 10, 'Skip': 0, 'GroupCount': 3}

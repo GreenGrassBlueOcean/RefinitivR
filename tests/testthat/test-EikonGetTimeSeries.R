@@ -1,6 +1,31 @@
 test_that( "",{ expect_equal(1,1)
 })
 
+testthat::test_that("Check EikonGetTimeseries can handle fields = NULL"
+                    , {
+                      Eikon <- check_Eikonapi()
+                      CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
+                                                                 rics = c("MMM", "III.L"),
+                                                                 fields = NULL,
+                                                                 start_date = "2020-01-01T01:00:00",
+                                                                 end_date = "2020-01-10T01:00:00"))
+
+                      GoodCheckEikonTimeSeries <- structure(list(Date = structure(c(1577923200, 1578009600, 1578268800,
+                                                                                    1578355200, 1578441600, 1578528000,
+                                                                                    1578614400, 1577923200, 1578009600,
+                                                                                    1578268800, 1578355200, 1578441600,
+                                                                                    1578528000, 1578614400)
+                                                                                  , class = c("POSIXct", "POSIXt"), tzone = "GMT")
+                                                                 , Security = c("III.L", "III.L", "III.L", "III.L", "III.L", "III.L",
+                                                                                "III.L", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM"))
+                                                            , row.names = c(NA, -14L), class = "data.frame")
+
+
+                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-1)}
+)
+
+
+
 
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with multiple rics"
                     , {
@@ -26,12 +51,57 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                       testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-1)}
 )
 
+testthat::test_that("Check EikonGetTimeseries returns also raw data when requested"
+                    , {
+                      Eikon <- check_Eikonapi()
+                      CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
+                                                                 rics = c("MMM", "III.L"),
+                                                                 start_date = "2020-01-01T01:00:00",
+                                                                 end_date = "2020-01-10T01:00:00",
+                                                                 raw_output = TRUE
+                                                                 ))
+
+                      GoodCheckEikonTimeSeries <- list(list(timeseriesData = list(list(dataPoints = list(list("2020-01-02T00:00:00Z", 3448335L, 180.01, 177.1356, 177.68, 180L),
+                                                                                                         list("2020-01-03T00:00:00Z", 2467310L, 178.66, 175.63, 177.02, 178.45),
+                                                                                                         list("2020-01-06T00:00:00Z", 1997981L, 178.71, 176.35, 177.15, 178.62),
+                                                                                                         list("2020-01-07T00:00:00Z", 2176615L, 178.51, 176.82, 178.28, 177.9),
+                                                                                                         list("2020-01-08T00:00:00Z", 2758339L, 181.5, 177.65, 178L, 180.63),
+                                                                                                         list("2020-01-09T00:00:00Z", 2746346L, 181.59, 179.76, 181.51, 181.2),
+                                                                                                         list("2020-01-10T00:00:00Z", 2103818L, 182.18, 180.14, 181.61, 180.47))
+                                                                                       , fields = list(list(name = "TIMESTAMP", type = "DateTime"),
+                                                                                                       list(name = "VOLUME", type = "Double"),
+                                                                                                       list(name = "HIGH", type = "Double"),
+                                                                                                       list(name = "LOW", type = "Double"),
+                                                                                                       list(name = "OPEN",type = "Double"),
+                                                                                                       list(name = "CLOSE", type = "Double")),
+                                                                                       ric = "MMM", statusCode = "Normal"),
+                                                                                  list(dataPoints = list(list("2020-01-02T00:00:00Z", 723692L, 1123L, 1107.5, 1108L, 1116.5)
+                                                                                                         , list("2020-01-03T00:00:00Z", 717234L, 1110.5, 1090.5, 1110.5, 1108L)
+                                                                                                         , list("2020-01-06T00:00:00Z", 813990L, 1102.5, 1074L, 1101L, 1088.5),
+                                                                                                         list("2020-01-07T00:00:00Z", 1163565L, 1101L, 1086.5, 1096.5, 1086.5),
+                                                                                                         list("2020-01-08T00:00:00Z", 1451744L, 1089.5, 1075L, 1079.5, 1088L),
+                                                                                                         list("2020-01-09T00:00:00Z", 975325L, 1096L, 1083L, 1090.5, 1094L),
+                                                                                                         list("2020-01-10T00:00:00Z", 2377611L, 1100L, 1085L, 1100L, 1088.5)),
+                                                                                       fields = list(list(name = "TIMESTAMP", type = "DateTime"),
+                                                                                                     list(name = "VOLUME", type = "Double"),
+                                                                                                     list(name = "HIGH", type = "Double"),
+                                                                                                     list(name = "LOW", type = "Double"),
+                                                                                                     list(name = "OPEN", type = "Double"), list(name = "CLOSE", type = "Double")),
+                                                                                         ric = "III.L", statusCode = "Normal"))))
+
+
+                      testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-1)}
+)
+
+
+
 
 
 testthat::test_that("Check EikonGetTimeseries returns previously downloaded timeseries with only one ric"
                     , {Eikon <- check_Eikonapi()
                       CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("MMM"),
+                                                                 verbose = TRUE,
                                                                  start_date = "2020-01-01T01:00:00",
                                                                  end_date = "2020-01-10T01:00:00"))
 

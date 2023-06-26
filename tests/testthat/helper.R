@@ -54,6 +54,13 @@ EikonTestObject  <- function(testMode  = "replay"){
     if(testMode  == "write"){
       #store input in archivist
       response <- do.call(RealEikonObject[[FunctionName]], args = Arglist)
+
+      AlreadyinDBmd5 <- archivist::searchInLocalRepo(InputHash, repoDir = repodir)
+      if(!identical(AlreadyinDBmd5, character(0))){
+        print("cleaning up repo by deleting old data")
+        archivist::rmFromLocalRepo(md5hash = AlreadyinDBmd5, repoDir = repodir)
+      }
+
       OutputHash <- archivist::saveToLocalRepo(response, repoDir = repodir)
       archivist::addTagsRepo(md5hashes = OutputHash, repoDir = repodir, tags = InputHash)
     } else if(testMode  == "replay"){

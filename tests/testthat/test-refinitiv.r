@@ -53,6 +53,27 @@ testthat::test_that("Check EikonGetData returns expected data with multiple rics
                       }
                       )
 
+testthat::test_that("Check EikonGetData returns raw data when requested"
+                    , {
+                      Eikon <- check_Eikonapi()
+                      CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
+                                                         Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName"), raw_output = TRUE))
+
+                      GoodCheckEikonData <- list(list(columnHeadersCount = 1L, data = list(list("MMM", "NYQ", "3M Co")
+                                                                                           , list("III.L", "LSE", "3i Group PLC")),
+                                                      headerOrientation = "horizontal",
+                                                      headers = list(list(list(displayName = "Instrument"),
+                                                                          list(displayName = "RDN_EXCHD2", field = "RDN_EXCHD2"),
+                                                                          list(displayName = "Company Name", field = "TR.COMPANYNAME"))),
+                                                      rowHeadersCount = 1L, totalColumnsCount = 3L, totalRowsCount = 3L))
+
+
+
+
+                      testthat::expect_identical(CheckEikonData, GoodCheckEikonData)
+                    }
+)
+
 
 #add test case if only one ric is requested
 testthat::test_that("Check EikonGetData returns expected data with only one ric"
@@ -110,7 +131,7 @@ testthat::test_that("Check EikonGetData returns expected data with only one good
                                                                             , row.names = c(NA, -1L), class = "data.frame"))
 
                       CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("WRONGRIC", "MMM"),
-                                                         Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName")))
+                                                         Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName"), verbose = TRUE))
 
 
                       testthat::expect_equal(CheckEikonData, Correct_output)

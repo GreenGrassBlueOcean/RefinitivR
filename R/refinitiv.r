@@ -300,15 +300,15 @@ EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 900
 
   if (is.na(PythonModule)){
     try(PythonModule <- getOption(".RefinitivAPI") )
-    if(is.null(PythonModule)){stop("Please supply name of PythonModule: Eikon or RDP")}
+    if(is.null(PythonModule)){stop("assign value 'RDP','Eikon' or 'JSON' to parameter PythonModule")}
   }
 
   if(!is.logical(TestConnection)){
     stop("TestConnection should be TRUE or FALSE")
   }
 
-  if(!(PythonModule %in% c("Eikon", "RDP", "JSON", "RD"))){
-    stop(paste("EikonConnect parameter PythonModule can only be Eikon (python),RDP (python),RD (python) JSON (direct JSON message) but is"
+  if(!(PythonModule %in% c("Eikon", "RDP", "JSON"))){
+    stop(paste("EikonConnect parameter PythonModule can only be Eikon (python),RDP (python) or JSON (direct JSON message) but is"
                , PythonModule))
   }
 
@@ -371,7 +371,7 @@ RDPConnect <- function(application_id = NA, PythonModule = NA) {
 
   if (is.na(PythonModule)){
     try(PythonModule <- getOption(".RefinitivAPI") )
-    if(is.null(PythonModule)){stop("supply RDP or JSON to parameter PythonModule")}
+    if(is.null(PythonModule)){stop("assign value 'RDP' or 'JSON' to parameter PythonModule")}
   }
 
   if(!(PythonModule %in% c("RDP", "JSON"))){
