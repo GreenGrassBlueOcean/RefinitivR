@@ -52,6 +52,8 @@ test_that("RefinitivJsonConnect does not work without application id", {
 test_that("RefinitivJsonConnect does work with application id", {
 
   originalOptionValue = getOption(".EikonApiKey")
+  original_EikonPort = getOption("eikon_port")
+
   options(.EikonApiKey = "testing_key")
 
   EikonJson <- RefinitivJsonConnect(Eikonapplication_port = 9000L)
@@ -63,10 +65,11 @@ test_that("RefinitivJsonConnect does work with application id", {
 
   expect_equal(EikonJson$get_app_key(), "testing_key")
 
+  options(eikon_port = original_EikonPort)
   options(.EikonApiKey = originalOptionValue)
 })
 
-test_that("Construct_url does work correctlt", {
+test_that("Construct_url does work correctly", {
 
   original_EikonPort = getOption("eikon_port")
   original_EikonApi = getOption("eikon_api")
@@ -90,6 +93,12 @@ test_that("Construct_url does work correctlt", {
                 , "http://localhost:9060/api/rdp/discovery/search/v1/"
   )
 
+  expect_error( Construct_url(service = "wrongservice", EndPoint = "discovery/search/v1/")
+                , "wrong service selected in function Construct_url, only rdp or eikon allowed but wrongservice is chosen"
+
+  )
+
+
   options(eikon_port = original_EikonPort)
   options(eikon_api = original_EikonApi)
   options(rdp_port = original_rdp_port)
@@ -99,4 +108,35 @@ test_that("Construct_url does work correctlt", {
 
 })
 
+test_that("send_json_request can make a GET and POST request", {
+
+  original_APIKEY = getOption(".EikonApiKey")
+  options(.EikonApiKey = "testing_key")
+
+
+
+  test_GET <- send_json_request(json = list(), request_type = "GET"
+                                , url = "https://fakerapi.it/api/v1/companies?_seed=12456")
+
+  expect_equal(lapply(test_GET, class)
+              , list(status = "character", code = "integer"
+                    , total = "integer", data = "list"))
+
+  directions <- 'DataGrid_StandardAsync'
+  payload <- list('requests' = list(list('instruments' = list("TSLA.O"),
+                                         'fields' = lapply(list("TR.RICCode"), function(x) list("name" = x))
+                                         )))
+
+  json <- json_builder(directions, payload)
+
+  test_POST <- send_json_request(json = json, request_type = "POST"
+                                , url = "https://fakerapi.it/api/v1/companies?_seed=12456")
+
+
+  expect_equal(test_POST, list(message = ""))
+
+
+  options(.EikonApiKey = original_APIKEY)
+
+})
 

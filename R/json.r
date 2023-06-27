@@ -108,6 +108,7 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
 #' @param debug - Default to FALSE, turns on debugging messages
 #' @param request_type character: Json Request type POST or GET
 #' @param EndPoint character url endpoint from Refinitiv
+#' @param url character url to overwrite default url, not required only for testing
 #'
 #' @return Returns the results from the query
 #' @noRd
@@ -134,17 +135,19 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
 #'                json <- json_builder(directions, payload)
 #'                print(json)
 #'                send_json_request(json)
-send_json_request <- function(json, service = "eikon", debug = FALSE, request_type = "POST", EndPoint = NULL) {
+send_json_request <- function(json, service = "eikon", debug = FALSE, request_type = "POST", EndPoint = NULL, url = NULL) {
 
   # 0. helper functions ----
-
+  if(is.null(url)){
+    url <- Construct_url(service=service, EndPoint = EndPoint)
+  }
 
   # 2. main function ----
   counter <- 0
   results <- data.frame()
   while (TRUE & counter < 2){
     if(toupper(request_type) == "POST"){
-      query <- httr::POST( url =  Construct_url(service=service, EndPoint = EndPoint)
+      query <- httr::POST( url =  url
                             , httr::add_headers(
                                'Content-Type' = 'application/json',
                                'x-tr-applicationid' = getOption(".EikonApiKey"))
@@ -153,7 +156,7 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
                             )
 
     } else if(toupper(request_type) == "GET"){
-        query <- httr::GET( Construct_url(service=service, EndPoint = EndPoint)
+        query <- httr::GET( url = url
                           , httr::add_headers(
                                 'Content-Type' = 'application/json',
                                 'x-tr-applicationid' = getOption(".EikonApiKey"))
