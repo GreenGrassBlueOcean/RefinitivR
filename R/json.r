@@ -59,6 +59,46 @@ jsonDataGridConstructor <- function(payload){
 }
 
 
+
+#' Constructs the url to send data requests to
+#'
+#' @param service "eikon" or "rdp"
+#' @param EndPoint for RDP only
+#'
+#' @return url (string)
+#' @noRd
+#'
+#' @examples
+#' Construct_url(service = "eikon")
+#' Construct_url(service = "rdp", EndPoint = "discovery/search/v1/")
+Construct_url <- function(service="eikon", EndPoint = NULL) {
+  if(tolower(service)=="eikon"){
+    url <- paste0( getOption("refinitiv_base_url"), ":"
+                   , getOption("eikon_port")
+                   , getOption("eikon_api")
+    )
+
+    #print(url)
+  } else if(tolower(service) == "rdp") {
+    url <- paste0( getOption("refinitiv_base_url"), ":"
+                   , getOption("rdp_port")
+                   , getOption("rdp_api")
+                   , EndPoint
+    )
+
+  } else{
+    stop(paste0("wrong service selected in function Construct_url, only rdp or eikon allowed but "
+                , service, " is chosen"))
+  }
+  # print(url)
+  return(url)
+}
+
+
+
+
+
+
 #' Send JSON POST request to the given service
 #'
 #' Sends a POST request to the given service with a json like object
@@ -98,36 +138,13 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
 
   # 0. helper functions ----
 
-  # Fetches the url to send data requests to
-  Construct_url <- function(service="eikon") {
-    if(tolower(service)=="eikon"){
-      url <- paste0( getOption("refinitiv_base_url"), ":"
-                   , getOption("eikon_port")
-                   , getOption("eikon_api")
-                   )
-
-      #print(url)
-    } else if(tolower(service) == "rdp") {
-      url <- paste0( getOption("refinitiv_base_url"), ":"
-                     , getOption("rdp_port")
-                     , getOption("rdp_api")
-                     , EndPoint
-                     )
-
-    } else{
-      stop(paste0("wrong service selected in function Construct_url, only rdp or eikon allowed but "
-                  , service, " is chosen"))
-    }
-    # print(url)
-    return(url)
-  }
 
   # 2. main function ----
   counter <- 0
   results <- data.frame()
   while (TRUE & counter < 2){
     if(toupper(request_type) == "POST"){
-      query <- httr::POST( url =  Construct_url(service=service)
+      query <- httr::POST( url =  Construct_url(service=service, EndPoint = EndPoint)
                             , httr::add_headers(
                                'Content-Type' = 'application/json',
                                'x-tr-applicationid' = getOption(".EikonApiKey"))
@@ -136,7 +153,7 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
                             )
 
     } else if(toupper(request_type) == "GET"){
-        query <- httr::GET( Construct_url(service=service)
+        query <- httr::GET( Construct_url(service=service, EndPoint = EndPoint)
                           , httr::add_headers(
                                 'Content-Type' = 'application/json',
                                 'x-tr-applicationid' = getOption(".EikonApiKey"))

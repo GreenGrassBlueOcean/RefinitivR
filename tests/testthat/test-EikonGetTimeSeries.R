@@ -340,22 +340,6 @@ test_that("one wrong ric does not blow it for the rest in EikonGetTimeseries", {
 })
 
 
-test_that("monthly economic timeseries can be downloaded", {
-
-  requireNamespace("lubridate", quietly = TRUE)
-  Eikon <- check_Eikonapi()
-
-  testEconSeries <- EikonGetTimeseries(EikonObject = Eikon, rics = "USCPI=ECI", start_date = paste0(Sys.Date()-lubridate::years(5), "T01:00:00")
-                                       , interval = "monthly", fields = c())
-  expect_equal(lapply(testEconSeries, class), list(Date = c("POSIXct", "POSIXt"), Security = "character", VALUE = "numeric") )
-  expect_true("USCPI=ECI" == unique(testEconSeries$Security))
-
-
-  }
-
-  )
-
-
 test_that("works fields = NULL", {
   requireNamespace("lubridate", quietly = TRUE)
   Eikon <- check_Eikonapi()

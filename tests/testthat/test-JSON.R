@@ -66,5 +66,37 @@ test_that("RefinitivJsonConnect does work with application id", {
   options(.EikonApiKey = originalOptionValue)
 })
 
+test_that("Construct_url does work correctlt", {
+
+  original_EikonPort = getOption("eikon_port")
+  original_EikonApi = getOption("eikon_api")
+  original_rdp_port = getOption("rdp_port")
+  original_rdp_api = getOption("rdp_api")
+  original_base_url = getOption("refinitiv_base_url")
+
+
+  options(refinitiv_base_url = 'http://localhost')
+  options(eikon_port = 9000L)
+  options(eikon_api = '/api/v1/data')
+  options(rdp_api = '/api/rdp/')
+  options(rdp_port=9060L)
+
+
+  expect_equal( Construct_url(service = "eikon")
+              ,  "http://localhost:9000/api/v1/data"
+              )
+
+  expect_equal( Construct_url(service = "rdp", EndPoint = "discovery/search/v1/")
+                , "http://localhost:9060/api/rdp/discovery/search/v1/"
+  )
+
+  options(eikon_port = original_EikonPort)
+  options(eikon_api = original_EikonApi)
+  options(rdp_port = original_rdp_port)
+  options(rdp_api = original_rdp_api)
+  options(refinitiv_base_url = original_base_url)
+
+
+})
 
 
