@@ -102,6 +102,7 @@ testthat::test_that("Check EikonGetTimeseries returns previously downloaded time
                       CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("MMM"),
                                                                  verbose = TRUE,
+                                                                 corax = "unadjusted",
                                                                  start_date = "2020-01-01T01:00:00",
                                                                  end_date = "2020-01-10T01:00:00"))
 
@@ -301,6 +302,7 @@ test_that( "empty downloaded data.frame can be processed", {
   Eikon <- check_Eikonapi()
   EikonTimeseries <- EikonGetTimeseries(EikonObject = Eikon
                                         , rics = list("ATM.NZ", "MMM")
+                                        , corax = "unadjusted"
                                         , start_date = "2006-02-01T01:00:00"
                                         , end_date = "2006-02-20T01:00:00"
   )
@@ -323,7 +325,6 @@ test_that( "empty downloaded data.frame can be processed", {
 
 test_that("one wrong ric does not blow it for the rest in EikonGetTimeseries", {
 
-  #"FBHS.K" does not exist for this timerange
   Eikon <- check_Eikonapi()
   requireNamespace("lubridate", quietly = TRUE)
   suppressWarnings(test_problem_ts <- EikonGetTimeseries(EikonObject = Eikon, start_date = paste0(Sys.Date()-lubridate::years(20), "T01:00:00")

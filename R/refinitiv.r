@@ -17,6 +17,52 @@ CondaExists <- function(){
 }
 
 
+
+#' check to see if installation of python module is succesfull
+#'
+#' @param PyhtonModuleName name of pythonModule
+#' @param InstallationStat status of other installations defaults to NA
+#' @param envname defaults to r-eikon
+#' @param python_path
+#'
+#' @return data.frame with installation status
+#' @noRd
+#'
+#' @examples
+#' \dontrun{
+#' CheckInstallationResult(PyhtonModuleName = "wrongmodule")
+#' }
+CheckInstallationResult <- function(PyhtonModuleName, InstallationStat = NULL,envname = "r-eikon", python_path = NULL){
+
+  if(is.null(InstallationStat)){
+    InstallationStat <- data.frame(Python_Package = c("eikon", "refinitiv-dataplatform", "refinitiv-data" )
+                                   ,status = c(NA,NA,NA))
+  }
+
+  if(is.null(python_path)){
+    CondaEnvironments <- reticulate::conda_list()
+    python_path <- CondaEnvironments[CondaEnvironments$name == envname, ]$python
+  }
+
+  reticulate::use_condaenv(condaenv = envname)
+
+  PyhtonModuleNameCheck <- gsub(PyhtonModuleName, pattern = "-", replacement = ".")
+  if(!(reticulate::py_module_available(PyhtonModuleNameCheck))){
+    warning(paste0("Installation of python module ", PyhtonModuleName, " failed"))
+    Status <- "failed"
+  } else {
+    message(paste0("Installation of python module ", PyhtonModuleName, " successful"))
+    Status <- "available"
+  }
+  try(InstallationStat[which(InstallationStat$Python_Package==PyhtonModuleName),]$status <- Status, silent = TRUE)
+  return(InstallationStat)
+}
+
+
+
+
+
+
 #' Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-eikon
 #'
 #' This function can also be used to update the required python packages so that you can always use the latest version of the pyhton packages numpy and eikon.
@@ -74,22 +120,6 @@ install_eikon <- function(method = "conda", conda = "auto", envname= "r-eikon", 
       # reticulate::use_condaenv(condaenv = "r-reticulate", conda = "C:\\Users\\LaurensVdb\\AppData\\Local\\miniconda3\\Scripts\\conda.exe")
      }
   }
-
-  CheckInstallationResult <- function(PyhtonModuleName, InstallationStat,envname, python_path){
-    reticulate::use_condaenv(condaenv = envname)
-
-    PyhtonModuleNameCheck <- gsub(PyhtonModuleName, pattern = "-", replacement = ".")
-    if(!(reticulate::py_module_available(PyhtonModuleNameCheck))){
-      warning(paste0("Installation of python module ", PyhtonModuleName, " failed"))
-      Status <- "failed"
-    } else {
-      message(paste0("Installation of python module ", PyhtonModuleName, " successful"))
-      Status <- "available"
-    }
-    InstallationStat[which(InstallationStat$Python_Package==PyhtonModuleName),]$status <- Status
-    return(InstallationStat)
-  }
-
 
   #check input ====
   # verify 64-bit

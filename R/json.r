@@ -18,6 +18,36 @@ json_builder <- function(directions, payload) {
 }
 
 
+
+
+#' Escape characters for use in json strings
+#'
+#' @param x character with length == 1
+#'
+#' @return escaped character
+#'
+#' @noRd
+#' @seealso [jsonDataGridConstructor()]
+#'
+#' @examples
+#' Escaper("a")
+Escaper <- function(x){
+  if(length(x) !=1){
+    stop("function escaper can only be used for single length character or list")
+  }
+
+  if(is.list(x)){
+    return(paste0("\"",x[[1]],"\""))
+  } else{
+    return(paste0("\"",x,"\""))
+  }
+
+
+
+}
+
+
+
 #' Takes a list with elements and converts them to a json string
 #'
 #' @param payload a list for constructing a json string from
@@ -30,17 +60,7 @@ json_builder <- function(directions, payload) {
 #' , parameters = list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01"))
 #' jsonDataGridConstructor(payload)
 jsonDataGridConstructor <- function(payload){
-  #
-  # lapply(list("TR.RICCode"), \(x) list("name" = x))
-  #
-  # json <- "{ \"universe\": [ \"TRI.N\", \"IBM.N\" ], \"fields\": [ \"TR.Revenue\", \"TR.GrossProfit\" ] }"
-  Escaper <- function(x){
-    if(length(x) !=1 && !is.character(x)){
-      stop("function escaper can only be used for single character")
-    }
 
-    return(paste0("\"",x,"\""))
-  }
 
   body <- paste("{", paste(lapply( X = 1: length(payload)
                                    , function(x, payload){if(names(payload)[x] != "parameters"){
@@ -196,6 +216,29 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
 
 
 
+#' return element as a list even it is not a list
+#'
+#' @param x anything
+#'
+#' @return list
+#'
+#' @seealso [RefinitivJsonConnect()]
+#' @noRd
+#'
+#' @examples
+#' jsonlistbuilder(x = "a")
+#' jsonlistbuilder(x = list("a"))
+jsonlistbuilder <- function(x){
+  if (length(x)==1 & !is.list(x)){
+    return(list(x))
+  } else{
+    return(x)
+  }
+}
+
+
+
+
 
 #' Connect to Eikon directly with JSON requests
 #'
@@ -211,16 +254,6 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
 #'  EikonJson <- RefinitivJsonConnect()
 #' }
 RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000L){
-
-  #0. helper functions ----
-  jsonlistbuilder <- function(x){
-    if (length(x)==1 & !is.list(x)){
-      return(list(x))
-    } else{
-      return(x)
-    }
-  }
-
 
   # 1. check input ----
   if (is.na(Eikonapplication_id)){

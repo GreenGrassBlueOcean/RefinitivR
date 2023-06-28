@@ -21,3 +21,11 @@ test_that("install_eikon works and libraries can be successfully loaded", {
 
 
 })
+
+test_that("CheckInstallationResult fails with incorrect python package", {
+
+
+  expect_warning(CheckInstallationResult(PyhtonModuleName = "wrongmodule")
+                 , "Installation of python module wrongmodule failed")
+
+})

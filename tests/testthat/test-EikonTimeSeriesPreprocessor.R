@@ -1,3 +1,14 @@
+test_that("EikonTimeSeriesPreprocessor fails when it should", {
+
+  expect_error( EikonTimeSeriesPreprocessor(interval = "wrong interval"
+                                            , rics = letters
+                                            , start_date = "2015-01-01"
+                                            , end_date = "2018-01-01")
+              , "Parameter Interval is wrong interval but should be one of  tick, minute, hour, daily, weekly, monthly, quarterly, yearly")
+})
+
+
+
 test_that("EikonTimeSeriesPreprocessor works", {
 
   test <- EikonTimeSeriesPreprocessor(interval = "daily", rics = letters, start_date = "2015-01-01", end_date = "2018-01-01")
