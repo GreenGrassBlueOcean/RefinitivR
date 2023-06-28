@@ -85,8 +85,7 @@ EikonTestObject  <- function(testMode  = "replay"){
 
                          , get_timeseries = function(rics, interval, calendar, fields
                                                      , start_date, end_date, corax, normalize, raw_output){
-
-                           response <- StoreOrRetrievefromDB( FunctionName = "get_timeseries"
+                          response <- StoreOrRetrievefromDB( FunctionName = "get_timeseries"
                                                               , RealEikonObject = RealEikon
                                                               , repodir = repodir
                                                               , Input=as.list(match.call(expand.dots=FALSE))

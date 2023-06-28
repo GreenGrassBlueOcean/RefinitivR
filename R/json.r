@@ -117,7 +117,7 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
 #'  #data reuqest
 #'  directions <- 'DataGrid_StandardAsync'
 #'  payload <- list('requests' = list(list('instruments' = list("TSLA.O"),
-#'      'fields' = lapply(list("TR.RICCode"), \(x) list("name" = x))
+#'      'fields' = lapply(list("TR.RICCode"), function(x) list("name" = x))
 #'    )))
 #'
 #'  json <- json_builder(directions, payload)
