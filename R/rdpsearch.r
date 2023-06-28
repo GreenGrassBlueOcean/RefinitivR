@@ -278,8 +278,11 @@ RDPsearch <- function(RDP = RefinitivJsonConnect() #RDConnect()
 #'
 #' @examples
 #' \dontrun{
-#' RDPGetOptionAnalytics(OptionRics = c("AAPLL032112500.U", "AAPLL032113700.U"))
-#' RDPGetOptionAnalytics(OptionRics = rics)
+#' OPtionInstruments <- Refinitiv::RDPsearch(query = "aapl.o", view = "RelatedOption")
+#' OPtionInstruments <- OPtionInstruments[grep(pattern = "*.U"
+#' , x = OPtionInstruments$RIC),]$RIC
+#'
+#' Analytics <- RDPGetOptionAnalytics(OptionRics = OPtionInstruments)
 #' }
 RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = FALSE, verbose = T){
 # browser()
