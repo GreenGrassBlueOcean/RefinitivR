@@ -327,8 +327,9 @@ test_that("one wrong ric does not blow it for the rest in EikonGetTimeseries", {
 
   Eikon <- check_Eikonapi()
   requireNamespace("lubridate", quietly = TRUE)
-  suppressWarnings(test_problem_ts <- EikonGetTimeseries(EikonObject = Eikon, start_date = paste0(Sys.Date()-lubridate::years(20), "T01:00:00")
-                                                        , end_date =  paste0(Sys.Date()-lubridate::years(10), "T23:59:00")
+  suppressWarnings(test_problem_ts <- EikonGetTimeseries(EikonObject = Eikon
+                                                        , start_date = "2003-07-03T01:00:00"
+                                                        , end_date = "2013-07-03T23:59:00"
                                                         , rics = c("FORTUM.HE", "WrongRIC", "0656.HK")
                                                         , raw_output = FALSE
   ))
@@ -344,7 +345,9 @@ test_that("works fields = NULL", {
   requireNamespace("lubridate", quietly = TRUE)
   Eikon <- check_Eikonapi()
 
-  testEconSeries <- EikonGetTimeseries(EikonObject = Eikon, rics = "USCPI=ECI", start_date = paste0(Sys.Date()-lubridate::years(5), "T01:00:00")
+  testEconSeries <- EikonGetTimeseries(EikonObject = Eikon, rics = "USCPI=ECI"
+                                      , start_date = "2018-07-03T01:00:00"
+                                      , end_date = "2023-07-03T01:00:00"
                                        , interval = "monthly", fields = NULL)
   expect_equal(lapply(testEconSeries, class), list(Date = c("POSIXct", "POSIXt"), Security = "character", VALUE = "numeric") )
   expect_true("USCPI=ECI" == unique(testEconSeries$Security))

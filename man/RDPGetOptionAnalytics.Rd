@@ -28,7 +28,10 @@ Get RDP option analytics
 }
 \examples{
 \dontrun{
-RDPGetOptionAnalytics(OptionRics = c("AAPLL032112500.U", "AAPLL032113700.U"))
-RDPGetOptionAnalytics(OptionRics = rics)
+OPtionInstruments <- Refinitiv::RDPsearch(query = "aapl.o", view = "RelatedOption")
+OPtionInstruments <- OPtionInstruments[grep(pattern = "*.U"
+, x = OPtionInstruments$RIC),]$RIC
+
+Analytics <- RDPGetOptionAnalytics(OptionRics = OPtionInstruments)
 }
 }
