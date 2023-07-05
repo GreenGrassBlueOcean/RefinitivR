@@ -77,15 +77,53 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                          , use_field_names_in_headers = NULL
                          ){
 
+  #Check if universe is supplied
+  if(is.null(universe)){
+    stop("Parameter universe should be supplied and is not")
+  }
+
+  #
+  #
+  # # Divide RICS in chunks to satisfy api limits
+  # if(!is.null(fields)){
+  #    ChunckFields <- fields
+  # } else {
+  #   ChunckFields <- rep(x = "dummy", times =14)
+  # }
+  #
+  # ChunckedRics <- EikonChunker( RICS = universe, Eikonfields = ChunckFields
+  #                             , MaxCallsPerChunk = 10000)
+  #
+  #   #
+  # # }
+  # #
+  # # EikonDataList <- as.list(rep(NA, times = length(ChunckedRics)))
+  # #
+  # DownloadCoordinator <- data.frame( index = 1:length(ChunckedRics)
+  #                                  , succes =  rep(FALSE, length(ChunckedRics))
+  #                                  , retries = rep(0L, length(ChunckedRics), stringsAsFactors = FALSE)
+  #                                  )
+
   #Build Argument list
   if(!exists("Arglist") || identical(list(),Arglist)){
     Arglist <- as.list(match.call(expand.dots=FALSE))
     Arglist[[1]] <- NULL
+    # Arglist[["universe"]] <- NULL
   }
 
-  if(!("universe" %in% names(Arglist))){
-    stop("Parameter universe should be supplied and is not")
-  }
+  # PyCallList <- vector(mode = "list", length = length(ChunckedRics))
+
+  # PyCallList <- lapply(X = 1:length(ChunckedRics)
+                      # , FUN = function(x, Arglist, ChunckedRics){
+                              # Arglist[["universe"]] <- ChunckedRics[[x]]
+                              # return(Arglist)}
+        # , Arglist = Arglist
+        # , ChunckedRics = ChunckedRics
+        # )
+
+  #Make sure all arguments are evaluated before passing to the gethistory api
+  Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
+
 
   if("count" %in% names(Arglist)){
     if (count <= 0){
@@ -94,10 +132,6 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
       Arglist$count <- as.integer(Arglist$count)
     }
   }
-
-
-  #Make sure all arguments are evaluated before passing to the gethistory api
-  Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
 
   # remove RDP from arglist if this is in it.
   if("RD" %in% names(Arglist)){

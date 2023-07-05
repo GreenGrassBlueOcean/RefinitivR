@@ -1,7 +1,7 @@
 Package: Refinitiv
 Type: Package
 Title: Connect to Datastream and python Eikon api in r
-Version: 0.1.0
+Version: 0.1.0.9004
 Author: Laurens van der Burg
 Maintainer: Laurens van der Burg <laurens@ggbo.eu>
 Description: R interface to the Eikon Python api using reticulate and to DataStream using the DatastreamDSWS2R package. This package is in no way affiliated with Thomson Reuters,Refinitv, Eikon or Datastream. Use at own risk.
@@ -44,4 +44,3 @@ Suggests:
     dplyr,
     archivist,
     digest
-   
