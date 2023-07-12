@@ -10,13 +10,17 @@ test_that("rd_GetHistory fails when it should", {
 
 
 test_that("rd_GetHistory can handle most simple request", {
+
+  TestRD <- check_Eikonapi(ExecutionMode = "RD")
+
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
-  test <- try(rd_GetHistory(universe="AAPL.O"))
+
+  test <- rd_GetHistory(RD = TestRD,  universe="AAPL.O")
 
   expect_equal(class(test), "data.frame")
   expect_equal(lapply(test, class)
-              , list(Date = c("IDate", "Date"), Instrument = "character"
-                    , variable = "character", value = "character")
+              , list(Date = c("POSIXct", "POSIXt"), Instrument = "character"
+                    , variable = "character", value = "numeric")
   )
 
   expect_equal(unique(test$Instrument), "AAPL.O")
@@ -25,14 +29,15 @@ test_that("rd_GetHistory can handle most simple request", {
 
 test_that("rd_GetHistory can handle request with simple fields", {
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
-  test <- try(rd_GetHistory(universe = c("GOOG.O","MSFT.O"),fields = c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
+  TestRD <- check_Eikonapi(ExecutionMode = "RD")
+
+  test <- try(rd_GetHistory(RD = TestRD, universe = c("GOOG.O","MSFT.O"),fields = c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
                         ,parameters = list("Scale" = 6,"SDate" = 0,"EDate" = -3,"FRQ" = "FY", "Curn" = "EUR")))
 
   expect_equal(class(test), "data.frame")
-  expect_equal(lapply(test, class)
-               , list(Date = c("IDate", "Date"), Instrument = "character"
-                      , variable = "character", value = "character")
-  )
+  expect_equal(lapply(test, class),
+               list(Date = c("POSIXct", "POSIXt"), Instrument = "character",
+                    variable = "character", value = "character"))
 
 
   expect_equal(sort(unique(test$Instrument)), c("GOOG.O", "MSFT.O"))
@@ -48,14 +53,14 @@ test_that("rd_GetHistory can handle request with explicit date", {
 
   expect_equal(class(test), "data.frame")
   expect_equal(lapply(test, class)
-               , list(Date = c("IDate", "Date"), Instrument = "character"
-                      , variable = "character", value = "character")
-  )
+               , list(Date = c("POSIXct", "POSIXt"), Instrument = "character",
+                      variable = "character", value = "numeric")
+               )
 
   expect_equal(sort(unique(test$Instrument)), c("GOOG.O", "MSFT.O"))
   expect_equal(sort(unique(test$Date))
-              , structure(c(18263L, 18264L, 18267L, 18268L, 18269L, 18270L, 18271L)
-                         , class = c("IDate", "Date")))
+              , structure(c(1577923200, 1578009600, 1578268800, 1578355200, 1578441600,
+                            1578528000, 1578614400), class = c("POSIXct", "POSIXt"), tzone = "UTC"))
 })
 
 
@@ -69,16 +74,18 @@ test_that("rd_GetHistory can handle with fields and dates", {
 
   expect_equal(class(test), "data.frame")
   expect_equal(lapply(test, class)
-               , list( Date = c("IDate", "Date"), Instrument = "character"
-                     , variable = "character", value = "character")
+               ,list(Date = c("POSIXct", "POSIXt"), Instrument = "character"
+                     , variable = "character",value = "numeric")
   )
 
 
   expect_equal(sort(unique(test$Date))
-               , structure(c(18536L, 18562L, 18563L, 18564L, 18565L, 18567L, 18568L,
-                             18569L, 18570L, 18571L, 18572L, 18575L, 18576L, 18577L, 18578L,
-                             18579L, 18582L, 18583L, 18584L, 18585L, 18586L, 18589L, 18590L,
-                             18591L, 18593L, 18596L, 18597L), class = c("IDate", "Date")))
+               , structure(c(1601510400, 1603756800, 1603843200, 1603929600, 1604016000,
+                             1604188800, 1604275200, 1604361600, 1604448000, 1604534400, 1604620800,
+                             1604880000, 1604966400, 1605052800, 1605139200, 1605225600, 1605484800,
+                             1605571200, 1605657600, 1605744000, 1605830400, 1606089600, 1606176000,
+                             1606262400, 1606435200, 1606694400, 1606780800),
+                           class = c("POSIXct", "POSIXt"), tzone = "UTC"))
 
   expect_equal(sort(unique(test$Instrument)), c("AAPL.O"))
 
@@ -98,16 +105,19 @@ test_that("rd_GetHistory can handle with fields and dates", {
 
   expect_equal(class(test), "data.frame")
   expect_equal(lapply(test, class)
-               , list( Date = c("IDate", "Date"), Instrument = "character"
-                       , variable = "character", value = "character")
+               ,list(Date = c("POSIXct", "POSIXt"), Instrument = "character"
+                     , variable = "character",value = "numeric")
   )
 
 
   expect_equal(sort(unique(test$Date))
-               , structure(c(18536L, 18562L, 18563L, 18564L, 18565L, 18567L, 18568L,
-                             18569L, 18570L, 18571L, 18572L, 18575L, 18576L, 18577L, 18578L,
-                             18579L, 18582L, 18583L, 18584L, 18585L, 18586L, 18589L, 18590L,
-                             18591L, 18593L, 18596L, 18597L), class = c("IDate", "Date")))
+               ,structure(c(1601510400, 1603756800, 1603843200, 1603929600, 1604016000,
+                            1604188800, 1604275200, 1604361600, 1604448000, 1604534400, 1604620800,
+                            1604880000, 1604966400, 1605052800, 1605139200, 1605225600, 1605484800,
+                            1605571200, 1605657600, 1605744000, 1605830400, 1606089600, 1606176000,
+                            1606262400, 1606435200, 1606694400, 1606780800)
+                          , class = c("POSIXct", "POSIXt"), tzone = "UTC")
+               )
 
   expect_equal(sort(unique(test$Instrument)), c("AAPL.O"))
 

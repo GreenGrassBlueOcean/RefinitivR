@@ -4,10 +4,12 @@
 \alias{Process_RDP_output}
 \title{Output processor for python function RDP$get_search_metadata}
 \usage{
-Process_RDP_output(python_json)
+Process_RDP_output(python_json, RemoveNA = FALSE)
 }
 \arguments{
-\item{metadata_python_df}{outcome of python RDP$get_search_metadata}
+\item{python_json}{python json string}
+
+\item{RemoveNA}{remove NA value's defaults to FALSE}
 }
 \value{
 r data.frame
@@ -24,5 +26,10 @@ PY_get_search_metadata_input <- reticulate::r_to_py(
  reticulate::py_load_object(file = path))
  r_df <- Process_RDP_output(PY_get_search_metadata_input)
 }
+}
+\seealso{
+[get_search_metadata()]
+
+[rd_GetHistory()]
 }
 \keyword{internal}

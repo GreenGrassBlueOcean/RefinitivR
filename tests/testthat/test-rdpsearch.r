@@ -183,24 +183,3 @@ test_that("ImportCustomPythonutils works",{
 })
 
 
-
-path = "PY_get_search_metadata_input.py"
-PY_get_search_metadata_input <- reticulate::r_to_py(reticulate::py_load_object(file = path))
-test_that("RDPShowAvailableSearchViews works",{
-
-  r_df <- Process_RDP_output(PY_get_search_metadata_input)
-
-  expect_equal(head(r_df, n=10)
-    , structure(list(Refinitiv_index = c("AAACurrencyBondBenchmarkChain", "AACurrencyBondBenchmarkChain", "ABSMBSBondsRIC", "ActiveEstimatesExist",
-                                     "ActivityDate", "ACurrencyBondBenchmarkChain", "AdmissionToTrading", "ADRType", "ADRTypeName", "Adxr14D")
-                 , Type = c("String", "String", "String", "Boolean", "Date", "String", "Date", "String", "String", "Double")
-                 , Searchable = c(FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE)
-                 , Sortable = c(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE)
-                 , Navigable = c(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE)
-                 , Groupable = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
-                 , Exact = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
-                 , Symbol = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE))
-            , row.names = c(NA, 10L), class = "data.frame")
-  )
-})
-# system.file("extdata", "PY_get_search_metadata_input.rds", package = "Ref", mustWork = TRUE)

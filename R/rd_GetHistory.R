@@ -135,40 +135,35 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
 
   # remove RDP from arglist if this is in it.
   if("RD" %in% names(Arglist)){
-    Arglist$RDP <- NULL
+    Arglist$RD <- NULL
   }
 
   #Execute get_history
-
-  # Searcher <- rdp$search
   PyCall <- do.call(what = RD[["get_history"]], args = Arglist)
+  ColumnLevels <- reticulate::py_to_r(PyCall$columns$nlevels)
+  if(ColumnLevels == 1){
+    VariableName <- PyCall$columns$name
+    if(identical(as.character(VariableName) ,universe)){
+      PyCall$insert(0L, "Instrument", VariableName)
+      id_vars <- c("Date", "Instrument")
+      var_name = "variable"
+    } else {
+      PyCall$insert(0L, "variable", VariableName)
+      id_vars <- c("Date", "variable")
+      var_name <- "Instrument"
+    }
+    DroppedIndex <- PyCall$reset_index()
+    DroppedIndex <- DroppedIndex$melt(ignore_index = TRUE
+                                     , id_vars = id_vars
+                                     , var_name = var_name)
 
-  Melted <- PyCall$melt(ignore_index = FALSE)
-  returnthing <- Melted$to_csv()
-  Converted <- data.table::fread(reticulate::py_to_r(returnthing))
+  } else if(ColumnLevels == 2){
+    Melted <- PyCall$melt(ignore_index = FALSE
+                         , var_name = c("Instrument", "variable"))
+    DroppedIndex <- Melted$reset_index()
 
-  # Improve column names and add names that are not in
-  if("variable_1" %in% names(Converted)){
-    data.table::setnames(x= Converted, old = c("variable_0", "variable_1"), new = c("Instrument", "variable"))
-  } else if(length(universe) == 1 && universe %in% names(Converted)){
-    Instrument <- NULL
-    Converted <- Converted[, Instrument := universe]
-    data.table::setnames(x= Converted, old = universe, new = "variable")
   }
-
-  # convert value to character (otherwise always different formats character or numeric)
-  value <- NULL
-  Converted2 <- Converted[value != "",][, value := as.character(value)]
-
-  # Set columns in correct sequence for return
-  if("Date" %in% names(Converted2)){
-    ColorderSequence <-c("Date", "Instrument", "variable", "value")
-  } else  if("Timestamp" %in% names(Converted2)){
-    ColorderSequence <-c("Timestamp", "Instrument", "variable", "value")
-  }
-
-  #make sure column order is consistent
-  data.table::setcolorder(x = Converted2, neworder = ColorderSequence)
-
-  return(data.table::setDF(Converted2))
+  JsonString <- DroppedIndex$to_json(date_format= "iso")
+  Converted <- Process_RDP_output(JsonString, RemoveNA = TRUE)
+  return(Converted)
 }

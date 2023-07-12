@@ -60,7 +60,7 @@ test_that("RefinitivJsonConnect does work with application id", {
 
   expect_equal(names(EikonJson)
               , c("search", "set_app_port", "get_data", "set_app_key", "get_symbology",
-                  "get_search_metadata", "get_history", "get_app_port", "get_timeseries",
+                  "get_search_metadata", "get_app_port", "get_timeseries",
                   "get_app_key"))
 
   expect_equal(EikonJson$get_app_key(), "testing_key")

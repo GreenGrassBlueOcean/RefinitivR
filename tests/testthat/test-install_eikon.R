@@ -7,10 +7,10 @@ test_that("install_eikon works and libraries can be successfully loaded", {
     if (reticulate::py_available()) {
       skip()
     } else {
-      expect_error(install_eikon(), NA)
+      expect_error(install_eikon(restart_session = FALSE), NA)
     }
   } else {
-    expect_error(install_eikon(), NA)
+    expect_error(install_eikon(restart_session = FALSE), NA)
   }
 
   #expect_error({PythonEK <- reticulate::import(module = "eikon")}

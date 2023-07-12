@@ -16,18 +16,24 @@
 #' check_Eikonapi("replay")
 #' check_Eikonapi("write")
 #' }
-check_Eikonapi <- function(testMode = "replay") {
+check_Eikonapi <- function(testMode = "replay", ExecutionMode = "Eikon") {
   if (is.null(getOption(".EikonApiKey")) && testMode != "write"  ) {
     warning("API not available, using offline database for testing")
-    Eikon <- EikonTestObject (testMode = "replay")
+    ReturnObject <- EikonTestObject (testMode = "replay")
   } else if (!is.null(getOption(".EikonApiKey")) && testMode == "write"  ) {
     warning("overwriting internal test database")
-    Eikon <- EikonTestObject (testMode = "write")
+    ReturnObject <- EikonTestObject (testMode = "write")
   } else {
     print("Eikon API available performing test")
-    Eikon <- EikonConnect()
+    if(ExecutionMode == "Eikon" ){
+      ReturnObject <- EikonConnect()
+    } else if(ExecutionMode == "RD"){
+      ReturnObject <- RDConnect()
+    } else if(ExecutionMode == "RDP"){
+      ReturnObject <- RDPConnect()
+    }
   }
-  return(Eikon)
+  return(ReturnObject)
 }
 
 #' Dummy Eikon Object used for testing
@@ -75,6 +81,7 @@ EikonTestObject  <- function(testMode  = "replay"){
   stopifnot(testMode  %in% c("write", "replay"))
   if(testMode  == "write"){
     RealEikon = Refinitiv::EikonConnect()
+    RealRD = Refinitiv::RDConnect()
   }
 
   repodir = paste0(testthat::test_path(),"/RefTestData")
@@ -128,7 +135,21 @@ EikonTestObject  <- function(testMode  = "replay"){
                                                               , repodir = repodir
                                                               , Input=as.list(match.call(expand.dots=FALSE))
                            )
-
+                         }
+                          , get_history = function(RD = RealRD
+                                                     , universe = NULL, fields = NULL
+                                                     , parameters = NULL
+                                                     , interval = NULL
+                                                     , start = NULL
+                                                     , end = NULL
+                                                     , adjustments = NULL
+                                                     , count = NULL
+                                                     , use_field_names_in_headers = NULL){
+                            response <- StoreOrRetrievefromDB( FunctionName = "get_history"
+                                                                , RealEikonObject = RealRD
+                                                                , repodir = repodir
+                                                                , Input=as.list(match.call(expand.dots=FALSE))
+                             )
 
                          }
 

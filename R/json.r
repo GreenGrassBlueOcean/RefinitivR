@@ -388,43 +388,43 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                          return(data.table::setDF(return_DT))
 
                        }
-                       , get_history = function(RDP, universe=NULL, fields=NULL, parameters=NULL,interval=NULL, start=NULL, end=NULL, adjustments=NULL, count = NULL
-                                                , use_field_names_in_headers = NULL){
-                         if(is.null(use_field_names_in_headers)){
-                           use_field_names_in_headers <- FALSE
-                         }
-
-                         payload <- list( 'universe' = universe
-                                        , 'fields'= fields
-                                        , 'parameters'= parameters
-                                        , 'interval' = interval
-                                        , 'start'= start
-                                        , 'end' = end
-                                        , 'adjustments' = adjustments
-                                        , 'count' = count
-                                        )
-
-                         payload[sapply(payload, is.null)] <- NULL
-
-                         EndPoint <- "data/datagrid/beta1/"
-                         response <- send_json_request(jsonDataGridConstructor(payload), service = "rdp", request_type = "POST", EndPoint =  EndPoint)
-
-                         Data_DT <- data.table::rbindlist(response$data)
-
-                         if(use_field_names_in_headers){
-                           colnames <- unlist(lapply(response$headers, FUN = function(x)(x[["name"]])))
-                          } else {
-                            colnames <- unlist(lapply(response$headers, FUN = function(x)(x[["title"]])))
-                          }
-
-                           data.table::setnames(x = Data_DT, new = colnames)
-
-                           return(Data_DT)
-
-
-
-
-                       }
+                       # , get_history = function(RDP, universe=NULL, fields=NULL, parameters=NULL,interval=NULL, start=NULL, end=NULL, adjustments=NULL, count = NULL
+                       #                          , use_field_names_in_headers = NULL){
+                       #   if(is.null(use_field_names_in_headers)){
+                       #     use_field_names_in_headers <- FALSE
+                       #   }
+                       #
+                       #   payload <- list( 'universe' = universe
+                       #                  , 'fields'= fields
+                       #                  , 'parameters'= parameters
+                       #                  , 'interval' = interval
+                       #                  , 'start'= start
+                       #                  , 'end' = end
+                       #                  , 'adjustments' = adjustments
+                       #                  , 'count' = count
+                       #                  )
+                       #
+                       #   payload[sapply(payload, is.null)] <- NULL
+                       #
+                       #   EndPoint <- "data/datagrid/beta1/"
+                       #   response <- send_json_request(jsonDataGridConstructor(payload), service = "rdp", request_type = "POST", EndPoint =  EndPoint)
+                       #
+                       #   Data_DT <- data.table::rbindlist(response$data)
+                       #
+                       #   if(use_field_names_in_headers){
+                       #     colnames <- unlist(lapply(response$headers, FUN = function(x)(x[["name"]])))
+                       #    } else {
+                       #      colnames <- unlist(lapply(response$headers, FUN = function(x)(x[["title"]])))
+                       #    }
+                       #
+                       #     data.table::setnames(x = Data_DT, new = colnames)
+                       #
+                       #     return(Data_DT)
+                       #
+                       #
+                       #
+                       #
+                       # }
 
 
                        )

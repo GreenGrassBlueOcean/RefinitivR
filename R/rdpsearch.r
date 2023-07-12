@@ -30,10 +30,14 @@ return(SearchViews)
 
 #' Output processor for python function RDP$get_search_metadata
 #'
-#' @param metadata_python_df outcome of python RDP$get_search_metadata
+#' @param python_json python json string
+#' @param RemoveNA remove NA value's defaults to FALSE
 #'
 #' @return r data.frame
 #' @keywords internal
+#'
+#' @seealso [get_search_metadata()]
+#' @seealso [rd_GetHistory()]
 #'
 #' @examples
 #' \dontrun{
@@ -44,12 +48,28 @@ return(SearchViews)
 #'  reticulate::py_load_object(file = path))
 #'  r_df <- Process_RDP_output(PY_get_search_metadata_input)
 #' }
-Process_RDP_output <- function(python_json){
+Process_RDP_output <- function(python_json, RemoveNA = FALSE){
   r_json_dirty <- python_json %>% reticulate::py_to_r() %>% jsonlite::fromJSON()
   r_json_clean <- lapply(r_json_dirty, function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y)})
   r_list <- lapply(r_json_clean, function(x){data.table::transpose(data.table::as.data.table(x))})
-  r_df <- data.table::setDF(data.table::as.data.table(r_list))
-return(r_df)
+  r_dt <- data.table::as.data.table(r_list)
+
+  Date <- value <- NULL
+  if("Date" %in% names(r_dt)){
+    r_dt[, Date := lubridate::ymd_hms(Date)]
+  }
+
+  if(RemoveNA){
+    r_dt <- r_dt[ !is.na(value),]
+  }
+
+  if(all(c("Date", "Instrument", "variable", "value") %in% names(r_dt))){
+    data.table::setcolorder( r_dt
+                           , neworder = c("Date", "Instrument", "variable", "value")
+                           )
+  }
+
+  return(data.table::setDF(r_dt))
 }
 
 
