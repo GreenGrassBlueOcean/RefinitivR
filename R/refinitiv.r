@@ -44,7 +44,7 @@ CheckInstallationResult <- function(PyhtonModuleName, InstallationStat = NULL,en
     python_path <- CondaEnvironments[CondaEnvironments$name == envname, ]$python
   }
 
-  reticulate::use_condaenv(condaenv = envname)
+  try(reticulate::use_condaenv(condaenv = envname))
 
   PyhtonModuleNameCheck <- gsub(PyhtonModuleName, pattern = "-", replacement = ".")
   if(!(reticulate::py_module_available(PyhtonModuleNameCheck))){
