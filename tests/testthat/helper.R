@@ -7,6 +7,7 @@
 #' Checks which api can be used for testing, live or replay.
 #'
 #' @param testMode character write or replay
+#' @param ExecutionMode character Eikon, RD or RDP
 #'
 #' @return EikonObject either a RealEikon object or unittesting EikonObject that mimics Eikon
 #' @noRd

@@ -13,8 +13,6 @@ test_that("rd_GetHistory can handle most simple request", {
 
   TestRD <- check_Eikonapi(ExecutionMode = "RD")
 
-  testthat::skip_if(is.null(getOption(".EikonApiKey")))
-
   test <- rd_GetHistory(RD = TestRD,  universe="AAPL.O")
 
   expect_equal(class(test), "data.frame")
@@ -28,7 +26,7 @@ test_that("rd_GetHistory can handle most simple request", {
 })
 
 test_that("rd_GetHistory can handle request with simple fields", {
-  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+
   TestRD <- check_Eikonapi(ExecutionMode = "RD")
 
   test <- try(rd_GetHistory(RD = TestRD, universe = c("GOOG.O","MSFT.O"),fields = c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
@@ -45,8 +43,10 @@ test_that("rd_GetHistory can handle request with simple fields", {
 })
 
 test_that("rd_GetHistory can handle request with explicit date", {
-  testthat::skip_if(is.null(getOption(".EikonApiKey")))
-  test <- try(rd_GetHistory( universe = c("GOOG.O","MSFT.O")
+
+  TestRD <- check_Eikonapi(ExecutionMode = "RD")
+
+  test <- try(rd_GetHistory(RD = TestRD, universe = c("GOOG.O","MSFT.O")
                        , start = "2020-01-01T01:00:00"
                        , end = "2020-01-10T01:00:00"
                        ))
@@ -65,8 +65,10 @@ test_that("rd_GetHistory can handle request with explicit date", {
 
 
 test_that("rd_GetHistory can handle with fields and dates", {
-  testthat::skip_if(is.null(getOption(".EikonApiKey")))
-  test <- try(rd_GetHistory(universe= "AAPL.O"
+
+  TestRD <- check_Eikonapi(ExecutionMode = "RD", testMode = "write")
+
+  test <- try(rd_GetHistory(RD = TestRD, universe= "AAPL.O"
                       , fields = c("TR.IssueMarketCap(Scale=6,ShType=FFL)","TR.FreeFloatPct()/100/*FreefloatWeight*/"
                                   ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/","TR.CLOSEPRICE(Adjusted=0)/*close*/")
                       , parameters = list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01")))
@@ -93,8 +95,10 @@ test_that("rd_GetHistory can handle with fields and dates", {
 
 
 test_that("rd_GetHistory can handle with fields and dates", {
-  testthat::skip_if(is.null(getOption(".EikonApiKey")))
-  test <- try(rd_GetHistory(universe= "AAPL.O"
+
+  TestRD <- check_Eikonapi(ExecutionMode = "RD")
+
+  test <- try(rd_GetHistory(RD = TestRD,universe= "AAPL.O"
                         , fields = c("TR.IssueMarketCap(Scale=6,ShType=FFL)","TR.FreeFloatPct()/100/*FreefloatWeight*/"
                                      ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/","TR.CLOSEPRICE(Adjusted=0)/*close*/")
                         , parameters = list("Curn" = "USD")
