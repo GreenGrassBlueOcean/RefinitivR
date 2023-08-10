@@ -151,7 +151,7 @@ rdp_get_snapshot(streamObject)
 
 Currently rd.get_history requests from the python package refinitiv.data are now also possible.
 As the get_history command makes 3 seperate json requests this is currently not supported in directjson.
-but this might be included in the future once refinitiv provides better documentation of these api's
+This will change soon.
 
 ```r
 RDConnect("your api key here")
