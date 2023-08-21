@@ -106,8 +106,14 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
                    , EndPoint
     )
 
+  } else if(tolower(service) == "udf"){
+    url <- paste0( getOption("refinitiv_base_url"), ":"
+                   , getOption("rdp_port")
+                   , "/api/udf/"
+                   , EndPoint
+    )
   } else{
-    stop(paste0("wrong service selected in function Construct_url, only rdp or eikon allowed but "
+    stop(paste0("wrong service selected in function Construct_url, only rdp, udf or eikon allowed but "
                 , service, " is chosen"))
   }
   # print(url)
@@ -157,35 +163,75 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
 #'                send_json_request(json)
 send_json_request <- function(json, service = "eikon", debug = FALSE, request_type = "POST", EndPoint = NULL, url = NULL) {
 
-  # 0. helper functions ----
+  # 0. url manipulation ----
   if(is.null(url)){
     url <- Construct_url(service=service, EndPoint = EndPoint)
   }
 
-  # 2. main function ----
+
+  # 2. post or het request ----
   counter <- 0
   results <- data.frame()
   while (TRUE & counter < 2){
     if(toupper(request_type) == "POST"){
-      query <- httr::POST( url =  url
-                            , httr::add_headers(
-                               'Content-Type' = 'application/json',
-                               'x-tr-applicationid' = getOption(".EikonApiKey"))
-                            , body = json
-                            , encode = "json"
-                            )
+
+       # query <- httr::POST( url =  url
+       #                       , httr::add_headers(
+       #                          'Content-Type' = 'application/json',
+       #                          'x-tr-applicationid' = getOption(".EikonApiKey"))
+       #                       , body = json
+       #                       , encode = "json"
+       #                       )
+
+      query <- httr2::request(base_url = url) |>
+        httr2::req_headers('x-tr-applicationid' = getOption(".EikonApiKey")) |>
+        httr2::req_headers('Content-Type' = 'application/json') |>
+        httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
+        #httr2::req_error(is_error = function(resp) FALSE) |>
+        httr2::req_body_json(json)|>
+        httr2::req_perform()
+
 
     } else if(toupper(request_type) == "GET"){
-        query <- httr::GET( url = url
-                          , httr::add_headers(
-                                'Content-Type' = 'application/json',
-                                'x-tr-applicationid' = getOption(".EikonApiKey"))
-                          , encode = "json"
-                          , httr::timeout(5)
-                          )
+        #' query <- httr::GET( url = url
+        #'                   , httr::add_headers(
+        #'                         'Accept'= 'application/json',
+        #'                         #'content-encoding' = 'gzip',
+        #'                         'content-type' = 'application/json',
+        #'                         'charset' = 'ISO-8859-1',
+        #'                         'x-tr-applicationid' = getOption(".EikonApiKey"))
+        #'                   , encode = "json"
+        #'                   , httr::timeout(5)
+        #'                   )
+
+        query <- httr2::request(base_url = url) |>
+          httr2::req_headers('x-tr-applicationid' = getOption(".EikonApiKey")) |>
+          httr2::req_headers('Content-Type' = 'application/json') |>
+          #httr2::req_headers('charset' = 'ISO-8859-1') |>
+          #httr2::req_headers('Accept-Encoding' = "gzip") |>
+          httr2::req_error(is_error = function(resp) FALSE) |>
+          httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
+          httr2::req_timeout(5) |>
+          httr2::req_perform()
+
+        # httr2::resp_content_type()
+        #
+        #
+        # test |> httr2::resp_content_type()
+        # #> [1] "text/html"
+        # test |> httr2::resp_status_desc()
+        # #> [1] "OK"
+        # a <- test |> httr2::resp_body_html()
+        #
+        # tryresults <- httr::content(query)
+        #
+        # application/json
+        #
+        #   req_dry_run()
+
     }
 
-    tryresults <- httr::content(query)
+    tryresults <-  httr2::resp_body_json(query, check_type = F)
     if("responses" %in% names(tryresults)){
        tryresults <- tryresults$responses[[1]]
     }
@@ -200,7 +246,7 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
         } else if(is.numeric(tryresults$estimatedDuration)){
           WaitTime <- tryresults$estimatedDuration/1000
           print(paste("request not ready, server is asking to wait for",WaitTime, "seconds so waiting patiently"))
-          Sys.sleep(WaitTime)
+          ifelse(WaitTime <= 60, Sys.sleep(WaitTime),Sys.sleep(60)) # maximize waiting time to 60 seconds, not waiting for more than 60 seconds for server response
           counter <- counter + 1
         } else {
          stop(paste0("Error code: ", tryresults$ErrorCode, " ", tryresults$ErrorMessage))
@@ -373,7 +419,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
 
                          EndPoint <- paste0("discovery/search/v1/metadata/views/",searchView)
-                         returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint)
+                         returnvar <- send_json_request(json=NULL, service = "rdp", request_type = "GET", EndPoint =  EndPoint)
 
                          return_DT <- data.table::rbindlist(returnvar$Properties, fill = TRUE, use.names = TRUE
                                                             , idcol = "Refinitiv_index")
@@ -388,6 +434,59 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                          return(data.table::setDF(return_DT))
 
                        }
+                       , get_historical_pricing = function( EikonObject, universe
+                                                           , interval, start, end
+                                                           , adjustments, count, fields
+                                                           , sessions){
+                         # construct endpoint ----
+                         payload <- list('universe' = paste(universe, collapse = ",")
+                                         , 'interval' = interval
+                                         , 'start' = start
+                                         , 'end' = end
+                                         , 'adjustments' = if(is.null(adjustments)){NULL}else{paste(adjustments, collapse = ",")}
+                                         , 'count' = as.integer(count)
+                                         , 'fields' = if(is.null(fields)){NULL}else{paste(fields, collapse = ",")}
+                                         , 'sessions' = sessions
+
+
+                         )
+                         payload <- payload[!unlist(lapply(payload, is.null))]
+
+                        universeIndex <-  grep(x =  names(payload), pattern = "universe")
+
+                        NonUniverseParameters <- paste0(paste0(names(payload[-universeIndex]),"=",payload[-universeIndex]), collapse = "&")
+
+                        AllParameters <- paste0(payload[[universeIndex]], "?", NonUniverseParameters)
+
+
+                        EndPoint <- paste0("data/historical-pricing/beta1/views/summaries/")
+                        EndPoint <- paste0(EndPoint, AllParameters)
+
+                        # Execute request ----
+
+                        returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint)
+
+                        # Process request and build return data.frame using data.table ----
+                        returnvar <- returnvar[[1]]
+
+                         return_DT <- data.table::rbindlist(returnvar$data)
+
+                         headernames <- unlist(lapply(returnvar$headers, function(x) {x[["name"]]}))
+                         data.table::setnames(x = return_DT, new = headernames)
+
+                         # add universe
+                         return_DT <- return_DT[, universe := returnvar$universe]
+                         data.table::setcolorder(return_DT,c("universe"))
+                         for (i in seq_along(return_DT)) data.table::set(return_DT, i=which(is.na(return_DT[[i]])), j=i, value=FALSE)
+
+                         return(data.table::setDF(return_DT))
+
+                       }
+
+
+
+
+
                        # , get_history = function(RDP, universe=NULL, fields=NULL, parameters=NULL,interval=NULL, start=NULL, end=NULL, adjustments=NULL, count = NULL
                        #                          , use_field_names_in_headers = NULL){
                        #   if(is.null(use_field_names_in_headers)){

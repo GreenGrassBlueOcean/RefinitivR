@@ -22,7 +22,8 @@ Imports:
     jsonlite,
     rlang,
     here,
-    rstudioapi
+    rstudioapi,
+    httr2
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:

@@ -4,12 +4,14 @@
 \alias{Process_RDP_output}
 \title{Output processor for python function RDP$get_search_metadata}
 \usage{
-Process_RDP_output(python_json, RemoveNA = FALSE)
+Process_RDP_output(python_json, RemoveNA = FALSE, CleanNames = FALSE)
 }
 \arguments{
 \item{python_json}{python json string}
 
-\item{RemoveNA}{remove NA value's defaults to FALSE}
+\item{RemoveNA}{boolean remove NA value's defaults to FALSE}
+
+\item{CleanNames}{boolean clean names of data.table, defaults to FALSE}
 }
 \value{
 r data.frame

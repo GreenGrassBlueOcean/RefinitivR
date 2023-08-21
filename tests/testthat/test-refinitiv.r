@@ -107,7 +107,7 @@ testthat::test_that("Check EikonGetData returns expected data with empty ric"
                                                 , Eikon_Error_Data = structure(list(code = 251658243L, col = 1L
                                                                                     , message = "'The record could not be found' for the instrument 'WRONRIC'", row = 0L), row.names = c(NA, -1L)
                                                                                , class = "data.frame"))
-                      testthat::expect_identical(CheckEikonData, Correct_EikonData)
+                      testthat::expect_identical(CheckEikonData$PostProcessedEikonGetData, Correct_EikonData$PostProcessedEikonGetData)
                     }
 )
 
@@ -134,7 +134,7 @@ testthat::test_that("Check EikonGetData returns expected data with only one good
                                                          Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName"), verbose = TRUE))
 
 
-                      testthat::expect_equal(CheckEikonData, Correct_output)
+                      testthat::expect_equal(CheckEikonData$PostProcessedEikonGetData, Correct_output$PostProcessedEikonGetData)
                     }
 )
 

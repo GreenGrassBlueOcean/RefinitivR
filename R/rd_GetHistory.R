@@ -10,7 +10,7 @@
 #' @param adjustments Tells the system whether to apply or not apply CORAX (Corporate Actions) events or exchange/manual corrections or price and volume adjustment according to trade/quote qualifier summarization actions to historical time series data. Possible values are ["exchangeCorrection", "manualCorrection", "CCH", "CRE", "RTS", "RPO", "unadjusted", "qualifiers"]
 #' @param count The maximum number of data points returned. Values range: 1 - 10000
 #' @param use_field_names_in_headers boolean 	If True - returns field name as column headers for data instead of title
-#'
+#' @param CleanNames default = FALSE
 #'
 #' @return data.frame
 #' @export
@@ -75,6 +75,7 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                          , adjustments = NULL
                          , count = NULL
                          , use_field_names_in_headers = NULL
+                         , CleanNames = FALSE
                          ){
 
   #Check if universe is supplied
@@ -164,6 +165,8 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
 
   }
   JsonString <- DroppedIndex$to_json(date_format= "iso")
-  Converted <- Process_RDP_output(JsonString, RemoveNA = TRUE)
+  Converted <- Process_RDP_output(JsonString, RemoveNA = TRUE, CleanNames = CleanNames)
+
+
   return(Converted)
 }

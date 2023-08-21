@@ -14,7 +14,8 @@ rd_GetHistory(
   end = NULL,
   adjustments = NULL,
   count = NULL,
-  use_field_names_in_headers = NULL
+  use_field_names_in_headers = NULL,
+  CleanNames = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ rd_GetHistory(
 \item{count}{The maximum number of data points returned. Values range: 1 - 10000}
 
 \item{use_field_names_in_headers}{boolean     If True - returns field name as column headers for data instead of title}
+
+\item{CleanNames}{default = FALSE}
 }
 \value{
 data.frame

@@ -31,7 +31,8 @@ return(SearchViews)
 #' Output processor for python function RDP$get_search_metadata
 #'
 #' @param python_json python json string
-#' @param RemoveNA remove NA value's defaults to FALSE
+#' @param RemoveNA boolean remove NA value's defaults to FALSE
+#' @param CleanNames boolean clean names of data.table, defaults to FALSE
 #'
 #' @return r data.frame
 #' @keywords internal
@@ -48,10 +49,21 @@ return(SearchViews)
 #'  reticulate::py_load_object(file = path))
 #'  r_df <- Process_RDP_output(PY_get_search_metadata_input)
 #' }
-Process_RDP_output <- function(python_json, RemoveNA = FALSE){
+Process_RDP_output <- function(python_json, RemoveNA = FALSE, CleanNames = FALSE){
+
+  if(!is.logical(RemoveNA)){
+    stop(paste("Parameter RemoveNA in function Process_RDP_output should be boolean but is", RemoveNA))
+  }
+
+  if(!is.logical(CleanNames)){
+    stop(paste("Parameter CleanNames in function Process_RDP_output should be boolean but is", CleanNames))
+  }
+
   r_json_dirty <- python_json %>% reticulate::py_to_r() %>% jsonlite::fromJSON()
-  r_json_clean <- lapply(r_json_dirty, function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y)})
-  r_list <- lapply(r_json_clean, function(x){data.table::transpose(data.table::as.data.table(x))})
+  r_json_clean <- lapply(X =  r_json_dirty
+                        , FUN =  function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y)})
+  r_list <- lapply( X =  r_json_clean
+                  , FUN =  function(x){data.table::transpose(data.table::as.data.table(x))})
   r_dt <- data.table::as.data.table(r_list)
 
   Date <- value <- NULL
@@ -67,6 +79,10 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE){
     data.table::setcolorder( r_dt
                            , neworder = c("Date", "Instrument", "variable", "value")
                            )
+  }
+
+  if(CleanNames){
+    data.table::setnames(x = r_dt, new = EikonNameCleaner(names(r_dt)))
   }
 
   return(data.table::setDF(r_dt))
@@ -305,7 +321,7 @@ RDPsearch <- function(RDP = RefinitivJsonConnect() #RDConnect()
 #' Analytics <- RDPGetOptionAnalytics(OptionRics = OPtionInstruments)
 #' }
 RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = FALSE, verbose = T){
-# browser()
+# 
   if(is.null(OptionRics) || !is.character(OptionRics)){
     stop("OptionRics should be supplied currently is not supplied or is in the wrong format")
   }
@@ -345,7 +361,7 @@ RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = F
   }
 
   r_IPA_output <- lapply(OptionAnalytics, function(x){reticulate::py_to_r(x$data$raw)})
-  # browser()
+
   if(raw){
     return(r_IPA_output)
   } else {
