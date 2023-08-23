@@ -297,7 +297,64 @@ DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA){
   mydsws <- DatastreamDSWS2R::dsws$new()
   return(mydsws)
 
+}
+
+
+#' Get and Set pythonmodule name and version as an R option
+#'
+#' @param PythonModule python module
+#'
+#' @return nothing options are set within global environment
+#' @noRd
+#'
+#' @examples
+#'  test <- reticulate::import(module = "numpy")
+#' GetandSetPyModuleNameandVersion(test)
+#'
+GetandSetPyModuleNameandVersion <- function(PythonModule){
+    options(.RefinitivPyModuleName = as.character(reticulate::py_get_attr(x = PythonModule, name =  "__name__")))
+    options(.RefinitivPyModuleVersion = as.character(reticulate::py_get_attr(x = PythonModule, name =  "__version__")))
+    options(.RefinitivPyModuleType = class(PythonModule))
+    invisible()
+}
+
+
+
+#' Function to check through which Refinitiv Connection object requests are made
+#'
+#' @param verbose boolean defaults to TRUE
+#'
+#' @return named list
+#' @export
+#'
+#' @examples
+#' test <- PropertiesActiveRefinitivObject()
+PropertiesActiveRefinitivObject <- function(verbose = TRUE){
+
+  #0. helper functions ---
+  NullChecker <- function(x){
+    ifelse(is.null(x), "not loaded", x)
   }
+
+  #1. Main function ----
+  if(!is.logical(verbose)){
+    stop(paste("parameter verbose should be logical, but is", verbose))
+  }
+
+  ModuleName <- getOption(".RefinitivPyModuleName")
+  Version <- getOption(".RefinitivPyModuleVersion")
+  Type <-  getOption(".RefinitivPyModuleType")
+
+  if(verbose){
+    message(paste("Refinitiv Connection method =",NullChecker(ModuleName) ,"\n",
+                  "Version =", Version , "\n",
+                  "Type =", Type
+                  ))
+  }
+
+  return(list("name" = ModuleName, "version" = Version, "Type" = Type))
+}
+
 
 # Initialize eikon Python api using reticulate -------------------------------
 
@@ -347,6 +404,10 @@ EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 900
   options(.EikonApplicationPort = Eikonapplication_port)
   options(.RefinitivAPI = PythonModule)
 
+
+
+
+
    # set virtual environment right
   # PythonEK <- reticulate::import(module = "refinitiv.dataplatform.eikon") # import python eikon module
 
@@ -356,6 +417,8 @@ EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 900
     PythonEK <- reticulate::import(module = "eikon") # import python eikon module
     PythonEK$set_port_number(.Options$.EikonApplicationPort)
     PythonEK$set_app_key(app_key = .Options$.EikonApiKey)
+    GetandSetPyModuleNameandVersion(PythonEK)
+
   } else if (.Options$.RefinitivAPI %in% c("RDP", "RD")){
     if(!CondaExists()){stop("Conda/reticulate does not seem to be available please run install_eikon")}
     try(reticulate::use_miniconda(condaenv = "r-eikon"), silent = TRUE)
@@ -365,8 +428,10 @@ EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 900
       PythonEK <- reticulate::import(module = "refinitiv.data.eikon") # import python eikon module
     }
     PythonEK$set_app_key(app_key = .Options$.EikonApiKey)
+    GetandSetPyModuleNameandVersion(PythonEK)
   } else if(identical(.Options$.RefinitivAPI, "JSON")){
     PythonEK <- RefinitivJsonConnect()
+
   }
 
   if(TestConnection){
@@ -419,6 +484,7 @@ RDPConnect <- function(application_id = NA, PythonModule = NA) {
     try(reticulate::use_miniconda(condaenv = "r-eikon"), silent = TRUE)
     rdp <- reticulate::import(module = "refinitiv.dataplatform", convert = F, delay_load = F)
     rdp$open_desktop_session(application_id)
+    GetandSetPyModuleNameandVersion(rdp)
     return(rdp)
 
   } else if(identical(.Options$.RefinitivAPI, "JSON")){
@@ -457,6 +523,7 @@ RDConnect <- function(application_id = NA) {
   options(.EikonApiKey = application_id)
   rd <- reticulate::import(module = "refinitiv.data", convert = F, delay_load = F)
   rd$open_session()
+  GetandSetPyModuleNameandVersion(rd)
 
   return(rd)
 }
@@ -527,8 +594,8 @@ EikonNameCleaner <- function(names, SpaceConvertor = "."){
 
   returnNames <- unlist(qdapRegex::rm_between(names, '/*', '*/', extract = TRUE))
 
-  returnNames[is.na(returnNames)] <- stringi::stri_split(str = names[is.na(returnNames)], fixed = " ") %>%
-                                     lapply(FUN =  firstup) %>%
+  returnNames[is.na(returnNames)] <- stringi::stri_split(str = names[is.na(returnNames)], fixed = " ") |>
+                                     lapply(FUN =  firstup) |>
                                      lapply(FUN = paste, collapse = " ")
 
 

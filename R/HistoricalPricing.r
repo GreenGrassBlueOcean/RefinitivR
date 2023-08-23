@@ -1,14 +1,17 @@
 #' GetHistoricalPricing
 #'
+#' get historical timeseries from the Refinitiv API
+#'
 #' @param EikonObject connection object, defaults to RefinitivJsonConnect()
 #' @param universe The entity universe e.g. RIC name
-#' @param interval The consolidation interval in ISO8601. see also details
+#' @param interval The consolidation interval in ISO8601. defaults to P1D, see also details
 #' @param start The start date and timestamp of the query. see also details
 #' @param end The end date and timestamp of the query. see also details
 #' @param adjustments character vector: The list of adjustment types (comma delimiter) that tells the system whether to apply or not apply CORAX (Corporate Actions) events or exchange/manual corrections to historical time series data. see also details
 #' @param count integer The maximum number of data returned
 #' @param fields The comma separated list of fields that are to be returned in the response (only interday)
 #' @param sessions The list of market session classification (comma delimiter) that tells the system to return historical time series data based on the market session definition (market open/market close)
+#' @param debug boolean, if TRUE prints url of get requests
 #'
 #' @return data.frame with result
 #' @export
@@ -17,6 +20,13 @@
 #' @details
 #'
 #' Additional details on parameters:
+#'
+#'## \strong{EikonObject}:
+#' The support connection objects are:
+#' \itemize{
+#'  \item{JSON:}{ RefinitivJsonConnect}
+#'  \item{refinitiv.data:}{ RDConnect()}
+#' }
 #'
 #' ## \strong{Interval}:
 #' The support intervals are:
@@ -105,25 +115,39 @@
 #'
 #' @examples
 #' \dontrun{
+#' # run with python refinitiv data
+#' Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
+#' , count = 20L, EikonObject = RDConnect())
+#'
+#' # run with r json
+#' Vodafone2 <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
+#' , count = 20L, EikonObject = RefinitivJsonConnect())
+#'
+#' identical(Vodafone, Vodafone2)
+#'
+#' # run wit a subset of fields
 #' Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D", count = 20L
-#'                                    , fields =c("BID","ASK","OPEN_PRC","HIGH_1","LOW_1","TRDPRC_1","NUM_MOVES","TRNOVR_UNS") )
+#' , fields =c("BID","ASK","OPEN_PRC","HIGH_1","LOW_1","TRDPRC_1","NUM_MOVES","TRNOVR_UNS") )
+#'
 #' }
 rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
-                                , universe
-                                , interval = "daily"
+                                , universe = NULL
+                                , interval = "P1D"
                                 , start = NULL
                                 , end = NULL
                                 , adjustments = NULL
                                 , count = 20L
                                 , fields = NULL
                                 , sessions = NULL
+                                , debug = FALSE
                                 ){
 
-  # Make sure that Python object has api key and change timeout
-  if(!("get_historical_pricing"  %in% names(EikonObject))){
-    stop("historical pricing is only available when RefinitivJsonConnect is used as EikonObject")
-  }
 
+   if(!(getOption(".RefinitivPyModuleName")  %in% c("refinitiv.data", "JSON"))){
+     stop("historical pricing is only available when JSON --> RefinitivJsonConnect() or Python Refinitiv data --> RDConnect() is used as EikonObject")
+   }
+
+  # Make sure that Python object has api key and change timeoutbrowser()
   try(EikonObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
 
   #In case no rics are supplied return nothing
@@ -149,7 +173,8 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
         TimeSeriesList[[j]] <- try({
 
           retry(
-          EikonObject$get_historical_pricing( universe = ChunckedRics[[j]]
+          if(getOption(".RefinitivPyModuleName") =="JSON"){
+          Request <- EikonObject$get_historical_pricing( universe = ChunckedRics[[j]]
                                                   , interval = interval
                                                   , start = start
                                                   , end = end
@@ -157,8 +182,23 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
                                                   , count = count
                                                   , fields = fields
                                                   , sessions = sessions)
+          Request[[1]]
+          } else {
 
 
+            Request <- {EikonObject$content$historical_pricing$summaries$Definition(universe = ChunckedRics[[j]]
+                                                         , interval = interval
+                                                         , start = start
+                                                         , end = end
+                                                         , adjustments = adjustments
+                                                         , count = count
+                                                         , fields = fields
+                                                         , sessions = sessions)}
+
+
+          Request <- Request$get_data()
+          reticulate::py_to_r(Request$data$raw)
+          }
            )
 
       })
@@ -175,5 +215,25 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
      warning("EikonGetTimeseries downloading data failed for one or more Rics")
    }
 
-   return(data.table::setDF(data.table::rbindlist(TimeSeriesList, use.names = T, fill = T)))
+  # Process request and build return data.frame using data.table ----
+  OutputProcesser <- function(x){
+      # bind rows
+      CleanedData <- replaceInList(x$data, function(x)if(is.null(x) || identical(x,"") )NA else x)
+      return_DT <- data.table::rbindlist(CleanedData)
+      headernames <- unlist(lapply(x$headers, function(x) {x[["name"]]}))
+      data.table::setnames(x = return_DT, new = headernames)
+
+      # add universe
+      return_DT <- return_DT[, universe := x$universe]
+      data.table::setcolorder(return_DT,c("universe"))
+      for (i in seq_along(return_DT)){
+        data.table::set(return_DT, i=which(is.na(return_DT[[i]]))
+                        , j=i, value=FALSE)}
+      return(return_DT)
+
+  }
+
+   return_DT <- data.table::rbindlist(lapply(TimeSeriesList, OutputProcesser), use.names = T, fill = T)
+
+   return(data.table::setDF(return_DT))
 }

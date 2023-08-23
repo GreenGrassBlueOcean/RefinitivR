@@ -59,7 +59,7 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, CleanNames = FALSE
     stop(paste("Parameter CleanNames in function Process_RDP_output should be boolean but is", CleanNames))
   }
 
-  r_json_dirty <- python_json %>% reticulate::py_to_r() %>% jsonlite::fromJSON()
+  r_json_dirty <- python_json |> reticulate::py_to_r() |> jsonlite::fromJSON()
   r_json_clean <- lapply(X =  r_json_dirty
                         , FUN =  function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y)})
   r_list <- lapply( X =  r_json_clean
@@ -100,7 +100,7 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, CleanNames = FALSE
 ImportCustomPythonutils <- function(){
 try(reticulate::use_miniconda(condaenv = "r-eikon"), silent = TRUE)
 refinitiv_utils <- reticulate::import_from_path( module = "refinitiv_utils"
-                                               , convert = F, delay_load = F
+                                               , convert = F, delay_load = T
                                                , path =  dirname(system.file("python/utils/refinitiv_utils.py"
                                                                             , package = "Refinitiv"))
 )
@@ -321,7 +321,7 @@ RDPsearch <- function(RDP = RefinitivJsonConnect() #RDConnect()
 #' Analytics <- RDPGetOptionAnalytics(OptionRics = OPtionInstruments)
 #' }
 RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = FALSE, verbose = T){
-# 
+#
   if(is.null(OptionRics) || !is.character(OptionRics)){
     stop("OptionRics should be supplied currently is not supplied or is in the wrong format")
   }

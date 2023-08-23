@@ -168,6 +168,9 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
     url <- Construct_url(service=service, EndPoint = EndPoint)
   }
 
+  if(debug){
+  message(url)
+  }
 
   # 2. post or het request ----
   counter <- 0
@@ -308,7 +311,9 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
   }
   payload <- NULL
   options(.EikonApiKey = Eikonapplication_id)
-
+  options(.RefinitivPyModuleName = "JSON")
+  options(.RefinitivPyModuleVersion = "NA")
+  options(.RefinitivPyModuleType = "direct JSON connection through httr2 package")
 
   JSON_EK <- rlang::env( set_app_key =  function(app_key = Eikonapplication_id){
                                                   options(.EikonApiKey = app_key)}
@@ -466,20 +471,9 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
                         returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint)
 
-                        # Process request and build return data.frame using data.table ----
-                        returnvar <- returnvar[[1]]
 
-                         return_DT <- data.table::rbindlist(returnvar$data)
 
-                         headernames <- unlist(lapply(returnvar$headers, function(x) {x[["name"]]}))
-                         data.table::setnames(x = return_DT, new = headernames)
-
-                         # add universe
-                         return_DT <- return_DT[, universe := returnvar$universe]
-                         data.table::setcolorder(return_DT,c("universe"))
-                         for (i in seq_along(return_DT)) data.table::set(return_DT, i=which(is.na(return_DT[[i]])), j=i, value=FALSE)
-
-                         return(data.table::setDF(return_DT))
+                         return(returnvar)
 
                        }
 

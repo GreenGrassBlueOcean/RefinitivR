@@ -18,7 +18,6 @@ Imports:
     httr,
     stringi,
     data.table,
-    magrittr,
     jsonlite,
     rlang,
     here,

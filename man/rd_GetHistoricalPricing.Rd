@@ -6,14 +6,15 @@
 \usage{
 rd_GetHistoricalPricing(
   EikonObject = RefinitivJsonConnect(),
-  universe,
-  interval = "daily",
+  universe = NULL,
+  interval = "P1D",
   start = NULL,
   end = NULL,
   adjustments = NULL,
   count = 20L,
   fields = NULL,
-  sessions = NULL
+  sessions = NULL,
+  debug = FALSE
 )
 }
 \arguments{
@@ -21,7 +22,7 @@ rd_GetHistoricalPricing(
 
 \item{universe}{The entity universe e.g. RIC name}
 
-\item{interval}{The consolidation interval in ISO8601. see also details}
+\item{interval}{The consolidation interval in ISO8601. defaults to P1D, see also details}
 
 \item{start}{The start date and timestamp of the query. see also details}
 
@@ -34,15 +35,24 @@ rd_GetHistoricalPricing(
 \item{fields}{The comma separated list of fields that are to be returned in the response (only interday)}
 
 \item{sessions}{The list of market session classification (comma delimiter) that tells the system to return historical time series data based on the market session definition (market open/market close)}
+
+\item{debug}{boolean, if TRUE prints url of get requests}
 }
 \value{
 data.frame with result
 }
 \description{
-GetHistoricalPricing
+get historical timeseries from the Refinitiv API
 }
 \details{
 Additional details on parameters:
+
+## \strong{EikonObject}:
+The support connection objects are:
+\itemize{
+ \item{JSON:}{ RefinitivJsonConnect}
+ \item{refinitiv.data:}{ RDConnect()}
+}
 
 ## \strong{Interval}:
 The support intervals are:
@@ -130,7 +140,19 @@ together with the status block to indicate the unsupported fields. Currently, th
 }
 \examples{
 \dontrun{
+# run with python refinitiv data
+Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
+, count = 20L, EikonObject = RDConnect())
+
+# run with r json
+Vodafone2 <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
+, count = 20L, EikonObject = RefinitivJsonConnect())
+
+identical(Vodafone, Vodafone2)
+
+# run wit a subset of fields
 Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D", count = 20L
-                                   , fields =c("BID","ASK","OPEN_PRC","HIGH_1","LOW_1","TRDPRC_1","NUM_MOVES","TRNOVR_UNS") )
+, fields =c("BID","ASK","OPEN_PRC","HIGH_1","LOW_1","TRDPRC_1","NUM_MOVES","TRNOVR_UNS") )
+
 }
 }

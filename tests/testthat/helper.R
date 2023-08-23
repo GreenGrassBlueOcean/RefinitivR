@@ -20,6 +20,9 @@ check_Eikonapi <- function(testMode = "replay", ExecutionMode = "Eikon") {
   if (is.null(getOption(".EikonApiKey")) && testMode != "write"  ) {
     warning("API not available, using offline database for testing")
     ReturnObject <- EikonTestObject (testMode = "replay")
+    options(.RefinitivPyModuleName = "testing object")
+    options(.RefinitivPyModuleVersion = "NA")
+    options(.RefinitivPyModuleType = "mimic connection using previously downlaoded data using archivist package")
   } else if (!is.null(getOption(".EikonApiKey")) && testMode == "write"  ) {
     warning("overwriting internal test database")
     ReturnObject <- EikonTestObject (testMode = "write")

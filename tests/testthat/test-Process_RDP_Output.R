@@ -1,8 +1,7 @@
-
-path = "PY_get_search_metadata_input.py"
-PY_get_search_metadata_input <- reticulate::r_to_py(reticulate::py_load_object(file = path))
 test_that("Process_RDP_output works",{
 
+  path = "PY_get_search_metadata_input.py"
+  PY_get_search_metadata_input <- reticulate::r_to_py(reticulate::py_load_object(file = path))
   r_df <- Process_RDP_output(PY_get_search_metadata_input)
 
   expect_equal(head(r_df, n=10)
@@ -41,9 +40,10 @@ test_that("Process_RDP_output works",{
                        , row.names = c(NA, -10L), class = "data.frame"))
 })
 
-path = "test_rd_gethistory2.py"
-rd_gethistorytest_input2 <- reticulate::r_to_py(reticulate::py_load_object(file = path))
+
 test_that("Process_RDP_output works without removing NA",{
+  path = "test_rd_gethistory2.py"
+  rd_gethistorytest_input2 <- reticulate::r_to_py(reticulate::py_load_object(file = path))
   r_df <- Process_RDP_output(rd_gethistorytest_input2, RemoveNA = FALSE)
 
   CorrectOuput <- structure(list(Date = structure(c(1601510400, 1603756800, 1603843200,
@@ -228,6 +228,10 @@ test_that("Process_RDP_output works without removing NA",{
 })
 
 test_that("Process_RDP_output works with removing NA",{
+  path = "test_rd_gethistory2.py"
+  rd_gethistorytest_input2 <- reticulate::r_to_py(reticulate::py_load_object(file = path))
+
+
   r_df <- Process_RDP_output(rd_gethistorytest_input2, RemoveNA = TRUE)
 
 
