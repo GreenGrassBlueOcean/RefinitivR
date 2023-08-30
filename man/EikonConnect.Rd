@@ -7,6 +7,7 @@
 EikonConnect(
   Eikonapplication_id = NA,
   Eikonapplication_port = 9000L,
+  UUID = NA,
   PythonModule = "JSON",
   TestConnection = FALSE
 )
@@ -15,6 +16,8 @@ EikonConnect(
 \item{Eikonapplication_id}{eikon api key}
 
 \item{Eikonapplication_port}{proxy port id}
+
+\item{UUID}{optional character parameter for custom instruments, not necessairy for regular requests}
 
 \item{PythonModule}{character choose between Eikon (python),RDP (python),JSON (direct JSON message without python)}
 

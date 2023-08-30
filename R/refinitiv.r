@@ -153,8 +153,8 @@ install_eikon <- function(method = "conda", conda = "auto", envname= "r-eikon", 
     reticulate::conda_remove(envname = envname, conda = conda)
   }
 
-  InstallationStatus <- data.frame(Python_Package = c("eikon", "refinitiv-dataplatform", "refinitiv-data" )
-                                   ,status = c(NA,NA,NA))
+  InstallationStatus <- data.frame(Python_Package = c( "refinitiv-data" ) #"eikon", "refinitiv-dataplatform",
+                                   ,status = c(NA))
 
 
   #setup reticulate/conda ====
@@ -215,28 +215,28 @@ install_eikon <- function(method = "conda", conda = "auto", envname= "r-eikon", 
 
   ## section installing Eikon ----
 
-  InstallPythonModule(PyModuleName = "eikon"
-                     , AuxilliaryPackages = c()
-                     , envname = envname, method = method, conda = conda, update = update)
+  # InstallPythonModule(PyModuleName = "eikon"
+  #                    , AuxilliaryPackages = c()
+  #                    , envname = envname, method = method, conda = conda, update = update)
 
 
 
 
   ## section installing refinitiv-dataplatform ----
 
-  InstallPythonModule(PyModuleName = "refinitiv-dataplatform"
-                       , AuxilliaryPackages = c()
-                       , envname = envname, method = method, conda = conda, update = update)
+  # InstallPythonModule(PyModuleName = "refinitiv-dataplatform"
+  #                      , AuxilliaryPackages = c()
+  #                      , envname = envname, method = method, conda = conda, update = update)
 
   # show installation results ----
   print(envname)
   python_path <- CondaEnvironments[CondaEnvironments$name == envname, ]$python
 
   #Verify that eikon is really available
-  InstallationStatus <- CheckInstallationResult("eikon", InstallationStatus,envname, python_path)
-
-  #Verify that rdp is really available
-  InstallationStatus <- CheckInstallationResult("refinitiv-dataplatform", InstallationStatus,envname, python_path)
+  # InstallationStatus <- CheckInstallationResult("eikon", InstallationStatus,envname, python_path)
+  #
+  # #Verify that rdp is really available
+  # InstallationStatus <- CheckInstallationResult("refinitiv-dataplatform", InstallationStatus,envname, python_path)
 
   #Verify that rdp is really available
   InstallationStatus <- CheckInstallationResult("refinitiv-data", InstallationStatus,envname, python_path)
@@ -312,9 +312,9 @@ DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA){
 #' GetandSetPyModuleNameandVersion(test)
 #'
 GetandSetPyModuleNameandVersion <- function(PythonModule){
-    options(.RefinitivPyModuleName = as.character(reticulate::py_get_attr(x = PythonModule, name =  "__name__")))
-    options(.RefinitivPyModuleVersion = as.character(reticulate::py_get_attr(x = PythonModule, name =  "__version__")))
-    options(.RefinitivPyModuleType = class(PythonModule))
+    try(options(.RefinitivPyModuleName = as.character(reticulate::py_get_attr(x = PythonModule, name =  "__name__"))))
+    try(options(.RefinitivPyModuleVersion = as.character(reticulate::py_get_attr(x = PythonModule, name =  "__version__"))), silent = TRUE)
+    try(options(.RefinitivPyModuleType = class(PythonModule)))
     invisible()
 }
 
@@ -364,6 +364,7 @@ PropertiesActiveRefinitivObject <- function(verbose = TRUE){
 #' @param Eikonapplication_id eikon api key
 #' @param PythonModule character choose between Eikon (python),RDP (python),JSON (direct JSON message without python)
 #' @param TestConnection boolean, TRUE or FALSE test connection after initiating contact with Eikon terminal
+#' @param UUID optional character parameter for custom instruments, not necessairy for regular requests
 #'
 #' @return a Python module that is an EikonObject
 #' @export
@@ -377,7 +378,7 @@ PropertiesActiveRefinitivObject <- function(verbose = TRUE){
 #' , PythonModule = "RDP")
 #' }
 EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 9000L
-                        , PythonModule = "JSON", TestConnection = FALSE) {
+                        , UUID = NA, PythonModule = "RD", TestConnection = FALSE) {
 
   # 1. check input ----
   if (is.na(Eikonapplication_id)){
@@ -394,19 +395,20 @@ EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 900
     stop("TestConnection should be TRUE or FALSE")
   }
 
-  if(!(PythonModule %in% c("Eikon", "RDP", "JSON"))){
+  if(!(PythonModule %in% c("Eikon", "RDP", "RD", "JSON"))){
     stop(paste("EikonConnect parameter PythonModule can only be Eikon (python),RDP (python) or JSON (direct JSON message) but is"
                , PythonModule))
+  }
+
+  if (is.na(UUID)){
+    try(UUID <- getOption(".RefinitivUUID") )
   }
 
   #2. Run main programme ----
   options(.EikonApiKey = Eikonapplication_id)
   options(.EikonApplicationPort = Eikonapplication_port)
   options(.RefinitivAPI = PythonModule)
-
-
-
-
+  options(.RefinitivUUID = UUID)
 
    # set virtual environment right
   # PythonEK <- reticulate::import(module = "refinitiv.dataplatform.eikon") # import python eikon module

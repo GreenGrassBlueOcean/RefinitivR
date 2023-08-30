@@ -92,11 +92,14 @@ jsonDataGridConstructor <- function(payload){
 #' Construct_url(service = "eikon")
 #' Construct_url(service = "rdp", EndPoint = "discovery/search/v1/")
 Construct_url <- function(service="eikon", EndPoint = NULL) {
-  if(tolower(service)=="eikon"){
+  if(tolower(service) %in% c("eikon", "udf")){
     url <- paste0( getOption("refinitiv_base_url"), ":"
                    , getOption("eikon_port")
                    , getOption("eikon_api")
+
     )
+
+    "http://localhost:9060/api/udf"
 
     #print(url)
   } else if(tolower(service) == "rdp") {
@@ -106,12 +109,12 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
                    , EndPoint
     )
 
-  } else if(tolower(service) == "udf"){
-    url <- paste0( getOption("refinitiv_base_url"), ":"
-                   , getOption("rdp_port")
-                   , "/api/udf/"
-                   , EndPoint
-    )
+  # } else if(tolower(service) == "udf"){
+  #   url <- paste0( getOption("refinitiv_base_url"), ":"
+  #                  , getOption("rdp_port")
+  #                  , "/api/udf/"
+  #                  , EndPoint
+  #   )
   } else{
     stop(paste0("wrong service selected in function Construct_url, only rdp, udf or eikon allowed but "
                 , service, " is chosen"))
@@ -161,15 +164,21 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
 #'                json <- json_builder(directions, payload)
 #'                print(json)
 #'                send_json_request(json)
-send_json_request <- function(json, service = "eikon", debug = FALSE, request_type = "POST", EndPoint = NULL, url = NULL) {
+send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, request_type = "POST", EndPoint = NULL, url = NULL) {
 
   # 0. url manipulation ----
   if(is.null(url)){
-    url <- Construct_url(service=service, EndPoint = EndPoint)
+    Request_url <- Construct_url(service=service, EndPoint = EndPoint)
+  } else {
+    Request_url <- url
   }
 
+
   if(debug){
-  message(url)
+  message(Request_url)
+    if(!is.null(json)){
+      message(json)
+    }
   }
 
   # 2. post or het request ----
@@ -178,15 +187,7 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
   while (TRUE & counter < 2){
     if(toupper(request_type) == "POST"){
 
-       # query <- httr::POST( url =  url
-       #                       , httr::add_headers(
-       #                          'Content-Type' = 'application/json',
-       #                          'x-tr-applicationid' = getOption(".EikonApiKey"))
-       #                       , body = json
-       #                       , encode = "json"
-       #                       )
-
-      query <- httr2::request(base_url = url) |>
+      query <- httr2::request(base_url = Request_url) |>
         httr2::req_headers('x-tr-applicationid' = getOption(".EikonApiKey")) |>
         httr2::req_headers('Content-Type' = 'application/json') |>
         httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
@@ -194,20 +195,9 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
         httr2::req_body_json(json)|>
         httr2::req_perform()
 
-
     } else if(toupper(request_type) == "GET"){
-        #' query <- httr::GET( url = url
-        #'                   , httr::add_headers(
-        #'                         'Accept'= 'application/json',
-        #'                         #'content-encoding' = 'gzip',
-        #'                         'content-type' = 'application/json',
-        #'                         'charset' = 'ISO-8859-1',
-        #'                         'x-tr-applicationid' = getOption(".EikonApiKey"))
-        #'                   , encode = "json"
-        #'                   , httr::timeout(5)
-        #'                   )
 
-        query <- httr2::request(base_url = url) |>
+        query <- httr2::request(base_url = Request_url) |>
           httr2::req_headers('x-tr-applicationid' = getOption(".EikonApiKey")) |>
           httr2::req_headers('Content-Type' = 'application/json') |>
           #httr2::req_headers('charset' = 'ISO-8859-1') |>
@@ -217,27 +207,44 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
           httr2::req_timeout(5) |>
           httr2::req_perform()
 
-        # httr2::resp_content_type()
-        #
-        #
-        # test |> httr2::resp_content_type()
-        # #> [1] "text/html"
-        # test |> httr2::resp_status_desc()
-        # #> [1] "OK"
-        # a <- test |> httr2::resp_body_html()
-        #
-        # tryresults <- httr::content(query)
-        #
-        # application/json
-        #
-        #   req_dry_run()
+    } else if(toupper(request_type) == "DELETE"){
 
+      query <- httr2::request(base_url = Request_url) |>
+        httr2::req_headers('x-tr-applicationid' = getOption(".EikonApiKey")) |>
+        httr2::req_headers('Content-Type' = 'application/json') |>
+        #httr2::req_headers('charset' = 'ISO-8859-1') |>
+        #httr2::req_headers('Accept-Encoding' = "gzip") |>
+        httr2::req_error(is_error = function(resp) FALSE) |>
+        httr2::req_method("DELETE") |>
+        httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
+        httr2::req_timeout(5) |>
+        httr2::req_perform()
+
+    } else if(toupper(request_type) == "PUT"){
+
+      query <- httr2::request(base_url = Request_url) |>
+        httr2::req_headers('x-tr-applicationid' = getOption(".EikonApiKey")) |>
+        httr2::req_headers('Content-Type' = 'application/json') |>
+        #httr2::req_headers('charset' = 'ISO-8859-1') |>
+        #httr2::req_headers('Accept-Encoding' = "gzip") |>
+        httr2::req_body_json(json)|>
+        httr2::req_method("PUT")|>
+        httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
+        httr2::req_timeout(5) |>
+        httr2::req_perform()
+
+    }
+
+
+    if(debug){
+      message(query$status_code)
     }
 
     tryresults <-  httr2::resp_body_json(query, check_type = F)
     if("responses" %in% names(tryresults)){
        tryresults <- tryresults$responses[[1]]
     }
+
 
     # Fetches the content from the query
     # Checks for ErrorCode and then aborts after printing message
@@ -366,6 +373,28 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                          returnvar <- send_json_request(json)
                                          return(returnvar)
                         }
+                       , get_data_rdp = function(universe, fields, parameters = NULL
+                                                 , debug, raw_output){
+
+                         EndPoint = "data/datagrid/beta1/"
+                         payload <- NULL
+
+                        payload <- list( 'universe'= jsonlistbuilder(universe)
+                                        , 'fields'= jsonlistbuilder(fields)
+                                        , 'parameters'=parameters
+                                        , 'output'= 'Col,T|Va,Row,In,date|'
+                                        )
+                         payload[sapply(payload, is.null)] <- NULL
+
+
+                         response <- send_json_request(payload, service = "rdp"
+                                                      , EndPoint = EndPoint
+                                                      , request_type = "POST")
+
+
+                         return(response)
+
+                       }
                        , get_symbology = function( symbol, from_symbol_type
                                                  , to_symbol_type, raw_output
                                                  , debug, best_match){
@@ -404,20 +433,21 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
                          response <- send_json_request(payload, service = "rdp", EndPoint = EndPoint, request_type = "POST")
                          return_DT <- data.table::rbindlist(response$Hits,fill=TRUE, use.names = T)
-
+                         #
                          # Check for lists columns with null inside and fix those
-                         ListCols <- names(which(lapply(return_DT, class) == "list"))
+                          ListCols <- names(which(lapply(return_DT, class) == "list"))
 
-                         if(!identical(ListCols, character(0))){
-                           NullRemover <- function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y )}
-                           for (i in 1:length(ListCols)){
-                             return_DT[[ListCols[i] ]] <- unlist(NullRemover( return_DT[[ListCols[i] ]] ))
-                           }
+                          if(!identical(ListCols, character(0))){
+                            NullRemover <- function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y )}
+                            for (i in 1:length(ListCols)){
+                              return_DT[[ListCols[i] ]] <- unlist(NullRemover( return_DT[[ListCols[i] ]] ))
+                            }
 
 
-                         }
+                          }
 
                          return(return_DT)
+
 
                        }
                        , get_search_metadata = function(RDP, searchView){
@@ -469,13 +499,329 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
                         # Execute request ----
 
-                        returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint)
+                        returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint, debug = TRUE)
 
 
 
                          return(returnvar)
 
+                       }, create_custom_instrument = function( symbol = NULL
+                                                             , formula = NULL
+                                                             , UUID = getOption(".RefinitivUUID")){
+
+                         #https://api.refinitiv.com/data/custom-instruments/v1/instruments
+
+                         # https://api.refinitiv.com/data/custom-instruments/v1/instruments
+                         # {
+                         #   "symbol": "S)lseg_epam.PAXTRA12345",
+                         #   "owner": "PAXTRA12345",
+                         #   "type": "formula",
+                         #   "formula": "LSEG.L + EPAM.N",
+                         #   "instrumentName": "Epam Systems Inc",
+                         #   "exchangeName": "NYS",
+                         #   "holidays": [
+                         #     {
+                         #       "date": "2022-12-18",
+                         #       "reason": "Hanukkah"
+                         #     }
+                         #   ],
+                         #   "timeZone": "UTC",
+                         #   "description": "My Custom Instrument"
+                         # }
+
+
+                         # {
+                         #   "symbol": "S)lseg_epam.PAXTRA12345",
+                         #   "type": "basket",
+                         #   "basket": {
+                         #     "constituents": [
+                         #       {
+                         #         "ric": "LSEG.L",
+                         #         "weight": 50
+                         #       },
+                         #       {
+                         #         "ric": "EPAM.N",
+                         #         "weight": 50
+                         #       }
+                         #     ],
+                         #     "normalizeByWeight": true
+                         #   },
+                         #   "currency": "USD"
+                         # }
+
+
+
+                       #   "symbol": "S)lseg_epam.PAXTRA12345",
+                       #   "owner": "PAXTRA12345",
+                       #   "type": "formula",
+                       #   "formula": "LSEG.L + EPAM.N",
+                       #   "instrumentName": "Epam Systems Inc",
+                       #   "exchangeName": "NYS",
+                       #   "holidays": [
+                       #     {
+                       #       "date": "2022-12-18",
+                       #       "reason": "Hanukkah"
+                       #     }
+                       #   ],
+                       #   "timeZone": "UTC",
+                       #   "description": "My Custom Instrument"
+                       # }
+
+
+                         # {
+                         #   "symbol": "S)lseg_epam.PAXTRA12345",
+                         #   "owner": "PAXTRA12345",
+                         #   "type": "formula",
+                         #   "formula": "LSEG.L + EPAM.N",
+                         #   "instrumentName": "Epam Systems Inc",
+                         #   "exchangeName": "NYS",
+                         #   "holidays": [
+                         #     {
+                         #       "date": "2022-12-18",
+                         #       "reason": "Hanukkah"
+                         #     }
+                         #   ],
+                         #   "timeZone": "UTC",
+                         #   "description": "My Custom Instrument"
+                         # }
+
+
+                         # user defined continuation volume based
+
+                         # {
+                         #   "symbol": "S)udcname.PAXTRA12345",
+                         #   "owner": "PAXTRA12345",
+                         #   "type": "udc",
+                         #   "udc": {
+                         #     "root": "CC",
+                         #     "months": {
+                         #       "numberOfYears": 3,
+                         #       "includeAllMonths": true
+                         #     },
+                         #     "rollover": {
+                         #       "volumeBased": {
+                         #         "method": "volume",
+                         #         "numberOfDays": 1,
+                         #         "joinAtDay": 1,
+                         #         "rollOccursWithinMonths": 4,
+                         #         "rollOnExpiry": true
+                         #       }
+                         #     },
+                         #     "spreadAdjustment": {
+                         #       "adjustment": "arithmetic",
+                         #       "method": "close-to-close",
+                         #       "backwards": true
+                         #     }
+                         #   }
+                         # }
+
+                         # day based
+                         # {
+                         #   "symbol": "S)udcname.PAXTRA12345",
+                         #   "owner": "PAXTRA12345",
+                         #   "type": "udc",
+                         #   "udc": {
+                         #     "root": "CL",
+                         #     "months": {
+                         #       "numberOfYears": 3,
+                         #       "includeAllMonths": true
+                         #     },
+                         #     "rollover": {
+                         #       "dayBased": {
+                         #         "method": "daysBeforeExpiry",
+                         #         "numberOfDays": 3,
+                         #         "monthsPrior": 1
+                         #       }
+                         #     },
+                         #     "spreadAdjustment": {
+                         #       "adjustment": "percentage",
+                         #       "method": "close-to-close",
+                         #       "backwards": false
+                         #     }
+                         #   }
+                         # }
+
+                         # manual
+                         # {
+                         #   "symbol": "S)udcname.PAXTRA12345",
+                         #   "owner": "PAXTRA12345",
+                         #   "type": "udc",
+                         #   "udc": {
+                         #     "root": "CC",
+                         #     "rollover": {
+                         #       "manual": [
+                         #         {
+                         #           "month": 7,
+                         #           "year": 2021,
+                         #           "startDate": "2021-02-01"
+                         #         }
+                         #       ]
+                         #     },
+                         #     "spreadAdjustment": {
+                         #       "adjustment": "arithmetic",
+                         #       "method": "close-to-close",
+                         #       "backwards": true
+                         #     }
+                         #   }
+                         # }
+
+
+                         EndPoint <- "data/custom-instruments/v1/instruments"
+
+                         payload <- list("symbol" = "S)lseg_epam4.GEDTC-238644"
+                                        ,"formula" = "LSEG.L + 4 * EPAM.N")
+
+                         payload[sapply(payload, is.null)] <- NULL
+
+
+                         response <- send_json_request(payload, service = "rdp"
+                                                       , EndPoint = EndPoint
+                                                       , request_type = "POST"
+                                                       , debug = TRUE
+                                                       #, url = "http://localhost:9000/api/rdp/data/custom-instruments/v1/instruments"
+                                                       )
+
+                       }, manage_custom_instrument = function( Instrument = "S)lseg_epam.GEDTC-238644"
+                                                             , Id = NULL
+                                                             , operation = c("GET", "UPDATE", "DELETE")
+                                                             , type = NULL
+                                                             , formula = NULL
+                                                             , UUID = getOption(".RefinitivUUID")){
+
+                         if(!is.null(Instrument) & !is.null(Id) ){
+                           stop("supply either Instrument or Id to get_customInstrument")
+                         }
+
+
+                        if( !(length(operation) == 1L && toupper(operation) %in% c("GET", "UPDATE", "DELETE"))){
+                          stop("parameter operation should be length 1 and be either GET, UPDATE or DELETE")
+                        }
+
+                         payload <- NULL
+                         EndPoint <- paste0("data/custom-instruments/v1/instruments/")
+                         if(!is.null(Instrument)){
+                           EndPoint <- paste0(EndPoint, Instrument)
+                         } else {
+                           EndPoint <- paste0(EndPoint, Id)
+                         }
+
+
+                        if(identical(toupper(operation), "UPDATE")){
+                          operation <- "PUT"
+                          # perform get request to obtain missing data for put payload message
+                          GET_data <- send_json_request( payload, service = "rdp"
+                                                       , request_type = "GET"
+                                                       , EndPoint =  EndPoint
+                                                       , debug = TRUE)
+
+                          # build update/put payload
+                          payload <- list("id" = ifelse(test = is.null(Id), yes = GET_data$id, no = Id) ,
+                                          "symbol" = ifelse(test = is.null(Instrument), yes = GET_data$symbol, no = Instrument),
+                                          "owner" = UUID,
+                                          "type" = ifelse(test = is.null(type), yes = GET_data$type, no = type),
+                                          "formula" = ifelse(test = is.null(formula), yes = GET_data$formula, no = formula))
+
+                        }
+
+                         # https://api.refinitiv.com/data/custom-instruments/v1/instruments/S)lseg_epam.PAXTRA12345
+
+
+                        # Execute request ----
+                        returnvar <- send_json_request( payload, service = "rdp"
+                                                      , request_type = operation
+                                                      , EndPoint =  EndPoint
+                                                      , debug = TRUE)
+
+
+
+
+                       }, get_news_headlines = function(query = NULL, count = 20L
+                                             , repository = "NewsWire"
+                                             , date_from = NULL
+                                             , date_to = NULL
+                                             , raw_output = FALSE
+                                             , debug = FALSE){                       #
+
+                         EndPoint <- paste0("News_Headlines")
+
+                         payload = list(
+                           "number" = as.character(count),
+                           "query" = query,
+                           "repository" = paste0(repository, collapse = ","),
+                           "productName" = getOption(".EikonApiKey"),
+                           "attributionCode" = "",
+                           "dateFrom" = date_from,
+                           "dateTo" = date_to
+                           )
+                         payload[sapply(payload, is.null)] <- NULL
+
+                         json <- json_builder(directions = EndPoint,payload )
+
+                         returnvar <- send_json_request( json, service = "udf"
+                                                         , request_type = "POST"
+                                                         , EndPoint =  NULL
+                                                         , debug = debug
+                         )
+
+
+
+                       }, get_news_story = function(story_id = NULL, raw_output = FALSE, debug=FALSE){
+
+                         EndPoint <- paste0("News_Story")
+
+                         payload = list( "storyId" = story_id
+                                       , "attributionCode" = ""
+                                       , "productName" = getOption(".EikonApiKey")
+                                       )
+
+
+                         payload[sapply(payload, is.null)] <- NULL
+
+                         json <- json_builder(directions = EndPoint,payload )
+
+                         returnvar <- send_json_request( json, service = "udf"
+                                                         , request_type = "POST"
+                                                         , EndPoint =  NULL
+                                                         , debug = debug
+                         )
+
+
+
+
                        }
+
+
+                       #
+                       # "news": {
+                       #   "url": "/data/news/v1",
+                       #   "underlying-platform": "udf",
+                       #   "endpoints": {
+                       #     "headlines": "/headlines",
+                       #     "stories": "/stories",
+                       #     "top-news": "/top-news",
+                       #     "images": "/images",
+                       #     "online-reports": "/online-reports",
+                       #   },
+
+                       # ek.get_news_headlines('IBM.N', count=100)
+                       #
+                       # def get_news_headlines(
+                       #   query=None,
+                       #   count=10,
+                       #   repository="NewsWire",
+                       #   date_from=None,
+                       #   date_to=None,
+                       #   raw_output=False,
+                       #   debug=False,
+                       # ):
+
+                       # Request to http://localhost:9060/api/udf :{'Entity': {'E': 'News_Headlines', 'W': {'number': '10', 'query': 'NVDA.O', 'repository': 'NewsWire', 'productName': '268cffc4666a45ff95c0c08ef56a03682a3f1a5c', 'attributionCode': ''}}, 'ID': '123'}
+
+
+
+
+
+
 
 
 

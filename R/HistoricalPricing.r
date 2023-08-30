@@ -141,7 +141,7 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
                                 , sessions = NULL
                                 , debug = FALSE
                                 ){
-
+   force(EikonObject)
 
    if(!(getOption(".RefinitivPyModuleName")  %in% c("refinitiv.data", "JSON"))){
      stop("historical pricing is only available when JSON --> RefinitivJsonConnect() or Python Refinitiv data --> RDConnect() is used as EikonObject")
@@ -216,24 +216,66 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
    }
 
   # Process request and build return data.frame using data.table ----
-  OutputProcesser <- function(x){
-      # bind rows
-      CleanedData <- replaceInList(x$data, function(x)if(is.null(x) || identical(x,"") )NA else x)
-      return_DT <- data.table::rbindlist(CleanedData)
-      headernames <- unlist(lapply(x$headers, function(x) {x[["name"]]}))
-      data.table::setnames(x = return_DT, new = headernames)
-
-      # add universe
-      return_DT <- return_DT[, universe := x$universe]
-      data.table::setcolorder(return_DT,c("universe"))
-      for (i in seq_along(return_DT)){
-        data.table::set(return_DT, i=which(is.na(return_DT[[i]]))
-                        , j=i, value=FALSE)}
-      return(return_DT)
-
-  }
-
-   return_DT <- data.table::rbindlist(lapply(TimeSeriesList, OutputProcesser), use.names = T, fill = T)
+   return_DT <- data.table::rbindlist(lapply( X =  TimeSeriesList
+                                            , FUN =  rd_OutputProcesser
+                                            , use_field_names_in_headers = FALSE)
+                                      , use.names = T, fill = T)
 
    return(data.table::setDF(return_DT))
+}
+
+
+
+#' Process output from refintiv data to r data.frame output
+#'
+#' @param x refinitiv data platform output
+#' @param use_field_names_in_headers boolean wheater or not to return titles of field (formulas) as headers
+#' @param NA_cleaning clean NA in return data
+#'
+#' @return data.frame
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#'  EndPoint = "data/datagrid/beta1/"
+#'  payload <- list( 'universe'= as.list(c("GOOG.O", "NVDA.O"))
+#'                , 'fields'= as.list(c('TR.CLOSE', 'TR.OPEN'))
+#'                , 'parameters'=list('SDate'= '2022-10-05', 'EDate'= '2022-11-05')
+#'                , 'output'= 'Col,T|Va,Row,In,date|'
+#'                )
+#'
+#' response <- send_json_request(json = payload, service = "rdp"
+#' , EndPoint = EndPoint, request_type = "POST")
+#' Output <- rd_OutputProcesser(response)}
+rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning = TRUE){
+  # bind rows
+  CleanedData <- replaceInList(x$data, function(x)if(is.null(x) || identical(x,"") )NA else x)
+  return_DT <- data.table::rbindlist(CleanedData)
+
+  if(!use_field_names_in_headers && "title" %in% names(x$headers[[1]])){
+    headers <- "title"
+  } else {
+    headers <- "name"
+  }
+
+  headernames <- unlist(lapply(x$headers, function(x) {x[[headers]]}))
+  data.table::setnames(x = return_DT, new = headernames)
+
+  # add universe
+  if(!("universe" %in% names(return_DT) | "Instrument" %in% names(return_DT))){
+    universe <- NULL
+    return_DT <- return_DT[, universe := x$universe]
+    data.table::setcolorder(return_DT,c("universe"))
+  }
+
+  #Na cleaning
+  if(NA_cleaning){
+    for (i in seq_along(return_DT)){
+      data.table::set( return_DT
+                     , i = which(is.na(return_DT[[i]]))
+                     , j = i, value=FALSE)
+    }
+  }
+  return(return_DT)
+
 }

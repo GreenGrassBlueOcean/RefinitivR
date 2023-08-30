@@ -121,7 +121,7 @@ refinitiv_utils <- reticulate::import_from_path( module = "refinitiv_utils"
 #' \dontrun{
 #' test <- RDPget_search_metadata(searchView = "EquityQuotes")
 #' }
-RDPget_search_metadata <- function(RDP = RDPConnect(), searchView = NULL){
+RDPget_search_metadata <- function(RDP = RDPConnect()$discovery, searchView = NULL){
 
   # Prepare python request ----
   if(is.null(searchView)){
@@ -132,7 +132,7 @@ RDPget_search_metadata <- function(RDP = RDPConnect(), searchView = NULL){
   if(all(class(RDP)==c("python.builtin.module", "python.builtin.object"))){
     refinitiv_utils <- ImportCustomPythonutils()
     # Perform Python request ----
-    metadata_python_df <- RDP$get_search_metadata(view = RDP$SearchViews[[searchView]])
+    metadata_python_df <- RDP$get_search_metadata(view = RDP$Views[[searchView]])
     index <- metadata_python_df$index
     python_index_col <- refinitiv_utils$split_tupple_list(index)
     metadata_python_df$insert(0L, "Refinitiv_index", python_index_col)
@@ -240,7 +240,7 @@ return(r_df)
 #'
 #' }
 #'
-RDPsearch <- function(RDP = RefinitivJsonConnect() #RDConnect()
+RDPsearch <- function(RDP = RDConnect()$discovery #RefinitivJsonConnect() #
                      , query =  NULL, view = NULL
                      , select = NULL, top = NULL, filter = NULL
                      , boost= NULL, order_by = NULL, group_by = NULL
