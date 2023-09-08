@@ -16,7 +16,7 @@
 #' @param verbose boolean, set to true to print out the actual python call with time stamp for debugging.
 #' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."
 #' @param RDObject Refinitiv Data connection object
-#' @param use_field_names_in_headers
+#' @param use_field_names_in_headers boolean return request fieldnames in stead of titles
 #'
 #' @return a data.frame containing data.from Eikon
 #' @importFrom utils capture.output

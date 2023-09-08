@@ -147,7 +147,7 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
      stop("historical pricing is only available when JSON --> RefinitivJsonConnect() or Python Refinitiv data --> RDConnect() is used as EikonObject")
    }
 
-  # Make sure that Python object has api key and change timeoutbrowser()
+  # Make sure that Python object has api key and change timeout
   try(EikonObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
 
   #In case no rics are supplied return nothing

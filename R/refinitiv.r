@@ -306,6 +306,7 @@ DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA){
 #'
 #' @return nothing options are set within global environment
 #' @noRd
+#' @keywords internal
 #'
 #' @examples
 #'  test <- reticulate::import(module = "numpy")
@@ -501,6 +502,7 @@ RDPConnect <- function(application_id = NA, PythonModule = NA) {
 #' RD connection function to refinitiv Data libraries
 #'
 #' @param application_id refinitiv data api key
+#' @param PythonModule
 #'
 #' @return rdp opbject
 #' @export
@@ -509,7 +511,7 @@ RDPConnect <- function(application_id = NA, PythonModule = NA) {
 #' \dontrun{
 #' rd <- RDConnect(application_id = "your key")
 #' }
-RDConnect <- function(application_id = NA) {
+RDConnect <- function(application_id = NA, PythonModule = NA) {
 
   # 1. check input ----
   if (is.na(application_id)){

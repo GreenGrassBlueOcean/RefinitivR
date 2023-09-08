@@ -9,8 +9,6 @@ test_that("Basic RDP search works", {
   expect_error(test1,NA)
 
   test1class <- lapply(test1, class)
-  print(test1class)
-  print(test1class[order(names(test1class))])
 
   expect_setequal( test1class #[order(names(test1class))]
                  , list(BusinessEntity = "character", DocumentTitle = "character",
@@ -127,15 +125,21 @@ test_that("Basic RDP search works", {
 
 test_that("RDPget_search_metadata works", {
 
-  Eikon <- check_Eikonapi()
+  for(i in c("RDP", "RD")){
+  Eikon <- check_Eikonapi(ExecutionMode = i, testMode = "write")
 
+  if(i %in% c("RDP", "JSON")){
+    searchView <- "EquityQuotes"
+  } else {
+    searchView <- "EQUITY_QUOTES"
+  }
 
-  test <- RDPget_search_metadata(RDP = Eikon, searchView = "EquityQuotes")
+  test <- RDPget_search_metadata(RDP = Eikon, searchView = searchView)
 
   expect_error(test,NA)
   expect_equal(class(test), "data.frame")
 
-  expect_setequal(lapply(test, class)
+  expect_equal(lapply(test, class)
               , list( Refinitiv_index = "character", Type = "character"
                     , Searchable = "logical", Sortable = "logical"
                     , Navigable = "logical", Groupable = "logical"
@@ -152,13 +156,17 @@ test_that("RDPget_search_metadata works", {
                        , Navigable = "logical", Groupable = "logical"
                        , Exact = "logical", Symbol = "logical"))
 
+
+  }
+
+
 })
 
 
 test_that("RDPShowAvailableSearchViews works",{
 
-  expect_equal( RDPShowAvailableSearchViews()
-              , c("YieldCurveContQuotes","VesselPhysicalAssets","STIRs"
+  expect_equal( sort(RDPShowAvailableSearchViews(Platform ="JSON" ))
+              , sort(c("YieldCurveContQuotes","VesselPhysicalAssets","STIRs"
                            ,"SearchAll","QuotesAndSTIRs","Quotes","PhysicalAssets"
                            ,"People","Organisations","MunicipalQuotes"
                            ,"MunicipalInstruments","MortQuotes","MortgageInstruments"
@@ -170,9 +178,35 @@ test_that("RDPShowAvailableSearchViews works",{
                            ,"EquityDerivativeInstruments","DerivativeQuotes"
                            ,"DerivativeInstruments","DealsMergersAndAcquisitions"
                            ,"CommodityQuotes","CmoQuotes","CmoInstruments","CdsQuotes"
-                           ,"CdsInstruments","BondFutOptQuotes"))
+                           ,"CdsInstruments","BondFutOptQuotes")))
+
+
+  expect_equal( sort(RDPShowAvailableSearchViews(Platform ="RD" ))
+                , sort(c("BOND_FUT_OPT_QUOTES", "CATALOG_ITEMS", "CDS_INSTRUMENTS",
+                         "CDS_QUOTES", "CMO_INSTRUMENTS", "CMO_QUOTES", "COMMODITY_QUOTES",
+                         "DEALS_MERGERS_AND_ACQUISITIONS", "DERIVATIVE_INSTRUMENTS", "DERIVATIVE_QUOTES",
+                         "ENTITIES", "EQUITY_DERIVATIVE_INSTRUMENTS", "EQUITY_DERIVATIVE_QUOTES",
+                         "EQUITY_INSTRUMENTS", "EQUITY_QUOTES", "FIXED_INCOME_INSTRUMENTS",
+                         "FIXED_INCOME_QUOTES", "FUND_QUOTES", "GOV_CORP_INSTRUMENTS",
+                         "GOV_CORP_QUOTES", "INDEX_INSTRUMENTS", "INDEX_QUOTES", "INDICATOR_QUOTES",
+                         "INSTRUMENTS", "INVESTORS", "IRD_QUOTES", "LOAN_INSTRUMENTS",
+                         "LOAN_QUOTES", "MONEY_QUOTES", "MORTGAGE_INSTRUMENTS", "MORT_QUOTES",
+                         "MUNICIPAL_INSTRUMENTS", "MUNICIPAL_QUOTES", "ORGANISATIONS",
+                         "PEOPLE", "PHYSICAL_ASSETS", "QUOTES", "QUOTES_AND_STIRS", "RCS",
+                         "SEARCH_ALL", "STIRS", "VESSEL_PHYSICAL_ASSETS", "YIELD_CURVE_CONT_QUOTES")))
+
+
+
 })
 
+
+test_that("RDPShowAvailableSearchViews fails when it should",{
+
+  expect_error(RDPShowAvailableSearchViews(Platform = "NULL")
+              , "Parameter Platform can only be 'RD', 'RDP' or 'JSON' but not: NULL"
+              , fixed = TRUE)
+
+})
 
 test_that("ImportCustomPythonutils works",{
 

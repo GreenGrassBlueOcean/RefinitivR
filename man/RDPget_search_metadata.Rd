@@ -4,7 +4,7 @@
 \alias{RDPget_search_metadata}
 \title{Get search metadata from RDP}
 \usage{
-RDPget_search_metadata(RDP = RDPConnect(), searchView = NULL)
+RDPget_search_metadata(RDP = RDConnect(), searchView = NULL)
 }
 \arguments{
 \item{RDP}{Refinitiv DataPlatform Connection object}
@@ -19,7 +19,12 @@ Get search metadata from RDP
 }
 \examples{
 \dontrun{
-test <- RDPget_search_metadata(searchView = "EquityQuotes")
+test_rdp <- RDPget_search_metadata(RDP = RDPConnect(PythonModule = "RDP")
+                              , searchView = "EquityQuotes")
+test_json <- RDPget_search_metadata(RDP = RDPConnect(PythonModule = "JSON")
+                              , searchView = "EquityQuotes")
+test_rd <- RDPget_search_metadata(RDP = RDConnect()
+                              , searchView = "EQUITY_QUOTES")
 }
 }
 \seealso{

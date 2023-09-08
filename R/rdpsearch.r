@@ -1,5 +1,7 @@
 #' Show Available Search Views for seachview parameter in RDPget_search_metadata
 #'
+#' @param Platform character vector either RD, RDP or JSON, defaults to JSON
+#'
 #' @return vector with searchviews that can be used.
 #' @export
 #'
@@ -7,26 +9,47 @@
 #' @seealso RDPget_search_metadata
 #'
 #' @examples
-#' RDPShowAvailableSearchViews()
-RDPShowAvailableSearchViews <- function(){
+#' RDPShowAvailableSearchViews(Platform = "JSON")
+RDPShowAvailableSearchViews <- function(Platform = "JSON"){
 
-SearchViews <- c("YieldCurveContQuotes","VesselPhysicalAssets","STIRs"
-                ,"SearchAll","QuotesAndSTIRs","Quotes","PhysicalAssets"
-                ,"People","Organisations","MunicipalQuotes"
-                ,"MunicipalInstruments","MortQuotes","MortgageInstruments"
-                ,"MoneyQuotes","LoanQuotes","LoanInstruments","IRDQuotes"
-                ,"Instruments","IndicatorQuotes","IndexQuotes"
-                ,"IndexInstruments","GovCorpQuotes","GovCorpInstruments"
-                ,"FundQuotes","FixedIncomeQuotes","FixedIncomeInstruments"
-                ,"EquityQuotes","EquityInstruments","EquityDerivativeQuotes"
-                ,"EquityDerivativeInstruments","DerivativeQuotes"
-                ,"DerivativeInstruments","DealsMergersAndAcquisitions"
-                ,"CommodityQuotes","CmoQuotes","CmoInstruments","CdsQuotes"
-                ,"CdsInstruments","BondFutOptQuotes")
-
-return(SearchViews)
+if(!(Platform %in% c("RD", "RDP", "JSON"))){
+  stop(paste("Parameter Platform can only be 'RD', 'RDP' or 'JSON' but not:"
+            , Platform))
 }
 
+if(Platform == "RD"){
+  # RD
+  #reticulate::py_list_attributes(RD$content$search$Views)
+  SearchViews <- c("BOND_FUT_OPT_QUOTES", "CATALOG_ITEMS", "CDS_INSTRUMENTS",
+                   "CDS_QUOTES", "CMO_INSTRUMENTS", "CMO_QUOTES", "COMMODITY_QUOTES",
+                   "DEALS_MERGERS_AND_ACQUISITIONS", "DERIVATIVE_INSTRUMENTS", "DERIVATIVE_QUOTES",
+                   "ENTITIES", "EQUITY_DERIVATIVE_INSTRUMENTS", "EQUITY_DERIVATIVE_QUOTES",
+                   "EQUITY_INSTRUMENTS", "EQUITY_QUOTES", "FIXED_INCOME_INSTRUMENTS",
+                   "FIXED_INCOME_QUOTES", "FUND_QUOTES", "GOV_CORP_INSTRUMENTS",
+                   "GOV_CORP_QUOTES", "INDEX_INSTRUMENTS", "INDEX_QUOTES", "INDICATOR_QUOTES",
+                   "INSTRUMENTS", "INVESTORS", "IRD_QUOTES", "LOAN_INSTRUMENTS",
+                   "LOAN_QUOTES", "MONEY_QUOTES", "MORTGAGE_INSTRUMENTS", "MORT_QUOTES",
+                   "MUNICIPAL_INSTRUMENTS", "MUNICIPAL_QUOTES", "ORGANISATIONS",
+                   "PEOPLE", "PHYSICAL_ASSETS", "QUOTES", "QUOTES_AND_STIRS", "RCS",
+                   "SEARCH_ALL", "STIRS", "VESSEL_PHYSICAL_ASSETS", "YIELD_CURVE_CONT_QUOTES")
+
+} else if(Platform %in% c("JSON", "RDP")){
+  #RDP and JSON
+  #dput(reticulate::py_list_attributes(RDP$SearchViews))
+  SearchViews <-c("BondFutOptQuotes", "CdsInstruments", "CdsQuotes", "CmoInstruments",
+                  "CmoQuotes", "CommodityQuotes", "DealsMergersAndAcquisitions",
+                  "DerivativeInstruments", "DerivativeQuotes", "EquityDerivativeInstruments",
+                  "EquityDerivativeQuotes", "EquityInstruments", "EquityQuotes",
+                  "FixedIncomeInstruments", "FixedIncomeQuotes", "FundQuotes",
+                  "GovCorpInstruments", "GovCorpQuotes", "IRDQuotes", "IndexInstruments",
+                  "IndexQuotes", "IndicatorQuotes", "Instruments", "LoanInstruments",
+                  "LoanQuotes", "MoneyQuotes", "MortQuotes", "MortgageInstruments",
+                  "MunicipalInstruments", "MunicipalQuotes", "Organisations", "People",
+                  "PhysicalAssets", "Quotes", "QuotesAndSTIRs", "STIRs", "SearchAll",
+                  "VesselPhysicalAssets", "YieldCurveContQuotes")
+}
+  return(SearchViews)
+}
 
 #' Output processor for python function RDP$get_search_metadata
 #'
@@ -90,6 +113,44 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, CleanNames = FALSE
 
 
 
+#' GetSearchView Object for RDP search for RD and RDP python libraryt
+#'
+#' @param ConnectionObject RDConnect() or RDPConnect()
+#' @param ConnectionMetaData defaults to PropertiesActiveRefinitivObject don't change
+#' @param SearchView searcView Parameter
+#'
+#' @return python searchView object
+#' @keywords internal
+#' @noRd
+#'
+#' @examples
+#' \dontrun{
+#' GetSearchView(ConnectionObject = RDConnect(), SearchView = "SEARCH_ALL")
+#' }
+GetSearchView <- function(ConnectionObject = RDConnect()
+                         , ConnectionMetaData = PropertiesActiveRefinitivObject(verbose = F)
+                        , SearchView = NULL){
+
+  if(is.null(SearchView)){
+    stop("parameter SearchView can not be null in GetSearchView")
+  }
+
+
+  if(identical(ConnectionMetaData$name, "refinitiv.data")){
+    return(ConnectionObject$content$search$Views[[SearchView]])
+
+  } else if(identical(ConnectionMetaData$name, "refinitiv.dataplatform")){
+    return(ConnectionObject$SearchViews[[SearchView]])
+
+  } else{
+    stop(paste("GetSearchView only available for RD or RDP but not for:", ConnectionMetaData$name))
+  }
+
+}
+
+
+
+
 #' Import The package Custom python utils for handling pre processing python rdp outputs
 #'
 #' @return python module
@@ -119,20 +180,67 @@ refinitiv_utils <- reticulate::import_from_path( module = "refinitiv_utils"
 #'
 #' @examples
 #' \dontrun{
-#' test <- RDPget_search_metadata(searchView = "EquityQuotes")
+#' test_rdp <- RDPget_search_metadata(RDP = RDPConnect(PythonModule = "RDP")
+#'                               , searchView = "EquityQuotes")
+#' test_json <- RDPget_search_metadata(RDP = RDPConnect(PythonModule = "JSON")
+#'                               , searchView = "EquityQuotes")
+#' test_rd <- RDPget_search_metadata(RDP = RDConnect()
+#'                               , searchView = "EQUITY_QUOTES")
 #' }
-RDPget_search_metadata <- function(RDP = RDPConnect()$discovery, searchView = NULL){
+RDPget_search_metadata <- function(RDP = RDConnect(), searchView = NULL){
 
   # Prepare python request ----
-  if(is.null(searchView)){
-    searchView <- "SearchAll"
-  }
 
-  # In case RDP is python make connection to python module
-  if(all(class(RDP)==c("python.builtin.module", "python.builtin.object"))){
+
+  #force RDP to be active
+  force(RDP)
+
+
+  ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
+
+  if(identical(ConnectionMetaData$name, "refinitiv.data")){
+
+    if(is.null(searchView)){
+      searchView <- "SEARCH_ALL"
+    }
+
+
+    if(!(searchView %in% RDPShowAvailableSearchViews(Platform = "RD"))){
+      stop(paste("SearchView", searchView, "not available for RD connection object"))
+    }
+
+    Definition <- RDP$content$search$metadata$Definition(view = GetSearchView( ConnectionObject = RDP
+                                                                             , SearchView = searchView
+                                                                             ))
+    metadata_python_df <- Definition$get_data()$data$raw
+
+    metadata_r <- reticulate::py_to_r(metadata_python_df)$Properties
+
+    r_DT <- lapply( X = 1:length(names(metadata_r))
+                  , function(x, metadata_r){cbind( data.table::data.table(Refinitiv_index = names(metadata_r[x]))
+                                                 , data.table::rbindlist(metadata_r[x])
+                                                 )}
+                  , metadata_r = metadata_r) |>
+            data.table::rbindlist(use.names = T, fill = T)
+
+    Properties <- NULL
+    r_df <- r_DT[, Properties := NULL] |> data.table::setDF()
+  } else if(identical(ConnectionMetaData$name, "refinitiv.dataplatform")){
+
+
+    if(is.null(searchView)){
+      searchView <- "SearchAll"
+    }
+
+    if(!(searchView %in% RDPShowAvailableSearchViews(Platform = "RDP"))){
+      stop(paste("SearchView", searchView, "not available for RDP connection object"))
+    }
+
     refinitiv_utils <- ImportCustomPythonutils()
     # Perform Python request ----
-    metadata_python_df <- RDP$get_search_metadata(view = RDP$Views[[searchView]])
+    metadata_python_df <- RDP$get_search_metadata(view = GetSearchView( ConnectionObject = RDP
+                                                                       , SearchView = searchView
+                                                                       ))
     index <- metadata_python_df$index
     python_index_col <- refinitiv_utils$split_tupple_list(index)
     metadata_python_df$insert(0L, "Refinitiv_index", python_index_col)
@@ -146,13 +254,14 @@ RDPget_search_metadata <- function(RDP = RDPConnect()$discovery, searchView = NU
     r_df <- Process_RDP_output(python_json)
 
   } else {
+    if(is.null(searchView)){
+      searchView <- "SearchAll"
+    }
+
     r_df <- RDP$get_search_metadata(searchView = searchView)
 
 
   }
-
-
-
 
 return(r_df)
 }
@@ -240,7 +349,7 @@ return(r_df)
 #'
 #' }
 #'
-RDPsearch <- function(RDP = RDConnect()$discovery #RefinitivJsonConnect() #
+RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
                      , query =  NULL, view = NULL
                      , select = NULL, top = NULL, filter = NULL
                      , boost= NULL, order_by = NULL, group_by = NULL
@@ -256,6 +365,16 @@ RDPsearch <- function(RDP = RDConnect()$discovery #RefinitivJsonConnect() #
   if("view" %in% names(Arglist)){
     Arglist$view <- RDP$SearchViews[[Arglist$view]]
   }
+
+ #RD -->  RDP$content$search$Views[[searchView]])
+ #RDP --> RDP$SearchViews[[searchView]]
+ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
+
+if(identical(ConnectionMetaData$name, "refinitiv.data")){
+  RDP <- RDP$discovery
+}
+
+
 
   if("top" %in% names(Arglist)){
     Arglist$top <- as.numeric(Arglist$top)
@@ -273,6 +392,14 @@ RDPsearch <- function(RDP = RDConnect()$discovery #RefinitivJsonConnect() #
     Arglist$RDP <- NULL
   }
 
+
+  #force(RDP)
+
+  ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
+
+  if(identical(ConnectionMetaData$name, "refinitiv.data")){
+   RDP <- RDP$discovery
+  }
 
   #Execute search ----
 
@@ -321,7 +448,15 @@ RDPsearch <- function(RDP = RDConnect()$discovery #RefinitivJsonConnect() #
 #' Analytics <- RDPGetOptionAnalytics(OptionRics = OPtionInstruments)
 #' }
 RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = FALSE, verbose = T){
-#
+
+
+  force(RDP)
+  ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
+  if(identical(ConnectionMetaData$name, "refinitiv.data")){
+    RDP <- RDP$content
+  }
+
+
   if(is.null(OptionRics) || !is.character(OptionRics)){
     stop("OptionRics should be supplied currently is not supplied or is in the wrong format")
   }

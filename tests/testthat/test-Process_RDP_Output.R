@@ -19,10 +19,11 @@ test_that("Process_RDP_output works",{
 })
 
 
-path = "rd_gethistorytest.py"
-rd_gethistorytest_input <- reticulate::r_to_py(reticulate::py_load_object(file = path))
 test_that("Process_RDP_output works",{
-  r_df <- Process_RDP_output(rd_gethistorytest_input)
+  path = "rd_gethistorytest.py"
+  rd_gethistorytest_input <- reticulate::r_to_py(reticulate::py_load_object(file = path))
+
+    r_df <- Process_RDP_output(rd_gethistorytest_input)
 
   expect_equal(r_df
             ,structure(list(Date = structure(c(1578268800, 1578355200, 1578441600,

@@ -236,10 +236,11 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
     }
 
 
-    if(debug){
+    if(debug & request_type != "DELETE"){
       message(query$status_code)
     }
 
+    if(request_type != "DELETE"){
     tryresults <-  httr2::resp_body_json(query, check_type = F)
     if("responses" %in% names(tryresults)){
        tryresults <- tryresults$responses[[1]]
@@ -265,8 +266,9 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
       results <- tryresults
        break
     }
+    } else { break
+             results <- NULL}
 }
-
   results
 }
 
@@ -472,7 +474,8 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                        , get_historical_pricing = function( EikonObject, universe
                                                            , interval, start, end
                                                            , adjustments, count, fields
-                                                           , sessions){
+                                                           , sessions
+                                                           , debug = FALSE){
                          # construct endpoint ----
                          payload <- list('universe' = paste(universe, collapse = ",")
                                          , 'interval' = interval
@@ -499,7 +502,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
                         # Execute request ----
 
-                        returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint, debug = TRUE)
+                        returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint, debug = debug)
 
 
 
@@ -507,169 +510,35 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
                        }, create_custom_instrument = function( symbol = NULL
                                                              , formula = NULL
-                                                             , UUID = getOption(".RefinitivUUID")){
-
-                         #https://api.refinitiv.com/data/custom-instruments/v1/instruments
-
-                         # https://api.refinitiv.com/data/custom-instruments/v1/instruments
-                         # {
-                         #   "symbol": "S)lseg_epam.PAXTRA12345",
-                         #   "owner": "PAXTRA12345",
-                         #   "type": "formula",
-                         #   "formula": "LSEG.L + EPAM.N",
-                         #   "instrumentName": "Epam Systems Inc",
-                         #   "exchangeName": "NYS",
-                         #   "holidays": [
-                         #     {
-                         #       "date": "2022-12-18",
-                         #       "reason": "Hanukkah"
-                         #     }
-                         #   ],
-                         #   "timeZone": "UTC",
-                         #   "description": "My Custom Instrument"
-                         # }
+                                                             , type = NULL
+                                                             , basket = NULL
+                                                             , udc = NULL
+                                                             , currency = NULL
+                                                             , instrumentName = NULL
+                                                             , exchangeName = NULL
+                                                             , holidays = NULL
+                                                             , timeZone = NULL
+                                                             , description = NULL
+                                                             , debug = FALSE
+                                                             ){
 
 
-                         # {
-                         #   "symbol": "S)lseg_epam.PAXTRA12345",
-                         #   "type": "basket",
-                         #   "basket": {
-                         #     "constituents": [
-                         #       {
-                         #         "ric": "LSEG.L",
-                         #         "weight": 50
-                         #       },
-                         #       {
-                         #         "ric": "EPAM.N",
-                         #         "weight": 50
-                         #       }
-                         #     ],
-                         #     "normalizeByWeight": true
-                         #   },
-                         #   "currency": "USD"
-                         # }
-
-
-
-                       #   "symbol": "S)lseg_epam.PAXTRA12345",
-                       #   "owner": "PAXTRA12345",
-                       #   "type": "formula",
-                       #   "formula": "LSEG.L + EPAM.N",
-                       #   "instrumentName": "Epam Systems Inc",
-                       #   "exchangeName": "NYS",
-                       #   "holidays": [
-                       #     {
-                       #       "date": "2022-12-18",
-                       #       "reason": "Hanukkah"
-                       #     }
-                       #   ],
-                       #   "timeZone": "UTC",
-                       #   "description": "My Custom Instrument"
-                       # }
-
-
-                         # {
-                         #   "symbol": "S)lseg_epam.PAXTRA12345",
-                         #   "owner": "PAXTRA12345",
-                         #   "type": "formula",
-                         #   "formula": "LSEG.L + EPAM.N",
-                         #   "instrumentName": "Epam Systems Inc",
-                         #   "exchangeName": "NYS",
-                         #   "holidays": [
-                         #     {
-                         #       "date": "2022-12-18",
-                         #       "reason": "Hanukkah"
-                         #     }
-                         #   ],
-                         #   "timeZone": "UTC",
-                         #   "description": "My Custom Instrument"
-                         # }
-
-
-                         # user defined continuation volume based
-
-                         # {
-                         #   "symbol": "S)udcname.PAXTRA12345",
-                         #   "owner": "PAXTRA12345",
-                         #   "type": "udc",
-                         #   "udc": {
-                         #     "root": "CC",
-                         #     "months": {
-                         #       "numberOfYears": 3,
-                         #       "includeAllMonths": true
-                         #     },
-                         #     "rollover": {
-                         #       "volumeBased": {
-                         #         "method": "volume",
-                         #         "numberOfDays": 1,
-                         #         "joinAtDay": 1,
-                         #         "rollOccursWithinMonths": 4,
-                         #         "rollOnExpiry": true
-                         #       }
-                         #     },
-                         #     "spreadAdjustment": {
-                         #       "adjustment": "arithmetic",
-                         #       "method": "close-to-close",
-                         #       "backwards": true
-                         #     }
-                         #   }
-                         # }
-
-                         # day based
-                         # {
-                         #   "symbol": "S)udcname.PAXTRA12345",
-                         #   "owner": "PAXTRA12345",
-                         #   "type": "udc",
-                         #   "udc": {
-                         #     "root": "CL",
-                         #     "months": {
-                         #       "numberOfYears": 3,
-                         #       "includeAllMonths": true
-                         #     },
-                         #     "rollover": {
-                         #       "dayBased": {
-                         #         "method": "daysBeforeExpiry",
-                         #         "numberOfDays": 3,
-                         #         "monthsPrior": 1
-                         #       }
-                         #     },
-                         #     "spreadAdjustment": {
-                         #       "adjustment": "percentage",
-                         #       "method": "close-to-close",
-                         #       "backwards": false
-                         #     }
-                         #   }
-                         # }
-
-                         # manual
-                         # {
-                         #   "symbol": "S)udcname.PAXTRA12345",
-                         #   "owner": "PAXTRA12345",
-                         #   "type": "udc",
-                         #   "udc": {
-                         #     "root": "CC",
-                         #     "rollover": {
-                         #       "manual": [
-                         #         {
-                         #           "month": 7,
-                         #           "year": 2021,
-                         #           "startDate": "2021-02-01"
-                         #         }
-                         #       ]
-                         #     },
-                         #     "spreadAdjustment": {
-                         #       "adjustment": "arithmetic",
-                         #       "method": "close-to-close",
-                         #       "backwards": true
-                         #     }
-                         #   }
-                         # }
 
 
                          EndPoint <- "data/custom-instruments/v1/instruments"
 
-                         payload <- list("symbol" = "S)lseg_epam4.GEDTC-238644"
-                                        ,"formula" = "LSEG.L + 4 * EPAM.N")
+                         payload <- list("symbol" = symbol
+                                        ,"formula" = formula
+                                        , "type" =  type      # formula, basket, udc
+                                        , "basket" = basket
+                                        , "udc" = udc
+                                        , "currency" = currency
+                                        , "instrumentName" = instrumentName
+                                        , "exchangeName" = exchangeName
+                                        , "holidays" = holidays
+                                        , "timeZone" = timeZone
+                                        , "description" = description
+                                        )
 
                          payload[sapply(payload, is.null)] <- NULL
 
@@ -677,19 +546,43 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                          response <- send_json_request(payload, service = "rdp"
                                                        , EndPoint = EndPoint
                                                        , request_type = "POST"
-                                                       , debug = TRUE
+                                                       , debug = debug
                                                        #, url = "http://localhost:9000/api/rdp/data/custom-instruments/v1/instruments"
                                                        )
 
-                       }, manage_custom_instrument = function( Instrument = "S)lseg_epam.GEDTC-238644"
+                         }, search_custom_instrument = function(debug = FALSE){
+
+
+                           EndPoint <- "data/custom-instruments/v1/search"
+
+                           payload <- NULL
+
+
+                           response <- send_json_request(payload, service = "rdp"
+                                                         , EndPoint = EndPoint
+                                                         , request_type = "GET"
+                                                         , debug = debug
+                                                         #, url = "http://localhost:9000/api/rdp/data/custom-instruments/v1/instruments"
+                           )
+
+                         }, manage_custom_instrument = function( symbol =  NULL  #custom symbol!
                                                              , Id = NULL
                                                              , operation = c("GET", "UPDATE", "DELETE")
                                                              , type = NULL
                                                              , formula = NULL
-                                                             , UUID = getOption(".RefinitivUUID")){
+                                                             , basket = NULL
+                                                             , udc = NULL
+                                                             , currency = NULL
+                                                             , instrumentName = NULL
+                                                             , exchangeName = NULL
+                                                             , holidays = NULL
+                                                             , timeZone = NULL
+                                                             , description = NULL
+                                                             , UUID = getOption(".RefinitivUUID")
+                                                             , debug = FALSE){
 
-                         if(!is.null(Instrument) & !is.null(Id) ){
-                           stop("supply either Instrument or Id to get_customInstrument")
+                         if(!is.null(symbol) & !is.null(Id) ){
+                           stop("supply either symbol or Id to get_customInstrument")
                          }
 
 
@@ -699,8 +592,8 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
                          payload <- NULL
                          EndPoint <- paste0("data/custom-instruments/v1/instruments/")
-                         if(!is.null(Instrument)){
-                           EndPoint <- paste0(EndPoint, Instrument)
+                         if(!is.null(symbol)){
+                           EndPoint <- paste0(EndPoint, symbol)
                          } else {
                            EndPoint <- paste0(EndPoint, Id)
                          }
@@ -708,23 +601,24 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
                         if(identical(toupper(operation), "UPDATE")){
                           operation <- "PUT"
+                          Arglist <- as.list(match.call(expand.dots=FALSE))
+                          Arglist[[1]] <- Arglist[["UUID"]] <- Arglist[["debug"]] <-
+                            Arglist[["operation"]] <- NULL
+                          Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
                           # perform get request to obtain missing data for put payload message
                           GET_data <- send_json_request( payload, service = "rdp"
                                                        , request_type = "GET"
                                                        , EndPoint =  EndPoint
-                                                       , debug = TRUE)
+                                                       , debug = debug)
 
-                          # build update/put payload
-                          payload <- list("id" = ifelse(test = is.null(Id), yes = GET_data$id, no = Id) ,
-                                          "symbol" = ifelse(test = is.null(Instrument), yes = GET_data$symbol, no = Instrument),
-                                          "owner" = UUID,
-                                          "type" = ifelse(test = is.null(type), yes = GET_data$type, no = type),
-                                          "formula" = ifelse(test = is.null(formula), yes = GET_data$formula, no = formula))
+                          Update_payload <- Arglist
+                          Update_payload[sapply(Update_payload, is.null)] <- NULL
+
+                          NotChangingPayload <- GET_data[names(GET_data) %in% setdiff(names(GET_data), names(Update_payload))]
+                          payload <- c(NotChangingPayload, Update_payload)
+
 
                         }
-
-                         # https://api.refinitiv.com/data/custom-instruments/v1/instruments/S)lseg_epam.PAXTRA12345
-
 
                         # Execute request ----
                         returnvar <- send_json_request( payload, service = "rdp"

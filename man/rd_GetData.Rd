@@ -33,7 +33,7 @@ rd_GetData(
 
 \item{SpaceConvertor}{converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."}
 
-\item{use_field_names_in_headers}{}
+\item{use_field_names_in_headers}{boolean return request fieldnames in stead of titles}
 }
 \value{
 a data.frame containing data.from Eikon

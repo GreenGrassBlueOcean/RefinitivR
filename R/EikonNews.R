@@ -80,7 +80,7 @@ EikonGetNewsHeadlines <- function(EikonObject = EikonConnect()
 EikonGetNewsStory <- function(EikonObject = EikonConnect()
                              , story_id = NULL, raw_output = FALSE, debug=FALSE){
   if(is.null(story_id)){
-    stop("if story_id has to be supplied and cannot be empty")
+    stop("Parameter story_id has to be supplied and cannot be empty")
   }
 
 
@@ -116,7 +116,7 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
   }
 
   if(!raw_output){
-    returnobject <- EikonNewsList[[1]]
+    # Newslines <- EikonNewsList[[1]]
 
     dir <- tempfile()
     dir.create(dir)
@@ -124,9 +124,11 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
 
     Newslines <- lapply( X = EikonNewsList
                        , FUN =  function(x){
-                         return(c( x$story$headlineHtml
+                         if(is.list(x)){
+                           return(c( x$story$headlineHtml
                                  , x$story$storyHtml
-                                 , x$story$storyInfoHtml))}
+                                 , x$story$storyInfoHtml))
+                           } else {return(x)}}
                        ) |> unlist()
     writeLines( Newslines, con = htmlFile)
 

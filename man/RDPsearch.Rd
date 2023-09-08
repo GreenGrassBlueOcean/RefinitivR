@@ -5,7 +5,7 @@
 \title{RDP search function is a wrapper for the pyton rdp.search function}
 \usage{
 RDPsearch(
-  RDP = RefinitivJsonConnect(),
+  RDP = RDConnect(),
   query = NULL,
   view = NULL,
   select = NULL,
