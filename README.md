@@ -2,6 +2,13 @@
 1. Python is now optional, the package can now also send direct JSON messages to the terminal. (with exception of streaming data.)
 2. When using the pyton libraries and if you update the package: also run `Refinitiv::install_eikon()` again.
 
+currently RefinitivR only runs on reticulate 1.31.0
+check as follows:
+```r
+packageVersion("reticulate")
+require(remotes)
+install_version("reticulate", version = "1.31.0", repos = "http://cran.us.r-project.org")
+```
 
 [![Codecov test coverage](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR/branch/master/graph/badge.svg)](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR?branch=master)
 [![R build status](https://github.com/GreenGrassBlueOcean/RefinitivR/workflows/R-CMD-check/badge.svg)](https://github.com/GreenGrassBlueOcean/RefinitivR/actions)
