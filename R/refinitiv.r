@@ -514,12 +514,37 @@ RDPConnect <- function(application_id = NA, PythonModule = NA) {
 RDConnect <- function(application_id = NA, PythonModule = NA) {
 
   # 1. check input ----
+  if(!(PythonModule %in% c("RD", "JSON"))){
+    stop(paste("RDPConnect parameter PythonModule can only be RDP (python),JSON (direct JSON message) but is"
+               , PythonModule))
+  }
+
+
+  if(PythonModule == "JSON"){
+
+    # , get_rdp_streaming_url = function(debug = FALSE){
+    #
+    #
+    #   EndPoint <- "handshake/"
+    #
+    #
+    #
+
+
+
+
+
+
+  } else {
+
   if (is.na(application_id)){
     try(application_id <- getOption(".EikonApiKey") )
     if(is.null(application_id)){stop("Please supply application_id")}
   }
 
   if(!CondaExists()){stop("Conda/reticulate does not seem to be available please run install_eikon")}
+
+
 
 
   try(reticulate::use_miniconda(condaenv = "r-eikon"), silent = TRUE)
@@ -530,6 +555,8 @@ RDConnect <- function(application_id = NA, PythonModule = NA) {
   GetandSetPyModuleNameandVersion(rd)
 
   return(rd)
+
+  }
 }
 
 

@@ -83,12 +83,16 @@ update the basket with some holidays
 rd_ManageCustomInstruments(operation = "UPDATE", symbol = "InterestingBasket",
                              holidays = holidays )
 
+#Get data from custom instrment
+realInstrument <- CorrectCustomInstrument("InterestingBasket")
+
+to be added later for now not working
 
 }
 \seealso{
-[`CustomInstrumentBasketBuilder()`]
+CustomInstrumentBasketBuilder()
 
-[`CustomInstrumentHolidayBuilder()`]
+CustomInstrumentHolidayBuilder()
 
-[`CustomInstrumentUDCBuilder()`]
+CustomInstrumentUDCBuilder()
 }

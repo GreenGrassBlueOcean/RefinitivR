@@ -164,7 +164,7 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
 #'                json <- json_builder(directions, payload)
 #'                print(json)
 #'                send_json_request(json)
-send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, request_type = "POST", EndPoint = NULL, url = NULL) {
+send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, request_type = "POST", EndPoint = NULL, url = NULL, apikey = getOption(".EikonApiKey")) {
 
   # 0. url manipulation ----
   if(is.null(url)){
@@ -188,7 +188,7 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
     if(toupper(request_type) == "POST"){
 
       query <- httr2::request(base_url = Request_url) |>
-        httr2::req_headers('x-tr-applicationid' = getOption(".EikonApiKey")) |>
+        httr2::req_headers('x-tr-applicationid' = apikey) |>
         httr2::req_headers('Content-Type' = 'application/json') |>
         httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
         #httr2::req_error(is_error = function(resp) FALSE) |>
@@ -198,7 +198,7 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
     } else if(toupper(request_type) == "GET"){
 
         query <- httr2::request(base_url = Request_url) |>
-          httr2::req_headers('x-tr-applicationid' = getOption(".EikonApiKey")) |>
+          httr2::req_headers('x-tr-applicationid' = apikey) |>
           httr2::req_headers('Content-Type' = 'application/json') |>
           #httr2::req_headers('charset' = 'ISO-8859-1') |>
           #httr2::req_headers('Accept-Encoding' = "gzip") |>
@@ -210,7 +210,7 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
     } else if(toupper(request_type) == "DELETE"){
 
       query <- httr2::request(base_url = Request_url) |>
-        httr2::req_headers('x-tr-applicationid' = getOption(".EikonApiKey")) |>
+        httr2::req_headers('x-tr-applicationid' = apikey) |>
         httr2::req_headers('Content-Type' = 'application/json') |>
         #httr2::req_headers('charset' = 'ISO-8859-1') |>
         #httr2::req_headers('Accept-Encoding' = "gzip") |>
@@ -223,7 +223,7 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
     } else if(toupper(request_type) == "PUT"){
 
       query <- httr2::request(base_url = Request_url) |>
-        httr2::req_headers('x-tr-applicationid' = getOption(".EikonApiKey")) |>
+        httr2::req_headers('x-tr-applicationid' = apikey) |>
         httr2::req_headers('Content-Type' = 'application/json') |>
         #httr2::req_headers('charset' = 'ISO-8859-1') |>
         #httr2::req_headers('Accept-Encoding' = "gzip") |>
@@ -507,6 +507,21 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
 
                          return(returnvar)
+
+                       }, get_rdp_streaming_url = function(debug = FALSE){
+
+
+                         EndPoint <- "streaming/pricing/v1/"
+
+                         payload <- NULL
+
+
+                         response <- send_json_request(payload, service = "rdp"
+                                                       , EndPoint = EndPoint
+                                                       , request_type = "GET"
+                                                       , debug = debug
+                                                       #, url = "http://localhost:9000/api/rdp/data/custom-instruments/v1/instruments"
+                         )
 
                        }, create_custom_instrument = function( symbol = NULL
                                                              , formula = NULL

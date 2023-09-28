@@ -345,7 +345,7 @@ rd_ManageCustomInstruments <- function( RDObject = RefinitivJsonConnect()
   if(is.null(operation) || !is.character(operation) || length(operation) > 1 ){
     stop("Parameter operation can not be null but should be one of 'CREATE','GET', 'UPDATE', 'DELETE'")
   }
-browser()
+
   if(!(toupper(operation) %in% c("CREATE","GET", "UPDATE", "DELETE"))){
     stop("operation should be one of 'CREATE','GET', 'UPDATE', 'DELETE' but is ")
   }
