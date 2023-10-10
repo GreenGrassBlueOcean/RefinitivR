@@ -4,7 +4,10 @@
 \alias{RDPShowAvailableSearchViews}
 \title{Show Available Search Views for seachview parameter in RDPget_search_metadata}
 \usage{
-RDPShowAvailableSearchViews()
+RDPShowAvailableSearchViews(Platform = "JSON")
+}
+\arguments{
+\item{Platform}{character vector either RD, RDP or JSON, defaults to JSON}
 }
 \value{
 vector with searchviews that can be used.
@@ -13,7 +16,7 @@ vector with searchviews that can be used.
 Show Available Search Views for seachview parameter in RDPget_search_metadata
 }
 \examples{
-RDPShowAvailableSearchViews()
+RDPShowAvailableSearchViews(Platform = "JSON")
 }
 \seealso{
 RDPget_search_metadata

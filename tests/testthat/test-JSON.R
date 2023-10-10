@@ -59,9 +59,13 @@ test_that("RefinitivJsonConnect does work with application id", {
   EikonJson <- RefinitivJsonConnect(Eikonapplication_port = 9000L)
 
   expect_equal(names(EikonJson)
-              , c("search", "set_app_port", "get_data", "set_app_key", "get_symbology",
-                  "get_search_metadata", "get_app_port", "get_timeseries",
-                  "get_app_key"))
+              , c("get_intraday_custominstrument_pricing", "create_custom_instrument",
+                  "search", "set_app_port", "get_rdp_streaming_url", "get_interday_custominstrument_pricing",
+                  "get_data", "manage_custom_instrument", "set_app_key", "get_symbology",
+                  "get_historical_pricing", "get_search_metadata", "get_news_story",
+                  "get_app_port", "get_timeseries", "get_news_headlines", "get_app_key",
+                  "search_custom_instrument", "get_data_rdp")
+              )
 
   expect_equal(EikonJson$get_app_key(), "testing_key")
 
@@ -94,8 +98,7 @@ test_that("Construct_url does work correctly", {
   )
 
   expect_error( Construct_url(service = "wrongservice", EndPoint = "discovery/search/v1/")
-                , "wrong service selected in function Construct_url, only rdp or eikon allowed but wrongservice is chosen"
-
+                , "wrong service selected in function Construct_url, only rdp, udf or eikon allowed but wrongservice is chosen"
   )
 
 
@@ -130,10 +133,12 @@ test_that("send_json_request can make a GET and POST request", {
   json <- json_builder(directions, payload)
 
   test_POST <- send_json_request(json = json, request_type = "POST"
-                                , url = "https://fakerapi.it/api/v1/companies?_seed=12456")
+                                , url = "https://jsonplaceholder.typicode.com/todos/1/posts")
 
 
-  expect_equal(test_POST, list(message = ""))
+  expect_equal(test_POST, list(Entity = list(E = "DataGrid_StandardAsync", W = list(requests = list(
+    list(instruments = list("TSLA.O"), fields = list(list(name = "TR.RICCode")))))),
+    todoId = "1", id = 101L))
 
 
   options(.EikonApiKey = original_APIKEY)

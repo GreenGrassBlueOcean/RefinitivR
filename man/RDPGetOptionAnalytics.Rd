@@ -5,14 +5,14 @@
 \title{Get RDP option analytics}
 \usage{
 RDPGetOptionAnalytics(
-  RDP = RDPConnect(),
+  RDP = RDConnect(),
   OptionRics = NULL,
   raw = FALSE,
   verbose = T
 )
 }
 \arguments{
-\item{RDP}{Refinitiv DataPlatform Connection object, defaults to  RDPConnect()}
+\item{RDP}{Refinitiv DataPlatform Connection object, defaults to  RDConnect()}
 
 \item{OptionRics}{character vector with option rics}
 

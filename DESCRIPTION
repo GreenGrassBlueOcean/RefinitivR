@@ -18,11 +18,12 @@ Imports:
     httr,
     stringi,
     data.table,
-    magrittr,
     jsonlite,
     rlang,
     here,
-    rstudioapi
+    rstudioapi,
+    httr2,
+    R6
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:
@@ -34,7 +35,7 @@ Config/reticulate:
   )
 RoxygenNote: 7.2.3
 Depends: 
-    R (>= 3.5.0),
+    R (>= 4.1.0)
 Suggests: 
     testthat,
     covr,
@@ -43,4 +44,8 @@ Suggests:
     countrycode,
     dplyr,
     archivist,
-    digest
+    digest,
+    shiny,
+    websocket,
+    later
+    

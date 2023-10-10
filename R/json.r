@@ -92,11 +92,14 @@ jsonDataGridConstructor <- function(payload){
 #' Construct_url(service = "eikon")
 #' Construct_url(service = "rdp", EndPoint = "discovery/search/v1/")
 Construct_url <- function(service="eikon", EndPoint = NULL) {
-  if(tolower(service)=="eikon"){
+  if(tolower(service) %in% c("eikon", "udf")){
     url <- paste0( getOption("refinitiv_base_url"), ":"
                    , getOption("eikon_port")
                    , getOption("eikon_api")
+
     )
+
+    "http://localhost:9060/api/udf"
 
     #print(url)
   } else if(tolower(service) == "rdp") {
@@ -106,8 +109,14 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
                    , EndPoint
     )
 
+  # } else if(tolower(service) == "udf"){
+  #   url <- paste0( getOption("refinitiv_base_url"), ":"
+  #                  , getOption("rdp_port")
+  #                  , "/api/udf/"
+  #                  , EndPoint
+  #   )
   } else{
-    stop(paste0("wrong service selected in function Construct_url, only rdp or eikon allowed but "
+    stop(paste0("wrong service selected in function Construct_url, only rdp, udf or eikon allowed but "
                 , service, " is chosen"))
   }
   # print(url)
@@ -155,40 +164,88 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
 #'                json <- json_builder(directions, payload)
 #'                print(json)
 #'                send_json_request(json)
-send_json_request <- function(json, service = "eikon", debug = FALSE, request_type = "POST", EndPoint = NULL, url = NULL) {
+send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, request_type = "POST", EndPoint = NULL, url = NULL, apikey = getOption(".EikonApiKey")) {
 
-  # 0. helper functions ----
+  # 0. url manipulation ----
   if(is.null(url)){
-    url <- Construct_url(service=service, EndPoint = EndPoint)
+    Request_url <- Construct_url(service=service, EndPoint = EndPoint)
+  } else {
+    Request_url <- url
   }
 
-  # 2. main function ----
+
+  if(debug){
+  message(Request_url)
+    if(!is.null(json)){
+      message(json)
+    }
+  }
+
+  # 2. post or het request ----
   counter <- 0
   results <- data.frame()
   while (TRUE & counter < 2){
     if(toupper(request_type) == "POST"){
-      query <- httr::POST( url =  url
-                            , httr::add_headers(
-                               'Content-Type' = 'application/json',
-                               'x-tr-applicationid' = getOption(".EikonApiKey"))
-                            , body = json
-                            , encode = "json"
-                            )
+
+      query <- httr2::request(base_url = Request_url) |>
+        httr2::req_headers('x-tr-applicationid' = apikey) |>
+        httr2::req_headers('Content-Type' = 'application/json') |>
+        httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
+        #httr2::req_error(is_error = function(resp) FALSE) |>
+        httr2::req_body_json(json)|>
+        httr2::req_perform()
 
     } else if(toupper(request_type) == "GET"){
-        query <- httr::GET( url = url
-                          , httr::add_headers(
-                                'Content-Type' = 'application/json',
-                                'x-tr-applicationid' = getOption(".EikonApiKey"))
-                          , encode = "json"
-                          , httr::timeout(5)
-                          )
+
+        query <- httr2::request(base_url = Request_url) |>
+          httr2::req_headers('x-tr-applicationid' = apikey) |>
+          httr2::req_headers('Content-Type' = 'application/json') |>
+          #httr2::req_headers('charset' = 'ISO-8859-1') |>
+          #httr2::req_headers('Accept-Encoding' = "gzip") |>
+          httr2::req_error(is_error = function(resp) FALSE) |>
+          httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
+          httr2::req_timeout(5) |>
+          httr2::req_perform()
+
+    } else if(toupper(request_type) == "DELETE"){
+
+      query <- httr2::request(base_url = Request_url) |>
+        httr2::req_headers('x-tr-applicationid' = apikey) |>
+        httr2::req_headers('Content-Type' = 'application/json') |>
+        #httr2::req_headers('charset' = 'ISO-8859-1') |>
+        #httr2::req_headers('Accept-Encoding' = "gzip") |>
+        httr2::req_error(is_error = function(resp) FALSE) |>
+        httr2::req_method("DELETE") |>
+        httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
+        httr2::req_timeout(5) |>
+        httr2::req_perform()
+
+    } else if(toupper(request_type) == "PUT"){
+
+      query <- httr2::request(base_url = Request_url) |>
+        httr2::req_headers('x-tr-applicationid' = apikey) |>
+        httr2::req_headers('Content-Type' = 'application/json') |>
+        #httr2::req_headers('charset' = 'ISO-8859-1') |>
+        #httr2::req_headers('Accept-Encoding' = "gzip") |>
+        httr2::req_body_json(json)|>
+        httr2::req_method("PUT")|>
+        httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
+        httr2::req_timeout(5) |>
+        httr2::req_perform()
+
     }
 
-    tryresults <- httr::content(query)
+
+    if(debug & request_type != "DELETE"){
+      message(query$status_code)
+    }
+
+    if(request_type != "DELETE"){
+    tryresults <-  httr2::resp_body_json(query, check_type = F)
     if("responses" %in% names(tryresults)){
        tryresults <- tryresults$responses[[1]]
     }
+
 
     # Fetches the content from the query
     # Checks for ErrorCode and then aborts after printing message
@@ -200,7 +257,7 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
         } else if(is.numeric(tryresults$estimatedDuration)){
           WaitTime <- tryresults$estimatedDuration/1000
           print(paste("request not ready, server is asking to wait for",WaitTime, "seconds so waiting patiently"))
-          Sys.sleep(WaitTime)
+          ifelse(WaitTime <= 60, Sys.sleep(WaitTime),Sys.sleep(60)) # maximize waiting time to 60 seconds, not waiting for more than 60 seconds for server response
           counter <- counter + 1
         } else {
          stop(paste0("Error code: ", tryresults$ErrorCode, " ", tryresults$ErrorMessage))
@@ -209,8 +266,9 @@ send_json_request <- function(json, service = "eikon", debug = FALSE, request_ty
       results <- tryresults
        break
     }
+    } else { break
+             results <- NULL}
 }
-
   results
 }
 
@@ -262,7 +320,9 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
   }
   payload <- NULL
   options(.EikonApiKey = Eikonapplication_id)
-
+  options(.RefinitivPyModuleName = "JSON")
+  options(.RefinitivPyModuleVersion = "NA")
+  options(.RefinitivPyModuleType = "direct JSON connection through httr2 package")
 
   JSON_EK <- rlang::env( set_app_key =  function(app_key = Eikonapplication_id){
                                                   options(.EikonApiKey = app_key)}
@@ -276,7 +336,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                            directions = 'TimeSeries'
                                            # Builds the payload to be sent
                                            payload <- NULL
-                                           payload <- list('rics' = jsonlistbuilder(rics)
+                                           payload <- list( 'rics' = jsonlistbuilder(rics)
                                                           , 'fields' = jsonlistbuilder(fields)
                                                           , 'interval' = interval
                                                           , 'calender' = calendar
@@ -315,6 +375,28 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                          returnvar <- send_json_request(json)
                                          return(returnvar)
                         }
+                       , get_data_rdp = function(universe, fields, parameters = NULL
+                                                 , debug, raw_output){
+
+                         EndPoint = "data/datagrid/beta1/"
+                         payload <- NULL
+
+                        payload <- list( 'universe'= jsonlistbuilder(universe)
+                                        , 'fields'= jsonlistbuilder(fields)
+                                        , 'parameters'=parameters
+                                        , 'output'= 'Col,T|Va,Row,In,date|'
+                                        )
+                         payload[sapply(payload, is.null)] <- NULL
+
+
+                         response <- send_json_request(payload, service = "rdp"
+                                                      , EndPoint = EndPoint
+                                                      , request_type = "POST")
+
+
+                         return(response)
+
+                       }
                        , get_symbology = function( symbol, from_symbol_type
                                                  , to_symbol_type, raw_output
                                                  , debug, best_match){
@@ -353,27 +435,28 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
                          response <- send_json_request(payload, service = "rdp", EndPoint = EndPoint, request_type = "POST")
                          return_DT <- data.table::rbindlist(response$Hits,fill=TRUE, use.names = T)
-
+                         #
                          # Check for lists columns with null inside and fix those
-                         ListCols <- names(which(lapply(return_DT, class) == "list"))
+                          ListCols <- names(which(lapply(return_DT, class) == "list"))
 
-                         if(!identical(ListCols, character(0))){
-                           NullRemover <- function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y )}
-                           for (i in 1:length(ListCols)){
-                             return_DT[[ListCols[i] ]] <- unlist(NullRemover( return_DT[[ListCols[i] ]] ))
-                           }
+                          if(!identical(ListCols, character(0))){
+                            NullRemover <- function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y )}
+                            for (i in 1:length(ListCols)){
+                              return_DT[[ListCols[i] ]] <- unlist(NullRemover( return_DT[[ListCols[i] ]] ))
+                            }
 
 
-                         }
+                          }
 
                          return(return_DT)
 
+
                        }
-                       , get_search_metadata = function(RDP, searchView){
+                       , get_search_metadata = function(RDP=NULL, searchView){
 
 
                          EndPoint <- paste0("discovery/search/v1/metadata/views/",searchView)
-                         returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint)
+                         returnvar <- send_json_request(json=NULL, service = "rdp", request_type = "GET", EndPoint =  EndPoint)
 
                          return_DT <- data.table::rbindlist(returnvar$Properties, fill = TRUE, use.names = TRUE
                                                             , idcol = "Refinitiv_index")
@@ -388,6 +471,337 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                          return(data.table::setDF(return_DT))
 
                        }
+                       , get_historical_pricing = function( EikonObject, universe
+                                                           , interval, start, end
+                                                           , adjustments, count, fields
+                                                           , sessions
+                                                           , debug = FALSE){
+                         # construct endpoint ----
+                         payload <- list('universe' = paste(universe, collapse = ",")
+                                         , 'interval' = interval
+                                         , 'start' = start
+                                         , 'end' = end
+                                         , 'adjustments' = if(is.null(adjustments)){NULL}else{paste(adjustments, collapse = ",")}
+                                         , 'count' = as.integer(count)
+                                         , 'fields' = if(is.null(fields)){NULL}else{paste(fields, collapse = ",")}
+                                         , 'sessions' = if(is.null(sessions)){NULL}else{paste(sessions, collapse = ",")}
+                                         )
+                         payload <- payload[!unlist(lapply(payload, is.null))]
+
+                        universeIndex <-  grep(x =  names(payload), pattern = "universe")
+
+                        NonUniverseParameters <- paste0(paste0(names(payload[-universeIndex]),"=",payload[-universeIndex]), collapse = "&")
+
+                        AllParameters <- paste0(payload[[universeIndex]], "?", NonUniverseParameters)
+
+
+                        EndPoint <- paste0("data/historical-pricing/beta1/views/summaries/")
+                        EndPoint <- paste0(EndPoint, AllParameters)
+
+                        # Execute request ----
+
+                        returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint, debug = debug)
+
+
+
+                         return(returnvar)
+
+                       }, get_intraday_custominstrument_pricing = function( EikonObject, universe
+                                                            , interval, start, end
+                                                            , adjustments, count, fields
+                                                            , sessions
+                                                            , debug = FALSE){
+                         # construct endpoint ----
+                         payload <- list('universe' = paste(universe, collapse = ",")
+                                         , 'interval' = interval
+                                         , 'start' = start
+                                         , 'end' = end
+                                         , 'adjustments' = if(is.null(adjustments)){NULL}else{paste(adjustments, collapse = ",")}
+                                         , 'count' = as.integer(count)
+                                         , 'fields' = if(is.null(fields)){NULL}else{paste(fields, collapse = ",")}
+                                         , 'sessions' = if(is.null(sessions)){NULL}else{paste(sessions, collapse = ",")}
+                                         )
+                         payload <- payload[!unlist(lapply(payload, is.null))]
+
+                         universeIndex <-  grep(x =  names(payload), pattern = "universe")
+
+                         NonUniverseParameters <- paste0(paste0(names(payload[-universeIndex]),"=",payload[-universeIndex]), collapse = "&")
+
+                         AllParameters <- paste0(payload[[universeIndex]], "?", NonUniverseParameters)
+
+
+                         EndPoint <- paste0("data/custom-instruments/v1/intraday-summaries/")
+                         EndPoint <- paste0(EndPoint, AllParameters)
+
+                         # Execute request ----
+
+                         returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint, debug = debug)
+
+
+
+                         return(returnvar)
+
+                       }, get_interday_custominstrument_pricing = function( EikonObject, universe
+                                                                            , interval, start, end
+                                                                            , adjustments, count, fields
+                                                                            , sessions
+                                                                            , debug = FALSE){
+                         # construct endpoint ----
+                         payload <- list('universe' = paste(universe, collapse = ",")
+                                        , 'interval' = interval
+                                        , 'start' = start
+                                        , 'end' = end
+                                        , 'adjustments' = if(is.null(adjustments)){NULL}else{paste(adjustments, collapse = ",")}
+                                        , 'count' = as.integer(count)
+                                        , 'fields' = if(is.null(fields)){NULL}else{paste(fields, collapse = ",")}
+                                        , 'sessions' = if(is.null(sessions)){NULL}else{paste(sessions, collapse = ",")}
+                                        )
+                         payload <- payload[!unlist(lapply(payload, is.null))]
+
+                         universeIndex <-  grep(x =  names(payload), pattern = "universe")
+
+                         NonUniverseParameters <- paste0(paste0(names(payload[-universeIndex]),"=",payload[-universeIndex]), collapse = "&")
+
+                         AllParameters <- paste0(payload[[universeIndex]], "?", NonUniverseParameters)
+
+
+                         EndPoint <- paste0("data/custom-instruments/v1/interday-summaries/")
+                         EndPoint <- paste0(EndPoint, AllParameters)
+
+                         # Execute request ----
+
+                         returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint, debug = debug)
+
+
+
+                         return(returnvar)
+
+                       }, get_rdp_streaming_url = function(debug = FALSE){
+
+
+                         EndPoint <- "streaming/pricing/v1/"
+
+                         payload <- NULL
+
+
+                         response <- send_json_request(payload, service = "rdp"
+                                                       , EndPoint = EndPoint
+                                                       , request_type = "GET"
+                                                       , debug = debug
+                                                       #, url = "http://localhost:9000/api/rdp/data/custom-instruments/v1/instruments"
+                         )
+
+                       }, create_custom_instrument = function( symbol = NULL
+                                                             , formula = NULL
+                                                             , type = NULL
+                                                             , basket = NULL
+                                                             , udc = NULL
+                                                             , currency = NULL
+                                                             , instrumentName = NULL
+                                                             , exchangeName = NULL
+                                                             , holidays = NULL
+                                                             , timeZone = NULL
+                                                             , description = NULL
+                                                             , debug = FALSE
+                                                             ){
+
+
+
+                         EndPoint <- "data/custom-instruments/v1/instruments"
+
+                         payload <- list( "symbol" = symbol
+                                        , "formula" = formula
+                                        , "type" =  type      # formula, basket, udc
+                                        , "basket" = basket
+                                        , "udc" = udc
+                                        , "currency" = currency
+                                        , "instrumentName" = instrumentName
+                                        , "exchangeName" = exchangeName
+                                        , "holidays" = holidays
+                                        , "timeZone" = timeZone
+                                        , "description" = description
+                                        )
+
+                         payload[sapply(payload, is.null)] <- NULL
+
+
+                         response <- send_json_request(payload, service = "rdp"
+                                                       , EndPoint = EndPoint
+                                                       , request_type = "POST"
+                                                       , debug = debug
+                                                       #, url = "http://localhost:9000/api/rdp/data/custom-instruments/v1/instruments"
+                                                       )
+
+                         }, search_custom_instrument = function(debug = FALSE){
+
+
+                           EndPoint <- "data/custom-instruments/v1/search"
+
+                           payload <- NULL
+
+
+                           response <- send_json_request(payload, service = "rdp"
+                                                         , EndPoint = EndPoint
+                                                         , request_type = "GET"
+                                                         , debug = debug
+                                                         #, url = "http://localhost:9000/api/rdp/data/custom-instruments/v1/instruments"
+                           )
+
+                         }, manage_custom_instrument = function( symbol =  NULL  #custom symbol!
+                                                             , Id = NULL
+                                                             , operation = c("GET", "UPDATE", "DELETE")
+                                                             , type = NULL
+                                                             , formula = NULL
+                                                             , basket = NULL
+                                                             , udc = NULL
+                                                             , currency = NULL
+                                                             , instrumentName = NULL
+                                                             , exchangeName = NULL
+                                                             , holidays = NULL
+                                                             , timeZone = NULL
+                                                             , description = NULL
+                                                             , UUID = getOption(".RefinitivUUID")
+                                                             , debug = FALSE){
+
+                         if(!is.null(symbol) & !is.null(Id) ){
+                           stop("supply either symbol or Id to get_customInstrument")
+                         }
+
+
+                        if( !(length(operation) == 1L && toupper(operation) %in% c("GET", "UPDATE", "DELETE"))){
+                          stop("parameter operation should be length 1 and be either GET, UPDATE or DELETE")
+                        }
+
+                         payload <- NULL
+                         EndPoint <- paste0("data/custom-instruments/v1/instruments/")
+                         if(!is.null(symbol)){
+                           EndPoint <- paste0(EndPoint, symbol)
+                         } else {
+                           EndPoint <- paste0(EndPoint, Id)
+                         }
+
+
+                        if(identical(toupper(operation), "UPDATE")){
+                          operation <- "PUT"
+                          Arglist <- as.list(match.call(expand.dots=FALSE))
+                          Arglist[[1]] <- Arglist[["UUID"]] <- Arglist[["debug"]] <-
+                            Arglist[["operation"]] <- NULL
+                          Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
+                          # perform get request to obtain missing data for put payload message
+                          GET_data <- send_json_request( payload, service = "rdp"
+                                                       , request_type = "GET"
+                                                       , EndPoint =  EndPoint
+                                                       , debug = debug)
+
+                          Update_payload <- Arglist
+                          Update_payload[sapply(Update_payload, is.null)] <- NULL
+
+                          NotChangingPayload <- GET_data[names(GET_data) %in% setdiff(names(GET_data), names(Update_payload))]
+                          payload <- c(NotChangingPayload, Update_payload)
+
+
+                        }
+
+                        # Execute request ----
+                        returnvar <- send_json_request( payload, service = "rdp"
+                                                      , request_type = operation
+                                                      , EndPoint =  EndPoint
+                                                      , debug = TRUE)
+
+
+
+
+                       }, get_news_headlines = function(query = NULL, count = 20L
+                                             , repository = NULL
+                                             , date_from = NULL
+                                             , date_to = NULL
+                                             , raw_output = FALSE
+                                             , debug = FALSE){                       #
+
+                         EndPoint <- paste0("News_Headlines")
+
+                         payload = list( "number" = as.character(count)
+                                       , "query" = query
+                                       , "repository" = paste0(repository, collapse = ",")
+                                       , "productName" = getOption(".EikonApiKey")
+                                       , "attributionCode" = ""
+                                       , "dateFrom" = date_from
+                                       , "dateTo" = date_to
+                                       )
+                         payload[sapply(payload, is.null)] <- NULL
+
+                         json <- json_builder(directions = EndPoint,payload )
+
+                         returnvar <- send_json_request( json, service = "udf"
+                                                         , request_type = "POST"
+                                                         , EndPoint =  NULL
+                                                         , debug = debug
+                         )
+
+
+
+                       }, get_news_story = function(story_id = NULL, raw_output = FALSE, debug=FALSE){
+
+                         EndPoint <- paste0("News_Story")
+
+                         payload = list( "storyId" = story_id
+                                       , "attributionCode" = ""
+                                       , "productName" = getOption(".EikonApiKey")
+                                       )
+
+
+                         payload[sapply(payload, is.null)] <- NULL
+
+                         json <- json_builder(directions = EndPoint,payload )
+
+                         returnvar <- send_json_request( json, service = "udf"
+                                                         , request_type = "POST"
+                                                         , EndPoint =  NULL
+                                                         , debug = debug
+                         )
+
+
+
+
+                       }
+
+
+                       #
+                       # "news": {
+                       #   "url": "/data/news/v1",
+                       #   "underlying-platform": "udf",
+                       #   "endpoints": {
+                       #     "headlines": "/headlines",
+                       #     "stories": "/stories",
+                       #     "top-news": "/top-news",
+                       #     "images": "/images",
+                       #     "online-reports": "/online-reports",
+                       #   },
+
+                       # ek.get_news_headlines('IBM.N', count=100)
+                       #
+                       # def get_news_headlines(
+                       #   query=None,
+                       #   count=10,
+                       #   repository="NewsWire",
+                       #   date_from=None,
+                       #   date_to=None,
+                       #   raw_output=False,
+                       #   debug=False,
+                       # ):
+
+                       # Request to http://localhost:9060/api/udf :{'Entity': {'E': 'News_Headlines', 'W': {'number': '10', 'query': 'NVDA.O', 'repository': 'NewsWire', 'productName': '268cffc4666a45ff95c0c08ef56a03682a3f1a5c', 'attributionCode': ''}}, 'ID': '123'}
+
+
+
+
+
+
+
+
+
+
+
                        # , get_history = function(RDP, universe=NULL, fields=NULL, parameters=NULL,interval=NULL, start=NULL, end=NULL, adjustments=NULL, count = NULL
                        #                          , use_field_names_in_headers = NULL){
                        #   if(is.null(use_field_names_in_headers)){

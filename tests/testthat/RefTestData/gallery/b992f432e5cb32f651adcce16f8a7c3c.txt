@@ -1,0 +1,7 @@
+                Refinitiv_index    Type Searchable Sortable Navigable Groupable Exact Symbol
+1 AAACurrencyBondBenchmarkChain  String      FALSE    FALSE     FALSE     FALSE FALSE  FALSE
+2  AACurrencyBondBenchmarkChain  String      FALSE    FALSE     FALSE     FALSE FALSE  FALSE
+3                ABSMBSBondsRIC  String      FALSE    FALSE     FALSE     FALSE FALSE  FALSE
+4          ActiveEstimatesExist Boolean       TRUE    FALSE     FALSE     FALSE FALSE  FALSE
+5                  ActivityDate    Date       TRUE     TRUE      TRUE     FALSE FALSE  FALSE
+6   ACurrencyBondBenchmarkChain  String      FALSE    FALSE     FALSE     FALSE FALSE  FALSE

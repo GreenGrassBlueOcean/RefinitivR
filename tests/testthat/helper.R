@@ -17,20 +17,26 @@
 #' check_Eikonapi("write")
 #' }
 check_Eikonapi <- function(testMode = "replay", ExecutionMode = "Eikon") {
+
   if (is.null(getOption(".EikonApiKey")) && testMode != "write"  ) {
     warning("API not available, using offline database for testing")
     ReturnObject <- EikonTestObject (testMode = "replay")
+    options(.RefinitivPyModuleName = "testing object")
+    options(.RefinitivPyModuleVersion = "NA")
+    options(.RefinitivPyModuleType = "mimic connection using previously downlaoded data using archivist package")
   } else if (!is.null(getOption(".EikonApiKey")) && testMode == "write"  ) {
     warning("overwriting internal test database")
     ReturnObject <- EikonTestObject (testMode = "write")
   } else {
     print("Eikon API available performing test")
     if(ExecutionMode == "Eikon" ){
-      ReturnObject <- EikonConnect()
+      message("Selecting Eikon for testing")
+      ReturnObject <- EikonConnect(PythonModule = "RD")
     } else if(ExecutionMode == "RD"){
-      ReturnObject <- RDConnect()
-    } else if(ExecutionMode == "RDP"){
-      ReturnObject <- RDPConnect()
+      message("Selecting RD for testing")
+      ReturnObject <- RDConnect(PythonModule = "RD")
+    } else {
+      stop("Selected ExecutionMode not supported")
     }
   }
   return(ReturnObject)
@@ -80,8 +86,9 @@ EikonTestObject  <- function(testMode  = "replay"){
   #1. Check parameters ----
   stopifnot(testMode  %in% c("write", "replay"))
   if(testMode  == "write"){
-    RealEikon = Refinitiv::EikonConnect()
+    RealEikon = Refinitiv::EikonConnect(PythonModule = "RD")
     RealRD = Refinitiv::RDConnect()
+    RealJson = Refinitiv::RefinitivJsonConnect()
   }
 
   repodir = paste0(testthat::test_path(),"/RefTestData")
@@ -131,12 +138,11 @@ EikonTestObject  <- function(testMode  = "replay"){
                          }
                          , get_search_metadata = function(RDP, searchView){
                            response <- StoreOrRetrievefromDB( FunctionName = "get_search_metadata"
-                                                              , RealEikonObject = RealEikon
+                                                              , RealEikonObject = RealJson
                                                               , repodir = repodir
                                                               , Input=as.list(match.call(expand.dots=FALSE))
                            )
-                         }
-                          , get_history = function(RD = RealRD
+                         }, get_history = function(RD = RealRD
                                                      , universe = NULL, fields = NULL
                                                      , parameters = NULL
                                                      , interval = NULL
@@ -151,6 +157,26 @@ EikonTestObject  <- function(testMode  = "replay"){
                                                                 , Input=as.list(match.call(expand.dots=FALSE))
                              )
 
+                         },  get_news_headlines = function(query = NULL
+                                                           , count = NULL
+                                                           , repository = NULL
+                                                           , date_from = NULL
+                                                           , date_to = NULL
+                                                           , raw_output = TRUE
+                                                           , debug = NULL){
+                           response <- StoreOrRetrievefromDB( FunctionName = "get_news_headlines"
+                                                            , RealEikonObject = RealEikon
+                                                            , repodir = repodir
+                                                            , Input=as.list(match.call(expand.dots=FALSE))
+                           )
+                         }, get_news_story = function( story_id = NULL
+                                                     , debug = NULL
+                                                     ) {
+                           response <- StoreOrRetrievefromDB( FunctionName = "get_news_story"
+                                                            , RealEikonObject = RealEikon
+                                                            , repodir = repodir
+                                                            , Input=as.list(match.call(expand.dots=FALSE))
+                           )
                          }
 
   )

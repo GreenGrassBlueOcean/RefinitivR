@@ -6,55 +6,13 @@
   options(reticulate.long_as_bit64=TRUE)
   options(reticulate.ulong_as_bit64=TRUE)
   options(refinitiv_base_url = 'http://localhost')
-  options(eikon_port = 9000L)
-  options(eikon_api = '/api/v1/data')
+  options(eikon_port = 9060L)
+  options(eikon_api = '/api/udf/') #old --> '/api/v1/data'
   options(rdp_api = '/api/rdp/')
-  options(rdp_port=9060L)
-
-# #
-# #
-# #
-# #   .pkgglobalenv$ek <- list(
-# #     ,
-# #     eikon_port = 9000L,
-# #     ,
-# #
-# #     rdp_port = 9060L,
-# #     api_key = NULL
-# #   )
-#
-#
-#   .pkgglobalenv$rd <- list(
-#     searchViewParams = c(
-#       "Query",
-#       "Filter",
-#       "View",
-#       "OrderBy",
-#       "Boost",
-#       "Select",
-#       "Top",
-#       "Skip",
-#       "GroupBy",
-#       "GroupCount"
-#     )
-#   )
+  options(rdp_port=9000L)
+  options(HistoricalPricingFields = c("HIGH_1", "LOW_1", "OPEN_PRC", "TRDPRC_1",
+                                     "NUM_MOVES", "ACVOL_UNS", "HIGH_YLD", "LOW_YLD", "OPEN_YLD",
+                                     "YIELD", "BID_HIGH_1", "BID_LOW_1", "OPEN_BID", "BID", "BID_NUMMOV",
+                                     "ASK_HIGH_1", "ASK_LOW_1", "OPEN_ASK", "ASK", "ASK_NUMMOV", "MID_HIGH",
+                                      "MID_LOW", "MID_OPEN", "MID_PRICE"))
 }
-
-
-#
-# _PythonKeywordArgumentNameToEndPointParameterName = {
-#   "boost": "Boost",
-#   "features": "Features",
-#   "filter": "Filter",
-#   "group_by": "GroupBy",
-#   "group_count": "GroupCount",
-#   "navigators": "Navigators",
-#   "order_by": "OrderBy",
-#   "query": "Query",
-#   "scope": "Scope",
-#   "select": "Select",
-#   "skip": "Skip",
-#   "terms": "Terms",
-#   "top": "Top",
-#   "view": "View",
-# }

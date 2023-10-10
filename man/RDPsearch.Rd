@@ -5,7 +5,7 @@
 \title{RDP search function is a wrapper for the pyton rdp.search function}
 \usage{
 RDPsearch(
-  RDP = RefinitivJsonConnect(),
+  RDP = RDConnect(),
   query = NULL,
   view = NULL,
   select = NULL,
@@ -58,7 +58,7 @@ For additional examples see  \url{https://github.com/Refinitiv-API-Samples/Artic
 }
 \examples{
 \dontrun{
-RDPConnect('your api key')
+RDConnect('your api key')
 test <- RDPsearch(query =  "AAPL.O", select = "ContractType,RIC")
 
 Presidents <- RDPsearch( view = "People", query = 'president'

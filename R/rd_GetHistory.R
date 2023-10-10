@@ -10,7 +10,8 @@
 #' @param adjustments Tells the system whether to apply or not apply CORAX (Corporate Actions) events or exchange/manual corrections or price and volume adjustment according to trade/quote qualifier summarization actions to historical time series data. Possible values are ["exchangeCorrection", "manualCorrection", "CCH", "CRE", "RTS", "RPO", "unadjusted", "qualifiers"]
 #' @param count The maximum number of data points returned. Values range: 1 - 10000
 #' @param use_field_names_in_headers boolean 	If True - returns field name as column headers for data instead of title
-#'
+#' @param CleanNames default = FALSE
+#' @param debug boolean, default = FALSE, if TRUE, prints out the url used to retrieve the data
 #'
 #' @return data.frame
 #' @export
@@ -75,6 +76,8 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                          , adjustments = NULL
                          , count = NULL
                          , use_field_names_in_headers = NULL
+                         , CleanNames = FALSE
+                         , debug = FALSE
                          ){
 
   #Check if universe is supplied
@@ -82,88 +85,124 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     stop("Parameter universe should be supplied and is not")
   }
 
-  #
-  #
-  # # Divide RICS in chunks to satisfy api limits
-  # if(!is.null(fields)){
-  #    ChunckFields <- fields
-  # } else {
-  #   ChunckFields <- rep(x = "dummy", times =14)
-  # }
-  #
-  # ChunckedRics <- EikonChunker( RICS = universe, Eikonfields = ChunckFields
-  #                             , MaxCallsPerChunk = 10000)
-  #
-  #   #
-  # # }
-  # #
-  # # EikonDataList <- as.list(rep(NA, times = length(ChunckedRics)))
-  # #
-  # DownloadCoordinator <- data.frame( index = 1:length(ChunckedRics)
-  #                                  , succes =  rep(FALSE, length(ChunckedRics))
-  #                                  , retries = rep(0L, length(ChunckedRics), stringsAsFactors = FALSE)
-  #                                  )
 
-  #Build Argument list
-  if(!exists("Arglist") || identical(list(),Arglist)){
-    Arglist <- as.list(match.call(expand.dots=FALSE))
-    Arglist[[1]] <- NULL
-    # Arglist[["universe"]] <- NULL
-  }
-
-  # PyCallList <- vector(mode = "list", length = length(ChunckedRics))
-
-  # PyCallList <- lapply(X = 1:length(ChunckedRics)
-                      # , FUN = function(x, Arglist, ChunckedRics){
-                              # Arglist[["universe"]] <- ChunckedRics[[x]]
-                              # return(Arglist)}
-        # , Arglist = Arglist
-        # , ChunckedRics = ChunckedRics
-        # )
-
-  #Make sure all arguments are evaluated before passing to the gethistory api
-  Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
-
-
-  if("count" %in% names(Arglist)){
-    if (count <= 0){
-      stop("count should be integer > 0")
-    } else {
-      Arglist$count <- as.integer(Arglist$count)
+    #Build Argument list
+    if(!exists("Arglist") || identical(list(),Arglist)){
+      Arglist <- as.list(match.call(expand.dots=FALSE))
+      Arglist[[1]] <- NULL
+      # Arglist[["universe"]] <- NULL
     }
-  }
 
-  # remove RDP from arglist if this is in it.
-  if("RD" %in% names(Arglist)){
-    Arglist$RD <- NULL
-  }
+    # PyCallList <- vector(mode = "list", length = length(ChunckedRics))
 
-  #Execute get_history
-  PyCall <- do.call(what = RD[["get_history"]], args = Arglist)
-  ColumnLevels <- reticulate::py_to_r(PyCall$columns$nlevels)
-  if(ColumnLevels == 1){
-    VariableName <- PyCall$columns$name
-    if(identical(as.character(VariableName) ,universe)){
-      PyCall$insert(0L, "Instrument", VariableName)
-      id_vars <- c("Date", "Instrument")
-      var_name = "variable"
-    } else {
-      PyCall$insert(0L, "variable", VariableName)
-      id_vars <- c("Date", "variable")
-      var_name <- "Instrument"
+    # PyCallList <- lapply(X = 1:length(ChunckedRics)
+                        # , FUN = function(x, Arglist, ChunckedRics){
+                                # Arglist[["universe"]] <- ChunckedRics[[x]]
+                                # return(Arglist)}
+          # , Arglist = Arglist
+          # , ChunckedRics = ChunckedRics
+          # )
+
+    #Make sure all arguments are evaluated before passing to the gethistory api
+    Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
+
+
+    if("count" %in% names(Arglist)){
+      if (count <= 0){
+        stop("count should be integer > 0")
+      } else {
+        Arglist$count <- as.integer(Arglist$count)
+      }
     }
-    DroppedIndex <- PyCall$reset_index()
-    DroppedIndex <- DroppedIndex$melt(ignore_index = TRUE
-                                     , id_vars = id_vars
-                                     , var_name = var_name)
 
-  } else if(ColumnLevels == 2){
-    Melted <- PyCall$melt(ignore_index = FALSE
-                         , var_name = c("Instrument", "variable"))
-    DroppedIndex <- Melted$reset_index()
+    # remove RDP from arglist if this is in it.
+    if("RD" %in% names(Arglist)){
+      Arglist$RD <- NULL
+    }
+
+    if(getOption(".RefinitivPyModuleName") =="RD"){
+    #Execute get_history
+    PyCall <- do.call(what = RD[["get_history"]], args = Arglist)
+    ColumnLevels <- reticulate::py_to_r(PyCall$columns$nlevels)
+    if(ColumnLevels == 1){
+      VariableName <- PyCall$columns$name
+      if(identical(as.character(VariableName) ,universe)){
+        PyCall$insert(0L, "Instrument", VariableName)
+        id_vars <- c("Date", "Instrument")
+        var_name = "variable"
+      } else {
+        PyCall$insert(0L, "variable", VariableName)
+        id_vars <- c("Date", "variable")
+        var_name <- "Instrument"
+      }
+      DroppedIndex <- PyCall$reset_index()
+      DroppedIndex <- DroppedIndex$melt(ignore_index = TRUE
+                                       , id_vars = id_vars
+                                       , var_name = var_name)
+
+    } else if(ColumnLevels == 2){
+      Melted <- PyCall$melt(ignore_index = FALSE
+                           , var_name = c("Instrument", "variable"))
+      DroppedIndex <- Melted$reset_index()
+
+    }
+    JsonString <- DroppedIndex$to_json(date_format= "iso")
+    Converted <- Process_RDP_output(JsonString, RemoveNA = TRUE, CleanNames = CleanNames)
+
+
+    return(Converted)
+  } else if(getOption(".RefinitivPyModuleName") == "JSON"){
+
+    #check if custom Instrument
+
+    UUID = getOption(".RefinitivUUID")
+    if(CheckifCustomInstrument(symbol = universe, UUID = UUID)){
+      stop("Custom Instruments are currently not supported yet in rd_GetHistory using JSON")
+    }
+
+    # historical pricing fields
+    if(!is.null(fields)){
+      GetDataFields <- setdiff(fields, getOption("HistoricalPricingFields")) #in x buy not in Y
+      HistorticalPricingFields <- setdiff(fields, GetDataFields)
+    } else {
+      GetDataFields <- NULL
+      HistorticalPricingFields <- NULL
+    }
+
+    # If required obtain data from GetData
+    if(!is.null(GetDataFields)){
+      GetDataOutput <- rd_GetData( RDObject = RD
+                                 , rics = universe
+                                 , Eikonformulas = GetDataFields
+                                 , Parameters = parameters
+                                 , raw_output = FALSE
+                                 , time_out = 60
+                                 , verbose = debug
+                                 , SpaceConvertor = "."
+                                 , use_field_names_in_headers = use_field_names_in_headers
+                                 )
+    }
+
+    if( is.null(fields) || !is.null(HistorticalPricingFields) ){
+      HistorticalPricingFields <- rd_GetHistoricalPricing( EikonObject = RD
+                                                         , universe = universe
+                                                         , interval = interval
+                                                         , start = start
+                                                         , end = end
+                                                         , adjustments = adjustments
+                                                         , count = count
+                                                         , fields = if(is.null(fields)){NULL}else{HistorticalPricingFields}
+                                                         , sessions = NULL
+                                                         , debug = debug
+                                                         )
+    }
+
+
+    # split get data and historical pricing
 
   }
-  JsonString <- DroppedIndex$to_json(date_format= "iso")
-  Converted <- Process_RDP_output(JsonString, RemoveNA = TRUE)
-  return(Converted)
-}
+
+  }
+
+
+#
