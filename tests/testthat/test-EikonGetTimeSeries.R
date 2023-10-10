@@ -1,24 +1,35 @@
-test_that( "",{ expect_equal(1,1)
-})
-
 testthat::test_that("Check EikonGetTimeseries can handle fields = NULL"
                     , {
                       Eikon <- check_Eikonapi()
-                      CheckTimeSeries <- try(EikonGetTimeseries( EikonObject = Eikon,
+                      CheckTimeSeries <- EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("MMM", "III.L"),
                                                                  fields = NULL,
                                                                  start_date = "2020-01-01T01:00:00",
-                                                                 end_date = "2020-01-10T01:00:00"))
+                                                                 end_date = "2020-01-10T01:00:00")
 
                       GoodCheckEikonTimeSeries <- structure(list(Date = structure(c(1577923200, 1578009600, 1578268800,
                                                                                     1578355200, 1578441600, 1578528000,
                                                                                     1578614400, 1577923200, 1578009600,
                                                                                     1578268800, 1578355200, 1578441600,
                                                                                     1578528000, 1578614400)
-                                                                                  , class = c("POSIXct", "POSIXt"), tzone = "GMT")
-                                                                 , Security = c("III.L", "III.L", "III.L", "III.L", "III.L", "III.L",
-                                                                                "III.L", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM", "MMM"))
-                                                            , row.names = c(NA, -14L), class = "data.frame")
+                                                                                  , class = c("POSIXct","POSIXt"), tzone = "GMT")
+                                                                 , Security = c("III.L", "III.L", "III.L",
+                                                                                "III.L", "III.L", "III.L", "III.L",
+                                                                                "MMM", "MMM", "MMM", "MMM",
+                                                                                "MMM", "MMM", "MMM")
+                                                                 , CLOSE = c(1116.5, 1108, 1088.5, 1086.5,
+                                                                             1088, 1094, 1088.5, 180, 178.45, 178.62, 177.9, 180.63, 181.2,
+                                                                             180.47)
+                                                                 , HIGH = c(1123, 1110.5, 1102.5, 1101, 1089.5, 1096, 1100,
+                                                                            180.01, 178.66, 178.71, 178.51, 181.5, 181.59, 182.18)
+                                                                 , LOW = c(1107.5, 1090.5, 1074, 1086.5, 1075, 1083, 1085, 177.1356, 175.63, 176.35
+                                                                           , 176.82, 177.65, 179.76, 180.14)
+                                                                 , OPEN = c(1108, 1110.5, 1101, 1096.5, 1079.5, 1090.5, 1100, 177.68, 177.02, 177.15, 178.28,
+                                                                            178, 181.51, 181.61)
+                                                                 , VOLUME = c(723692L, 717234L, 813990L, 1163565L, 1451744L, 975325L, 2377611L, 3448335L, 2467310L, 1997981L, 2176615L,
+                                                                              2758339L, 2746346L, 2103818L)
+                                                                 , COUNT = c(2083L, 1827L, 2309L, 1436L, 2472L, 2283L, 1248L, 34517L, 29347L, 26959L, 26568L, 30889L,
+                                                                              25663L, 25691L)), row.names = c(NA, -14L), class = "data.frame")
 
 
                       testthat::expect_equal(CheckTimeSeries, GoodCheckEikonTimeSeries, tolerance = 1e-1)}

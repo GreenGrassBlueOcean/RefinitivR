@@ -353,7 +353,11 @@ PostProcessTimeSeriesRequest <- function(RawTimeSeriesRequest){
 
   TimeSeriesRequest <- function(RequestNumber, TS){
     if(!is.null(names(TS[[RequestNumber]]))){
-      Return_DT <- lapply(X  = 1:length(TS[[RequestNumber]][["timeseriesData"]]) , FUN = GetSingleRicTimeSeries, TS = TS[[RequestNumber]])
+
+      Return_DT <- lapply(X  = 1:length(TS[[RequestNumber]][["timeseriesData"]])
+                         , FUN = GetSingleRicTimeSeries
+                         , TS = TS[[RequestNumber]]
+                         )
       Return_DT <- data.table::rbindlist(Return_DT, use.names = TRUE, fill = TRUE)
     } else {return(data.table::data.table(NULL))}
   }

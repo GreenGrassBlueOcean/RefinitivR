@@ -1,7 +1,7 @@
 test_that("EikonGetNewsHeadlines works", {
 
 
-  Eikon <- check_Eikonapi(ExecutionMode = "RD")
+  Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
   CheckHeadlines <- EikonGetNewsHeadlines(EikonObject = Eikon
                                               , query = "R:MSFT.O", count = 2)
 
@@ -18,7 +18,7 @@ test_that("EikonGetNewsHeadlines works", {
 test_that("EikonGetNewsStory works", {
 
 
-  Eikon <- check_Eikonapi(ExecutionMode = "RD")
+  Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
 
   story_id <- "urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"
   stories <- EikonGetNewsStory( story_id = story_id

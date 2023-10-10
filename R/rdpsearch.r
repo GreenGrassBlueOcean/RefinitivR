@@ -10,6 +10,7 @@
 #'
 #' @examples
 #' RDPShowAvailableSearchViews(Platform = "JSON")
+#' RDPShowAvailableSearchViews(Platform = "RD")
 RDPShowAvailableSearchViews <- function(Platform = "JSON"){
 
 if(!(Platform %in% c("RD", "RDP", "JSON"))){
@@ -137,13 +138,23 @@ GetSearchView <- function(ConnectionObject = RDConnect()
 
 
   if(identical(ConnectionMetaData$name, "refinitiv.data")){
-    return(ConnectionObject$content$search$Views[[SearchView]])
 
-  } else if(identical(ConnectionMetaData$name, "refinitiv.dataplatform")){
-    return(ConnectionObject$SearchViews[[SearchView]])
+    if(SearchView %in% RDPShowAvailableSearchViews(Platform = "RD")){
+      return(ConnectionObject$content$search$Views[[SearchView]])
+    } else{
+      stop(paste("SearchView:", SearchView, "not available for RD"))
+    }
+
+
+  } else if(identical(ConnectionMetaData$name, "JSON")){
+    if(SearchView %in% RDPShowAvailableSearchViews(Platform = "JSON")){
+      return(SearchView)
+    } else{
+      stop(paste("SearchView:", SearchView, "not available for JSON"))
+    }
 
   } else{
-    stop(paste("GetSearchView only available for RD or RDP but not for:", ConnectionMetaData$name))
+    stop(paste("GetSearchView only available for RD or JSON but not for:", ConnectionMetaData$name))
   }
 
 }
@@ -333,7 +344,12 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
   }
 
   if("view" %in% names(Arglist)){
-    Arglist$view <- RDP$SearchViews[[Arglist$view]]
+    Arglist$view <- GetSearchView( ConnectionObject = RDP
+                                 , SearchView = Arglist$view)
+
+
+
+      # RDP$SearchViews[[Arglist$view]]
   }
 
  #RD -->  RDP$content$search$Views[[searchView]])
@@ -367,9 +383,9 @@ if(identical(ConnectionMetaData$name, "refinitiv.data")){
 
   ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
 
-  if(identical(ConnectionMetaData$name, "refinitiv.data")){
-   RDP <- RDP$discovery
-  }
+  # if(identical(ConnectionMetaData$name, "refinitiv.data")){
+  #  RDP <- RDP$discovery
+  # }
 
   #Execute search ----
 

@@ -1,9 +1,7 @@
 test_that("Basic RDP search works", {
 
-  Eikon <- check_Eikonapi()
-
-
-  test1 <- try(RDPsearch(RDP = Eikon, query =  "AAPL.O"))
+  Eikon <- check_Eikonapi(ExecutionMode = "JSON")
+  test1 <- RDPsearch(RDP = Eikon, query =  "AAPL.O")
   test1 <- test1[order(names(test1))]
 
   expect_error(test1,NA)

@@ -35,6 +35,9 @@ check_Eikonapi <- function(testMode = "replay", ExecutionMode = "Eikon") {
     } else if(ExecutionMode == "RD"){
       message("Selecting RD for testing")
       ReturnObject <- RDConnect(PythonModule = "RD")
+    } else if(ExecutionMode == "JSON"){
+      message("Selecting JSON for testing")
+      ReturnObject <- RDConnect(PythonModule = "JSON")
     } else {
       stop("Selected ExecutionMode not supported")
     }

@@ -694,8 +694,10 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
     return(data.frame())
   }
 
-  #make sure that TIMESTAMP is in fields
-  fields <- unique(c("TIMESTAMP", fields))
+  #make sure that TIMESTAMP is in fields if fields is not null
+  if(!is.null(fields)){
+    fields <- unique(c("TIMESTAMP", fields))
+  }
 
   # Make sure that monthly economic time series are returned
   if(any(grepl(pattern = "=", x = rics))){

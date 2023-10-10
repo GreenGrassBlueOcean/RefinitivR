@@ -3,10 +3,6 @@ test_that( "",{ expect_equal(1,1)
 
 # Load required data for tests
 load(file="testdata.rda")
-#options( ".EikonApiKey" =  "Put your key here")
-
-
-
 
 testthat::test_that("retry", {
   testthat::expect_equal(retry(retryfun = sum(1,1)), sum(1,1))
@@ -14,14 +10,11 @@ testthat::test_that("retry", {
 })
 
 
-
-
 testthat::test_that("Check Eikon Connect is really a python object"
                     , {
-                       Eikon <- check_Eikonapi()
+                       Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
 
-                       testthat::expect_true(all(c("search", "get_data", "get_symbology","get_search_metadata"
-                        , "get_timeseries") %in% names(Eikon)))
+                       testthat::expect_true(all(c("get_data", "get_symbology", "get_timeseries") %in% names(Eikon)))
 
                        })
 
@@ -55,16 +48,16 @@ testthat::test_that("Check EikonGetData returns expected data with multiple rics
 
 testthat::test_that("Check EikonGetData returns raw data when requested"
                     , {
-                      Eikon <- check_Eikonapi()
-                      CheckEikonData <- try(EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
-                                                         Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName"), raw_output = TRUE))
+                      Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
+                      CheckEikonData <- EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
+                                                         Eikonformulas = c("RDN_EXCHD2", "TR.CompanyName"), raw_output = TRUE)
 
-                      GoodCheckEikonData <- list(list(columnHeadersCount = 1L, data = list(list("MMM", "NYQ", "3M Co")
-                                                                                           , list("III.L", "LSE", "3i Group PLC")),
-                                                      headerOrientation = "horizontal",
-                                                      headers = list(list(list(displayName = "Instrument"),
-                                                                          list(displayName = "RDN_EXCHD2", field = "RDN_EXCHD2"),
-                                                                          list(displayName = "Company Name", field = "TR.COMPANYNAME"))),
+                      GoodCheckEikonData <- list(list(columnHeadersCount = 1L, data = list( c("MMM", "NYQ","3M Co")
+                                                                                          , c("III.L", "LSE", "3i Group PLC")
+                                                                                          ), headerOrientation = "horizontal",
+                                                      headers = list(list(list(displayName = "Instrument"), list(
+                                                        displayName = "RDN_EXCHD2", field = "RDN_EXCHD2"), list(
+                                                          displayName = "Company Name", field = "TR.COMPANYNAME"))),
                                                       rowHeadersCount = 1L, totalColumnsCount = 3L, totalRowsCount = 3L))
 
 
@@ -78,7 +71,7 @@ testthat::test_that("Check EikonGetData returns raw data when requested"
 #add test case if only one ric is requested
 testthat::test_that("Check EikonGetData returns expected data with only one ric"
                     , {
-                       Eikon <- check_Eikonapi()
+                       Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
 
                        GoodCheckEikonData <- list(PostProcessedEikonGetData = structure(list(Instrument = "MMM", RDN_EXCHD2 = "NYQ", Company.Name = "3M Co")
                                                                                         , row.names = c(NA, -1L), class = "data.frame")

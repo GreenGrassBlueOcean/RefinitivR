@@ -120,7 +120,7 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
       Arglist$RD <- NULL
     }
 
-    if(getOption(".RefinitivPyModuleName") =="RD"){
+    if(getOption(".RefinitivPyModuleName") =="refinitiv.data"){
     #Execute get_history
     PyCall <- do.call(what = RD[["get_history"]], args = Arglist)
     ColumnLevels <- reticulate::py_to_r(PyCall$columns$nlevels)
@@ -200,6 +200,8 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
 
     # split get data and historical pricing
 
+  } else {
+    stop("only RD or JSON are supported for the moment")
   }
 
   }
