@@ -7,11 +7,11 @@
 CustomInstrumentBasketBuilder(RICs = NULL, Weights = NULL, Normalize = TRUE)
 }
 \arguments{
+\item{RICs}{character vector of RICs in the basket}
+
 \item{Weights}{numeric vector of weights in the basket}
 
 \item{Normalize}{boolean Normalize all weight to a maximum of 1?}
-
-\item{RICS}{character vector of RICs in the basket}
 }
 \value{
 a basket object that can be used
@@ -20,7 +20,9 @@ a basket object that can be used
 Build a basket element for a custom instrument
 }
 \examples{
+\dontrun{
 CustomInstrumentBasketBuilder(RICs = c("AAPL.O", "AMZN.O"), Weights = c(0.5, 0.5))
+}
 }
 \seealso{
 [rd_ManageCustomInstruments()]

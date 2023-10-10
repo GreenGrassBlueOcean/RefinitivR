@@ -117,11 +117,11 @@ ex2b <- EikonGetData( EikonObject = Eikon, rics = "AAPl.O"
 
 Making a search request:
 ```r
- RDPConnect('your api key', PythonModule = "JSON")
+ RDConnect('your api key', PythonModule = "JSON")
 ```
 or
 ```r
- RDPConnect('your api key', PythonModule = "RDP")
+ RDConnect('your api key', PythonModule = "RD")
 ```
 
 ```r
@@ -142,9 +142,6 @@ or
 Get a streaming price snapshot
 
 ```r
-rdp <- RDPConnect('your api key', PythonModule = "RDP") # direct JSON not possible
-streamObject <- rdp_streaming_prices(rdp, universe = c("EUR=","JPY="), fields = c('DSPLY_NAME', 'BID', 'ASK'))
-rdp_get_snapshot(streamObject)
 ```
 
 # Perfoming a RD request

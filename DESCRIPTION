@@ -23,7 +23,7 @@ Imports:
     here,
     rstudioapi,
     httr2,
-    websocket
+    R6
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:
@@ -35,8 +35,7 @@ Config/reticulate:
   )
 RoxygenNote: 7.2.3
 Depends: 
-    R (>= 3.5.0),
-    R6
+    R (>= 3.5.0)
 Suggests: 
     testthat,
     covr,
@@ -45,4 +44,8 @@ Suggests:
     countrycode,
     dplyr,
     archivist,
-    digest
+    digest,
+    shiny,
+    websocket,
+    later
+    

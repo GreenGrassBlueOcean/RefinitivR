@@ -34,16 +34,14 @@ test_that("CustomInstrumentHolidayBuilder works", {
 
   expect_equal(CustomInstrumentHolidayBuilder(dates = c("2023-12-01", "2023-12-31")
                , reasons = c("Special Bank Holiday 1", "Special Bank Holiday 2"))
-  ,structure(list(holidays = list(list(date = "2023-12-01", reason = "Special Bank Holiday 1"),
-                                  list(date = "2023-12-31", reason = "Special Bank Holiday 2")))
+  ,structure(list(list(date = "2023-12-01", reason = "Special Bank Holiday 1"),
+                  list(date = "2023-12-31", reason = "Special Bank Holiday 2"))
              , class = "Refinitiv_holidays"))
-
 
   expect_equal(CustomInstrumentHolidayBuilder(dates = c("2023-12-01", "2023-12-31"))
 
-               ,structure(list(holidays = list(list(date = "2023-12-01"),
-                                               list(date = "2023-12-31")))
-                          , class = "Refinitiv_holidays"))
+               ,structure(list(list(date = "2023-12-01"), list(date = "2023-12-31")), class = "Refinitiv_holidays")
+               )
 
 
 

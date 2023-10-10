@@ -13,6 +13,19 @@ create_RDP_Stream(
   extended_parameters
 )
 }
+\arguments{
+\item{service}{string optional name of RDP service}
+
+\item{universe}{RIC to retrieve item stream.}
+
+\item{view}{data fields to retrieve item stream}
+
+\item{parameters}{extra parameters to retrieve item stream.}
+
+\item{api}{specific name of RDP streaming defined in config file. 'streaming/trading-analytics/redi'}
+
+\item{extended_parameters}{defaults to NULL Specify optional params}
+}
 \value{
 RDP Stream object
 }

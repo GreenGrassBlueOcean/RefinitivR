@@ -142,7 +142,7 @@ test_that("rd_GetHistory can handle with fields and dates", {
   parameters <- list()
   Eikonformulas <- "TR.DividendYield"
 
-  
+
   GetData_StockData <- Refinitiv::rd_GetHistory( universe = DownloadRics
                                                  , fields = Eikonformulas
                                                  , parameters = parameters

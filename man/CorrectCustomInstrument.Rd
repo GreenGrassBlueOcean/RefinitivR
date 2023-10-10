@@ -19,9 +19,8 @@ Function to check if custom symbol is in format "S)INSTRUMENTSYMBOL.UUID"
 }
 \examples{
 CorrectCustomInstrument(symbol = "test" , UUID = "ABCDE-123456")
-CorrectCustomInstrument(symbol =  , UUID = "ABCDE-123456")
+CorrectCustomInstrument(symbol = "S)test" , UUID = "ABCDE-123456")
 CorrectCustomInstrument(symbol = "test.ABCDE-123456" , UUID = "ABCDE-123456")
-
 }
 \seealso{
 [rd_ManageCustomInstruments()]

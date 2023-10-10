@@ -51,24 +51,28 @@ CustomInstrumentHolidayBuilder <- function(dates = NULL, reasons = NULL){
 
 
 
-#' Build a custom instrument using a user defined continuation
+#' Build a user defined continuation object for a custom instrument
 #'
 #' @param root CC or CL
-#' @param rollover
-#' @param spreadAdjustment
+#' @param rollover volume based or day based
+#' @param spreadAdjustment arithmetic or percentage
 #'
-#' @return
+#' @return object with user defined continuation
 #' @export
 #' @seealso [rd_ManageCustomInstruments()]
 #'
 #' @examples
+#' \dontrun{
+#'  # no example cause function not implemented yet
+#' }
 CustomInstrumentUDCBuilder <- function( root
                                       , rollover
                                       , spreadAdjustment
-
                                       ){
+  UDC <- NULL
+  UDC <- UDC |> structure(class = "Refinitiv_udc")
 
-}
+  return("This function is not implemented yet")
 
 # user defined continuation
 #volume based
@@ -141,6 +145,7 @@ CustomInstrumentUDCBuilder <- function( root
 #     }
 #   }
 # }
+}
 
 
 
@@ -155,9 +160,8 @@ CustomInstrumentUDCBuilder <- function( root
 #'
 #' @examples
 #' CorrectCustomInstrument(symbol = "test" , UUID = "ABCDE-123456")
-#' CorrectCustomInstrument(symbol =  , UUID = "ABCDE-123456")
+#' CorrectCustomInstrument(symbol = "S)test" , UUID = "ABCDE-123456")
 #' CorrectCustomInstrument(symbol = "test.ABCDE-123456" , UUID = "ABCDE-123456")
-#'
 CorrectCustomInstrument <- function(symbol, UUID = getOption(".RefinitivUUID")){
 
   #Check if symbol end with .UUID
@@ -185,19 +189,27 @@ CorrectCustomInstrument <- function(symbol, UUID = getOption(".RefinitivUUID")){
 #' @param symbol character
 #' @param UUID character  Eikon UUID can be found here: Eikon Terminal --> help --> about --> user details: UUID e.g. ABCDE-123456
 #'
-#' @return boolean TRUE or FALSE
+#' @return boolean TRUE, FALSE or NA
 #' @keywords internal
 #'
 #' @examples
+#' \dontrun{
 #' CheckifCustomInstrument(symbol = "test" , UUID = "ABCDE-123456")
 #' CheckifCustomInstrument(symbol = "test.ABCDE-123456" , UUID = "ABCDE-123456")
+#' CheckifCustomInstrument(symbol = "test.ABCDE-123456" , UUID = NULL)
+#' }
 CheckifCustomInstrument <- function(symbol, UUID = getOption(".RefinitivUUID")){
 
   IsCustomInstrument <- TRUE
   #Check if symbol end with .UUID
-  if(!(stringi::stri_endswith(symbol, fixed = paste0(".",UUID)) & stringi::stri_startswith(symbol, fixed = "S)"))){
-    IsCustomInstrument <- FALSE
+  if(!is.null(UUID)){
+    if(!(stringi::stri_endswith(symbol, fixed = paste0(".",UUID)) &
+         stringi::stri_startswith(symbol, fixed = "S)"))){
+      IsCustomInstrument <- FALSE
     }
+  } else{
+    IsCustomInstrument <- NA
+  }
 
   return(IsCustomInstrument)
 }
@@ -207,7 +219,7 @@ CheckifCustomInstrument <- function(symbol, UUID = getOption(".RefinitivUUID")){
 
 #' Build a basket element for a custom instrument
 #'
-#' @param RICS character vector of RICs in the basket
+#' @param RICs character vector of RICs in the basket
 #' @param Weights numeric vector of weights in the basket
 #' @param Normalize boolean Normalize all weight to a maximum of 1?
 #'
@@ -217,7 +229,9 @@ CheckifCustomInstrument <- function(symbol, UUID = getOption(".RefinitivUUID")){
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' CustomInstrumentBasketBuilder(RICs = c("AAPL.O", "AMZN.O"), Weights = c(0.5, 0.5))
+#' }
 CustomInstrumentBasketBuilder <- function(RICs =NULL, Weights =NULL, Normalize = TRUE){
 
   #   "basket": {
@@ -264,36 +278,56 @@ CustomInstrumentBasketBuilder <- function(RICs =NULL, Weights =NULL, Normalize =
 }
 
 
+# {
+#   "symbol": "S)lseg_epam.PAXTRA12345",
+#   "type": "basket",
+#   "basket": {
+#     "constituents": [
+#       {
+#         "ric": "LSEG.L",
+#         "weight": 50
+#       },
+#       {
+#         "ric": "EPAM.N",
+#         "weight": 50
+#       }
+#     ],
+#     "normalizeByWeight": true
+#   },
+#   "currency": "USD"
+# }
+#
 
 
 
 #' CREATE, GET, UPDATE or DELETE a custom instrument
 #'
+#' @param operation character one of "CREATE", "GET", "UPDATE", "DELETE"
 #' @param symbol character instrument symbol in the format "S)someSymbol.YOURUUID"
-#' @param Id character optional
 #' @param formula formula consisting of rics (fields can be specified by comma)
 #' @param basket of rics and weights use CustomInstrumentBasketBuilder()
-#' @param udc
+#' @param udc optional a user defined continuation object as returned by CustomInstrumentUDCBuilder()
 #' @param currency 3-letter code of the currency of the instrument, e.g. GBP
 #' @param instrumentName Human-readable name of the instrument. Maximum of 16 characters.
 #' @param exchangeName 4-letter code of the listing exchange.
 #' @param holidays List of custom calendar definitions. use CustomInstrumentHolidayBuilder() if required
 #' @param timeZone character Time Series uses an odd custom 3-letter value for time zone IDs, e.g. "LON" for London.
 #' @param description character Free text field from the user to put any notes or text. Up to 1000 characters.
-#' @param operation character one of "CREATE", "GET", "UPDATE", "DELETE"
 #' @param UUID character  Eikon UUID can be found here: Eikon Terminal --> help --> about --> user details: UUID e.g. ABCDE-123456
 #' @param RDObject Refinitiv Data connection object, defaults to RefinitivJsonConnect()
+#' @param debug boolean prints intermediate api calls to console
 #'
 #' @return list with data of the result of the request.
 #' @export
 #'
+#' @importFrom methods is
 #'
 #' @seealso CustomInstrumentBasketBuilder()
 #' @seealso CustomInstrumentHolidayBuilder()
 #' @seealso CustomInstrumentUDCBuilder()
 #'
 #' @examples
-#'
+#' \dontrun{
 #'  # Create Simple Instrument
 #'  rd_ManageCustomInstruments(operation = "CREATE", symbol = "testAAPLandAMZN",
 #'                               formula = "AAPL.O + AMZN.O")
@@ -306,28 +340,26 @@ CustomInstrumentBasketBuilder <- function(RICs =NULL, Weights =NULL, Normalize =
 #'  #Delete
 #'  rd_ManageCustomInstruments(operation = "DELETE", symbol = "testAAPLandAMZN")
 #'
-#' build a custom instrument with a basket
+#' #build a custom instrument with a basket
 #' basket <- CustomInstrumentBasketBuilder(RICs = c("AAPL.O", "AMZN.O"), Weights = c(0.5, 0.5))
 #'
 #' rd_ManageCustomInstruments(operation = "CREATE", symbol = "InterestingBasket",
 #'                               basket = basket, currency = "USD")
 #'
-#' update the basket with some holidays
-#'  holidays <-  CustomInstrumentHolidayBuilder(dates = c("2023-12-01", "2023-12-31")
+#' #update the basket with some holidays
+#' holidays <-  CustomInstrumentHolidayBuilder(dates = c("2023-12-01", "2023-12-31")
 #'        , reasons = c("Special Bank Holiday 1", "Special Bank Holiday 2"))
 #'
 #'
 #' rd_ManageCustomInstruments(operation = "UPDATE", symbol = "InterestingBasket",
 #'                              holidays = holidays )
+#'  #Delete instrument
+#'  rd_ManageCustomInstruments(operation = "DELETE", symbol = "InterestingBasket")
 #'
-#' #Get data from custom instrment
-#' realInstrument <- CorrectCustomInstrument("InterestingBasket")
-#'
-#' to be added later for now not working
-#'
+#' RealInstrumentName <- CorrectCustomInstrument("InterestingBasket")
+#' }
 rd_ManageCustomInstruments <- function( RDObject = RefinitivJsonConnect()
                                       , symbol = NULL
-                                      , Id = NULL
                                       , formula = NULL
                                       , basket = NULL
                                       , udc = NULL
@@ -339,7 +371,7 @@ rd_ManageCustomInstruments <- function( RDObject = RefinitivJsonConnect()
                                       , description = NULL
                                       , operation = c("CREATE","GET", "UPDATE", "DELETE")
                                       , UUID = getOption(".RefinitivUUID")
-                                      , debug = TRUE
+                                      , debug = FALSE
                                       ){
   #Check operation
   if(is.null(operation) || !is.character(operation) || length(operation) > 1 ){
@@ -356,43 +388,45 @@ rd_ManageCustomInstruments <- function( RDObject = RefinitivJsonConnect()
   }
 
   #Inspect
-  if(!is.null(holidays) && class(holidays) != "Refinitiv_holidays"){
+  if(!is.null(holidays) && !is(holidays,"Refinitiv_holidays")){
     stop("Parameter holidays is not defined correctly use function CustomInstrumentHolidayBuilder() to build a correct holidays element")
   } else if(!is.null(holidays)){
     holidays <- structure(holidays, class = "list")
   }
 
-  if(!is.null(basket) && class(basket) != "Refinitiv_basket"){
+  if(!is.null(basket) && !is(basket,"Refinitiv_basket")){
     stop("Parameter basket is not defined correctly use function CustomInstrumentBasketBuilder() to build a correct basket")
   } else if(!is.null(basket)){
     basket <- structure(basket, class = "list")
   }
 
-  if(!is.null(udc) && class(udc) != "Refinitiv_udc"){
+  if(!is.null(udc) && !is(udc,"Refinitiv_udc")){
     stop("Parameter udc is not defined correctly use function CustomInstrumentUDCBuilder() to build a correct udc")
   } else if(!is.null(udc)){
     udc <- structure(udc, class = "list")
   }
 
 
-
+  # "CREATE", "GET", "UPDATE", "DELETE"
   #for GET, DELETE
   type <- NULL
   if(operation %in% c("GET", "DELETE")){
     type <- formula <- basket <- udc <- NULL
-    if(sum((c(!is.null(formula), !is.null(basket), !is.null(udc)))) !=  1){
+  }
+
+  if(!(sum((c(!is.null(formula), !is.null(basket), !is.null(udc)))) <  2)){
       stop("Only ONE single type of formula, basket, or user definined continuation (udc) has to be supplied")
     } else if(!is.null(formula)){
       type <- "formula"
     } else if(!is.null(basket)){
       type <- "basket"
-
-    if(is.null(currency)){
-       stop("Parameter currency is required for baskets")
+      if(is.null(currency)){
+        stop("Parameter currency is required for baskets")
+      }
+    } else if(!is.null(udc)){
+      type <- "udc"
     }
-  } else{
-    type <- "udc"
-  }}
+
 
   #check symbol and if not correct it
   symbol <- CorrectCustomInstrument(symbol = symbol, UUID = UUID)
@@ -485,42 +519,15 @@ rd_ManageCustomInstruments <- function( RDObject = RefinitivJsonConnect()
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' test <- rd_SearchCustomInstruments()
+#' }
 rd_SearchCustomInstruments <- function(RDObject = RefinitivJsonConnect(), debug = TRUE){
 
   Request <- RDObject$search_custom_instrument( debug = debug)
   return(Request)
 
 }
-
-
-#' Intraday Pricing on Custom Instruments
-#'
-#' @return
-#' @export
-#' @keywords internal
-#' @noRd
-#'
-#' @examples
-rd_IntradayCustomInstruments <- function(){
-  #https://api.refinitiv.com/data/custom-instruments/v1/intraday-summaries/S)InterestingBasket.ABCDE-123456
-  return("not working yet")
-}
-
-#' Historical pricing on Custom Instruments
-#'
-#' @return
-#' @export
-#' @keywords internal
-#' @noRd
-#'
-#' @examples
-rd_HistoricalPricingCustomInstruments <- function(){
-  #Inter day
-  #https://api.refinitiv.com/data/custom-instruments/v1/interday-summaries/S)InterestingBasket.ABCDE-123456
-  return("not working yet")
-}
-
 
 # Streaming custom instruments
 

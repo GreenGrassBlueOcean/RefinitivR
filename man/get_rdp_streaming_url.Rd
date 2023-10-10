@@ -18,5 +18,7 @@ a list of custom Instruments created with all parameters
 Show all available custom instruments that have been created
 }
 \examples{
+\dontrun{
 test <- get_rdp_streaming_url()
+}
 }

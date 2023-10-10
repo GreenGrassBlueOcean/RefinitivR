@@ -19,9 +19,7 @@ Get search metadata from RDP
 }
 \examples{
 \dontrun{
-test_rdp <- RDPget_search_metadata(RDP = RDPConnect(PythonModule = "RDP")
-                              , searchView = "EquityQuotes")
-test_json <- RDPget_search_metadata(RDP = RDPConnect(PythonModule = "JSON")
+test_json <- RDPget_search_metadata(RDP =  RefinitivJsonConnect()
                               , searchView = "EquityQuotes")
 test_rd <- RDPget_search_metadata(RDP = RDConnect()
                               , searchView = "EQUITY_QUOTES")

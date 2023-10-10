@@ -1,0 +1,7 @@
+                Refinitiv_index   Type Searchable Sortable Navigable Groupable Exact Symbol
+1 AAACurrencyBondBenchmarkChain String      FALSE    FALSE     FALSE     FALSE FALSE  FALSE
+2  AACurrencyBondBenchmarkChain String      FALSE    FALSE     FALSE     FALSE FALSE  FALSE
+3                ABSMBSBondsRIC String      FALSE    FALSE     FALSE     FALSE FALSE  FALSE
+4                   AccountName String       TRUE     TRUE      TRUE      TRUE  TRUE  FALSE
+5                   AccountType String       TRUE     TRUE     FALSE     FALSE FALSE  FALSE
+6               AccrualBondCode String       TRUE    FALSE     FALSE      TRUE FALSE   TRUE

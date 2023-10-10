@@ -336,7 +336,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                            directions = 'TimeSeries'
                                            # Builds the payload to be sent
                                            payload <- NULL
-                                           payload <- list('rics' = jsonlistbuilder(rics)
+                                           payload <- list( 'rics' = jsonlistbuilder(rics)
                                                           , 'fields' = jsonlistbuilder(fields)
                                                           , 'interval' = interval
                                                           , 'calender' = calendar
@@ -452,7 +452,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
 
                        }
-                       , get_search_metadata = function(RDP, searchView){
+                       , get_search_metadata = function(RDP=NULL, searchView){
 
 
                          EndPoint <- paste0("discovery/search/v1/metadata/views/",searchView)
@@ -484,10 +484,8 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                          , 'adjustments' = if(is.null(adjustments)){NULL}else{paste(adjustments, collapse = ",")}
                                          , 'count' = as.integer(count)
                                          , 'fields' = if(is.null(fields)){NULL}else{paste(fields, collapse = ",")}
-                                         , 'sessions' = sessions
-
-
-                         )
+                                         , 'sessions' = if(is.null(sessions)){NULL}else{paste(sessions, collapse = ",")}
+                                         )
                          payload <- payload[!unlist(lapply(payload, is.null))]
 
                         universeIndex <-  grep(x =  names(payload), pattern = "universe")
@@ -503,6 +501,76 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                         # Execute request ----
 
                         returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint, debug = debug)
+
+
+
+                         return(returnvar)
+
+                       }, get_intraday_custominstrument_pricing = function( EikonObject, universe
+                                                            , interval, start, end
+                                                            , adjustments, count, fields
+                                                            , sessions
+                                                            , debug = FALSE){
+                         # construct endpoint ----
+                         payload <- list('universe' = paste(universe, collapse = ",")
+                                         , 'interval' = interval
+                                         , 'start' = start
+                                         , 'end' = end
+                                         , 'adjustments' = if(is.null(adjustments)){NULL}else{paste(adjustments, collapse = ",")}
+                                         , 'count' = as.integer(count)
+                                         , 'fields' = if(is.null(fields)){NULL}else{paste(fields, collapse = ",")}
+                                         , 'sessions' = if(is.null(sessions)){NULL}else{paste(sessions, collapse = ",")}
+                                         )
+                         payload <- payload[!unlist(lapply(payload, is.null))]
+
+                         universeIndex <-  grep(x =  names(payload), pattern = "universe")
+
+                         NonUniverseParameters <- paste0(paste0(names(payload[-universeIndex]),"=",payload[-universeIndex]), collapse = "&")
+
+                         AllParameters <- paste0(payload[[universeIndex]], "?", NonUniverseParameters)
+
+
+                         EndPoint <- paste0("data/custom-instruments/v1/intraday-summaries/")
+                         EndPoint <- paste0(EndPoint, AllParameters)
+
+                         # Execute request ----
+
+                         returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint, debug = debug)
+
+
+
+                         return(returnvar)
+
+                       }, get_interday_custominstrument_pricing = function( EikonObject, universe
+                                                                            , interval, start, end
+                                                                            , adjustments, count, fields
+                                                                            , sessions
+                                                                            , debug = FALSE){
+                         # construct endpoint ----
+                         payload <- list('universe' = paste(universe, collapse = ",")
+                                        , 'interval' = interval
+                                        , 'start' = start
+                                        , 'end' = end
+                                        , 'adjustments' = if(is.null(adjustments)){NULL}else{paste(adjustments, collapse = ",")}
+                                        , 'count' = as.integer(count)
+                                        , 'fields' = if(is.null(fields)){NULL}else{paste(fields, collapse = ",")}
+                                        , 'sessions' = if(is.null(sessions)){NULL}else{paste(sessions, collapse = ",")}
+                                        )
+                         payload <- payload[!unlist(lapply(payload, is.null))]
+
+                         universeIndex <-  grep(x =  names(payload), pattern = "universe")
+
+                         NonUniverseParameters <- paste0(paste0(names(payload[-universeIndex]),"=",payload[-universeIndex]), collapse = "&")
+
+                         AllParameters <- paste0(payload[[universeIndex]], "?", NonUniverseParameters)
+
+
+                         EndPoint <- paste0("data/custom-instruments/v1/interday-summaries/")
+                         EndPoint <- paste0(EndPoint, AllParameters)
+
+                         # Execute request ----
+
+                         returnvar <- send_json_request(payload, service = "rdp", request_type = "GET", EndPoint =  EndPoint, debug = debug)
 
 
 
@@ -539,11 +607,10 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
 
 
-
                          EndPoint <- "data/custom-instruments/v1/instruments"
 
-                         payload <- list("symbol" = symbol
-                                        ,"formula" = formula
+                         payload <- list( "symbol" = symbol
+                                        , "formula" = formula
                                         , "type" =  type      # formula, basket, udc
                                         , "basket" = basket
                                         , "udc" = udc
@@ -645,7 +712,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
 
                        }, get_news_headlines = function(query = NULL, count = 20L
-                                             , repository = "NewsWire"
+                                             , repository = NULL
                                              , date_from = NULL
                                              , date_to = NULL
                                              , raw_output = FALSE
@@ -653,15 +720,14 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
 
                          EndPoint <- paste0("News_Headlines")
 
-                         payload = list(
-                           "number" = as.character(count),
-                           "query" = query,
-                           "repository" = paste0(repository, collapse = ","),
-                           "productName" = getOption(".EikonApiKey"),
-                           "attributionCode" = "",
-                           "dateFrom" = date_from,
-                           "dateTo" = date_to
-                           )
+                         payload = list( "number" = as.character(count)
+                                       , "query" = query
+                                       , "repository" = paste0(repository, collapse = ",")
+                                       , "productName" = getOption(".EikonApiKey")
+                                       , "attributionCode" = ""
+                                       , "dateFrom" = date_from
+                                       , "dateTo" = date_to
+                                       )
                          payload[sapply(payload, is.null)] <- NULL
 
                          json <- json_builder(directions = EndPoint,payload )

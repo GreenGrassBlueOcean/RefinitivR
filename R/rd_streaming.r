@@ -1,4 +1,3 @@
-
 #' Show all available custom instruments that have been created
 #'
 #' @param RDObject Refinitiv Data connection object, defaults to RefinitivJsonConnect()
@@ -8,25 +7,20 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' test <- get_rdp_streaming_url()
+#' }
 get_rdp_streaming_url <- function(RDObject = RefinitivJsonConnect(), debug = TRUE){
 
   handshake <- rd_handshake()
-
   Request <- RDObject$get_rdp_streaming_url( debug = debug)
-
   EndPoint <- "streaming/pricing/v1/"
-
   payload <- NULL
-
-
   response <- send_json_request(payload, service = "rdp"
                                 , EndPoint = EndPoint
                                 , request_type = "GET"
                                 , debug = debug
-                                #, url = "http://localhost:9000/api/rdp/data/custom-instruments/v1/instruments"
-  )
-
+                                )
 
   return(Request)
 
@@ -36,14 +30,12 @@ get_rdp_streaming_url <- function(RDObject = RefinitivJsonConnect(), debug = TRU
 #'
 #' @param debug debug parameter print urls for json requests
 #'
-#' @return list with the following fields
-#' \itemize{
+#' @return list with the following fields \itemize{
 #'  \item(access_token)(key)
 #'  \item(expires_in)(unknown what this means)
 #'  \item(token_type)(type of token (bearer))
 #' }
 #'
-#' @export
 #' @keywords internal
 #' @noRd
 #'
@@ -53,38 +45,49 @@ get_rdp_streaming_url <- function(RDObject = RefinitivJsonConnect(), debug = TRU
 #' }
 rd_handshake <- function(debug = FALSE){
 
-
-payload <- list( 'AppKey' = 'DEFAULT_WORKSPACE_APP_KEY'
+  payload <- list( 'AppKey' = 'DEFAULT_WORKSPACE_APP_KEY'
                  , 'AppScope' = 'trapi'
                  , 'ApiVersion'= '1'
                  , 'LibraryName' = 'RDP Python Library'
-                 , 'LibraryVersion'= '1.3.1')
+                 , 'LibraryVersion'= '1.3.1'
+                 )
 
-#
-response <- send_json_request(payload, service = NULL
-                              , EndPoint = EndPoint
-                              , request_type = "POST"
-                              , debug = debug
-                              , apikey = 'DEFAULT_WORKSPACE_APP_KEY'
-                              , url = "http://localhost:9060/api/handshake"
-)
-return(response)
+
+  response <- send_json_request( payload
+                               , request_type = "POST"
+                               , debug = debug
+                               , apikey = 'DEFAULT_WORKSPACE_APP_KEY'
+                               , url = "http://localhost:9060/api/handshake"
+                               )
+  return(response)
 }
 
 
-
-#' Title
+#' Check if refinitiv proxy url is alive
 #'
-#' @param fieldsvector
+#' @param port 9060 or 9000
+#' @param debug boolean TRUE or False
 #'
-#' @return
+#' @return api status code and version
 #' @export
 #'
 #' @examples
-#' build_json_list_string(c("BID","ASK","OPEN_PRC"))
-build_json_list_string <- function(fieldsvector){
-  return(paste0("[\"",paste0(fieldsvector, collapse = "\",\""), "\"]"))
+#' \dontrun{
+#' test <- rd_check_proxy_url(port = 9000)
+#' test <- rd_check_proxy_url(port = 9060)
+#' }
+rd_check_proxy_url <- function(port = 9060, debug = TRUE){
+
+  response <- send_json_request( request_type = "GET"
+                               , debug = debug
+                               , apikey = 'DEFAULT_WORKSPACE_APP_KEY'
+                               , url = paste0("http://localhost:", port, "/api/status")
+                               )
+
+
 }
+
+
 
 
 
@@ -99,8 +102,10 @@ build_json_list_string <- function(fieldsvector){
 #' @return OMM stream object
 #' @export
 #'
+#' @import R6
+#'
 #' @details
-#' Note that field names, depend on exchange and on orderbook lebel
+#' Note that field names, depend on exchange and on order book label
 #'
 #' \itemize{
 #'  \item(domain = MarketByPrice [level2] )(ORDER_PRC, ORDER_SIDE, ACC_SIZE)
@@ -126,7 +131,21 @@ create_OMM_Stream <- function(name = "EUR="
                              , extended_params = NULL
                              ){
 
- # Construct headers
+  # check if later and websocket package are availble
+  if(!requireNamespace("later", quietly = TRUE)){
+    stop("Please install later package")
+  }
+
+  if(!requireNamespace("websocket", quietly = TRUE)){
+    stop("Please install websocket package")
+  }
+
+  # build_json_list_string(c("BID","ASK","OPEN_PRC"))
+  build_json_list_string <- function(fieldsvector){
+    return(paste0("[\"",paste0(fieldsvector, collapse = "\",\""), "\"]"))
+  }
+
+  # Construct headers
   headers <- list( 'User-Agent' = "R"
                  , 'x-tr-applicationid' = 'DEFAULT_WORKSPACE_APP_KEY'
                  , 'Authorization' = paste('Bearer',  rd_handshake()$access_token)
@@ -176,27 +195,27 @@ create_OMM_Stream <- function(name = "EUR="
 
 
 
-
+ self <- private <- NULL
  OMM_Stream <- R6::R6Class( "OMM_Stream"
-                          , public = list( name = NULL
+                          , public = list( name = name
                                          ,  api = NULL
-                                         ,  domain = "MarketPrice"
-                                         ,  service = NULL
-                                         ,  fields = NULL
-                                         ,  extended_params = NULL
-                                         ,  initialize = function(name = NULL
-                                                           , api = NULL
-                                                           , domain = "MarketPrice"
-                                                           , service = NULL
-                                                           , fields = NULL
-                                                           , extended_params = NULL
-                                                           , url = "ws://localhost:9060/api/rdp/streaming/pricing/v1/WebSocket"
-                                                           , protocols = "tr_json2"
-                                                           , headers = list( 'User-Agent' = "R"
-                                                                           , 'x-tr-applicationid' = 'DEFAULT_WORKSPACE_APP_KEY'
-                                                                           , 'Authorization' = paste('Bearer',  rd_handshake()$access_token)
-                                                                           )
-                                                           , autoConnect = FALSE
+                                         ,  domain = domain
+                                         ,  service = service
+                                         ,  fields = fields
+                                         ,  extended_params = extended_params
+                                         ,  initialize = function( name = NULL
+                                                                 , api = NULL
+                                                                 , domain = NULL
+                                                                 , service = NULL
+                                                                 , fields = NULL
+                                                                 , extended_params = NULL
+                                                                 , url = "ws://localhost:9060/api/rdp/streaming/pricing/v1/WebSocket"
+                                                                 , protocols = "tr_json2"
+                                                                 , headers = list( 'User-Agent' = "R"
+                                                                                 , 'x-tr-applicationid' = 'DEFAULT_WORKSPACE_APP_KEY'
+                                                                                 , 'Authorization' = paste('Bearer',  rd_handshake()$access_token)
+                                                                                 )
+                                                                , autoConnect = FALSE
                                                            ){
                        private$.ws <- websocket::WebSocket$new(url = url, protocols = protocols, headers = headers, autoConnect = FALSE)
                        private$.ws$onError(function(event) {
@@ -232,6 +251,10 @@ create_OMM_Stream <- function(name = "EUR="
                        private$.snapshot <- FALSE
                        private$.fig <- "test"
 
+                        #check if shiny package is available
+                        if (!requireNamespace("shiny", quietly = TRUE)) {
+                          stop("shiny package is not available")
+                        }
 
                         ui <- shiny::shinyServer(shiny::fluidPage(
                           shiny::plotOutput("first_column")
@@ -279,15 +302,13 @@ create_OMM_Stream <- function(name = "EUR="
                                               private$.ws$send(Create_login_request())
                                         }
                                      , .process_message = function(event){
-
                                           private$.MessageCount <- private$.MessageCount + 1
                                           StreamMessage <- jsonlite::fromJSON(event$data) |> data.table::as.data.table()
-                                          #print(dput(StreamMessage))
-
-                                          #Parse at high level and output JSON of StreamMessage
-                                          message_type <-StreamMessage[, Type]
+                                          Type <- NULL
+                                          message_type <- StreamMessage[, Type]
                                           if(message_type == "Refresh"){
                                             if('Domain' %in% names(StreamMessage)){
+                                                Domain <- NULL
                                                 message_domain <- StreamMessage[, Domain]
                                             if(message_domain == "Login"){
                                              cat("in login\n")
@@ -299,22 +320,14 @@ create_OMM_Stream <- function(name = "EUR="
                                             }
                                           }
                                        } else if(message_type == "Update"){
-
                                          private$.StreamLog <- data.table::rbindlist(list(StreamMessage,private$.StreamLog))
                                        } else if(message_type == "Ping"){
                                          private$.ws$send("{\"Type\":\"Pong\"}")
                                        }
-
                                       if(private$.snapshot && private$.MessageCount > 2L ){
                                         private$.ws$close()
                                       }
-
-
                                      }
-
-
-
-
                                      )
 
 
@@ -328,6 +341,13 @@ return(OMM_Stream)
 
 
 #' Create a RDP stream when an Eikon terminal is running
+#'
+#' @param service string optional name of RDP service
+#' @param universe RIC to retrieve item stream.
+#' @param view data fields to retrieve item stream
+#' @param parameters extra parameters to retrieve item stream.
+#' @param api specific name of RDP streaming defined in config file. 'streaming/trading-analytics/redi'
+#' @param extended_parameters defaults to NULL Specify optional params
 #'
 #' @return RDP Stream object
 #' @export
@@ -369,7 +389,6 @@ create_RDP_Stream <- function(service
 
 
   handshake <- rd_handshake()
-  print(handshake)
 
   # Construct headers
   headers <- list( 'User-Agent' = "R"

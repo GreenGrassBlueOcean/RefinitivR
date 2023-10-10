@@ -15,7 +15,8 @@ rd_GetHistory(
   adjustments = NULL,
   count = NULL,
   use_field_names_in_headers = NULL,
-  CleanNames = FALSE
+  CleanNames = FALSE,
+  debug = FALSE
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ rd_GetHistory(
 \item{use_field_names_in_headers}{boolean     If True - returns field name as column headers for data instead of title}
 
 \item{CleanNames}{default = FALSE}
+
+\item{debug}{boolean, default = FALSE, if TRUE, prints out the url used to retrieve the data}
 }
 \value{
 data.frame

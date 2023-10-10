@@ -115,7 +115,7 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, CleanNames = FALSE
 
 #' GetSearchView Object for RDP search for RD and RDP python libraryt
 #'
-#' @param ConnectionObject RDConnect() or RDPConnect()
+#' @param ConnectionObject RDConnect() or RefinitivJsonConnect()
 #' @param ConnectionMetaData defaults to PropertiesActiveRefinitivObject don't change
 #' @param SearchView searcView Parameter
 #'
@@ -180,9 +180,7 @@ refinitiv_utils <- reticulate::import_from_path( module = "refinitiv_utils"
 #'
 #' @examples
 #' \dontrun{
-#' test_rdp <- RDPget_search_metadata(RDP = RDPConnect(PythonModule = "RDP")
-#'                               , searchView = "EquityQuotes")
-#' test_json <- RDPget_search_metadata(RDP = RDPConnect(PythonModule = "JSON")
+#' test_json <- RDPget_search_metadata(RDP =  RefinitivJsonConnect()
 #'                               , searchView = "EquityQuotes")
 #' test_rd <- RDPget_search_metadata(RDP = RDConnect()
 #'                               , searchView = "EQUITY_QUOTES")
@@ -225,34 +223,6 @@ RDPget_search_metadata <- function(RDP = RDConnect(), searchView = NULL){
 
     Properties <- NULL
     r_df <- r_DT[, Properties := NULL] |> data.table::setDF()
-  } else if(identical(ConnectionMetaData$name, "refinitiv.dataplatform")){
-
-
-    if(is.null(searchView)){
-      searchView <- "SearchAll"
-    }
-
-    if(!(searchView %in% RDPShowAvailableSearchViews(Platform = "RDP"))){
-      stop(paste("SearchView", searchView, "not available for RDP connection object"))
-    }
-
-    refinitiv_utils <- ImportCustomPythonutils()
-    # Perform Python request ----
-    metadata_python_df <- RDP$get_search_metadata(view = GetSearchView( ConnectionObject = RDP
-                                                                       , SearchView = searchView
-                                                                       ))
-    index <- metadata_python_df$index
-    python_index_col <- refinitiv_utils$split_tupple_list(index)
-    metadata_python_df$insert(0L, "Refinitiv_index", python_index_col)
-    metadata_python_df$reset_index(drop=TRUE, inplace=TRUE)
-    python_json <- metadata_python_df$to_json()
-
-    # Save python request for unit testing ----
-    #reticulate::py_save_object(object = python_json, filename = "test.py")
-
-    # Post Process python request ----
-    r_df <- Process_RDP_output(python_json)
-
   } else {
     if(is.null(searchView)){
       searchView <- "SearchAll"
@@ -292,7 +262,7 @@ return(r_df)
 #'
 #' @examples
 #' \dontrun{
-#' RDPConnect('your api key')
+#' RDConnect('your api key')
 #` test <- RDPsearch(query =  "AAPL.O")
 #' test <- RDPsearch(query =  "AAPL.O", select = "ContractType,RIC")
 #'
@@ -433,7 +403,7 @@ if(identical(ConnectionMetaData$name, "refinitiv.data")){
 #'
 #' @param OptionRics character vector with option rics
 #' @param raw return raw data from RDP call
-#' @param RDP Refinitiv DataPlatform Connection object, defaults to  RDPConnect()
+#' @param RDP Refinitiv DataPlatform Connection object, defaults to  RDConnect()
 #' @param verbose boolean, print download progress or not
 #'
 #' @return data.frame with option data
@@ -447,8 +417,11 @@ if(identical(ConnectionMetaData$name, "refinitiv.data")){
 #'
 #' Analytics <- RDPGetOptionAnalytics(OptionRics = OPtionInstruments)
 #' }
-RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = FALSE, verbose = T){
+RDPGetOptionAnalytics <- function(RDP = RDConnect(), OptionRics = NULL, raw = FALSE, verbose = T){
 
+  if(is.null(OptionRics) || !is.character(OptionRics)){
+    stop("OptionRics should be supplied currently is not supplied or is in the wrong format")
+  }
 
   force(RDP)
   ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
@@ -456,10 +429,6 @@ RDPGetOptionAnalytics <- function(RDP = RDPConnect(), OptionRics = NULL, raw = F
     RDP <- RDP$content
   }
 
-
-  if(is.null(OptionRics) || !is.character(OptionRics)){
-    stop("OptionRics should be supplied currently is not supplied or is in the wrong format")
-  }
   ChunckedRics <- EikonChunker(OptionRics, MaxCallsPerChunk = 500, Eikonfields = c("OptionRics")) #Refinitiv:::
   OptionAnalytics <- as.list(rep(NA, times = length(ChunckedRics)))
   DownloadCoordinator <- data.frame( index = 1:length(ChunckedRics)

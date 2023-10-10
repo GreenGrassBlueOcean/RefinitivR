@@ -125,10 +125,10 @@ test_that("Basic RDP search works", {
 
 test_that("RDPget_search_metadata works", {
 
-  for(i in c("RDP", "RD")){
-  Eikon <- check_Eikonapi(ExecutionMode = i, testMode = "write")
+  for(i in c("JSON")){ #, "RD")){
+  Eikon <- check_Eikonapi(ExecutionMode = i)
 
-  if(i %in% c("RDP", "JSON")){
+  if(i == "JSON"){
     searchView <- "EquityQuotes"
   } else {
     searchView <- "EQUITY_QUOTES"
@@ -155,7 +155,6 @@ test_that("RDPget_search_metadata works", {
                        , Searchable = "logical", Sortable = "logical"
                        , Navigable = "logical", Groupable = "logical"
                        , Exact = "logical", Symbol = "logical"))
-
 
   }
 

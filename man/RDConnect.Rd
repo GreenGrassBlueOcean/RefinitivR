@@ -4,12 +4,12 @@
 \alias{RDConnect}
 \title{RD connection function to refinitiv Data libraries}
 \usage{
-RDConnect(application_id = NA, PythonModule = NA)
+RDConnect(application_id = NA, PythonModule = "RD")
 }
 \arguments{
 \item{application_id}{refinitiv data api key}
 
-\item{PythonModule}{}
+\item{PythonModule}{character "JSON" or "RD"}
 }
 \value{
 rdp opbject

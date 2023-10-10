@@ -154,5 +154,28 @@ identical(Vodafone, Vodafone2)
 Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D", count = 20L
 , fields =c("BID","ASK","OPEN_PRC","HIGH_1","LOW_1","TRDPRC_1","NUM_MOVES","TRNOVR_UNS") )
 
+
+# test for interday
+
+Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "PT1M", count = 20L
+, EikonObject = RefinitivJsonConnect())
+
+ # 1 minute - Count - All Sessions
+ Vodafone <- rd_GetHistoricalPricing( universe = c("VOD.L", "AAPL.O")
+                                    , interval = "PT1M", count = 500L
+                                    , sessions= c("pre","normal","post")
+                                    , EikonObject = RefinitivJsonConnect())
+
+
+ # test with custom instrument you need to construct a custom instrument first
+ # intraday
+ Vodafone <- rd_GetHistoricalPricing( universe = "S)lseg_epam4.ABCDE-123456"
+ , interval = "P1D", count = 20)
+
+ # interday
+ Vodafone <- rd_GetHistoricalPricing( universe = "S)lseg_epam4.ABCDE-123456"
+ , interval = "PT1M", count = 500L)
+
+
 }
 }

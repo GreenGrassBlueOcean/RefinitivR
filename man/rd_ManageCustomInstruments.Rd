@@ -7,7 +7,6 @@
 rd_ManageCustomInstruments(
   RDObject = RefinitivJsonConnect(),
   symbol = NULL,
-  Id = NULL,
   formula = NULL,
   basket = NULL,
   udc = NULL,
@@ -19,7 +18,7 @@ rd_ManageCustomInstruments(
   description = NULL,
   operation = c("CREATE", "GET", "UPDATE", "DELETE"),
   UUID = getOption(".RefinitivUUID"),
-  debug = TRUE
+  debug = FALSE
 )
 }
 \arguments{
@@ -27,11 +26,11 @@ rd_ManageCustomInstruments(
 
 \item{symbol}{character instrument symbol in the format "S)someSymbol.YOURUUID"}
 
-\item{Id}{character optional}
-
 \item{formula}{formula consisting of rics (fields can be specified by comma)}
 
 \item{basket}{of rics and weights use CustomInstrumentBasketBuilder()}
+
+\item{udc}{optional a user defined continuation object as returned by CustomInstrumentUDCBuilder()}
 
 \item{currency}{3-letter code of the currency of the instrument, e.g. GBP}
 
@@ -48,6 +47,8 @@ rd_ManageCustomInstruments(
 \item{operation}{character one of "CREATE", "GET", "UPDATE", "DELETE"}
 
 \item{UUID}{character  Eikon UUID can be found here: Eikon Terminal --> help --> about --> user details: UUID e.g. ABCDE-123456}
+
+\item{debug}{boolean prints intermediate api calls to console}
 }
 \value{
 list with data of the result of the request.
@@ -56,7 +57,7 @@ list with data of the result of the request.
 CREATE, GET, UPDATE or DELETE a custom instrument
 }
 \examples{
-
+\dontrun{
  # Create Simple Instrument
  rd_ManageCustomInstruments(operation = "CREATE", symbol = "testAAPLandAMZN",
                               formula = "AAPL.O + AMZN.O")
@@ -69,25 +70,24 @@ CREATE, GET, UPDATE or DELETE a custom instrument
  #Delete
  rd_ManageCustomInstruments(operation = "DELETE", symbol = "testAAPLandAMZN")
 
-build a custom instrument with a basket
+#build a custom instrument with a basket
 basket <- CustomInstrumentBasketBuilder(RICs = c("AAPL.O", "AMZN.O"), Weights = c(0.5, 0.5))
 
 rd_ManageCustomInstruments(operation = "CREATE", symbol = "InterestingBasket",
                               basket = basket, currency = "USD")
 
-update the basket with some holidays
- holidays <-  CustomInstrumentHolidayBuilder(dates = c("2023-12-01", "2023-12-31")
+#update the basket with some holidays
+holidays <-  CustomInstrumentHolidayBuilder(dates = c("2023-12-01", "2023-12-31")
        , reasons = c("Special Bank Holiday 1", "Special Bank Holiday 2"))
 
 
 rd_ManageCustomInstruments(operation = "UPDATE", symbol = "InterestingBasket",
                              holidays = holidays )
+ #Delete instrument
+ rd_ManageCustomInstruments(operation = "DELETE", symbol = "InterestingBasket")
 
-#Get data from custom instrment
-realInstrument <- CorrectCustomInstrument("InterestingBasket")
-
-to be added later for now not working
-
+RealInstrumentName <- CorrectCustomInstrument("InterestingBasket")
+}
 }
 \seealso{
 CustomInstrumentBasketBuilder()

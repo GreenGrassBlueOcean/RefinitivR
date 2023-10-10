@@ -2,17 +2,27 @@
 % Please edit documentation in R/rd_custominstruments.r
 \name{CustomInstrumentUDCBuilder}
 \alias{CustomInstrumentUDCBuilder}
-\title{Build a custom instrument using a user defined continuation}
+\title{Build a user defined continuation object for a custom instrument}
 \usage{
 CustomInstrumentUDCBuilder(root, rollover, spreadAdjustment)
 }
 \arguments{
 \item{root}{CC or CL}
 
-\item{spreadAdjustment}{}
+\item{rollover}{volume based or day based}
+
+\item{spreadAdjustment}{arithmetic or percentage}
+}
+\value{
+object with user defined continuation
 }
 \description{
-Build a custom instrument using a user defined continuation
+Build a user defined continuation object for a custom instrument
+}
+\examples{
+\dontrun{
+ # no example cause function not implemented yet
+}
 }
 \seealso{
 [rd_ManageCustomInstruments()]

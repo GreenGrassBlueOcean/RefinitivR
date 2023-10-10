@@ -12,13 +12,16 @@ CheckifCustomInstrument(symbol, UUID = getOption(".RefinitivUUID"))
 \item{UUID}{character  Eikon UUID can be found here: Eikon Terminal --> help --> about --> user details: UUID e.g. ABCDE-123456}
 }
 \value{
-boolean TRUE or FALSE
+boolean TRUE, FALSE or NA
 }
 \description{
 Check if a symbol is really a custom symbol
 }
 \examples{
+\dontrun{
 CheckifCustomInstrument(symbol = "test" , UUID = "ABCDE-123456")
 CheckifCustomInstrument(symbol = "test.ABCDE-123456" , UUID = "ABCDE-123456")
+CheckifCustomInstrument(symbol = "test.ABCDE-123456" , UUID = NULL)
+}
 }
 \keyword{internal}

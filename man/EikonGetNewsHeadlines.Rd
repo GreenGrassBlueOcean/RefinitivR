@@ -48,13 +48,13 @@ Returns a list of news headlines
 \examples{
 \dontrun{
  Eikon <- Refinitiv::EikonConnect()
- headlines <- EikonGetNewsHeadlines(EikonObject = Eikon
+ headlines <- EikonGetNewsHeadlines( EikonObject = Eikon
                                    , query = "R:MSFT.O", count = 2)
 }
 
 \dontrun{
   EikonJson <- RefinitivJsonConnect()
-  headlines <- EikonGetNewsHeadlines(EikonObject = EikonJson, debug = TRUE
+  headlines <- EikonGetNewsHeadlines( EikonObject = EikonJson, debug = TRUE
                                     , query = "R:MSFT.O", count = 2)
 }
 }

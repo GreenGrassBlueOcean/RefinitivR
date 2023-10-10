@@ -58,7 +58,7 @@ For additional examples see  \url{https://github.com/Refinitiv-API-Samples/Artic
 }
 \examples{
 \dontrun{
-RDPConnect('your api key')
+RDConnect('your api key')
 test <- RDPsearch(query =  "AAPL.O", select = "ContractType,RIC")
 
 Presidents <- RDPsearch( view = "People", query = 'president'

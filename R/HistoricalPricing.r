@@ -129,18 +129,41 @@
 #' Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D", count = 20L
 #' , fields =c("BID","ASK","OPEN_PRC","HIGH_1","LOW_1","TRDPRC_1","NUM_MOVES","TRNOVR_UNS") )
 #'
+#'
+#' # test for interday
+#'
+#' Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "PT1M", count = 20L
+#' , EikonObject = RefinitivJsonConnect())
+#'
+#'  # 1 minute - Count - All Sessions
+#'  Vodafone <- rd_GetHistoricalPricing( universe = c("VOD.L", "AAPL.O")
+#'                                     , interval = "PT1M", count = 500L
+#'                                     , sessions= c("pre","normal","post")
+#'                                     , EikonObject = RefinitivJsonConnect())
+#'
+#'
+#'  # test with custom instrument you need to construct a custom instrument first
+#'  # intraday
+#'  Vodafone <- rd_GetHistoricalPricing( universe = "S)lseg_epam4.ABCDE-123456"
+#'  , interval = "P1D", count = 20)
+#'
+#'  # interday
+#'  Vodafone <- rd_GetHistoricalPricing( universe = "S)lseg_epam4.ABCDE-123456"
+#'  , interval = "PT1M", count = 500L)
+#'
+#'
 #' }
 rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
-                                , universe = NULL
-                                , interval = "P1D"
-                                , start = NULL
-                                , end = NULL
-                                , adjustments = NULL
-                                , count = 20L
-                                , fields = NULL
-                                , sessions = NULL
-                                , debug = FALSE
-                                ){
+                                   , universe = NULL
+                                   , interval = "P1D"
+                                   , start = NULL
+                                   , end = NULL
+                                   , adjustments = NULL
+                                   , count = 20L
+                                   , fields = NULL
+                                   , sessions = NULL
+                                   , debug = FALSE
+                                   ){
    force(EikonObject)
 
    if(!(getOption(".RefinitivPyModuleName")  %in% c("refinitiv.data", "JSON"))){
@@ -174,15 +197,44 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
 
           retry(
           if(getOption(".RefinitivPyModuleName") =="JSON"){
-          Request <- EikonObject$get_historical_pricing( universe = ChunckedRics[[j]]
-                                                  , interval = interval
-                                                  , start = start
-                                                  , end = end
-                                                  , adjustments = adjustments
-                                                  , count = count
-                                                  , fields = fields
-                                                  , sessions = sessions)
-          Request[[1]]
+            if(CheckifCustomInstrument(ChunckedRics[[j]]) %in% c(FALSE, NA)){
+               Request <- EikonObject$get_historical_pricing( universe = ChunckedRics[[j]]
+                                                             , interval = interval
+                                                             , start = start
+                                                             , end = end
+                                                             , adjustments = adjustments
+                                                             , count = count
+                                                             , fields = fields
+                                                             , sessions = sessions)
+
+            } else {
+               if(interval %in% c("PT1M", "PT5M", "PT10M", "PT30M", "PT60M", "PT1H")){
+                 #intraday
+                 Request <- EikonObject$get_intraday_custominstrument_pricing( universe = ChunckedRics[[j]]
+                                                                , interval = interval
+                                                                , start = start
+                                                                , end = end
+                                                                , adjustments = adjustments
+                                                                , count = count
+                                                                , fields = fields
+                                                                , sessions = sessions)
+
+               } else if(interval %in% c("P1D", "P7D", "P1W", "P1M", "P3M", "P12M", "P1Y")){
+                 #interday
+                 Request <- EikonObject$get_interday_custominstrument_pricing( universe = ChunckedRics[[j]]
+                                                                               , interval = interval
+                                                                               , start = start
+                                                                               , end = end
+                                                                               , adjustments = adjustments
+                                                                               , count = count
+                                                                               , fields = fields
+                                                                               , sessions = sessions)
+
+               } else {
+                stop("the supplied interval cannot be used for this custom instrument")
+              }
+            }
+            Request[[1]]
           } else {
 
 

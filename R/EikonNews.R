@@ -22,13 +22,13 @@
 #' @examples
 #' \dontrun{
 #'  Eikon <- Refinitiv::EikonConnect()
-#'  headlines <- EikonGetNewsHeadlines(EikonObject = Eikon
+#'  headlines <- EikonGetNewsHeadlines( EikonObject = Eikon
 #'                                    , query = "R:MSFT.O", count = 2)
 #' }
 #'
 #' \dontrun{
 #'   EikonJson <- RefinitivJsonConnect()
-#'   headlines <- EikonGetNewsHeadlines(EikonObject = EikonJson, debug = TRUE
+#'   headlines <- EikonGetNewsHeadlines( EikonObject = EikonJson, debug = TRUE
 #'                                     , query = "R:MSFT.O", count = 2)
 #' }
 EikonGetNewsHeadlines <- function(EikonObject = EikonConnect()
@@ -37,11 +37,14 @@ EikonGetNewsHeadlines <- function(EikonObject = EikonConnect()
                                  , date_from = NULL, date_to = NULL
                                  , raw_output = FALSE, debug = FALSE){
 
-  RawHeadlines <- EikonObject$get_news_headlines(query = query, count = as.integer(count),
-                                                    repository = repository
-                                 , date_from = date_from, date_to = date_to
-                                 , raw_output = TRUE
-                                 , debug = debug)
+  RawHeadlines <- EikonObject$get_news_headlines( query = query
+                                                , count = as.integer(count)
+                                                , repository = paste0(repository, collapse = ",")
+                                                , date_from = date_from
+                                                , date_to = date_to
+                                                , raw_output = TRUE
+                                                , debug = debug
+                                                )
 
   if(raw_output){
     return(RawHeadlines)
