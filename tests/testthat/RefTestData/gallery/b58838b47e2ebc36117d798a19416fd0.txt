@@ -1,0 +1,21 @@
+         CentralBankName
+1:   Czech National Bank
+2:   Czech National Bank
+3:   Czech National Bank
+4: Reserve Bank of India
+5: Reserve Bank of India
+6: Reserve Bank of India
+                                                                                       DocumentTitle
+1: Czech Republic, Policy Rates, Repo Rate (2 Week), Reuters Polls, Daily, CNB - Czech National Bank
+2:                     Czech Republic, REPO RATE (2 WEEK) - JP MORGAN, Reuters Polls, Daily, Reuters
+3:                   Czech Republic, REPO RATE (2 WEEK) - FIO HOLDING, Reuters Polls, Daily, Reuters
+4:                       India, Policy Rates, Repo Rate, Reuters Polls, Daily, Reserve Bank of India
+5:               India, Policy Rates, Reverse Repo Rate, Reuters Polls, Daily, Reserve Bank of India
+6:                                       India, Reverse Repo Rate-Low, Reuters Polls, Daily, Reuters
+                  RIC ObservationValue
+1:         CZCBIR=ECI             7.00
+2: pCZCBIR=5000021791             0.50
+3: pCZCBIR=5001179419             0.75
+4:         INREPO=ECI             6.50
+5:         INRREP=ECI             3.35
+6:          pINRREP=L             3.35

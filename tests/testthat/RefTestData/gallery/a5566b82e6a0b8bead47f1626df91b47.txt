@@ -1,0 +1,28 @@
+                                                                                                              DocumentTitle
+1: FLORA EXPRESS, Chemical Tanker, FUYO KAIUN CO LTD, Baja California Sur|Gulf of California|Mexico|West Mexico Tanker Zone
+2:               BOW OPTIMA, Chemical Tanker, ODFJELL MANAGEMENT AS, Gulf of Mexico|US Gulf Tanker Zone|Texas|United States
+3:                                               NORD VOLANTE, Naphtha; Chemical Tanker, Gulf of Mexico|Bahamas Tanker Zone
+4:                                      GALLOP, Chemical Tanker, Louisiana|Gulf of Mexico|US Gulf Tanker Zone|United States
+5:                         FAIRCHEM ANGEL, Chemical Tanker, FAIRFIELD CHEMICAL CARRIERS, Gulf of Mexico|US Gulf Tanker Zone
+6:                                                    FAIRCHEM SUNBIRD, Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone
+              RIC                                            OriginPort
+1: C}KM7309950197 Singapore\\Long Beach and Los Angeles Outer Anchorage
+2: C}KI7309851575            Bayport\\Galveston Outer Anchg North (HOU)
+3: C}KM7310006980                          Huelva\\Miami Passage (test)
+4: C}KM7309844125          South West Pass\\New Orleans Outer Anchorage
+5: C}KN7309849006  Southtex Lightering\\Galveston Anchorages A, B and C
+6: C}KI7309994010    Point Comfort\\Point Comfort Liquid Cargo Terminal
+             DestinationPort      RCSFlagLeaf        AssetName
+1:           MX LAP [La Paz]           Panama    FLORA EXPRESS
+2:           USHOU [Houston]           Norway       BOW OPTIMA
+3:         HOUSTON [Houston]           Panama     NORD VOLANTE
+4: NEW ORLEANS [New Orleans]        Singapore           GALLOP
+5:         FAIRWAY ANCHORAGE Marshall Islands   FAIRCHEM ANGEL
+6:     USPCR>USHOU [Houston] Marshall Islands FAIRCHEM SUNBIRD
+               AISStatus VesselCurrentPortRIC     IMO
+1:                Moored       C}TS7309542985 9903499
+2:                Moored       C}TS7309531803 9818541
+3: Underway Using Engine                 <NA> 9944144
+4:                Moored       C}TS7309531967 9799678
+5:             At Anchor                 <NA> 9809394
+6:             At Anchor                 <NA> 9926568

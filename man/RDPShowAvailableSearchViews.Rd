@@ -17,6 +17,7 @@ Show Available Search Views for seachview parameter in RDPget_search_metadata
 }
 \examples{
 RDPShowAvailableSearchViews(Platform = "JSON")
+RDPShowAvailableSearchViews(Platform = "RD")
 }
 \seealso{
 RDPget_search_metadata

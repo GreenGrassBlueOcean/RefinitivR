@@ -1,0 +1,7 @@
+                RIC ContractType
+1:           AAPL.O         <NA>
+2: AAPLJ202319000.U     Standard
+3: AAPLJ202318500.U     Standard
+4: AAPLJ202320000.U     Standard
+5: AAPLJ202319500.U     Standard
+6: AAPLJ202318000.U     Standard

@@ -146,7 +146,7 @@ GetSearchView <- function(ConnectionObject = RDConnect()
     }
 
 
-  } else if(identical(ConnectionMetaData$name, "JSON")){
+  } else if(ConnectionMetaData$name %in% c("JSON", "testing object")){
     if(SearchView %in% RDPShowAvailableSearchViews(Platform = "JSON")){
       return(SearchView)
     } else{

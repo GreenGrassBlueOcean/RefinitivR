@@ -1,0 +1,14 @@
+                                                              DocumentTitle
+1:                               L'Oreal SA, Ordinary Share, Euronext Paris
+2:                    Shiseido Co Ltd, Ordinary Share, Tokyo Stock Exchange
+3:                           Kao Corp, Ordinary Share, Tokyo Stock Exchange
+4:                      Unicharm Corp, Ordinary Share, Tokyo Stock Exchange
+5: Hindustan Unilever Ltd, Ordinary Share, National Stock Exchange of India
+6:                          Kose Corp, Ordinary Share, Tokyo Stock Exchange
+       RIC       Eps MktCapTotalUsd
+1: OREP.PA  10.90654   226046420010
+2:  4911.T  74.35196    13890909090
+3:  4452.T 137.05283    17280654545
+4:  8113.T 118.80518    21948688045
+5:  HLL.NS  43.81541    71012101922
+6:  4922.T 325.74384     4402649948

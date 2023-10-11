@@ -1,6 +1,6 @@
 testthat::test_that("Check EikonGetTimeseries can handle fields = NULL"
                     , {
-                      Eikon <- check_Eikonapi()
+                      Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
                       CheckTimeSeries <- EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("MMM", "III.L"),
                                                                  fields = NULL,
@@ -26,8 +26,8 @@ testthat::test_that("Check EikonGetTimeseries can handle fields = NULL"
                                                                            , 176.82, 177.65, 179.76, 180.14)
                                                                  , OPEN = c(1108, 1110.5, 1101, 1096.5, 1079.5, 1090.5, 1100, 177.68, 177.02, 177.15, 178.28,
                                                                             178, 181.51, 181.61)
-                                                                 , VOLUME = c(723692L, 717234L, 813990L, 1163565L, 1451744L, 975325L, 2377611L, 3448335L, 2467310L, 1997981L, 2176615L,
-                                                                              2758339L, 2746346L, 2103818L)
+                                                                 , VOLUME = c(723692L, 717234L, 813990L, 1163565L, 1451744L, 975325L, 2377611L, 3448335L
+                                                                             , 2467310L, 1997981L, 2176615L, 2758339L, 2746346L, 2103818L)
                                                                  , COUNT = c(2083L, 1827L, 2309L, 1436L, 2472L, 2283L, 1248L, 34517L, 29347L, 26959L, 26568L, 30889L,
                                                                               25663L, 25691L)), row.names = c(NA, -14L), class = "data.frame")
 

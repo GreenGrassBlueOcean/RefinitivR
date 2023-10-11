@@ -1,0 +1,21 @@
+   BusinessEntity
+1:   ORGANISATION
+2:   QUOTExEQUITY
+3:   QUOTExEQUITY
+4:   QUOTExEQUITY
+5:   QUOTExEQUITY
+6:   QUOTExEQUITY
+                                                                                     DocumentTitle
+1:                                                                       Apple Inc, Public Company
+2:                                    Apple Inc, Ordinary Share, NASDAQ Global Select Consolidated
+3: OPRA Apple Equity Option 190 Call Oct 2023 , Equity Cash Option, Call 190 USD 20-Oct-2023, OPRA
+4: OPRA Apple Equity Option 185 Call Oct 2023 , Equity Cash Option, Call 185 USD 20-Oct-2023, OPRA
+5: OPRA Apple Equity Option 200 Call Oct 2023 , Equity Cash Option, Call 200 USD 20-Oct-2023, OPRA
+6: OPRA Apple Equity Option 195 Call Oct 2023 , Equity Cash Option, Call 195 USD 20-Oct-2023, OPRA
+          PI      PermID              RIC
+1:     41815        <NA>             <NA>
+2:    732611 55838974642           AAPL.O
+3: 662249251 21937413233 AAPLJ202319000.U
+4: 662245043 21937409076 AAPLJ202318500.U
+5: 662247844 21937411853 AAPLJ202320000.U
+6: 662248705 21937412703 AAPLJ202319500.U

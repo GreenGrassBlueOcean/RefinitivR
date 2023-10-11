@@ -134,7 +134,7 @@ EikonTestObject  <- function(testMode  = "replay"){
                                               ,  group_count = NULL, navigators = NULL, features = NULL){
 
                            response <- StoreOrRetrievefromDB( FunctionName = "search"
-                                                              , RealEikonObject = RealEikon
+                                                              , RealEikonObject = RealJson
                                                               , repodir = repodir
                                                               , Input=as.list(match.call(expand.dots=FALSE))
                            )
