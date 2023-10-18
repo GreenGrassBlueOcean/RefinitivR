@@ -304,7 +304,7 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning
   CleanedData <- replaceInList(x$data, function(x)if(is.null(x) || identical(x,"") )NA else x)
   return_DT <- data.table::rbindlist(CleanedData)
 
-  if(!use_field_names_in_headers && "title" %in% names(x$headers[[1]])){
+  if(!is.null(use_field_names_in_headers) && !use_field_names_in_headers && "title" %in% names(x$headers[[1]])){
     headers <- "title"
   } else {
     headers <- "name"

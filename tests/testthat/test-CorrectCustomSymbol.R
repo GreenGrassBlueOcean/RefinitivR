@@ -24,7 +24,11 @@ test_that("CheckifCustomInstrument works", {
   expect_false(CheckifCustomInstrument(symbol = "test" , UUID = "ABCDE-123456"))
   expect_false(CheckifCustomInstrument(symbol = "test.ABCDE-123456" , UUID = "ABCDE-123456"))
   expect_true(CheckifCustomInstrument(symbol = "S)test.ABCDE-123456" , UUID = "ABCDE-123456"))
+  expect_equal(CheckifCustomInstrument(symbol = c("S)test.ABCDE-123456", "AAPL.O") , UUID = "ABCDE-123456")
+               , c(TRUE, FALSE))
 
+  expect_equal(CheckifCustomInstrument(symbol = c("NVDA.O", "AAPL.O") , UUID = "ABCDE-123456")
+               , c(FALSE, FALSE))
 
 })
 

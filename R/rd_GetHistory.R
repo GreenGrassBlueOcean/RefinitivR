@@ -66,7 +66,7 @@
 #'                      ,parameters = list("Scale" = 6,"SDate" = 0
 #'                      ,"EDate" = -3,"FRQ" = "FY", "Curn" = "EUR"))
 #' }
-rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
+rd_GetHistory <- function(RD = RefinitivJsonConnect() # RDConnect()
                          , universe = NULL
                          , fields = NULL
                          , parameters = NULL
@@ -79,10 +79,16 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                          , CleanNames = FALSE
                          , debug = FALSE
                          ){
+  force(RD)
 
   #Check if universe is supplied
   if(is.null(universe)){
     stop("Parameter universe should be supplied and is not")
+  }
+
+  if(is.null(count) && is.null(start) && is.null(end)){
+    message("No count, start or end date supplied, defaulting to count = 20")
+    count <- 20L
   }
 
 
@@ -156,7 +162,7 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     #check if custom Instrument
 
     UUID = getOption(".RefinitivUUID")
-    if(CheckifCustomInstrument(symbol = universe, UUID = UUID)){
+    if(any(CheckifCustomInstrument(symbol = universe, UUID = UUID))){
       stop("Custom Instruments are currently not supported yet in rd_GetHistory using JSON")
     }
 
@@ -164,11 +170,15 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     if(!is.null(fields)){
       GetDataFields <- setdiff(fields, getOption("HistoricalPricingFields")) #in x buy not in Y
       HistorticalPricingFields <- setdiff(fields, GetDataFields)
+      if(identical(HistorticalPricingFields, character(0))){
+        HistorticalPricingFields <- NULL
+      }
     } else {
       GetDataFields <- NULL
       HistorticalPricingFields <- NULL
     }
 
+    GetDataOutput <- HistoricalPricingOutput <- data.table::data.table()
     # If required obtain data from GetData
     if(!is.null(GetDataFields)){
       GetDataOutput <- rd_GetData( RDObject = RD
@@ -181,10 +191,18 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                                  , SpaceConvertor = "."
                                  , use_field_names_in_headers = use_field_names_in_headers
                                  )
+
+
+      GetDataOutput <- data.table::as.data.table(GetDataOutput)[, universe := NULL] |>
+        data.table::melt.data.table(id.vars = c("instrument", "date"))
+      data.table::setnames( GetDataOutput
+                            , old = c("instrument", "date")
+                            , new = c("Instrument", "Date")
+      )
     }
 
     if( is.null(fields) || !is.null(HistorticalPricingFields) ){
-      HistorticalPricingFields <- rd_GetHistoricalPricing( EikonObject = RD
+      HistoricalPricingOutput <- rd_GetHistoricalPricing( EikonObject = RD
                                                          , universe = universe
                                                          , interval = interval
                                                          , start = start
@@ -194,11 +212,22 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                                                          , fields = if(is.null(fields)){NULL}else{HistorticalPricingFields}
                                                          , sessions = NULL
                                                          , debug = debug
-                                                         )
+                                                         ) |> data.table::as.data.table() |>
+        data.table::melt.data.table(id.vars = c("universe", "DATE"))
+
+      data.table::setnames( HistoricalPricingOutput
+                           , old = c("universe", "DATE")
+                           , new = c("Instrument", "Date")
+                           )
     }
 
+    # unify the data
+    browser()
+    Return_DT <- data.table::rbindlist(list(GetDataOutput, HistoricalPricingOutput), use.names = TRUE)
 
-    # split get data and historical pricing
+
+    # unify to return a complete data frame
+    return(data.table::setDF(Return_DT))
 
   } else {
     stop("only RD or JSON are supported for the moment")

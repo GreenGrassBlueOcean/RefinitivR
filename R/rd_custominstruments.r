@@ -195,23 +195,27 @@ CorrectCustomInstrument <- function(symbol, UUID = getOption(".RefinitivUUID")){
 #' @examples
 #' \dontrun{
 #' CheckifCustomInstrument(symbol = "test" , UUID = "ABCDE-123456")
+#' CheckifCustomInstrument(symbol = c("test", 'test2') , UUID = "ABCDE-123456")
 #' CheckifCustomInstrument(symbol = "test.ABCDE-123456" , UUID = "ABCDE-123456")
 #' CheckifCustomInstrument(symbol = "test.ABCDE-123456" , UUID = NULL)
 #' }
 CheckifCustomInstrument <- function(symbol, UUID = getOption(".RefinitivUUID")){
 
-  IsCustomInstrument <- TRUE
   #Check if symbol end with .UUID
   if(!is.null(UUID)){
-    if(!(stringi::stri_endswith(symbol, fixed = paste0(".",UUID)) &
-         stringi::stri_startswith(symbol, fixed = "S)"))){
-      IsCustomInstrument <- FALSE
+    IsCustomInstrument <- lapply(symbol, function(x){
+      if(!(stringi::stri_endswith(x, fixed = paste0(".",UUID)) &
+          stringi::stri_startswith(x, fixed = "S)"))){
+      return(FALSE)
+    } else{
+      return(TRUE)
     }
+    })
   } else{
-    IsCustomInstrument <- NA
+      IsCustomInstrument <- rep(NA, length(symbol))
   }
 
-  return(IsCustomInstrument)
+  return(unlist(IsCustomInstrument))
 }
 
 

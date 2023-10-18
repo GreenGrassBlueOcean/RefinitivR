@@ -155,7 +155,7 @@ EikonTestObject  <- function(testMode  = "replay"){
                                                      , count = NULL
                                                      , use_field_names_in_headers = NULL){
                             response <- StoreOrRetrievefromDB( FunctionName = "get_history"
-                                                                , RealEikonObject = RealRD
+                                                                , RealEikonObject = RealJson
                                                                 , repodir = repodir
                                                                 , Input=as.list(match.call(expand.dots=FALSE))
                              )
