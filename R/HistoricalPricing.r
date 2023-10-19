@@ -2,7 +2,7 @@
 #'
 #' get historical timeseries from the Refinitiv API
 #'
-#' @param EikonObject connection object, defaults to RefinitivJsonConnect()
+#' @param RDObject connection object, defaults to RefinitivJsonConnect()
 #' @param universe The entity universe e.g. RIC name
 #' @param interval The consolidation interval in ISO8601. defaults to P1D, see also details
 #' @param start The start date and timestamp of the query. see also details
@@ -21,7 +21,7 @@
 #'
 #' Additional details on parameters:
 #'
-#'## \strong{EikonObject}:
+#'## \strong{RDObject}:
 #' The support connection objects are:
 #' \itemize{
 #'  \item{JSON:}{ RefinitivJsonConnect}
@@ -117,11 +117,11 @@
 #' \dontrun{
 #' # run with python refinitiv data
 #' Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
-#' , count = 20L, EikonObject = RDConnect())
+#' , count = 20L, RDObject = RDConnect())
 #'
 #' # run with r json
 #' Vodafone2 <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
-#' , count = 20L, EikonObject = RefinitivJsonConnect())
+#' , count = 20L, RDObject = RefinitivJsonConnect())
 #'
 #' identical(Vodafone, Vodafone2)
 #'
@@ -133,13 +133,13 @@
 #' # test for interday
 #'
 #' Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "PT1M", count = 20L
-#' , EikonObject = RefinitivJsonConnect())
+#' , RDObject = RefinitivJsonConnect())
 #'
 #'  # 1 minute - Count - All Sessions
 #'  Vodafone <- rd_GetHistoricalPricing( universe = c("VOD.L", "AAPL.O")
 #'                                     , interval = "PT1M", count = 500L
 #'                                     , sessions= c("pre","normal","post")
-#'                                     , EikonObject = RefinitivJsonConnect())
+#'                                     , RDObject = RefinitivJsonConnect())
 #'
 #'
 #'  # test with custom instrument you need to construct a custom instrument first
@@ -153,7 +153,7 @@
 #'
 #'
 #' }
-rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
+rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
                                    , universe = NULL
                                    , interval = "P1D"
                                    , start = NULL
@@ -164,14 +164,14 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
                                    , sessions = NULL
                                    , debug = FALSE
                                    ){
-   force(EikonObject)
+   force(RDObject)
 
    if(!(getOption(".RefinitivPyModuleName")  %in% c("refinitiv.data", "JSON"))){
-     stop("historical pricing is only available when JSON --> RefinitivJsonConnect() or Python Refinitiv data --> RDConnect() is used as EikonObject")
+     stop("historical pricing is only available when JSON --> RefinitivJsonConnect() or Python Refinitiv data --> RDConnect() is used as RDObject")
    }
 
   # Make sure that Python object has api key and change timeout
-  try(EikonObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
+  try(RDObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
 
   #In case no rics are supplied return nothing
   if(is.null(universe)){
@@ -198,7 +198,7 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
           retry(
           if(getOption(".RefinitivPyModuleName") =="JSON"){
             if(CheckifCustomInstrument(ChunckedRics[[j]]) %in% c(FALSE, NA)){
-               Request <- EikonObject$get_historical_pricing( universe = ChunckedRics[[j]]
+               Request <- RDObject$get_historical_pricing( universe = ChunckedRics[[j]]
                                                              , interval = interval
                                                              , start = start
                                                              , end = end
@@ -210,7 +210,7 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
             } else {
                if(interval %in% c("PT1M", "PT5M", "PT10M", "PT30M", "PT60M", "PT1H")){
                  #intraday
-                 Request <- EikonObject$get_intraday_custominstrument_pricing( universe = ChunckedRics[[j]]
+                 Request <- RDObject$get_intraday_custominstrument_pricing( universe = ChunckedRics[[j]]
                                                                 , interval = interval
                                                                 , start = start
                                                                 , end = end
@@ -221,7 +221,7 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
 
                } else if(interval %in% c("P1D", "P7D", "P1W", "P1M", "P3M", "P12M", "P1Y")){
                  #interday
-                 Request <- EikonObject$get_interday_custominstrument_pricing( universe = ChunckedRics[[j]]
+                 Request <- RDObject$get_interday_custominstrument_pricing( universe = ChunckedRics[[j]]
                                                                                , interval = interval
                                                                                , start = start
                                                                                , end = end
@@ -238,7 +238,7 @@ rd_GetHistoricalPricing <- function( EikonObject = RefinitivJsonConnect()
           } else {
 
 
-            Request <- {EikonObject$content$historical_pricing$summaries$Definition(universe = ChunckedRics[[j]]
+            Request <- {RDObject$content$historical_pricing$summaries$Definition(universe = ChunckedRics[[j]]
                                                          , interval = interval
                                                          , start = start
                                                          , end = end
@@ -314,7 +314,7 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning
   data.table::setnames(x = return_DT, new = headernames)
 
   # add universe
-  if(!("universe" %in% names(return_DT) | "Instrument" %in% names(return_DT))){
+  if(!("universe" %in% tolower(names(return_DT)) | "instrument" %in% tolower(names(return_DT)))){
     universe <- NULL
     return_DT <- return_DT[, universe := x$universe]
     data.table::setcolorder(return_DT,c("universe"))

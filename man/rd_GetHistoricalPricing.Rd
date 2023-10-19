@@ -5,7 +5,7 @@
 \title{GetHistoricalPricing}
 \usage{
 rd_GetHistoricalPricing(
-  EikonObject = RefinitivJsonConnect(),
+  RDObject = RefinitivJsonConnect(),
   universe = NULL,
   interval = "P1D",
   start = NULL,
@@ -18,7 +18,7 @@ rd_GetHistoricalPricing(
 )
 }
 \arguments{
-\item{EikonObject}{connection object, defaults to RefinitivJsonConnect()}
+\item{RDObject}{connection object, defaults to RefinitivJsonConnect()}
 
 \item{universe}{The entity universe e.g. RIC name}
 
@@ -47,7 +47,7 @@ get historical timeseries from the Refinitiv API
 \details{
 Additional details on parameters:
 
-## \strong{EikonObject}:
+## \strong{RDObject}:
 The support connection objects are:
 \itemize{
  \item{JSON:}{ RefinitivJsonConnect}
@@ -142,11 +142,11 @@ together with the status block to indicate the unsupported fields. Currently, th
 \dontrun{
 # run with python refinitiv data
 Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
-, count = 20L, EikonObject = RDConnect())
+, count = 20L, RDObject = RDConnect())
 
 # run with r json
 Vodafone2 <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
-, count = 20L, EikonObject = RefinitivJsonConnect())
+, count = 20L, RDObject = RefinitivJsonConnect())
 
 identical(Vodafone, Vodafone2)
 
@@ -158,13 +158,13 @@ Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D", count 
 # test for interday
 
 Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "PT1M", count = 20L
-, EikonObject = RefinitivJsonConnect())
+, RDObject = RefinitivJsonConnect())
 
  # 1 minute - Count - All Sessions
  Vodafone <- rd_GetHistoricalPricing( universe = c("VOD.L", "AAPL.O")
                                     , interval = "PT1M", count = 500L
                                     , sessions= c("pre","normal","post")
-                                    , EikonObject = RefinitivJsonConnect())
+                                    , RDObject = RefinitivJsonConnect())
 
 
  # test with custom instrument you need to construct a custom instrument first

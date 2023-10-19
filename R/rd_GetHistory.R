@@ -202,7 +202,7 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     }
 
     if( is.null(fields) || !is.null(HistorticalPricingFields) ){
-      HistoricalPricingOutput <- rd_GetHistoricalPricing( EikonObject = RD
+      HistoricalPricingOutput <- rd_GetHistoricalPricing( RDObject = RD
                                                          , universe = universe
                                                          , interval = interval
                                                          , start = start
