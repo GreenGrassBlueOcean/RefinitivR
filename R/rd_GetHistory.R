@@ -66,7 +66,7 @@
 #'                      ,parameters = list("Scale" = 6,"SDate" = 0
 #'                      ,"EDate" = -3,"FRQ" = "FY", "Curn" = "EUR"))
 #' }
-rd_GetHistory <- function(RD = RefinitivJsonConnect() # RDConnect()
+rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                          , universe = NULL
                          , fields = NULL
                          , parameters = NULL
