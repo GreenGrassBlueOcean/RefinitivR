@@ -421,8 +421,10 @@ EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 900
     try(reticulate::use_miniconda(condaenv = "r-eikon"), silent = TRUE)
     PythonEK <- reticulate::import(module = "refinitiv.data.eikon") # import python eikon module
     PythonEK$set_app_key(app_key = .Options$.EikonApiKey)
+    options(py_json = reticulate::import(module = "json"))
     GetandSetPyModuleNameandVersion(PythonEK)
   } else if(identical(.Options$.RefinitivAPI, "JSON")){
+
     PythonEK <- RefinitivJsonConnect()
 
   }

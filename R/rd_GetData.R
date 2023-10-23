@@ -35,21 +35,6 @@
 #'                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
 #'                    )
 #'
-#' # ex2 will return -1 which is most likely not the current market cap of apple")
-#' # a workaround is to scale back the output to millions
-#'
-#' ex2a <- rd_GetData( RDObject = Refinitiv, rics = "AAPL.O"
-#'                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
-#'                    , Parameters = list("scale" = 6)
-#'                    )
-#' # or for more complex formula's
-#' # scale back in the formula itself
-#' ex2b <- rd_GetData( RDObject = Refinitiv, rics = "AAPL.O"
-#'                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D, scale=6)/*Market Cap*/"
-#'                    )
-#' }
-#'
-#'
 #' \dontrun{
 #' EikonJson <- RefinitivJsonConnect()
 #' ex1 <- rd_GetData(RDObject = EikonJson, rics = c("MMM", "III.L"),
@@ -62,7 +47,7 @@ rd_GetData <- function(RDObject, rics, Eikonformulas, Parameters = NULL, raw_out
 
 
   #Make sure that Python object has api key
-  RDObject$set_app_key(app_key = .Options$.EikonApiKey)
+  try(RDObject$set_app_key(app_key = .Options$.EikonApiKey), silent = T)
   # EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on timeout error chance.
 
 
@@ -82,6 +67,8 @@ rd_GetData <- function(RDObject, rics, Eikonformulas, Parameters = NULL, raw_out
     ChunckedRicsTryList <- DownloadCoordinator$index[which(!DownloadCoordinator$succes)]
 
     for (j in ChunckedRicsTryList){
+      if(getOption(".RefinitivPyModuleName") =="JSON"){
+
       #for (j in 1:length(ChunckedRics)) {
       EikonDataList[[j]] <- try({
         retry(RDObject$get_data_rdp( universe = ChunckedRics[[j]]
@@ -90,7 +77,19 @@ rd_GetData <- function(RDObject, rics, Eikonformulas, Parameters = NULL, raw_out
                                    , debug = FALSE, raw_output = TRUE
         ), max = 3)})
 
+      }else{
 
+        EikonDataList[[j]] <- try({
+          retry({Pycall <-  RDObject$content$fundamental_and_reference$Definition(universe = ChunckedRics[[j]]
+                                                                                , fields = as.list(Eikonformulas)
+                                                                                , parameters = Parameters
+                                                                                , use_field_names_in_headers = use_field_names_in_headers
+                                                                                , extended_params = NULL #not implemented yet
+                                                                                )
+                request <- Pycall$get_data()
+                PyJsonConvertor(request$data$raw)
+                }, max = 3)})
+      }
 
       #InspectRequest(df = EikonDataList[[j]], functionname = "EikonGetData", verbose = verbose)
       Sys.sleep(time = 0.01)
@@ -116,11 +115,15 @@ rd_GetData <- function(RDObject, rics, Eikonformulas, Parameters = NULL, raw_out
   if (!raw_output) {
     # Process request and build return data.frame using data.table ----
     # EikonDataList <- lapply(EikonDataList, FUN = function(x){if(all(is.na(x))){return(NULL)} else{return(x)}})
-    ReturnElement <-  data.table::rbindlist(lapply( X =  EikonDataList
+    #if(getOption(".RefinitivPyModuleName") =="JSON"){
+     ReturnElement <-  data.table::rbindlist(lapply( X =  EikonDataList
                                                , FUN =  rd_OutputProcesser
                                                , NA_cleaning = FALSE
                                                , use_field_names_in_headers = use_field_names_in_headers
                                                ), use.names = T, fill = T) |> data.table::setDF()
+    # }else{
+    #   ReturnElement <- data.table::rbindlist(EikonDataList, use.names = T, fill = T) |> data.table::setDF()
+    #}
 
   } else {
     ReturnElement <- EikonDataList

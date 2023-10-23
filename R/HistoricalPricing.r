@@ -236,8 +236,6 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
             }
             Request[[1]]
           } else {
-
-
             Request <- {RDObject$content$historical_pricing$summaries$Definition(universe = ChunckedRics[[j]]
                                                          , interval = interval
                                                          , start = start
@@ -249,7 +247,8 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
 
 
           Request <- Request$get_data()
-          reticulate::py_to_r(Request$data$raw)
+          PyJsonConvertor(Request$data$raw)
+          # reticulate::py_to_r(Request$data$raw)
           }
            )
 
@@ -304,13 +303,33 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning
   CleanedData <- replaceInList(x$data, function(x)if(is.null(x) || identical(x,"") )NA else x)
   return_DT <- data.table::rbindlist(CleanedData)
 
+  # Select the proper column names
   if(!is.null(use_field_names_in_headers) && !use_field_names_in_headers && "title" %in% names(x$headers[[1]])){
-    headers <- "title"
-  } else {
-    headers <- "name"
+    Selectedheader <- "title"
+    headernames <- unlist(x$headers)
+    headernames <- headernames[which(names(headernames) == Selectedheader)]
+  }  else if(!is.null(use_field_names_in_headers) && "displayName" %in% names(x$headers[[1]][[1]])){
+    Selectedheader <- "displayName"
+    x$headers <- x$headers[[1]]
+    headernames <- lapply( X = x$headers
+                         , FUN =  function(x, use_field_names_in_headers){
+                            if(use_field_names_in_headers){
+                               if("field" %in% names(x)){return(x[["field"]])
+                               } else {return(x[["displayName"]])}
+                            } else {return(x[["displayName"]])}
+                           }
+                         , use_field_names_in_headers = use_field_names_in_headers
+                         ) |> unlist()
+
+  }   else {
+    Selectedheader <- "name"
+    headernames <- unlist(x$headers)
+    headernames <- headernames[which(names(headernames) == Selectedheader)]
   }
 
-  headernames <- unlist(lapply(x$headers, function(x) {x[[headers]]}))
+  # set column names
+
+
   data.table::setnames(x = return_DT, new = headernames)
 
   # add universe

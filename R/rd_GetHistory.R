@@ -222,7 +222,6 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     }
 
     # unify the data
-    browser()
     Return_DT <- data.table::rbindlist(list(GetDataOutput, HistoricalPricingOutput), use.names = TRUE)
 
 
