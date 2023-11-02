@@ -80,6 +80,13 @@ EikonGetNewsHeadlines <- function(EikonObject = EikonConnect()
 #'   story_id <- "urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"
 #'   stories <- EikonGetNewsStory(story_id = story_id, EikonObject = Eikon, debug = TRUE)
 #' }
+#'
+#' testinglist <- list( EikonConnect(), check_Eikonapi(ExecutionMode = "Eikon"), RDConnect(), RefinitivJsonConnect())
+#' story_id <- "urn:newsml:newswire.refinitiv.com:20231025:nNRAqewpdh:1"
+#' stories <- vector(mode ="list", length = 4L)
+#' for (i in testinglist){
+#' stories[[i]] <- EikonGetNewsStory(story_id = story_id, EikonObject = i, debug = TRUE, raw_output=T)
+#' }
 EikonGetNewsStory <- function(EikonObject = EikonConnect()
                              , story_id = NULL, raw_output = FALSE, debug=FALSE){
   if(is.null(story_id)){
@@ -94,7 +101,7 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
                                    , retries = rep(0L, length(story_id))
                                                    , stringsAsFactors = FALSE)
 
- while (!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)) {
+ while(!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)){
 
   NewsTryList <- DownloadCoordinator$index[which(!DownloadCoordinator$succes)]
 

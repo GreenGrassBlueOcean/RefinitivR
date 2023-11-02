@@ -42,7 +42,7 @@
 #'              , "TR.CompanyName"), verbose = TRUE)
 #'
 #' }
-rd_GetData <- function(RDObject, rics, Eikonformulas, Parameters = NULL, raw_output = FALSE
+rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, Parameters = NULL, raw_output = FALSE
                        , time_out = 60, verbose = FALSE, SpaceConvertor = ".", use_field_names_in_headers = F){
 
 

@@ -343,7 +343,7 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
     Arglist[[1]] <- NULL
   }
 
-  if("view" %in% names(Arglist)){
+  if("view" %in% names(Arglist) && !is.null(Arglist$view) ){
     Arglist$view <- GetSearchView( ConnectionObject = RDP
                                  , SearchView = Arglist$view)
 
@@ -354,19 +354,19 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
 
  #RD -->  RDP$content$search$Views[[searchView]])
  #RDP --> RDP$SearchViews[[searchView]]
-ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
+ ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
 
-if(identical(ConnectionMetaData$name, "refinitiv.data")){
-  RDP <- RDP$discovery
-}
+ if(identical(ConnectionMetaData$name, "refinitiv.data")){
+   RDP <- RDP$discovery
+ }
 
 
 
-  if("top" %in% names(Arglist)){
+  if("top" %in% names(Arglist) && !is.null(Arglist$top)){
     Arglist$top <- as.numeric(Arglist$top)
   }
 
-  if("group_count" %in% names(Arglist)){
+  if("group_count" %in% names(Arglist) && !is.null(Arglist$group_count) ){
     Arglist$group_count <- as.numeric(Arglist$group_count)
   }
 

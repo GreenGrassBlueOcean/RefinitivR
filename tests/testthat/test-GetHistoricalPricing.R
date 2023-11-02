@@ -90,25 +90,27 @@ test_that("historical pricing delivers identical intraday results", {
                                        )
 
   #expect_equal(intraday, intraday_json) # can never be the same so not tested
+  expected <- list(universe = "character", DATE_TIME = "character", HIGH_1 = "numeric",
+                 LOW_1 = "numeric", OPEN_PRC = "numeric", TRDPRC_1 = "numeric",
+                 NUM_MOVES = "integer", ACVOL_UNS = "integer", HIGH_YLD = "logical",
+                 LOW_YLD = "logical", OPEN_YLD = "logical", YIELD = "logical",
+                 BID_HIGH_1 = "numeric", BID_LOW_1 = "numeric", OPEN_BID = "numeric",
+                 BID = "numeric", BID_NUMMOV = "integer", ASK_HIGH_1 = "numeric",
+                 ASK_LOW_1 = "numeric", OPEN_ASK = "numeric", ASK = "numeric",
+                 ASK_NUMMOV = "integer", MID_HIGH = "numeric", MID_LOW = "numeric",
+                 MID_OPEN = "numeric", MID_PRICE = "numeric")
+  expected <- expected[order(names(expected))]
+
 
   for(i in list(intraday, intraday_json)){
 
     expect_is(i, 'data.frame')
     expect_equal(nrow(i), 40L)
 
-    expect_equal(lapply(i,class)
-                 ,list(universe = "character", DATE_TIME = "character", HIGH_1 = "numeric",
-                       LOW_1 = "numeric", OPEN_PRC = "numeric", TRDPRC_1 = "numeric",
-                       NUM_MOVES = "integer", ACVOL_UNS = "integer", HIGH_YLD = "logical",
-                       LOW_YLD = "logical", OPEN_YLD = "logical", YIELD = "logical",
-                       BID_HIGH_1 = "numeric", BID_LOW_1 = "numeric", OPEN_BID = "numeric",
-                       BID = "numeric", BID_NUMMOV = "integer", ASK_HIGH_1 = "numeric",
-                       ASK_LOW_1 = "numeric", OPEN_ASK = "numeric", ASK = "numeric",
-                       ASK_NUMMOV = "integer", MID_HIGH = "numeric", MID_LOW = "numeric",
-                       MID_OPEN = "numeric", MID_PRICE = "numeric"))
+    actual <- lapply(i,class)
+    actual <- actual[order(names(actual))]
 
-
-
+    expect_equal(names(actual),names(expected))
     expect_equal(sort(unique(i$universe)), c("AAPL.O", "VOD.L"))
   }
 
@@ -133,24 +135,18 @@ test_that("historical pricing delivers identical interday results", {
 
   expect_equal(interday_reorder, interday_json)
 
-  for(i in list(intraday, intraday_json)){
+  expected <- c("universe", "DATE",  fields)
+  expected <- expected[order(expected)]
+
+  for(i in list(interday, interday_json)){
 
   expect_is(i, 'data.frame')
   expect_equal(nrow(i), 40L)
 
-  expect_equal(lapply(i,class)
-               ,list(universe = "character", DATE_TIME = "character", HIGH_1 = "numeric",
-                     LOW_1 = "numeric", OPEN_PRC = "numeric", TRDPRC_1 = "numeric",
-                     NUM_MOVES = "integer", ACVOL_UNS = "integer", HIGH_YLD = "logical",
-                     LOW_YLD = "logical", OPEN_YLD = "logical", YIELD = "logical",
-                     BID_HIGH_1 = "numeric", BID_LOW_1 = "numeric", OPEN_BID = "numeric",
-                     BID = "numeric", BID_NUMMOV = "integer", ASK_HIGH_1 = "numeric",
-                     ASK_LOW_1 = "numeric", OPEN_ASK = "numeric", ASK = "numeric",
-                     ASK_NUMMOV = "integer", MID_HIGH = "numeric", MID_LOW = "numeric",
-                     MID_OPEN = "numeric", MID_PRICE = "numeric"))
+  actual <- names(i)
+  actual <- actual[order(actual)]
 
-
-
+  expect_equal(expected, actual)
   expect_equal(sort(unique(i$universe)), c("AAPL.O", "VOD.L"))
 }
 
