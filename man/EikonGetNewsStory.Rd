@@ -31,13 +31,21 @@ Return a single news story corresponding to the identifier provided in story_id
  EikonJson <- RefinitivJsonConnect()
  headlines <- EikonGetNewsHeadlines(EikonObject = EikonJson
                                    , query = "R:MSFT.O", count = 2)
- stories <- EikonGetNewsStory(story_id = headlines$storyId, EikonObject = EikonJson)
+ stories <- EikonGetNewsStory(story_id = headlines$storyId
+ , EikonObject = EikonJson)
 
 }
 
 \dontrun{
   Eikon <- Refinitiv::EikonConnect()
   story_id <- "urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"
-  stories <- EikonGetNewsStory(story_id = story_id, EikonObject = Eikon, debug = TRUE)
+  stories_RD <- EikonGetNewsStory(story_id = story_id
+  , EikonObject = Eikon, debug = TRUE, raw_output  = FALSE)
+
+  EikonJson <- RefinitivJsonConnect()
+  stories_JSON <- EikonGetNewsStory(story_id = story_id
+  , EikonObject = EikonJson, debug = TRUE, raw_output  = FALSE)
+
+ identical(stories_RD, stories_JSON)
 }
 }

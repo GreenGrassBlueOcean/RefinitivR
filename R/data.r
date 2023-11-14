@@ -24,4 +24,14 @@
 #' @source derived from Reuters Eikon terminal
 "OperatingMicLookup"
 
-
+#' Lookup code for SearchViews to alternate between RD and JSON format SearchViews
+#'
+#' A data.table containing a lookup list from RD SearchViews to JSON SearchViews
+#'
+#' @format A data.table containing:
+#' \describe{
+#'   \item{SearchViews_RD}{SearchViews valid for RD python API}
+#'   \item{SearchViews_JSON_RDP}{SearchViews valid for RDP python API and direct JSON calls}
+#' }
+#' @source Refinitiv Api Documentation
+"SearchViewsLookup"

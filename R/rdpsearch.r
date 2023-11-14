@@ -114,18 +114,22 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, CleanNames = FALSE
 
 
 
-#' GetSearchView Object for RDP search for RD and RDP python libraryt
+#' GetSearchView Object for RDP search for RD and RDP python library
+#'
+#' GetSearchView will also correct if the wrong format is given like RD instead of Json and vise versa.
 #'
 #' @param ConnectionObject RDConnect() or RefinitivJsonConnect()
 #' @param ConnectionMetaData defaults to PropertiesActiveRefinitivObject don't change
 #' @param SearchView searcView Parameter
 #'
+#' @importFrom utils data
 #' @return python searchView object
 #' @keywords internal
 #' @noRd
 #'
 #' @examples
 #' \dontrun{
+#' RDConnect()
 #' GetSearchView(ConnectionObject = RDConnect(), SearchView = "SEARCH_ALL")
 #' }
 GetSearchView <- function(ConnectionObject = RDConnect()
@@ -136,47 +140,41 @@ GetSearchView <- function(ConnectionObject = RDConnect()
     stop("parameter SearchView can not be null in GetSearchView")
   }
 
-
   if(identical(ConnectionMetaData$name, "refinitiv.data")){
 
     if(SearchView %in% RDPShowAvailableSearchViews(Platform = "RD")){
       return(ConnectionObject$content$search$Views[[SearchView]])
-    } else{
-      stop(paste("SearchView:", SearchView, "not available for RD"))
+    } else {
+      SearchViewsLookup <- data("SearchViewsLookup", envir = environment())
+      if(SearchView %in% SearchViewsLookup$SearchViews_JSON_RDP){
+        SearchViews_JSON_RDP <- NULL
+        return(SearchViewsLookup[SearchViews_JSON_RDP == SearchView]$SearchViews_RD)
+      } else {
+        stop(paste("SearchView:", SearchView, "not available for RD"))
+      }
     }
 
 
   } else if(ConnectionMetaData$name %in% c("JSON", "testing object")){
+
     if(SearchView %in% RDPShowAvailableSearchViews(Platform = "JSON")){
       return(SearchView)
-    } else{
-      stop(paste("SearchView:", SearchView, "not available for JSON"))
+    } else {
+      SearchViewsLookup <- data("SearchViewsLookup", envir = environment())
+      if(SearchView %in% SearchViewsLookup$SearchViews_RD ){
+        SearchViews_RD <- NULL
+        return(SearchViewsLookup[SearchViews_RD == SearchView]$SearchViews_JSON_RDP)
+      } else {
+        stop(paste("SearchView:", SearchView, "not available for JSON"))
+      }
     }
 
-  } else{
+  } else {
     stop(paste("GetSearchView only available for RD or JSON but not for:", ConnectionMetaData$name))
   }
 
 }
 
-
-
-
-#' Import The package Custom python utils for handling pre processing python rdp outputs
-#'
-#' @return python module
-#' @keywords  internal
-#'
-#' @examples
-#' utils <- Refinitiv:::ImportCustomPythonutils()
-ImportCustomPythonutils <- function(){
-try(reticulate::use_miniconda(condaenv = "r-eikon"), silent = TRUE)
-refinitiv_utils <- reticulate::import_from_path( module = "refinitiv_utils"
-                                               , convert = F, delay_load = T
-                                               , path =  dirname(system.file("python/utils/refinitiv_utils.py"
-                                                                            , package = "Refinitiv"))
-)
-}
 
 
 #' Get search metadata from RDP
@@ -337,6 +335,7 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
                      ,  group_count = NULL, navigators = NULL, features = NULL
                      , Arglist = list()){
 
+  force(RDP)
   #Build Argument list
   if(!exists("Arglist") || identical(list(),Arglist)){
     Arglist <- as.list(match.call(expand.dots=FALSE))

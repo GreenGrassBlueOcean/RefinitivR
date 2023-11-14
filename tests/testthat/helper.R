@@ -88,6 +88,7 @@ EikonTestObject  <- function(testMode  = "replay"){
 
   #1. Check parameters ----
   stopifnot(testMode  %in% c("write", "replay"))
+
   if(testMode  == "write"){
     RealEikon = Refinitiv::EikonConnect(PythonModule = "RD")
     RealRD = Refinitiv::RDConnect()
@@ -174,7 +175,9 @@ EikonTestObject  <- function(testMode  = "replay"){
                            )
                          }, get_news_story = function( story_id = NULL
                                                      , debug = NULL
+                                                     , raw_output = FALSE
                                                      ) {
+
                            response <- StoreOrRetrievefromDB( FunctionName = "get_news_story"
                                                             , RealEikonObject = RealEikon
                                                             , repodir = repodir

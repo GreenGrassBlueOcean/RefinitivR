@@ -205,12 +205,3 @@ test_that("RDPShowAvailableSearchViews fails when it should",{
 
 })
 
-test_that("ImportCustomPythonutils works",{
-
-  utils <- ImportCustomPythonutils()
-  expect_equal(class(utils), c("python.builtin.module", "python.builtin.object"))
-  expect_equal(names(utils), "split_tupple_list")
-
-})
-
-

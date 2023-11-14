@@ -71,21 +71,22 @@ EikonGetNewsHeadlines <- function(EikonObject = EikonConnect()
 #'  EikonJson <- RefinitivJsonConnect()
 #'  headlines <- EikonGetNewsHeadlines(EikonObject = EikonJson
 #'                                    , query = "R:MSFT.O", count = 2)
-#'  stories <- EikonGetNewsStory(story_id = headlines$storyId, EikonObject = EikonJson)
+#'  stories <- EikonGetNewsStory(story_id = headlines$storyId
+#'  , EikonObject = EikonJson)
 #'
 #' }
 #'
 #' \dontrun{
 #'   Eikon <- Refinitiv::EikonConnect()
 #'   story_id <- "urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"
-#'   stories <- EikonGetNewsStory(story_id = story_id, EikonObject = Eikon, debug = TRUE)
-#' }
+#'   stories_RD <- EikonGetNewsStory(story_id = story_id
+#'   , EikonObject = Eikon, debug = TRUE, raw_output  = FALSE)
 #'
-#' testinglist <- list( EikonConnect(), check_Eikonapi(ExecutionMode = "Eikon"), RDConnect(), RefinitivJsonConnect())
-#' story_id <- "urn:newsml:newswire.refinitiv.com:20231025:nNRAqewpdh:1"
-#' stories <- vector(mode ="list", length = 4L)
-#' for (i in testinglist){
-#' stories[[i]] <- EikonGetNewsStory(story_id = story_id, EikonObject = i, debug = TRUE, raw_output=T)
+#'   EikonJson <- RefinitivJsonConnect()
+#'   stories_JSON <- EikonGetNewsStory(story_id = story_id
+#'   , EikonObject = EikonJson, debug = TRUE, raw_output  = FALSE)
+#'
+#'  identical(stories_RD, stories_JSON)
 #' }
 EikonGetNewsStory <- function(EikonObject = EikonConnect()
                              , story_id = NULL, raw_output = FALSE, debug=FALSE){
@@ -107,7 +108,9 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
 
   for (j in NewsTryList){
     EikonNewsList[[j]] <- try({
-       retry(EikonObject$get_news_story(story_id[j],debug),max =2)})
+       retry(EikonObject$get_news_story(story_id = story_id[j]
+                                       , debug = debug
+                                       , raw_output = raw_output),max =2)})
        Sys.sleep(time = 0.1)
 
   if (!identical(EikonNewsList[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
@@ -132,14 +135,25 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
     dir.create(dir)
     htmlFile <- file.path(dir, "index.html")
 
-    Newslines <- lapply( X = EikonNewsList
+    Returnlines <- lapply( X = EikonNewsList
                        , FUN =  function(x){
                          if(is.list(x)){
-                           return(c( x$story$headlineHtml
-                                 , x$story$storyHtml
-                                 , x$story$storyInfoHtml))
+                           return(#c( x$story$headlineHtml,
+                                  x$story$storyHtml
+                                 #, x$story$storyInfoHtml)
+                                 )
                            } else {return(x)}}
                        ) |> unlist()
+
+    Newslines <- lapply( X = EikonNewsList
+                           , FUN =  function(x){
+                             if(is.list(x)){
+                               return(c( x$story$headlineHtml
+                                       , x$story$storyHtml
+                                       , x$story$storyInfoHtml))
+                             } else {return(x)}}
+    ) |> unlist()
+
     writeLines( Newslines, con = htmlFile)
 
     if (requireNamespace("rstudioapi", quietly = TRUE)
@@ -148,7 +162,9 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
     } else {
       utils::browseURL(htmlFile)
     }
+    return(Returnlines)
   }
+
 
   return(EikonNewsList)
 }

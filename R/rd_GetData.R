@@ -34,7 +34,7 @@
 #' ex2 <- rd_GetData( RDObject = Refinitiv, rics = "AAPL.O"
 #'                    , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
 #'                    )
-#'
+#' }
 #' \dontrun{
 #' EikonJson <- RefinitivJsonConnect()
 #' ex1 <- rd_GetData(RDObject = EikonJson, rics = c("MMM", "III.L"),
