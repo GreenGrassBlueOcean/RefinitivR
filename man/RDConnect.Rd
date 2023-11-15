@@ -2,9 +2,12 @@
 % Please edit documentation in R/refinitiv.r
 \name{RDConnect}
 \alias{RDConnect}
+\alias{RDPConnect}
 \title{RD connection function to refinitiv Data libraries}
 \usage{
 RDConnect(application_id = NA, PythonModule = "JSON", UUID = NA)
+
+RDPConnect(application_id = NA, PythonModule = "JSON", UUID = NA)
 }
 \arguments{
 \item{application_id}{refinitiv data api key}
@@ -18,9 +21,14 @@ RD opbject
 }
 \description{
 RD connection function to refinitiv Data libraries
+
+RDPConnect alias to provide backwards compatability with code written for RDP
 }
 \examples{
 \dontrun{
 rd <- RDConnect(application_id = "your key")
+}
+\dontrun{
+rd <- RDPConnect(application_id = "your key")
 }
 }

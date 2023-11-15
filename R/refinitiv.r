@@ -379,7 +379,7 @@ PropertiesActiveRefinitivObject <- function(verbose = TRUE){
 #' , PythonModule = "RDP")
 #' }
 EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 9000L
-                        , UUID = NA, PythonModule = "RD", TestConnection = FALSE) {
+                        , UUID = NA, PythonModule = "JSON", TestConnection = FALSE) {
 
   # 1. check input ----
   if (is.na(Eikonapplication_id)){
@@ -504,6 +504,15 @@ RDConnect <- function(application_id = NA, PythonModule = "JSON", UUID = NA) {
   }
 }
 
+#' RDPConnect alias to provide backwards compatability with code written for RDP
+#'
+#' @rdname RDConnect
+#' @examples
+#' \dontrun{
+#' rd <- RDPConnect(application_id = "your key")
+#' }
+#' @export
+RDPConnect <- RDConnect
 
 
 #' Show the attributes of the Python Eikon

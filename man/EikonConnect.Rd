@@ -8,7 +8,7 @@ EikonConnect(
   Eikonapplication_id = NA,
   Eikonapplication_port = 9000L,
   UUID = NA,
-  PythonModule = "RD",
+  PythonModule = "JSON",
   TestConnection = FALSE
 )
 }
