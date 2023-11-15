@@ -13,15 +13,15 @@ EikonConnect(
 )
 }
 \arguments{
-\item{Eikonapplication_id}{eikon api key}
+\item{Eikonapplication_id}{Eikon api key}
 
 \item{Eikonapplication_port}{proxy port id}
 
-\item{UUID}{optional character parameter for custom instruments, not necessairy for regular requests}
+\item{UUID}{optional character parameter for custom instruments, not necessary for regular requests}
 
 \item{PythonModule}{character choose between Eikon (python),RDP (python),JSON (direct JSON message without python)}
 
-\item{TestConnection}{boolean, TRUE or FALSE test connection after initiating contact with Eikon terminal}
+\item{TestConnection}{Boolean, TRUE or FALSE test connection after initiating contact with Eikon terminal}
 }
 \value{
 a Python module that is an EikonObject

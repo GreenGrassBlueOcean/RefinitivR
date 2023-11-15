@@ -357,15 +357,15 @@ PropertiesActiveRefinitivObject <- function(verbose = TRUE){
 }
 
 
-# Initialize eikon Python api using reticulate -------------------------------
+# Initialize Eikon Python api using reticulate -------------------------------
 
 #' Initialize Eikon Python api
 #'
 #' @param Eikonapplication_port proxy port id
-#' @param Eikonapplication_id eikon api key
+#' @param Eikonapplication_id Eikon api key
 #' @param PythonModule character choose between Eikon (python),RDP (python),JSON (direct JSON message without python)
-#' @param TestConnection boolean, TRUE or FALSE test connection after initiating contact with Eikon terminal
-#' @param UUID optional character parameter for custom instruments, not necessairy for regular requests
+#' @param TestConnection Boolean, TRUE or FALSE test connection after initiating contact with Eikon terminal
+#' @param UUID optional character parameter for custom instruments, not necessary for regular requests
 #'
 #' @return a Python module that is an EikonObject
 #' @export
@@ -443,15 +443,16 @@ EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 900
 #'
 #' @param application_id refinitiv data api key
 #' @param PythonModule character "JSON" or "RD"
+#' @param UUID optional character parameter for custom instruments, not necessary for regular requests
 #'
-#' @return rdp opbject
+#' @return RD opbject
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' rd <- RDConnect(application_id = "your key")
 #' }
-RDConnect <- function(application_id = NA, PythonModule = "RD") {
+RDConnect <- function(application_id = NA, PythonModule = "JSON", UUID = NA) {
 
   # 1. check input ----
   if (is.na(application_id)){
@@ -463,6 +464,14 @@ RDConnect <- function(application_id = NA, PythonModule = "RD") {
     stop(paste("RDConnect parameter PythonModule can only be RD (python) or JSON (direct JSON message) but is"
                , PythonModule))
   }
+
+  if (is.na(UUID)){
+    try(UUID <- getOption(".RefinitivUUID") )
+  }
+
+  #Set options for furture use
+  options(.RefinitivAPI = PythonModule)
+  options(.RefinitivUUID = UUID)
 
 
   if(PythonModule == "JSON"){
@@ -478,7 +487,7 @@ RDConnect <- function(application_id = NA, PythonModule = "RD") {
     if(is.null(application_id)){stop("Please supply application_id")}
   }
 
-  if(!CondaExists()){stop("Conda/reticulate does not seem to be available please run install_eikon")}
+  if(!CondaExists()){stop("Conda/reticulate does not seem to be available please run install_eikon or change parameter PythonModule to 'JSON'")}
 
 
 

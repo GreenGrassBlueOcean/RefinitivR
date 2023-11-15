@@ -121,7 +121,7 @@ rd_check_proxy_url <- function(port = 9060, debug = TRUE){
 #' # start stream
 #' EUR_stream$connect()
 #' # stop stream
-#' OMM_ws$close()
+#' EUR_stream$close()
 #' }
 create_OMM_Stream <- function(name = "EUR="
                              #, api
