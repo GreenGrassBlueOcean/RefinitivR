@@ -162,7 +162,7 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     #check if custom Instrument
 
     UUID = getOption(".RefinitivUUID")
-    if(any(CheckifCustomInstrument(symbol = universe, UUID = UUID))){
+    if(!is.null(UUID) &&  any(CheckifCustomInstrument(symbol = universe, UUID = UUID))){
       stop("Custom Instruments are currently not supported yet in rd_GetHistory using JSON")
     }
 
