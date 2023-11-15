@@ -198,7 +198,7 @@ EUR_stream <- OMM_ws$new(name = "EUR=", fields = c("BID","ASK","OPEN_PRC"))
 # start stream
 EUR_stream$connect()
 # stop stream
-OMM_ws$close()
+EUR_stream$close()
 ```
 
 # Working with the Legacy Eikon functions
