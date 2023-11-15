@@ -117,6 +117,89 @@ Vodafone <- rd_GetHistoricalPricing( universe = c("VOD.L", "AAPL.O")
                                    )
 ```
 
+## Custom Instruments
+
+### Connecting for Custom Instruments
+
+1. Custom Instruments can only be created using JSON connection method.
+1. UUID Parameter: Eikon UUID can be found here: Eikon Terminal --> help --> about --> user details: UUID e.g. ABCDE-123456
+
+```r
+RDConnect(application_id = NA, PythonModule = "JSON", UUID = "ABCDE-123456")
+```
+
+
+### Create a Simple Instrument:
+```r
+rd_ManageCustomInstruments( operation = "CREATE", symbol = "testAAPLandAMZN"
+                          , formula = "AAPL.O + AMZN.O")
+```
+Get instrument details
+```r
+rd_ManageCustomInstruments(operation = "GET", symbol = "testAAPLandAMZN")
+```
+Update Instrument formula
+```r
+rd_ManageCustomInstruments( operation = "UPDATE", symbol = "testAAPLandAMZN"
+                          , formula = "AAPL.O + 2 * AMZN.O")
+```
+Delete
+```r
+rd_ManageCustomInstruments(operation = "DELETE", symbol = "testAAPLandAMZN")
+```
+
+### Build a custom instrument out of a basket of instruments
+Build the basket:
+```r
+basket <- CustomInstrumentBasketBuilder(RICs = c("AAPL.O", "AMZN.O"), Weights = c(0.5, 0.5))
+```
+Create a custom instrument with the basket":
+```r
+rd_ManageCustomInstruments(operation = "CREATE", symbol = "InterestingBasket",
+                               basket = basket, currency = "USD")
+```
+Create holidays for the instrument:
+```r
+holidays <-  CustomInstrumentHolidayBuilder( dates = c("2023-12-01", "2023-12-31")
+                                           , reasons = c("Special Bank Holiday 1"
+                                                       , "Special Bank Holiday 2")
+                                           )
+```
+Update the basket with some holidays:
+```r
+rd_ManageCustomInstruments(operation = "UPDATE", symbol = "InterestingBasket",
+                           holidays = holidays )
+```
+Delete instrument:
+```r
+rd_ManageCustomInstruments(operation = "DELETE", symbol = "InterestingBasket")
+```
+
+### Useful add on functions
+
+List all created and active custom instruments:
+```r
+AllActiveCustomInstruments <- rd_SearchCustomInstruments()
+```
+
+Custom instruments come in very specific RIC format. 
+To ease the use of the package RefinitivR create this specific format for you.
+The following formula allows to retrieve the official custom instrument name (RIC).
+
+```r
+RealInstrumentName <- CorrectCustomInstrument("InterestingBasket")
+```
+## OMM streaming (beta version will still change in future)
+
+Create streaming object
+```r
+OMM_ws <- create_OMM_Stream()
+EUR_stream <- OMM_ws$new(name = "EUR=", fields = c("BID","ASK","OPEN_PRC"))
+# start stream
+EUR_stream$connect()
+# stop stream
+OMM_ws$close()
+```
 
 # Working with the Legacy Eikon functions
 
@@ -202,7 +285,9 @@ ex2b <- EikonGetData( EikonObject = Eikon, rics = "AAPl.O"
                     )
  ```
 
-## Performing a DataStream request
+
+
+# DataStream
 
 ```r
 DatastreamUserName <- "Your datastream username"
