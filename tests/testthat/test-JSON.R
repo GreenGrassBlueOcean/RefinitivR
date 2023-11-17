@@ -35,6 +35,17 @@ test_that("jsonDataGridConstructor works with complex request", {
   expect_equal(TestOutcome, CorrectOutcome)
 })
 
+
+test_that("jsonDataGridConstructor works with parameters as empty list", {
+payload <- list(universe = "AAPL.O", fields = c("TR.Revenue", "TR.GrossProfit") , parameters = list())
+TestOutcome <- jsonDataGridConstructor(payload)
+
+CorrectOutcome <- "{ \"universe\" : [ \"AAPL.O\" ] , \"fields\" : [ \"TR.Revenue\",\"TR.GrossProfit\" ] }"
+expect_equal(TestOutcome, CorrectOutcome)
+})
+
+
+
 test_that("RefinitivJsonConnect does not work without application id", {
 
   originalOptionValue = getOption(".EikonApiKey")

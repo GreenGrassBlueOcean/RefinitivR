@@ -58,22 +58,32 @@ Escaper <- function(x){
 #' payload <- list(universe = "AAPL.O", fields = c("BID", "ASK"))
 #' payload <- list(universe = "AAPL.O", fields = c("TR.Revenue", "TR.GrossProfit")
 #' , parameters = list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01"))
+#' payload <- list(universe = "AAPL.O", fields = c("TR.Revenue", "TR.GrossProfit") , parameters = list())
 #' jsonDataGridConstructor(payload)
 jsonDataGridConstructor <- function(payload){
 
+  if( "parameters" %in% names(payload)){
+    if(length(payload[["parameters"]]) == 0 ){
+      payload[["parameters"]] <- NULL
+    }
+  }
+
 
   body <- paste("{", paste(lapply( X = 1: length(payload)
-                                   , function(x, payload){if(names(payload)[x] != "parameters"){
+                                   , function(x, payload){
+                                                          if(names(payload)[x] != "parameters"  ){
+
                                                            return(paste(Escaper(names(payload)[x]), ": [", paste(lapply(X = payload[[x]], Escaper), collapse = ",") ,"]"))
                                                           } else {
-                                                            parameterlist <- lapply(X = 1:length(payload[x][[1]])
-                                                                                  , FUN = function(x, parameters){paste(Escaper(names(parameters)[x]), ":" , Escaper(parameters[x]))}
-                                                                                  , parameters = payload[x][[1]])
-                                                            parameterstring <- paste(Escaper(names(payload)[x]),  ": {", paste(parameterlist, collapse = " , "), "}")
-                                                            return(parameterstring)
-
-                                     }}
-                                   , payload = payload) , collapse = " , ") , "}" )
+                                                              parameterlist <- lapply(X = 1:length(payload[x][[1]])
+                                                                                     , FUN = function(x, parameters){paste(Escaper(names(parameters)[x]), ":" , Escaper(parameters[x]))}
+                                                                                     , parameters = payload[x][[1]])
+                                                              parameterstring <- paste(Escaper(names(payload)[x]),  ": {", paste(parameterlist, collapse = " , "), "}")
+                                                              return(parameterstring)
+                                                          }
+                                     }
+                                   , payload = payload)
+                           , collapse = " , ") , "}" )
 
   return(body)
 }
