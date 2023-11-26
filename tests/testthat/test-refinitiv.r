@@ -491,7 +491,6 @@ test_that("EikonGetData can handle long requests gracefully", {
 
   Eikon <- check_Eikonapi()
 
-
  fields <- c("CURRENCY","TR.AvgDailyVolume6M","TR.InstrumentType","TR.ExchangeName","CF_EXCHNG","TR.ExchangeMarketIdCode","TR.InstrumentIsActive")
 
  Rics <- c("UMI.BR","UMIEUR.xbo","0RUY.L","NVJP.F","UMIb.BS","NVJP.DE","UMIb.CHI","UMIb.TQ","UMICF.PK","NVJP.BE","NVJP.SG","NVJP.MU","NVJP.H","NVJP.D","UMIN.MX","UMIb.ED","UMI.VI","UMIb.SIG","UMI.BN","UMI.xt"
