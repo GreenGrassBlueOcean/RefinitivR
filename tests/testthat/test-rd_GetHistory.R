@@ -195,6 +195,7 @@ test_that("rd_GetHistory can handle with fields and dates", {
 
 test_that("rd_GetHistory will not handle requests ", {
 
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
   universe = c("GOOG.O","MSFT.O")
   fields =  c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
   parameters = list("Scale" = 6,"SDate" = 0,"EDate" = -3
@@ -213,7 +214,7 @@ test_that("rd_GetHistory will not handle requests ", {
 
 test_that("rd_GetHistory will handle requests with multiple instruments and one field",{
 
-
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
   timeseries1_python <-  rd_GetHistory(universe=c("AAPL.O", "NVDA.O")
                                       , fields = "TR.ClosePrice"
                                       , RD = RDConnect(PythonModule = "RD")
@@ -234,7 +235,7 @@ test_that("rd_GetHistory will handle requests with multiple instruments and one 
 
 test_that("rd_GetHistory will handle requests with one instruments and multiple fields",{
 
-
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
   timeseries2_python <-  rd_GetHistory(universe=c("AAPL.O")
                                        , fields = c("TR.ClosePrice", "TR.OpenPrice")
                                        , RD = RDConnect(PythonModule = "RD")

@@ -871,7 +871,7 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 EikonGetData <- function(EikonObject, rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60, verbose = FALSE, SpaceConvertor = "."){
 
 #Make sure that Python object has api key
-EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
+try(EikonObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
 # EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on timeout error chance.
 
 
@@ -1000,7 +1000,7 @@ EikonGetSymbology <- function( EikonObject, symbol, from_symbol_type = "RIC", to
                                , bestMatch = TRUE, time_out = 60, verbose = FALSE, raw_output = FALSE){
 
   #Make sure that Python object has api key
-  EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
+  try(EikonObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
 
   # Divide symbols in chunks to satisfy api limits
   ChunckedSymbols <- EikonChunker(RICS = symbol, Eikonfields = to_symbol_type)
