@@ -16,7 +16,7 @@ test_that("historical pricing delivers identical results", {
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
 
   Vodafone <- rd_GetHistoricalPricing( universe = "VOD.L", interval = "P1D"
-                                      , count = 20L, RDObject = RDConnect()
+                                      , count = 20L, RDObject = RDConnect(PythonModule = "RD")
                                       , fields = c("universe", "DATE", "TRDPRC_1", "MKT_HIGH", "MKT_LOW", "ACVOL_UNS",
                                           "MKT_OPEN", "BID", "ASK", "TRNOVR_UNS", "VWAP", "MID_PRICE",
                                           "PERATIO", "ORDBK_VOL", "NUM_MOVES", "IND_AUCVOL", "OFFBK_VOL",
@@ -30,17 +30,18 @@ test_that("historical pricing delivers identical results", {
   expect_equal(nrow(Vodafone), 20L)
 
 
-  expected <- list(universe = "character", DATE = "character", TRDPRC_1 = "numeric",
-                   MKT_HIGH = "numeric", MKT_LOW = "numeric", ACVOL_UNS = "integer",
-                   MKT_OPEN = "numeric", BID = "numeric", ASK = "numeric", TRNOVR_UNS = "numeric",
-                   VWAP = "numeric", MID_PRICE = "numeric", PERATIO = "numeric",
-                   ORDBK_VOL = "integer", NUM_MOVES = "integer", IND_AUCVOL = "integer",
-                   OFFBK_VOL = "integer", HIGH_1 = "numeric", ORDBK_VWAP = "numeric",
-                   IND_AUC = "numeric", OPEN_PRC = "numeric", LOW_1 = "numeric",
-                   OFF_CLOSE = "numeric", CLS_AUCVOL = "integer", OPN_AUCVOL = "integer",
-                   OPN_AUC = "numeric", CLS_AUC = "numeric", TRD_STATUS = "integer",
-                   INT_AUC = "numeric", INT_AUCVOL = "integer", EX_VOL_UNS = "integer",
-                   ALL_C_MOVE = "integer", ELG_NUMMOV = "integer", NAVALUE = "logical")
+  expected <- list(ACVOL_UNS = "integer", ALL_C_MOVE = "integer", ASK = "numeric",
+                   BID = "numeric", CLS_AUC = "numeric", CLS_AUCVOL = "integer",
+                   Date = "Date", ELG_NUMMOV = "integer", EX_VOL_UNS = "integer",
+                   HIGH_1 = "numeric", IND_AUC = "numeric", IND_AUCVOL = "integer",
+                   INT_AUC = "numeric", INT_AUCVOL = "integer", LOW_1 = "numeric",
+                   MID_PRICE = "numeric", MKT_HIGH = "numeric", MKT_LOW = "numeric",
+                   MKT_OPEN = "numeric", NAVALUE = "logical", NUM_MOVES = "integer",
+                   OFF_CLOSE = "numeric", OFFBK_VOL = "integer", OPEN_PRC = "numeric",
+                   OPN_AUC = "numeric", OPN_AUCVOL = "integer", ORDBK_VOL = "integer",
+                   ORDBK_VWAP = "numeric", PERATIO = "numeric", TRD_STATUS = "integer",
+                   TRDPRC_1 = "numeric", TRNOVR_UNS = "numeric", universe = "character",
+                   VWAP = "numeric")
   expected <- expected[order(names(expected))]
 
   actual <- lapply(Vodafone,class)
@@ -77,7 +78,7 @@ test_that("historical pricing delivers identical intraday results", {
                                                     "HIGH_YLD", "LOW_YLD", "OPEN_YLD", "YIELD", "BID_HIGH_1", "BID_LOW_1",
                                                     "OPEN_BID", "BID", "BID_NUMMOV", "ASK_HIGH_1", "ASK_LOW_1", "OPEN_ASK",
                                                     "ASK", "ASK_NUMMOV", "MID_HIGH", "MID_LOW", "MID_OPEN", "MID_PRICE")
-                                     , RDObject = RDConnect())
+                                     , RDObject = RDConnect(PythonModule = "RD"))
 
   intraday_json <- rd_GetHistoricalPricing( universe = c("VOD.L", "AAPL.O")
                                        , interval = "PT1M", count = 20L
@@ -123,7 +124,7 @@ test_that("historical pricing delivers identical interday results", {
 
   fields <- c("BID","ASK","OPEN_PRC","HIGH_1","LOW_1","TRDPRC_1","NUM_MOVES","TRNOVR_UNS")
 
-  interday <- rd_GetHistoricalPricing(universe = c("VOD.L", "AAPL.O"), interval = "P1D", count = 20L, RDObject = RDConnect()
+  interday <- rd_GetHistoricalPricing(universe = c("VOD.L", "AAPL.O"), interval = "P1D", count = 20L, RDObject = RDConnect(PythonModule = "RD")
                                      , fields = fields )
 
   interday_json <- rd_GetHistoricalPricing(universe = c("VOD.L", "AAPL.O"), interval = "P1D", count = 20L
@@ -131,11 +132,11 @@ test_that("historical pricing delivers identical interday results", {
                                            , RDObject = RefinitivJsonConnect())
 
 
-  interday_reorder <- interday[,match(c("universe", "DATE", fields), colnames(interday))]
+  interday_reorder <- interday[,match(c("universe", "Date", fields), colnames(interday))]
 
   expect_equal(interday_reorder, interday_json)
 
-  expected <- c("universe", "DATE",  fields)
+  expected <- c("universe", "Date",  fields)
   expected <- expected[order(expected)]
 
   for(i in list(interday, interday_json)){

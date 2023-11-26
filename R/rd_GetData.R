@@ -17,6 +17,7 @@
 #' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."
 #' @param RDObject Refinitiv Data connection object
 #' @param use_field_names_in_headers boolean return request fieldnames in stead of titles
+#' @param SyncFields boolean, synchronize fields over same time axis (only JSON!, because not supported in Python (use GetHistory))
 #'
 #' @return a data.frame containing data.from Eikon
 #' @importFrom utils capture.output
@@ -26,7 +27,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' Refinitiv <- Refinitiv::RDConnect()
+#' Refinitiv <- RDConnect(PythonModule = "RD")
 #' ex1 <- rd_GetData(RDObject = Refinitiv, rics = c("MMM", "III.L"),
 #'              Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
 #'              , "TR.CompanyName"), verbose = TRUE)
@@ -36,14 +37,15 @@
 #'                    )
 #' }
 #' \dontrun{
-#' EikonJson <- RefinitivJsonConnect()
-#' ex1 <- rd_GetData(RDObject = EikonJson, rics = c("MMM", "III.L"),
+#' Refinitiv <- RDConnect(PythonModule = "JSON")
+#' ex1 <- rd_GetData(RDObject = Refinitiv, rics = c("MMM", "III.L"),
 #'              Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
 #'              , "TR.CompanyName"), verbose = TRUE)
 #'
 #' }
+#'
 rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, Parameters = NULL, raw_output = FALSE
-                       , time_out = 60, verbose = FALSE, SpaceConvertor = ".", use_field_names_in_headers = F){
+                       , time_out = 60, verbose = FALSE, SpaceConvertor = ".", use_field_names_in_headers = F, SyncFields = FALSE){
 
 
   #Make sure that Python object has api key
@@ -58,9 +60,9 @@ rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, P
   EikonDataList <- as.list(rep(NA, times = length(ChunckedRics)))
 
   DownloadCoordinator <- data.frame( index = 1:length(ChunckedRics)
-                                     , succes =  rep(FALSE, length(ChunckedRics))
-                                     , retries = rep(0L, length(ChunckedRics), stringsAsFactors = FALSE)
-  )
+                                   , succes =  rep(FALSE, length(ChunckedRics))
+                                   , retries = rep(0L, length(ChunckedRics), stringsAsFactors = FALSE)
+                                   )
 
   while (!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)  ) {
 
@@ -71,23 +73,31 @@ rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, P
 
       #for (j in 1:length(ChunckedRics)) {
       EikonDataList[[j]] <- try({
-        retry(RDObject$get_data_rdp( universe = ChunckedRics[[j]]
+        retry(RDObject$get_data( instruments = ChunckedRics[[j]]
                                    , fields = as.list(Eikonformulas)
                                    , parameters = Parameters
+                                   , SyncFields = SyncFields
                                    , debug = FALSE, raw_output = TRUE
         ), max = 3)})
 
       }else{
 
+        if(!isFALSE(SyncFields)){
+          warning("Parameter SyncFields can only be used in JSON and is therefore ignored")
+        }
+
         EikonDataList[[j]] <- try({
-          retry({Pycall <-  RDObject$content$fundamental_and_reference$Definition(universe = ChunckedRics[[j]]
-                                                                                , fields = as.list(Eikonformulas)
-                                                                                , parameters = Parameters
-                                                                                , use_field_names_in_headers = use_field_names_in_headers
-                                                                                , extended_params = NULL #not implemented yet
-                                                                                )
-                request <- Pycall$get_data()
-                PyJsonConvertor(request$data$raw)
+          retry({#Pycall <- RDObject$content$fundamental_and_reference$Definition(universe = ChunckedRics[[j]]
+            Pycall <- RDObject$get_data( universe = ChunckedRics[[j]]
+                                       , fields = as.list(Eikonformulas)
+                                       , parameters = Parameters
+                                       , use_field_names_in_headers = use_field_names_in_headers
+                                       #, extended_params = NULL #not implemented yet
+                                       )
+
+                #request <- Pycall$get_data()
+                request <- Pycall$to_json(date_format = "ms")
+                #PyJsonConvertor(request$data$raw)
                 }, max = 3)})
       }
 
@@ -113,17 +123,23 @@ rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, P
 
 
   if (!raw_output) {
+
     # Process request and build return data.frame using data.table ----
-    # EikonDataList <- lapply(EikonDataList, FUN = function(x){if(all(is.na(x))){return(NULL)} else{return(x)}})
-    #if(getOption(".RefinitivPyModuleName") =="JSON"){
-     ReturnElement <-  data.table::rbindlist(lapply( X =  EikonDataList
-                                               , FUN =  rd_OutputProcesser
-                                               , NA_cleaning = FALSE
-                                               , use_field_names_in_headers = use_field_names_in_headers
-                                               ), use.names = T, fill = T) |> data.table::setDF()
-    # }else{
-    #   ReturnElement <- data.table::rbindlist(EikonDataList, use.names = T, fill = T) |> data.table::setDF()
-    #}
+    if(getOption(".RefinitivPyModuleName") =="refinitiv.data"){
+      ReturnList <-  lapply( X =  EikonDataList
+                           , FUN =  Process_RDP_output
+                           , RemoveNA = FALSE
+                           , CleanNames = FALSE
+                           )
+    }
+    if(getOption(".RefinitivPyModuleName") =="JSON"){
+      ReturnList <-  lapply( X =  EikonDataList
+                           , FUN =  rd_OutputProcesser
+                           , NA_cleaning = FALSE
+                           , use_field_names_in_headers = use_field_names_in_headers
+                           )
+    }
+    ReturnElement <- data.table::rbindlist(ReturnList, use.names = T, fill = T) |> data.table::setDF()
 
   } else {
     ReturnElement <- EikonDataList

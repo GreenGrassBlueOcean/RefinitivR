@@ -16,8 +16,12 @@ json_builder <- function(directions, payload) {
   list('Entity' = list('E' = directions, 'W' = payload))
 
 }
-
-
+#
+#
+# 'layout' = list("columns" = list(list("item" = "dataitem")), "rows" = list(list('item'= 'instrument'), list('item'= 'date')) )
+#
+#
+# 'layout': {'columns': [{'item': 'dataitem'}], 'rows': [{'item': 'instrument'}, {'item': 'date'}]}}]}}
 
 
 #' Escape characters for use in json strings
@@ -174,7 +178,7 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
 #'                json <- json_builder(directions, payload)
 #'                print(json)
 #'                send_json_request(json)
-send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, request_type = "POST", EndPoint = NULL, url = NULL, apikey = getOption(".EikonApiKey")) {
+send_json_request <- function(json=NULL, service = "eikon", debug = TRUE, request_type = "POST", EndPoint = NULL, url = NULL, apikey = getOption(".EikonApiKey")) {
 
   # 0. url manipulation ----
   if(is.null(url)){
@@ -193,10 +197,10 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
 
   # 2. post or het request ----
   counter <- 0
-  results <- data.frame()
-  while (TRUE & counter < 2){
-    if(toupper(request_type) == "POST"){
+  results <- NA
 
+  while (TRUE & counter < 3){
+    if(toupper(request_type) == "POST"){
       query <- httr2::request(base_url = Request_url) |>
         httr2::req_headers('x-tr-applicationid' = apikey) |>
         httr2::req_headers('Content-Type' = 'application/json') |>
@@ -265,9 +269,14 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
           Sys.sleep(5)
           counter <- counter + 1
         } else if(is.numeric(tryresults$estimatedDuration)){
-          WaitTime <- tryresults$estimatedDuration/1000
-          print(paste("request not ready, server is asking to wait for",WaitTime, "seconds so waiting patiently"))
-          ifelse(WaitTime <= 60, Sys.sleep(WaitTime),Sys.sleep(60)) # maximize waiting time to 60 seconds, not waiting for more than 60 seconds for server response
+          WaitTime <- NULL
+          WaitTime <- try(tryresults$estimatedDuration/1000, silent = TRUE)
+          message(paste("request not ready, server is asking to wait for",WaitTime, "seconds so waiting patiently"))
+          if(!is.null(WaitTime) && WaitTime <= 60){
+            Sys.sleep(WaitTime)
+          } else {
+            Sys.sleep(60)
+          }# maximize waiting time to 60 seconds, not waiting for more than 60 seconds for server response
           counter <- counter + 1
         } else {
          stop(paste0("Error code: ", tryresults$ErrorCode, " ", tryresults$ErrorMessage))
@@ -277,7 +286,7 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
        break
     }
     } else { break
-             results <- NULL}
+             results <- NA}
 }
   results
 }
@@ -287,6 +296,7 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
 #' return element as a list even it is not a list
 #'
 #' @param x anything
+#' @param ElementNames character with length 1
 #'
 #' @return list
 #'
@@ -294,17 +304,17 @@ send_json_request <- function(json=NULL, service = "eikon", debug = FALSE, reque
 #' @noRd
 #'
 #' @examples
-#' jsonlistbuilder(x = "a")
-#' jsonlistbuilder(x = list("a"))
-jsonlistbuilder <- function(x){
+#' JsonListBuilder(x = "a")
+#' JsonListBuilder(x = list("a"))
+JsonListBuilder <- function(x){
   if (length(x)==1 & !is.list(x)){
-    return(list(x))
+    ReturnList <- list(x)
   } else{
-    return(x)
+    ReturnList <- x
   }
+
+  return(ReturnList)
 }
-
-
 
 
 
@@ -346,8 +356,8 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                            directions = 'TimeSeries'
                                            # Builds the payload to be sent
                                            payload <- NULL
-                                           payload <- list( 'rics' = jsonlistbuilder(rics)
-                                                          , 'fields' = jsonlistbuilder(fields)
+                                           payload <- list( 'rics' = JsonListBuilder(rics)
+                                                          , 'fields' = JsonListBuilder(fields)
                                                           , 'interval' = interval
                                                           , 'calender' = calendar
                                                           , 'corax' = corax
@@ -356,45 +366,71 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                                           )
                                          json <- json_builder(directions, payload)
                                          return(send_json_request(json))}
-                        , get_data = function( instruments, fields, parameters = NULL
+                        , get_data = function( instruments, fields, parameters = NULL, SyncFields = FALSE
                                               , debug, raw_output){
                                          payload <- NULL
                                          directions <- 'DataGrid_StandardAsync'
-                                         if(!is.null(parameters)){
-                                           payload <- list(
-                                             'requests' = list(
-                                               list(
-                                                 'instruments' = jsonlistbuilder(instruments),
+                                         # if(!is.null(parameters)){
+                                         #   payload <- list(
+                                         #     'requests' = list(
+                                         #       list(
+                                         #         'instruments' = JsonListBuilder(instruments),
+                                         #         'fields' = lapply(fields, function(x){list("name" = x)}),
+                                         #         'parameters' = parameters,
+                                         #         'layout' = list( "columns" = list(list("item" = "dataitem"))
+                                         #                        , "rows" = list(list('item'= 'instrument'), list('item'= 'date'))
+                                         #                        )
+                                         #       )
+                                         #     )
+                                         #   )
+                                         # } else {
+                                         #   payload <- list(
+                                         #     'requests' = list(
+                                         #       list(
+                                         #         'instruments' = JsonListBuilder(instruments),
+                                         #         'fields' = lapply(fields, function(x){ list("name" = x)}),
+                                         #         'layout' = list( "columns" = list(list("item" = "dataitem"))
+                                         #                          , "rows" = list(list('item'= 'instrument'), list('item'= 'date'))
+                                         #         )
+                                         #       )
+                                         #     )
+                                         #   )
+                                         # }
+
+                                       requests <- list(
+                                                 'instruments' = JsonListBuilder(instruments),
                                                  'fields' = lapply(fields, function(x){list("name" = x)}),
-                                                 'parameters' = parameters
+                                                 'parameters' = parameters,
+                                                 'layout' = if(SyncFields){
+                                                                list( "columns" = list(list("item" = "dataitem"))
+                                                                    , "rows" = list(list('item'= 'instrument'), list('item'= 'date'))
+                                                                    )
+                                                                    } else {NULL}
+
                                                )
-                                             )
-                                           )
-                                         } else {
-                                           payload <- list(
-                                             'requests' = list(
-                                               list(
-                                                 'instruments' = jsonlistbuilder(instruments),
-                                                 'fields' = lapply(fields, function(x){ list("name" = x)})
-                                               )
-                                             )
-                                           )
-                                         }
-                                         #print(payload)
-                                         json <- json_builder(directions, payload)
-                                         returnvar <- send_json_request(json)
-                                         return(returnvar)
+
+
+                                       requests[sapply(requests, is.null)] <- NULL
+                                       payload <- list('requests' = list(requests))
+
+                                       #print(payload)
+                                       json <- json_builder(directions, payload)
+                                       returnvar <- send_json_request(json)
+                                       return(returnvar)
                         }
                        , get_data_rdp = function(universe, fields, parameters = NULL
-                                                 , debug, raw_output){
+                                                 ,output = NULL , debug, raw_output){
 
                          EndPoint = "data/datagrid/beta1/"
                          payload <- NULL
 
-                        payload <- list( 'universe'= jsonlistbuilder(universe)
-                                        , 'fields'= jsonlistbuilder(fields)
+                         if(length(parameters) == 0 ){
+                             parameters <- NULL
+                        }
+                        payload <- list( 'universe'= JsonListBuilder(universe)
+                                        , 'fields'= JsonListBuilder(fields)
                                         , 'parameters'=parameters
-                                        , 'output'= 'Col,T|Va,Row,In,date|'
+                                        , 'output'=  output
                                         )
                          payload[sapply(payload, is.null)] <- NULL
 
@@ -412,7 +448,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                                  , debug, best_match){
                          payload <- NULL
                          directions <- 'SymbologySearch'
-                         payload <- list( 'symbols'= jsonlistbuilder(symbol)
+                         payload <- list( 'symbols'= JsonListBuilder(symbol)
                                         , 'from'= from_symbol_type
                                         , 'to'= to_symbol_type
                                         , 'bestMatchOnly' = best_match)
@@ -492,7 +528,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                                          , 'start' = start
                                          , 'end' = end
                                          , 'adjustments' = if(is.null(adjustments)){NULL}else{paste(adjustments, collapse = ",")}
-                                         , 'count' = as.integer(count)
+                                         , 'count' = if(is.null(count)){NULL}else{as.integer(count)}
                                          , 'fields' = if(is.null(fields)){NULL}else{paste(fields, collapse = ",")}
                                          , 'sessions' = if(is.null(sessions)){NULL}else{paste(sessions, collapse = ",")}
                                          )

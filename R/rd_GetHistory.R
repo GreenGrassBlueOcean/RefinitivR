@@ -9,7 +9,7 @@
 #' @param end The end date and timestamp of the requested history	str, date
 #' @param adjustments Tells the system whether to apply or not apply CORAX (Corporate Actions) events or exchange/manual corrections or price and volume adjustment according to trade/quote qualifier summarization actions to historical time series data. Possible values are ["exchangeCorrection", "manualCorrection", "CCH", "CRE", "RTS", "RPO", "unadjusted", "qualifiers"]
 #' @param count The maximum number of data points returned. Values range: 1 - 10000
-#' @param use_field_names_in_headers boolean 	If True - returns field name as column headers for data instead of title
+#' @param use_field_names_in_headers boolean 	If True - returns field name as column headers for data instead of title, it is advisable to leave this setting to TRUE to prevent the issue with two datecolumns when using specific fields like e.g.
 #' @param CleanNames default = FALSE
 #' @param debug boolean, default = FALSE, if TRUE, prints out the url used to retrieve the data
 #'
@@ -41,7 +41,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' RDConnect("your api key here")
+#' RDObject <-  RDConnect("your api key here", PythonModule = "JSON")
 #' timeseries1 <-  rd_GetHistory(universe=c("AAPL.O", "NVDA.O"))
 #' timeseries2 <- rd_GetHistory(universe="GOOG.O"
 #'                             ,fields = c("BID", "ASK"),interval="tick",count=5)
@@ -75,16 +75,64 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                          , end = NULL
                          , adjustments = NULL
                          , count = NULL
-                         , use_field_names_in_headers = NULL
+                         , use_field_names_in_headers = TRUE
                          , CleanNames = FALSE
                          , debug = FALSE
                          ){
-  force(RD)
+
 
   #Check if universe is supplied
   if(is.null(universe)){
     stop("Parameter universe should be supplied and is not")
   }
+
+
+
+  if((is.null(count) || count < 0) && is.null(start) && is.null(end)){
+    message("No or negative count, start or end date supplied, defaulting to count = 20")
+    count <- 20L
+  }
+
+  if(!is.null(fields) && !use_field_names_in_headers ){
+     FieldsCheck <- grepl( ".date", fields, fixed = TRUE)
+     if(any(FieldsCheck)){
+       stop(paste("Fields should not contain Tr.Eikonformula.date  and use_field_names_in_headers = FALSE for use in GetHistory function removing"
+                     ,fields[FieldsCheck], "you will receive than multiple columns that have the same name (Date) and is therefore forbidden")
+       )
+       fields <- fields[!FieldsCheck]
+     }
+  }
+
+
+  if(!is.null(parameters) &&  ((is.null(start) | is.null(end)) & any(c("SDate", "EDate") %in% names(parameters)) )){
+
+    if( "SDate" %in% names(parameters)){
+      if(dateFormatCheck(parameters[["SDate"]])){
+        start <- parameters[["SDate"]]
+      } else {
+        warning(paste0("List parameters has 'SDate' which is supplied in a format which is not 'YYYY-MM-DD', but is: "
+                      , parameters[["SDate"]]
+                      , ", this might result in missing results for historical timeseries, it is better to supply in YYYY-MM-DD format or use start parameter" ))
+      }
+
+
+    }
+
+    if( "EDate" %in% names(parameters)){
+      if(dateFormatCheck(parameters[["EDate"]])){
+        end <- parameters[["EDate"]]
+      } else {
+        warning(paste0("List parameters has 'EDate' which is supplied in a format which is not 'YYYY-MM-DD', but is: "
+                       , parameters[["EDate"]]
+                       , ", this might result in missing results for historical timeseries, it is better to supply in YYYY-MM-DD format or use end parameter" ))
+      }
+
+
+    }
+
+
+   }
+
 
   if(is.null(count) && is.null(start) && is.null(end)){
     message("No count, start or end date supplied, defaulting to count = 20")
@@ -92,22 +140,15 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
   }
 
 
+  force(RD)
+  if(getOption(".RefinitivPyModuleName") =="refinitiv.data"){
+
     #Build Argument list
     if(!exists("Arglist") || identical(list(),Arglist)){
       Arglist <- as.list(match.call(expand.dots=FALSE))
       Arglist[[1]] <- NULL
       # Arglist[["universe"]] <- NULL
     }
-
-    # PyCallList <- vector(mode = "list", length = length(ChunckedRics))
-
-    # PyCallList <- lapply(X = 1:length(ChunckedRics)
-                        # , FUN = function(x, Arglist, ChunckedRics){
-                                # Arglist[["universe"]] <- ChunckedRics[[x]]
-                                # return(Arglist)}
-          # , Arglist = Arglist
-          # , ChunckedRics = ChunckedRics
-          # )
 
     #Make sure all arguments are evaluated before passing to the gethistory api
     Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
@@ -126,36 +167,31 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
       Arglist$RD <- NULL
     }
 
-    if(getOption(".RefinitivPyModuleName") =="refinitiv.data"){
+    Arglist[["use_field_names_in_headers"]] <- use_field_names_in_headers
+
+
     #Execute get_history
     PyCall <- do.call(what = RD[["get_history"]], args = Arglist)
     ColumnLevels <- reticulate::py_to_r(PyCall$columns$nlevels)
+
     if(ColumnLevels == 1){
       VariableName <- PyCall$columns$name
       if(identical(as.character(VariableName) ,universe)){
         PyCall$insert(0L, "Instrument", VariableName)
-        id_vars <- c("Date", "Instrument")
-        var_name = "variable"
       } else {
-        PyCall$insert(0L, "variable", VariableName)
-        id_vars <- c("Date", "variable")
-        var_name <- "Instrument"
+        PyCall <- PyCall$stack(0L)$reset_index()$set_index('Date')
+        FieldColumnNames <- head(reticulate::py_to_r(PyCall$columns$values),-1)
+        NewColumnsNames <- list("Instrument", FieldColumnNames) |> unlist()
+        PyCall <- PyCall$set_axis(NewColumnsNames,  axis = "columns")
       }
-      DroppedIndex <- PyCall$reset_index()
-      DroppedIndex <- DroppedIndex$melt(ignore_index = TRUE
-                                       , id_vars = id_vars
-                                       , var_name = var_name)
-
     } else if(ColumnLevels == 2){
-      Melted <- PyCall$melt(ignore_index = FALSE
-                           , var_name = c("Instrument", "variable"))
-      DroppedIndex <- Melted$reset_index()
-
+      PyCall <- PyCall$stack(0L)$reset_index()$set_index('Date')
+      PyCall$rename(columns=list("level_1"= "Instrument"), inplace=TRUE)
     }
-    JsonString <- DroppedIndex$to_json(date_format= "iso")
+    DroppedIndex <- PyCall$reset_index()
+    JsonString <- DroppedIndex$to_json(date_format= "ms")
     Converted <- Process_RDP_output(JsonString, RemoveNA = TRUE, CleanNames = CleanNames)
-
-
+    Converted$Date <- as.Date(Converted$Date)
     return(Converted)
   } else if(getOption(".RefinitivPyModuleName") == "JSON"){
 
@@ -172,6 +208,8 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
       HistorticalPricingFields <- setdiff(fields, GetDataFields)
       if(identical(HistorticalPricingFields, character(0))){
         HistorticalPricingFields <- NULL
+      } else if(identical(GetDataFields, character(0))){
+        GetDataFields <- NULL
       }
     } else {
       GetDataFields <- NULL
@@ -181,6 +219,16 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     GetDataOutput <- HistoricalPricingOutput <- data.table::data.table()
     # If required obtain data from GetData
     if(!is.null(GetDataFields)){
+
+      if(!is.null(start)){
+        if(is.null(parameters)){
+          parameters <- list()}
+          parameters[["SDate"]] <- start
+          if(!is.null(end)){
+            parameters[["EDate"]] <- end
+          }
+      }
+
       GetDataOutput <- rd_GetData( RDObject = RD
                                  , rics = universe
                                  , Eikonformulas = GetDataFields
@@ -190,15 +238,22 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                                  , verbose = debug
                                  , SpaceConvertor = "."
                                  , use_field_names_in_headers = use_field_names_in_headers
+                                 #, output = 'Col,T|Va,Row,In,date|'
+                                 , SyncFields = TRUE
                                  )
 
 
-      GetDataOutput <- data.table::as.data.table(GetDataOutput)[, universe := NULL] |>
-        data.table::melt.data.table(id.vars = c("instrument", "date"))
-      data.table::setnames( GetDataOutput
-                            , old = c("instrument", "date")
-                            , new = c("Instrument", "Date")
-      )
+      GetDataOutput <- data.table::as.data.table(GetDataOutput)
+
+      if(use_field_names_in_headers){
+
+        ToUpperCols <- setdiff(names(GetDataOutput), c("Instrument", "Date"))
+
+        data.table::setnames( x =  GetDataOutput
+                            , old = ToUpperCols
+                            , new = toupper(ToUpperCols)
+                            )
+     }
     }
 
     if( is.null(fields) || !is.null(HistorticalPricingFields) ){
@@ -212,20 +267,45 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                                                          , fields = if(is.null(fields)){NULL}else{HistorticalPricingFields}
                                                          , sessions = NULL
                                                          , debug = debug
-                                                         ) |> data.table::as.data.table() |>
-        data.table::melt.data.table(id.vars = c("universe", "DATE"))
+                                                         )
+
+      HistoricalPricingOutput <- HistoricalPricingOutput |>
+        data.table::as.data.table()
+
+       if("NAVALUE" %in% names(HistoricalPricingOutput)){
+         NAVALUE <- NULL
+         HistoricalPricingOutput[ NAVALUE == FALSE  , NAVALUE := NA]
+       }
 
       data.table::setnames( HistoricalPricingOutput
-                           , old = c("universe", "DATE")
-                           , new = c("Instrument", "Date")
-                           )
+                          , old = c("universe")
+                          , new = c("Instrument")
+                          )
     }
 
     # unify the data
-    Return_DT <- data.table::rbindlist(list(GetDataOutput, HistoricalPricingOutput), use.names = TRUE)
+    if(nrow(GetDataOutput) > 0 &  nrow(HistoricalPricingOutput) > 0 ){
+      Return_DT <- data.table::merge.data.table( x = HistoricalPricingOutput |> unique()
+                                               , y = GetDataOutput |> unique()
+                                               , all.x = TRUE, all.y = TRUE
+                                               , by = c("Instrument", "Date")
+                                               )
+    } else if(nrow(HistoricalPricingOutput)  == 0 ){
+      Return_DT <- GetDataOutput |> unique()
+    } else if(nrow(GetDataOutput)  == 0 ){
+      Return_DT <- HistoricalPricingOutput |> unique()
+    }
 
 
-    # unify to return a complete data frame
+    try( data.table::setcolorder(Return_DT, c("Date", "Instrument",sort(toupper(fields))))
+       , silent = TRUE)
+
+    Date <- NULL
+    Return_DT <- Return_DT[, Date  := as.Date(Date)]
+    data.table::setorderv(Return_DT, c("Date", "Instrument"))
+
+
+    # Return a data frame
     return(data.table::setDF(Return_DT))
 
   } else {

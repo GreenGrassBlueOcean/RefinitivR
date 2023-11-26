@@ -19,7 +19,6 @@ EikonPostProcessor <- function(Eikon_get_dataOuput, SpaceConvertor = "."){
   #0. helper functions ----
 
   getData <- function(data, requestnumber, SpaceConvertor) {
-
     #1. Remove NULL values and replace with NA in nested list
 
     data[[requestnumber]][["data"]] <- replaceInList(data[[requestnumber]][["data"]], function(x)if(is.null(x) || identical(x,""))NA else x)

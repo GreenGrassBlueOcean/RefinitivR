@@ -180,13 +180,13 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
   }
 
   ChunckedRics <- universe
-
   TimeSeriesList <- as.list(rep(NA, times = length(ChunckedRics)))
-
   DownloadCoordinator <- data.frame( index = 1:length(ChunckedRics)
-                                    , succes =  rep(FALSE, length(ChunckedRics))
-                                      , retries = rep(0L, length(ChunckedRics), stringsAsFactors = FALSE)
-  )
+                                   , succes =  rep(FALSE, length(ChunckedRics))
+                                   , retries = rep( 0L, length(ChunckedRics)
+                                                  , stringsAsFactors = FALSE
+                                                  )
+                                   )
 
   while (!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)  ) {
 
@@ -283,6 +283,8 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
 #' @param use_field_names_in_headers boolean wheater or not to return titles of field (formulas) as headers
 #' @param NA_cleaning clean NA in return data
 #'
+#' @importFrom data.table `.SD`
+#'
 #' @return data.frame
 #' @keywords internal
 #'
@@ -297,7 +299,8 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
 #'
 #' response <- send_json_request(json = payload, service = "rdp"
 #' , EndPoint = EndPoint, request_type = "POST")
-#' Output <- rd_OutputProcesser(response)}
+#' Output <- rd_OutputProcesser(response)
+#' }
 rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning = TRUE){
   # bind rows
   CleanedData <- replaceInList(x$data, function(x)if(is.null(x) || identical(x,"") )NA else x)
@@ -323,8 +326,9 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning
 
   }   else {
     Selectedheader <- "name"
-    headernames <- unlist(x$headers)
-    headernames <- headernames[which(names(headernames) == Selectedheader)]
+    headernames <- JsonHeaderAnalyzer(x, Selectedheader = Selectedheader)
+    #headernames <- unlist(x$headers)
+    #headernames <- headernames[which(names(headernames) == Selectedheader)]
   }
 
   # set column names
@@ -338,6 +342,20 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning
     return_DT <- return_DT[, universe := x$universe]
     data.table::setcolorder(return_DT,c("universe"))
   }
+
+  #Check if there are other fields that should be dates
+  OtherDateColumns <- grep(pattern = ".date$|\\bdate\\b", x = tolower(names(return_DT)))
+  if(!identical(OtherDateColumns, integer(0) )){
+
+    Columnclasses <- lapply(return_DT, class)
+    DateType <-  Columnclasses[OtherDateColumns] |> unlist() |> as.vector() |> unique()
+    if(identical(DateType, "numeric")){
+       return_DT[, (OtherDateColumns) := lapply(.SD, function(x){as.POSIXct(x/1000, origin="1970-01-01", tz = "UTC")}), .SDcols = OtherDateColumns]
+    } else {
+      return_DT[, (OtherDateColumns) := lapply(.SD, lubridate::as_date), .SDcols = OtherDateColumns]
+    }
+  }
+  data.table::setnames(return_DT, old = c("date", "DATE"), new = c("Date", "Date"), skip_absent = TRUE)
 
   #Na cleaning
   if(NA_cleaning){

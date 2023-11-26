@@ -61,6 +61,8 @@ if(Platform == "RD"){
 #' @return r data.frame
 #' @keywords internal
 #'
+#' @importFrom data.table `.SD`
+#'
 #' @seealso [get_search_metadata()]
 #' @seealso [rd_GetHistory()]
 #'
@@ -92,11 +94,21 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, CleanNames = FALSE
 
   Date <- value <- NULL
   if("Date" %in% names(r_dt)){
-    r_dt[, Date := lubridate::ymd_hms(Date)]
+    #r_dt[, Date := lubridate::ymd_hms(Date)]
+    r_dt[, Date := Date/1000
+       ][, Date := as.Date(as.POSIXct(Date, origin="1970-01-01", tz = "UTC"))]
+  }
+
+  #Check if there are other fields that should be dates
+  OtherDateColumns <- grep(pattern = ".date", x = tolower(names(r_dt)))
+  if(!identical(OtherDateColumns, integer(0) )){
+    r_dt[, (OtherDateColumns) := lapply(.SD, function(x){as.Date(as.POSIXct(x/1000, origin="1970-01-01", tz = "UTC"))}), .SDcols = OtherDateColumns]
   }
 
   if(RemoveNA){
-    r_dt <- r_dt[ !is.na(value),]
+    if("value" %in% names(r_dt)){
+      r_dt <- r_dt[ !is.na(value),]
+    }
   }
 
   if(all(c("Date", "Instrument", "variable", "value") %in% names(r_dt))){
@@ -108,6 +120,13 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, CleanNames = FALSE
   if(CleanNames){
     data.table::setnames(x = r_dt, new = EikonNameCleaner(names(r_dt)))
   }
+
+  if(all(c("Date", "Instrument") %in% names(r_dt))){
+    data.table::setorderv(r_dt, c("Date", "Instrument"))
+  } else if("Date" %in% names(r_dt)){
+    data.table::setorderv(r_dt, c("Date"))
+  }
+
 
   return(data.table::setDF(r_dt))
 }
@@ -403,7 +422,7 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
     return(data.frame())
   }
 
-  python_json <- python_SearchResult$to_json()
+  python_json <- python_SearchResult$to_json(date_format = "ms")
 
   # Process Output ----
   r_df <- Process_RDP_output(python_json = python_json)

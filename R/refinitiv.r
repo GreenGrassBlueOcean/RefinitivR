@@ -876,7 +876,7 @@ EikonObject$set_app_key(app_key = .Options$.EikonApiKey)
 
 
 # Divide RICS in chunks to satisfy api limits
-ChunckedRics <- EikonChunker(RICS = rics, Eikonfields = Eikonformulas)
+ChunckedRics <- EikonChunker(RICS = rics, Eikonfields = Eikonformulas, MaxRicsperChunk = 200)
 
 
 EikonDataList <- as.list(rep(NA, times = length(ChunckedRics)))
@@ -911,7 +911,7 @@ while (!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)
 
 
 
-  if (!identical(EikonDataList[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
+  if (!identical(EikonDataList[[j]], NA) ){DownloadCoordinator$succes[j] <- TRUE }
 
   if(verbose){
       message(paste0("Download Status:\n", paste0(capture.output(DownloadCoordinator), collapse = "\n"), collapse = "\n") )

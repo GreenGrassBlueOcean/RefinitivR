@@ -14,7 +14,7 @@ rd_GetHistory(
   end = NULL,
   adjustments = NULL,
   count = NULL,
-  use_field_names_in_headers = NULL,
+  use_field_names_in_headers = TRUE,
   CleanNames = FALSE,
   debug = FALSE
 )
@@ -38,7 +38,7 @@ rd_GetHistory(
 
 \item{count}{The maximum number of data points returned. Values range: 1 - 10000}
 
-\item{use_field_names_in_headers}{boolean     If True - returns field name as column headers for data instead of title}
+\item{use_field_names_in_headers}{boolean     If True - returns field name as column headers for data instead of title, it is advisable to leave this setting to TRUE to prevent the issue with two datecolumns when using specific fields like e.g.}
 
 \item{CleanNames}{default = FALSE}
 
@@ -73,7 +73,7 @@ This function is currently work in progress and only works with RDConnect (pytho
 }
 \examples{
 \dontrun{
-RDConnect("your api key here")
+RDObject <-  RDConnect("your api key here", PythonModule = "JSON")
 timeseries1 <-  rd_GetHistory(universe=c("AAPL.O", "NVDA.O"))
 timeseries2 <- rd_GetHistory(universe="GOOG.O"
                             ,fields = c("BID", "ASK"),interval="tick",count=5)
@@ -97,5 +97,19 @@ test <- rd_GetHistory( universe = c("GOOG.O","MSFT.O","FB.O","AMZN.O")
                      ,fields = c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
                      ,parameters = list("Scale" = 6,"SDate" = 0
                      ,"EDate" = -3,"FRQ" = "FY", "Curn" = "EUR"))
+
+
+Managing filling behavior (add 'fill = "None"' to parameters)
+
+
+test <- rd_GetHistory( RD = RDObject , universe = c("GOOG.O")
+                     ,fields = c("TR.IssueMarketCap(Scale=6,ShType=FFL)"
+                       ,"TR.FreeFloatPct()/100/*FreefloatWeight*/"
+                       ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/"
+                       ,"TR.CLOSEPRICE(Adjusted=0)/*close*/")
+                     , parameters = list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01"
+                     , fill = "None"))
+
+
 }
 }

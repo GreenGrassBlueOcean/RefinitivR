@@ -30,6 +30,7 @@ Process output from refintiv data to r data.frame output
 
 response <- send_json_request(json = payload, service = "rdp"
 , EndPoint = EndPoint, request_type = "POST")
-Output <- rd_OutputProcesser(response)}
+Output <- rd_OutputProcesser(response)
+}
 }
 \keyword{internal}
