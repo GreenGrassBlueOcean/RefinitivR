@@ -5,12 +5,10 @@ test_that("EikonGetNewsHeadlines works", {
   CheckHeadlines <- EikonGetNewsHeadlines(EikonObject = Eikon
                                               , query = "R:MSFT.O", count = 2)
 
-  CorrectOutput <- list(displayDirection = "character", documentType = "character",
+  CorrectOutput <- list(query = "character", displayDirection = "character", documentType = "character",
                         firstCreated = "character", isAlert = "logical", language = "character",
                         reportCode = "character", sourceCode = "character", sourceName = "character",
                         storyId = "character", text = "character", versionCreated = "character")
-
-
 
   expect_equal(lapply(CheckHeadlines, class), CorrectOutput)
 })

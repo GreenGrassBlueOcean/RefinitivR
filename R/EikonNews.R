@@ -1,7 +1,7 @@
 #' Returns a list of news headlines
 #'
 #' @param EikonObject Connection Object result from EikonConnect()
-#' @param query character optional News headlines search criteria. The text can contain RIC codes, company names, country names and operators (AND, OR, NOT, IN, parentheses and quotes for explicit search…).Tip: Append 'R:' in front of RIC names to improve performance.
+#' @param query character array optional News headlines search criteria. The text can contain RIC codes, company names, country names and operators (AND, OR, NOT, IN, parentheses and quotes for explicit search…).Tip: Append 'R:' in front of RIC names to improve performance.
 #' @param count integer, optional Max number of headlines retrieved.Value Range: [1-100].Default: 10
 #' @param repository character, vector of characters, optionalPossible values: c("NewsWire","NewsRoom","WebNews") For "NewsRoom" and "WebNews" repositories a query must be defined.
 #' @param date_from string or date, optional Beginning of date range. String format is: '\%Y-\%m-\%dT\%H:\%M:\%S'. e.g. 2016-01-20T15:04:05.
@@ -23,7 +23,7 @@
 #' \dontrun{
 #'  Eikon <- Refinitiv::EikonConnect()
 #'  headlines <- EikonGetNewsHeadlines( EikonObject = Eikon
-#'                                    , query = "R:MSFT.O", count = 2)
+#'                                    , query = c("R:MSFT.O", "R:AAPL.O") , count = 2, debug = TRUE)
 #' }
 #'
 #' \dontrun{
@@ -37,20 +37,58 @@ EikonGetNewsHeadlines <- function(EikonObject = EikonConnect()
                                  , date_from = NULL, date_to = NULL
                                  , raw_output = FALSE, debug = FALSE){
 
-  RawHeadlines <- retry(EikonObject$get_news_headlines( query = query
-                                                , count = as.integer(count)
-                                                , repository = paste0(repository, collapse = ",")
-                                                , date_from = date_from
-                                                , date_to = date_to
-                                                , raw_output = TRUE
-                                                , debug = debug
-                                                ))
+  if(is.null(query)){
+    query <- ""
+  }
+
+
+  RawHeadlinesList <- as.list(rep(NA, times = length(query)))
+
+  DownloadCoordinator <- data.frame( index = 1:length(query)
+                                     , succes =  rep(FALSE, length(query))
+                                     , retries = rep(0L, length(query))
+                                     , stringsAsFactors = FALSE)
+
+  while(!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)){
+
+    HeadlinesTryList <- DownloadCoordinator$index[which(!DownloadCoordinator$succes)]
+
+    for (j in HeadlinesTryList){
+      RawHeadlinesList[[j]] <- try({
+        retry(EikonObject$get_news_headlines( query = query[j]
+                                              , count = as.integer(count)
+                                              , repository = paste0(repository, collapse = ",")
+                                              , date_from = date_from
+                                              , date_to = date_to
+                                              , raw_output = TRUE
+                                              , debug = debug
+        ),max =2)})
+      Sys.sleep(time = 0.1)
+
+      if (!identical(RawHeadlinesList[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
+
+      if(debug){
+        message(paste0("Download Status:\n", paste0(capture.output(DownloadCoordinator), collapse = "\n"), collapse = "\n") )
+      }
+    }
+
+    DownloadCoordinator$retries[which(!DownloadCoordinator$succes)] <- DownloadCoordinator$retries[which(!DownloadCoordinator$succes)] + 1
+
+  }
+
+  if(any(DownloadCoordinator$retries > 4L)){
+    stop("EikonGetNewsHeadlines downloading data failed")
+  }
 
   if(raw_output){
-    return(RawHeadlines)
+    return(RawHeadlinesList)
   } else {
-    Return_df <- data.table::rbindlist(RawHeadlines$headlines, use.names = T, fill = T) |>
-    data.table::setDF()
+    Return_DT <- lapply( X = RawHeadlinesList
+                       , FUN = function(x){data.table::rbindlist(l=x$headlines,use.names = T, fill = T)}
+                       ) |> data.table::rbindlist(use.names = T, fill = T, idcol = "query" )
+
+    Return_DT$query <- query[Return_DT$query]
+    Return_df <- data.table::setDF(Return_DT)
     return(Return_df)
   }
 }
