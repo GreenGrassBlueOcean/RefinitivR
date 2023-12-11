@@ -250,69 +250,25 @@ test_that("rd_GetHistory will handle requests with one instruments and multiple 
 
 })
 
-#test_that("rd_GetData can handle currently unknown situation", {
+test_that("rd_GetData can handle timedates", {
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
 
-  #
-  # parameters <- list(SDate = "2020-10-27T01:00:00", EDate = "2020-12-01T01:00:00")
-  # Eikonformulas <- "TR.IssueMarketCap(Scale=6,ShType=FFL,Curn=USD)"
-  # use_field_names_in_headers <- FALSE
-  # SyncFields = TRUE
-  # SpaceConvertor = "."
-  #
-  #
-  # rd_GetData( rics = rics
-  #           , Eikonformulas = Eikonformulas
-  #           , Parameters = parameters, SyncFields = SyncFields
-  #           , SpaceConvertor = SpaceConvertor, use_field_names_in_headers = use_field_names_in_headers
-  #           )
+  Eikonformulas <- "TR.IssueMarketCap(Scale=6,ShType=FFL,Curn=USD)"
 
-#'   rics = "AAPL.O"
-#'   parameters <- list(Sdate = "2020-10-27T01:00:00", Edate = "2020-12-01T01:00:00")
-#'   Eikonformulas <- "TR.IssueMarketCap(Scale=6,ShType=FFL,Curn=USD)"
-#'   use_field_names_in_headers <- FALSE
-#'   SyncFields = TRUE
-#'   SpaceConvertor = "."
-#'
-#'   test <- Refinitiv::rd_GetHistory( universe = rics
-#'                                     , fields = Eikonformulas # c("TR.PE.value", "TR.PE.date") # Eikonformulas
-#'                                     , start = "2020-10-27T01:00:00"
-#'                                     , end = "2020-12-01T01:00:00"
-#'                                     , parameters = NULL, adjustments = NULL
-#'   )
-#'
-#'
-#'   test_eikon <- Refinitiv::EikonGetData( EikonObject = EikonConnect()
-#'                          , rics = "AAPL.O"
-#'                          , Eikonformulas = c("TR.PE.value", "TR.PE.date")
-#'                          , Parameters = list("Sdate" = "2020-01-01", "Edate" = "2020-02-02")
-#'                          )
-#'
-#'   test_rd <- Refinitiv::rd_GetData( RDObject = RDConnect()
-#'                                , rics = "AAPL.O"
-#'                                , Eikonformulas = c("TR.PE.value", "TR.PE.date")
-#'                                , Parameters = list("Sdate" = "2020-01-01", "Edate" = "2020-02-02")
-#'                                )
-#'
-#'
-#'
-#'   test <- Refinitiv::rd_GetHistory( universe = c("AAPL.O", "wrongric")
-#'                                     , fields =  c("TR.PE.value", "TR.PE.date") # Eikonformulas
-#'                                     #, start = "2020-01-01"
-#'                                     #, end = "2020-02-02"
-#'                                     , parameters = list("Sdate" = "2020-01-01", "Edate" = "2020-02-02"), adjustments = NULL
-#'   )
-#'
-#'
-#'   test <- GetFactor(Download = "all"
-#'                     #'   , Eikonformulas = c("TR.DividendYield.value", "TR.DividendYield.date")
-#'
-#'                     test <- rd_GetHistory(universe = c("GOOG.O","AAPL.O")
-#'                                             , fields = c("TR.Revenue","TR.GrossProfit")
-#'                                             , parameters = list("SDate" = "0CY", "Curn" = "CAD"))
-#'
-#'                     test <-  rd_GetHistory(universe = c("GOOG.O","AAPL.O")
-#'                                            , fields = c("TR.PriceTargetMean(SDate:0CY)","TR.LOWPRICE(SDate:0d)"))
-#'
-#'
-#' })
+  test_python <- Refinitiv::rd_GetHistory( universe = rics, RD = RDConnect(PythonModule = "RD")
+                                       , fields = Eikonformulas
+                                       , start = "2020-10-27T01:00:00"
+                                       , end = "2020-12-01T01:00:00"
+                                       , parameters = NULL, adjustments = NULL
+                                       )
 
+  test_json <- Refinitiv::rd_GetHistory( universe = rics, RD = RDConnect(PythonModule = "JSON")
+                                           , fields = Eikonformulas
+                                           , start = "2020-10-27T01:00:00"
+                                           , end = "2020-12-01T01:00:00"
+                                           , parameters = NULL, adjustments = NULL
+  )
+
+  expect_equal(test_python, test_json)
+
+})
