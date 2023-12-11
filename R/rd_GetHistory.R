@@ -223,9 +223,9 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
       if(!is.null(start)){
         if(is.null(parameters)){
           parameters <- list()}
-          parameters[["SDate"]] <- start
+          parameters[["SDate"]] <-  format(as.Date(start), "%Y-%m-%d")
           if(!is.null(end)){
-            parameters[["EDate"]] <- end
+            parameters[["EDate"]] <- format(as.Date(end), "%Y-%m-%d")
           }
       }
 
@@ -315,4 +315,4 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
   }
 
 
-#
+

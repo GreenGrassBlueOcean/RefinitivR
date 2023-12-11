@@ -249,3 +249,70 @@ test_that("rd_GetHistory will handle requests with one instruments and multiple 
   expect_equal(timeseries2_python, timeseries2_JSON)
 
 })
+
+#test_that("rd_GetData can handle currently unknown situation", {
+
+  #
+  # parameters <- list(SDate = "2020-10-27T01:00:00", EDate = "2020-12-01T01:00:00")
+  # Eikonformulas <- "TR.IssueMarketCap(Scale=6,ShType=FFL,Curn=USD)"
+  # use_field_names_in_headers <- FALSE
+  # SyncFields = TRUE
+  # SpaceConvertor = "."
+  #
+  #
+  # rd_GetData( rics = rics
+  #           , Eikonformulas = Eikonformulas
+  #           , Parameters = parameters, SyncFields = SyncFields
+  #           , SpaceConvertor = SpaceConvertor, use_field_names_in_headers = use_field_names_in_headers
+  #           )
+
+#'   rics = "AAPL.O"
+#'   parameters <- list(Sdate = "2020-10-27T01:00:00", Edate = "2020-12-01T01:00:00")
+#'   Eikonformulas <- "TR.IssueMarketCap(Scale=6,ShType=FFL,Curn=USD)"
+#'   use_field_names_in_headers <- FALSE
+#'   SyncFields = TRUE
+#'   SpaceConvertor = "."
+#'
+#'   test <- Refinitiv::rd_GetHistory( universe = rics
+#'                                     , fields = Eikonformulas # c("TR.PE.value", "TR.PE.date") # Eikonformulas
+#'                                     , start = "2020-10-27T01:00:00"
+#'                                     , end = "2020-12-01T01:00:00"
+#'                                     , parameters = NULL, adjustments = NULL
+#'   )
+#'
+#'
+#'   test_eikon <- Refinitiv::EikonGetData( EikonObject = EikonConnect()
+#'                          , rics = "AAPL.O"
+#'                          , Eikonformulas = c("TR.PE.value", "TR.PE.date")
+#'                          , Parameters = list("Sdate" = "2020-01-01", "Edate" = "2020-02-02")
+#'                          )
+#'
+#'   test_rd <- Refinitiv::rd_GetData( RDObject = RDConnect()
+#'                                , rics = "AAPL.O"
+#'                                , Eikonformulas = c("TR.PE.value", "TR.PE.date")
+#'                                , Parameters = list("Sdate" = "2020-01-01", "Edate" = "2020-02-02")
+#'                                )
+#'
+#'
+#'
+#'   test <- Refinitiv::rd_GetHistory( universe = c("AAPL.O", "wrongric")
+#'                                     , fields =  c("TR.PE.value", "TR.PE.date") # Eikonformulas
+#'                                     #, start = "2020-01-01"
+#'                                     #, end = "2020-02-02"
+#'                                     , parameters = list("Sdate" = "2020-01-01", "Edate" = "2020-02-02"), adjustments = NULL
+#'   )
+#'
+#'
+#'   test <- GetFactor(Download = "all"
+#'                     #'   , Eikonformulas = c("TR.DividendYield.value", "TR.DividendYield.date")
+#'
+#'                     test <- rd_GetHistory(universe = c("GOOG.O","AAPL.O")
+#'                                             , fields = c("TR.Revenue","TR.GrossProfit")
+#'                                             , parameters = list("SDate" = "0CY", "Curn" = "CAD"))
+#'
+#'                     test <-  rd_GetHistory(universe = c("GOOG.O","AAPL.O")
+#'                                            , fields = c("TR.PriceTargetMean(SDate:0CY)","TR.LOWPRICE(SDate:0d)"))
+#'
+#'
+#' })
+
