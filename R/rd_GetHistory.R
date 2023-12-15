@@ -9,8 +9,8 @@
 #' @param end The end date and timestamp of the requested history	str, date
 #' @param adjustments Tells the system whether to apply or not apply CORAX (Corporate Actions) events or exchange/manual corrections or price and volume adjustment according to trade/quote qualifier summarization actions to historical time series data. Possible values are ["exchangeCorrection", "manualCorrection", "CCH", "CRE", "RTS", "RPO", "unadjusted", "qualifiers"]
 #' @param count The maximum number of data points returned. Values range: 1 - 10000
-#' @param use_field_names_in_headers boolean 	If True - returns field name as column headers for data instead of title, it is advisable to leave this setting to TRUE to prevent the issue with two datecolumns when using specific fields like e.g.
-#' @param CleanNames default = FALSE
+#' @param use_field_names_in_headers boolean 	If True - returns field name as column headers for data instead of title, it is advisable to leave this setting to TRUE to prevent the issue with two date columns when using specific fields like e.g.
+#' @param SpaceConvertor  converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is NULL, use this for compatability with eikon
 #' @param debug boolean, default = FALSE, if TRUE, prints out the url used to retrieve the data
 #'
 #' @return data.frame
@@ -76,7 +76,7 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                          , adjustments = NULL
                          , count = NULL
                          , use_field_names_in_headers = TRUE
-                         , CleanNames = FALSE
+                         , SpaceConvertor = NULL
                          , debug = FALSE
                          ){
 
@@ -85,8 +85,6 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
   if(is.null(universe)){
     stop("Parameter universe should be supplied and is not")
   }
-
-
 
   if((is.null(count) || count < 0) && is.null(start) && is.null(end)){
     message("No or negative count, start or end date supplied, defaulting to count = 20")
@@ -190,7 +188,9 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     }
     DroppedIndex <- PyCall$reset_index()
     JsonString <- DroppedIndex$to_json(date_format= "ms")
-    Converted <- Process_RDP_output(JsonString, RemoveNA = TRUE, CleanNames = CleanNames)
+    Converted <- Process_RDP_output(JsonString
+                                  , RemoveNA = TRUE
+                                  , SpaceConvertor = SpaceConvertor)
     Converted$Date <- as.Date(Converted$Date)
     return(Converted)
   } else if(getOption(".RefinitivPyModuleName") == "JSON"){
@@ -236,10 +236,9 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                                  , raw_output = FALSE
                                  , time_out = 60
                                  , verbose = debug
-                                 , SpaceConvertor = "."
+                                 , SpaceConvertor = SpaceConvertor
                                  , use_field_names_in_headers = use_field_names_in_headers
-                                 #, output = 'Col,T|Va,Row,In,date|'
-                                 , SyncFields = TRUE
+                                 , SyncFields = TRUE #, output = 'Col,T|Va,Row,In,date|'
                                  )
 
 
@@ -267,6 +266,7 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                                                          , fields = if(is.null(fields)){NULL}else{HistorticalPricingFields}
                                                          , sessions = NULL
                                                          , debug = debug
+                                                         , SpaceConvertor = SpaceConvertor
                                                          )
 
       HistoricalPricingOutput <- HistoricalPricingOutput |>
@@ -278,7 +278,7 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
        }
 
       data.table::setnames( HistoricalPricingOutput
-                          , old = c("universe")
+                          , old = c("Universe")
                           , new = c("Instrument")
                           )
     }

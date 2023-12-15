@@ -56,7 +56,6 @@ if(Platform == "RD"){
 #'
 #' @param python_json python json string
 #' @param RemoveNA boolean remove NA value's defaults to FALSE
-#' @param CleanNames boolean clean names of data.table, defaults to FALSE
 #'
 #' @return r data.frame
 #' @keywords internal
@@ -75,14 +74,10 @@ if(Platform == "RD"){
 #'  reticulate::py_load_object(file = path))
 #'  r_df <- Process_RDP_output(PY_get_search_metadata_input)
 #' }
-Process_RDP_output <- function(python_json, RemoveNA = FALSE, CleanNames = FALSE){
+Process_RDP_output <- function(python_json, RemoveNA = FALSE, SpaceConvertor = NULL){
 
   if(!is.logical(RemoveNA)){
     stop(paste("Parameter RemoveNA in function Process_RDP_output should be boolean but is", RemoveNA))
-  }
-
-  if(!is.logical(CleanNames)){
-    stop(paste("Parameter CleanNames in function Process_RDP_output should be boolean but is", CleanNames))
   }
 
   r_json_dirty <- python_json |> reticulate::py_to_r() |> jsonlite::fromJSON()
@@ -117,16 +112,15 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, CleanNames = FALSE
                            )
   }
 
-  if(CleanNames){
-    data.table::setnames(x = r_dt, new = EikonNameCleaner(names(r_dt)))
-  }
-
   if(all(c("Date", "Instrument") %in% names(r_dt))){
     data.table::setorderv(r_dt, c("Date", "Instrument"))
   } else if("Date" %in% names(r_dt)){
     data.table::setorderv(r_dt, c("Date"))
   }
 
+  if(!is.null(SpaceConvertor)){
+    data.table::setnames(x = r_dt, new = EikonNameCleaner(names(r_dt), SpaceConvertor = SpaceConvertor ))
+  }
 
   return(data.table::setDF(r_dt))
 }
@@ -164,10 +158,10 @@ GetSearchView <- function(ConnectionObject = RDConnect()
     if(SearchView %in% RDPShowAvailableSearchViews(Platform = "RD")){
       return(ConnectionObject$content$search$Views[[SearchView]])
     } else {
-      SearchViewsLookup <- data("SearchViewsLookup", envir = environment())
+      SearchViewsLookup <- Refinitiv::SearchViewsLookup
       if(SearchView %in% SearchViewsLookup$SearchViews_JSON_RDP){
         SearchViews_JSON_RDP <- NULL
-        return(SearchViewsLookup[SearchViews_JSON_RDP == SearchView]$SearchViews_RD)
+        return(SearchViewsLookup[SearchViews_JSON_RDP == SearchView]$SearchViews_JSON_RDP)
       } else {
         stop(paste("SearchView:", SearchView, "not available for RD"))
       }
@@ -179,7 +173,7 @@ GetSearchView <- function(ConnectionObject = RDConnect()
     if(SearchView %in% RDPShowAvailableSearchViews(Platform = "JSON")){
       return(SearchView)
     } else {
-      SearchViewsLookup <- data("SearchViewsLookup", envir = environment())
+      SearchViewsLookup <- Refinitiv::SearchViewsLookup
       if(SearchView %in% SearchViewsLookup$SearchViews_RD ){
         SearchViews_RD <- NULL
         return(SearchViewsLookup[SearchViews_RD == SearchView]$SearchViews_JSON_RDP)
@@ -280,6 +274,7 @@ return(r_df)
 #' @param group_count optional numeric number of items displayed per group
 #' @param navigators optional character string e.g.
 #' @param features optional character, meaning not clear from refinitiv documentation
+#' @param SpaceConvertor optional character, invokes name cleaning so that parameters can be easier used in r, defaults to "."
 #' @param Arglist optional named list pass the above parameters as a named list withouding needing to use to do.call.
 #'
 #' @seealso RDPShowAvailableSearchViews()
@@ -346,12 +341,11 @@ return(r_df)
 #'   ListedSearch <- RDPsearch(RDP = RefinitivJsonConnect(), query = SearchQuery)
 #'
 #' }
-#'
 RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
                      , query =  NULL, view = NULL
                      , select = NULL, top = NULL, filter = NULL
                      , boost= NULL, order_by = NULL, group_by = NULL
-                     ,  group_count = NULL, navigators = NULL, features = NULL
+                     ,  group_count = NULL, navigators = NULL, features = NULL,  SpaceConvertor = "."
                      , Arglist = list()){
 
   force(RDP)
@@ -365,9 +359,6 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
     Arglist$view <- GetSearchView( ConnectionObject = RDP
                                  , SearchView = Arglist$view)
 
-
-
-      # RDP$SearchViews[[Arglist$view]]
   }
 
  #RD -->  RDP$content$search$Views[[searchView]])
@@ -378,14 +369,12 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
    RDP <- RDP$discovery
  }
 
-
-
   if("top" %in% names(Arglist) && !is.null(Arglist$top)){
-    Arglist$top <- as.numeric(Arglist$top)
+    Arglist$top <- as.integer(Arglist$top)
   }
 
   if("group_count" %in% names(Arglist) && !is.null(Arglist$group_count) ){
-    Arglist$group_count <- as.numeric(Arglist$group_count)
+    Arglist$group_count <- as.integer(Arglist$group_count)
   }
 
   #Make sure all arguments are evaluated before passing to the search api
@@ -396,21 +385,21 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
     Arglist$RDP <- NULL
   }
 
-
-  #force(RDP)
+  if("SpaceConvertor" %in% names(Arglist)){
+    Arglist$SpaceConvertor <- NULL
+  }
 
   ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
 
-  # if(identical(ConnectionMetaData$name, "refinitiv.data")){
-  #  RDP <- RDP$discovery
-  # }
+  # Execute search ----
 
-  #Execute search ----
-
-  # Searcher <- rdp$search
   SearchResult <- do.call(what = RDP[["search"]], args = Arglist)
 
   if(data.table::is.data.table(SearchResult)){
+    if(!is.null(SpaceConvertor)){
+    data.table::setnames( SearchResult
+                          , new = EikonNameCleaner( names = names(SearchResult)
+                                                    , SpaceConvertor = SpaceConvertor))}
     return(data.table::setDF(SearchResult))
   } else {
     python_SearchResult <- SearchResult
@@ -425,7 +414,8 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
   python_json <- python_SearchResult$to_json(date_format = "ms")
 
   # Process Output ----
-  r_df <- Process_RDP_output(python_json = python_json)
+  r_df <- Process_RDP_output(python_json = python_json, SpaceConvertor = SpaceConvertor)
+
 
   return(r_df)
 }

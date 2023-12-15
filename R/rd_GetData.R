@@ -14,7 +14,7 @@
 #' @param raw_output to return the raw list by chunk for debugging purposes, default = FALSE
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
 #' @param verbose boolean, set to true to print out the actual python call with time stamp for debugging.
-#' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."
+#' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is NULL
 #' @param RDObject Refinitiv Data connection object
 #' @param use_field_names_in_headers boolean return request fieldnames in stead of titles
 #' @param SyncFields boolean, synchronize fields over same time axis (only JSON!, because not supported in Python (use GetHistory))
@@ -45,7 +45,7 @@
 #' }
 #'
 rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, Parameters = NULL, raw_output = FALSE
-                       , time_out = 60, verbose = FALSE, SpaceConvertor = ".", use_field_names_in_headers = F, SyncFields = FALSE){
+                       , time_out = 60, verbose = FALSE, SpaceConvertor = NULL, use_field_names_in_headers = F, SyncFields = FALSE){
 
 
   #Make sure that Python object has api key
@@ -129,7 +129,7 @@ rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, P
       ReturnList <-  lapply( X =  EikonDataList
                            , FUN =  Process_RDP_output
                            , RemoveNA = FALSE
-                           , CleanNames = FALSE
+                           , SpaceConvertor = SpaceConvertor
                            )
     }
     if(getOption(".RefinitivPyModuleName") =="JSON"){
@@ -137,6 +137,7 @@ rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, P
                            , FUN =  rd_OutputProcesser
                            , NA_cleaning = FALSE
                            , use_field_names_in_headers = use_field_names_in_headers
+                           , SpaceConvertor = SpaceConvertor
                            )
     }
     ReturnElement <- data.table::rbindlist(ReturnList, use.names = T, fill = T) |> data.table::setDF()

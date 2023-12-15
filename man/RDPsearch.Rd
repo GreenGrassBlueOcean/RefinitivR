@@ -17,6 +17,7 @@ RDPsearch(
   group_count = NULL,
   navigators = NULL,
   features = NULL,
+  SpaceConvertor = ".",
   Arglist = list()
 )
 }
@@ -44,6 +45,8 @@ RDPsearch(
 \item{navigators}{optional character string e.g.}
 
 \item{features}{optional character, meaning not clear from refinitiv documentation}
+
+\item{SpaceConvertor}{optional character, invokes name cleaning so that parameters can be easier used in r, defaults to "."}
 
 \item{Arglist}{optional named list pass the above parameters as a named list withouding needing to use to do.call.}
 }
@@ -113,7 +116,6 @@ ListedSearch <- RDPsearch(query = SearchQuery)
   ListedSearch <- RDPsearch(RDP = RefinitivJsonConnect(), query = SearchQuery)
 
 }
-
 }
 \seealso{
 RDPShowAvailableSearchViews()

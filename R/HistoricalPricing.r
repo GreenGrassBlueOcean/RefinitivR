@@ -12,6 +12,7 @@
 #' @param fields The comma separated list of fields that are to be returned in the response (only interday)
 #' @param sessions The list of market session classification (comma delimiter) that tells the system to return historical time series data based on the market session definition (market open/market close)
 #' @param debug boolean, if TRUE prints url of get requests
+#' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is NULL
 #'
 #' @return data.frame with result
 #' @export
@@ -117,11 +118,11 @@
 #' \dontrun{
 #' # run with python refinitiv data
 #' Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
-#' , count = 20L, RDObject = RDConnect())
+#' , count = 20L, RDObject = RDConnect(PythonModule = "RD"))
 #'
 #' # run with r json
 #' Vodafone2 <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
-#' , count = 20L, RDObject = RefinitivJsonConnect())
+#' , count = 20L, RDObject = RDConnect(PythonModule = "JSON"))
 #'
 #' identical(Vodafone, Vodafone2)
 #'
@@ -163,6 +164,7 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
                                    , fields = NULL
                                    , sessions = NULL
                                    , debug = FALSE
+                                   , SpaceConvertor = "."
                                    ){
    force(RDObject)
 
@@ -272,7 +274,9 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
                                             , use_field_names_in_headers = FALSE)
                                       , use.names = T, fill = T)
 
-   return(data.table::setDF(return_DT))
+  data.table::setnames(return_DT, new = EikonNameCleaner( names = names(return_DT)
+                                                        , SpaceConvertor = SpaceConvertor))
+  return(data.table::setDF(return_DT))
 }
 
 
@@ -301,7 +305,7 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
 #' , EndPoint = EndPoint, request_type = "POST")
 #' Output <- rd_OutputProcesser(response)
 #' }
-rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning = TRUE){
+rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning = TRUE, SpaceConvertor = NULL){
   # bind rows
   CleanedData <- replaceInList(x$data, function(x)if(is.null(x) || identical(x,"") )NA else x)
   return_DT <- data.table::rbindlist(CleanedData)
@@ -365,6 +369,14 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning
                      , j = i, value=FALSE)
     }
   }
+
+
+  if(!is.null(SpaceConvertor)){
+  data.table::setnames( return_DT
+                        , new = EikonNameCleaner( names = names(return_DT)
+                                                  , SpaceConvertor = SpaceConvertor))
+  }
+
   return(return_DT)
 
 }

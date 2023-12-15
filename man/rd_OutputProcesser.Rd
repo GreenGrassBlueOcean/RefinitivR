@@ -4,7 +4,12 @@
 \alias{rd_OutputProcesser}
 \title{Process output from refintiv data to r data.frame output}
 \usage{
-rd_OutputProcesser(x, use_field_names_in_headers = TRUE, NA_cleaning = TRUE)
+rd_OutputProcesser(
+  x,
+  use_field_names_in_headers = TRUE,
+  NA_cleaning = TRUE,
+  SpaceConvertor = NULL
+)
 }
 \arguments{
 \item{x}{refinitiv data platform output}

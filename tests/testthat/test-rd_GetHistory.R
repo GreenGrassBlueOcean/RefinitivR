@@ -250,9 +250,10 @@ test_that("rd_GetHistory will handle requests with one instruments and multiple 
 
 })
 
-test_that("rd_GetData can handle timedates", {
+test_that("rd_GetHistory can handle timedates", {
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
 
+  rics <- "AAPL.O"
   Eikonformulas <- "TR.IssueMarketCap(Scale=6,ShType=FFL,Curn=USD)"
 
   test_python <- Refinitiv::rd_GetHistory( universe = rics, RD = RDConnect(PythonModule = "RD")

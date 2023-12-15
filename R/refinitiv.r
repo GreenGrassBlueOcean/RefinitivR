@@ -584,7 +584,7 @@ EikonNameCleaner <- function(names, SpaceConvertor = "."){
                                      lapply(FUN = paste, collapse = " ")
 
 
-  if(SpaceConvertor %in% c(".", "," , "-", "_") ){
+  if(isTRUE(SpaceConvertor %in% c(".", "," , "-", "_"))){
     returnNames <- gsub(x = returnNames, pattern = " ", replacement = SpaceConvertor, perl = TRUE)
   }
 

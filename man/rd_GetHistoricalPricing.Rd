@@ -14,7 +14,8 @@ rd_GetHistoricalPricing(
   count = 20L,
   fields = NULL,
   sessions = NULL,
-  debug = FALSE
+  debug = FALSE,
+  SpaceConvertor = "."
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ rd_GetHistoricalPricing(
 \item{sessions}{The list of market session classification (comma delimiter) that tells the system to return historical time series data based on the market session definition (market open/market close)}
 
 \item{debug}{boolean, if TRUE prints url of get requests}
+
+\item{SpaceConvertor}{converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is NULL}
 }
 \value{
 data.frame with result
@@ -142,11 +145,11 @@ together with the status block to indicate the unsupported fields. Currently, th
 \dontrun{
 # run with python refinitiv data
 Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
-, count = 20L, RDObject = RDConnect())
+, count = 20L, RDObject = RDConnect(PythonModule = "RD"))
 
 # run with r json
 Vodafone2 <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
-, count = 20L, RDObject = RefinitivJsonConnect())
+, count = 20L, RDObject = RDConnect(PythonModule = "JSON"))
 
 identical(Vodafone, Vodafone2)
 

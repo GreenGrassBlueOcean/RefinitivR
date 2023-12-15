@@ -18,7 +18,7 @@ EikonGetNewsHeadlines(
 \arguments{
 \item{EikonObject}{Connection Object result from EikonConnect()}
 
-\item{query}{character optional News headlines search criteria. The text can contain RIC codes, company names, country names and operators (AND, OR, NOT, IN, parentheses and quotes for explicit search…).Tip: Append 'R:' in front of RIC names to improve performance.}
+\item{query}{character array optional News headlines search criteria. The text can contain RIC codes, company names, country names and operators (AND, OR, NOT, IN, parentheses and quotes for explicit search…).Tip: Append 'R:' in front of RIC names to improve performance.}
 
 \item{count}{integer, optional Max number of headlines retrieved.Value Range: [1-100].Default: 10}
 
@@ -49,7 +49,7 @@ Returns a list of news headlines
 \dontrun{
  Eikon <- Refinitiv::EikonConnect()
  headlines <- EikonGetNewsHeadlines( EikonObject = Eikon
-                                   , query = "R:MSFT.O", count = 2)
+                                   , query = c("R:MSFT.O", "R:AAPL.O") , count = 2, debug = TRUE)
 }
 
 \dontrun{

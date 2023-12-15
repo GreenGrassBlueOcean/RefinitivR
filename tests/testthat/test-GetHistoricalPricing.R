@@ -40,7 +40,7 @@ test_that("historical pricing delivers identical results", {
                    OFF_CLOSE = "numeric", OFFBK_VOL = "integer", OPEN_PRC = "numeric",
                    OPN_AUC = "numeric", OPN_AUCVOL = "integer", ORDBK_VOL = "integer",
                    ORDBK_VWAP = "numeric", PERATIO = "numeric", TRD_STATUS = "integer",
-                   TRDPRC_1 = "numeric", TRNOVR_UNS = "numeric", universe = "character",
+                   TRDPRC_1 = "numeric", TRNOVR_UNS = "numeric", Universe = "character",
                    VWAP = "numeric")
   expected <- expected[order(names(expected))]
 
@@ -49,7 +49,7 @@ test_that("historical pricing delivers identical results", {
 
   expect_equal(actual, expected)
 
-  expect_equal(unique(Vodafone$universe), "VOD.L")
+  expect_equal(unique(Vodafone$Universe), "VOD.L")
 
   Vodafone_json <- rd_GetHistoricalPricing( universe = "VOD.L", interval = "P1D"
                                        , count = 20L, RDObject = RefinitivJsonConnect()
@@ -91,7 +91,7 @@ test_that("historical pricing delivers identical intraday results", {
                                        )
 
   #expect_equal(intraday, intraday_json) # can never be the same so not tested
-  expected <- list(universe = "character", DATE_TIME = "character", HIGH_1 = "numeric",
+  expected <- list(Universe = "character", DATE_TIME = "character", HIGH_1 = "numeric",
                  LOW_1 = "numeric", OPEN_PRC = "numeric", TRDPRC_1 = "numeric",
                  NUM_MOVES = "integer", ACVOL_UNS = "integer", HIGH_YLD = "logical",
                  LOW_YLD = "logical", OPEN_YLD = "logical", YIELD = "logical",
@@ -112,7 +112,7 @@ test_that("historical pricing delivers identical intraday results", {
     actual <- actual[order(names(actual))]
 
     expect_equal(names(actual),names(expected))
-    expect_equal(sort(unique(i$universe)), c("AAPL.O", "VOD.L"))
+    expect_equal(sort(unique(i$Universe)), c("AAPL.O", "VOD.L"))
   }
 
 })
@@ -132,11 +132,11 @@ test_that("historical pricing delivers identical interday results", {
                                            , RDObject = RefinitivJsonConnect())
 
 
-  interday_reorder <- interday[,match(c("universe", "Date", fields), colnames(interday))]
+  interday_reorder <- interday[,match(c("Universe", "Date", fields), colnames(interday))]
 
   expect_equal(interday_reorder, interday_json)
 
-  expected <- c("universe", "Date",  fields)
+  expected <- c("Universe", "Date",  fields)
   expected <- expected[order(expected)]
 
   for(i in list(interday, interday_json)){
@@ -148,7 +148,7 @@ test_that("historical pricing delivers identical interday results", {
   actual <- actual[order(actual)]
 
   expect_equal(expected, actual)
-  expect_equal(sort(unique(i$universe)), c("AAPL.O", "VOD.L"))
+  expect_equal(sort(unique(i$Universe)), c("AAPL.O", "VOD.L"))
 }
 
 })

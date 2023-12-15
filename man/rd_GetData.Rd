@@ -12,7 +12,7 @@ rd_GetData(
   raw_output = FALSE,
   time_out = 60,
   verbose = FALSE,
-  SpaceConvertor = ".",
+  SpaceConvertor = NULL,
   use_field_names_in_headers = F,
   SyncFields = FALSE
 )
@@ -32,7 +32,7 @@ rd_GetData(
 
 \item{verbose}{boolean, set to true to print out the actual python call with time stamp for debugging.}
 
-\item{SpaceConvertor}{converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."}
+\item{SpaceConvertor}{converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is NULL}
 
 \item{use_field_names_in_headers}{boolean return request fieldnames in stead of titles}
 

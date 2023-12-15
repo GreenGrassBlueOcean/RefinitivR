@@ -15,7 +15,7 @@ rd_GetHistory(
   adjustments = NULL,
   count = NULL,
   use_field_names_in_headers = TRUE,
-  CleanNames = FALSE,
+  SpaceConvertor = NULL,
   debug = FALSE
 )
 }
@@ -38,9 +38,9 @@ rd_GetHistory(
 
 \item{count}{The maximum number of data points returned. Values range: 1 - 10000}
 
-\item{use_field_names_in_headers}{boolean     If True - returns field name as column headers for data instead of title, it is advisable to leave this setting to TRUE to prevent the issue with two datecolumns when using specific fields like e.g.}
+\item{use_field_names_in_headers}{boolean     If True - returns field name as column headers for data instead of title, it is advisable to leave this setting to TRUE to prevent the issue with two date columns when using specific fields like e.g.}
 
-\item{CleanNames}{default = FALSE}
+\item{SpaceConvertor}{converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is NULL, use this for compatability with eikon}
 
 \item{debug}{boolean, default = FALSE, if TRUE, prints out the url used to retrieve the data}
 }
@@ -97,19 +97,5 @@ test <- rd_GetHistory( universe = c("GOOG.O","MSFT.O","FB.O","AMZN.O")
                      ,fields = c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
                      ,parameters = list("Scale" = 6,"SDate" = 0
                      ,"EDate" = -3,"FRQ" = "FY", "Curn" = "EUR"))
-
-
-Managing filling behavior (add 'fill = "None"' to parameters)
-
-
-test <- rd_GetHistory( RD = RDObject , universe = c("GOOG.O")
-                     ,fields = c("TR.IssueMarketCap(Scale=6,ShType=FFL)"
-                       ,"TR.FreeFloatPct()/100/*FreefloatWeight*/"
-                       ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/"
-                       ,"TR.CLOSEPRICE(Adjusted=0)/*close*/")
-                     , parameters = list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01"
-                     , fill = "None"))
-
-
 }
 }
