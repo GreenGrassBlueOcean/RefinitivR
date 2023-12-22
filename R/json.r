@@ -259,7 +259,7 @@ send_json_request <- function(json=NULL, service = "eikon", debug = TRUE, reques
     if("responses" %in% names(tryresults)){
        tryresults <- tryresults$responses[[1]]
     }
-# browser()
+
     ticket <- NULL
     # Fetches the content from the query
     # Checks for ErrorCode and then aborts after printing message
@@ -278,10 +278,14 @@ send_json_request <- function(json=NULL, service = "eikon", debug = TRUE, reques
           } else {
             Sys.sleep(60)
           }# maximize waiting time to 60 seconds, not waiting for more than 60 seconds for server response
-          # send here new json call to
+          # Check if new json body with ticket should be created for the next request
+          if(!is.null(ticket) && !is.null(query$request$body)){
+            json <- ConstructTicketJsonBody(ticket = ticket, query = query, debug = debug)
+            counter <- counter + 0.5
+          } else {
+            counter <- counter + 1
+          }
 
-
-          counter <- counter + 1
         } else {
          stop(paste0("Error code: ", tryresults$ErrorCode, " ", tryresults$ErrorMessage))
      }
@@ -293,6 +297,37 @@ send_json_request <- function(json=NULL, service = "eikon", debug = TRUE, reques
              results <- NA}
 }
   results
+}
+
+
+#' rewrite JSON body in case a waiting ticket is assigned so that the correct json is requested
+#'
+#' @param query httr2_response
+#' @param ticket character hash code
+#' @param debug boolean print revised json message with ticket number
+#'
+#' @return revised json body with ticket hash
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#'  see tests for examples
+#' }
+ConstructTicketJsonBody <- function(query, ticket, debug){
+
+  body <- query$request$body
+
+  if("Entity" %in% names(body$data)){
+    body$data$Entity$W$requests[[1]] <- list("ticket" = ticket)
+  } else {
+    body$data <- list("ticket" = ticket)
+  }
+
+  if(debug){
+    message(body$data)
+   }
+
+  return(body$data)
 }
 
 
