@@ -1,0 +1,7 @@
+                                                              DocumentTitle     RIC       Eps MktCapTotalUsd
+1:                   Procter & Gamble Co, Ordinary Share, NYSE Consolidated      PG   6.15100   340004404798
+2:                               L'Oreal SA, Ordinary Share, Euronext Paris OREP.PA  10.90654   263822084850
+3:                    Shiseido Co Ltd, Ordinary Share, Tokyo Stock Exchange  4911.T  64.25036    11616049038
+4: Hindustan Unilever Ltd, Ordinary Share, National Stock Exchange of India  HLL.NS  43.76541    72155984677
+5:                           Kao Corp, Ordinary Share, Tokyo Stock Exchange  4452.T 129.64111    18758024519
+6:                      Unicharm Corp, Ordinary Share, Tokyo Stock Exchange  8113.T 128.52037    21488755441

@@ -1,0 +1,7 @@
+   ContractType              RIC
+1:     Standard AAPLA192419500.U
+2:     Standard AAPLA192419000.U
+3:     Standard AAPLA192420000.U
+4:     Standard AAPLA192418000.U
+5:     Standard AAPLA192418500.U
+6:     Standard AAPLM192419000.U

@@ -1,0 +1,21 @@
+                                                                                                                     DocumentTitle
+1:                                                             MARITIME AMITY, Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone
+2:                     BOW ODYSSEY, Chemical Tanker, ODFJELL MANAGEMENT AS, Gulf of Mexico|US Gulf Tanker Zone|Texas|United States
+3:                                                                     SCHWYZ, Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone
+4:                                                             TSUKUBA GALAXY, Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone
+5:                                          BOW PRECISION, Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone|Texas|United States
+6: FAIRCHEM FORTITUDE, Chemical Tanker, FAIRFIELD CHEMICAL CARRIERS-US, Louisiana|Gulf of Mexico|US Gulf Tanker Zone|United States
+              RIC                                                  OriginPort           DestinationPort
+1: C}KM7309878155 Southtex Lightering\\Oriental East Bank Berth 3 (Rio Haina) FREEPORT [Freeport (Bah)]
+2: C}KI7309853318                       Port Neches\\Freeport North Anchorage         HOUSTON [Houston]
+3: C}KN7309951948                South West Pass\\New Orleans Outer Anchorage        GB_AVO [Avonmouth]
+4: C}KI7309814837                            Houston\\Vopak Deer Pk Tml (HOU)           USHOU [Houston]
+5: C}KC7309784971                            Houston\\Vopak Deer Pk Tml (HOU)     USFPO>USHOU [Houston]
+6: C}KI7309865899                    New Orleans\\New Orleans Outer Anchorage NEW ORLEANS [New Orleans]
+   RCSFlagLeaf          AssetName             AISStatus     IMO VesselCurrentPortRIC
+1:   Singapore     MARITIME AMITY             At Anchor 9848340                 <NA>
+2:      Norway        BOW ODYSSEY                Moored 9818539       C}TS7309539053
+3:      Panama             SCHWYZ Underway Using Engine 9905605                 <NA>
+4:      Panama     TSUKUBA GALAXY             At Anchor 9796834                 <NA>
+5:   Singapore      BOW PRECISION                Moored 9790646       C}TS7309531803
+6:   Singapore FAIRCHEM FORTITUDE             At Anchor 9805910       C}TS7309539114

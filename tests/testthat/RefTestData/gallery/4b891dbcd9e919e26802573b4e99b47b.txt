@@ -1,0 +1,21 @@
+   BusinessEntity
+1:   ORGANISATION
+2:   QUOTExEQUITY
+3:   QUOTExEQUITY
+4:   QUOTExEQUITY
+5:   QUOTExEQUITY
+6:   QUOTExEQUITY
+                                                                                     DocumentTitle        PI
+1:                                                                       Apple Inc, Public Company     41815
+2: OPRA Apple Equity Option 195 Call Jan 2024 , Equity Cash Option, Call 195 USD 19-Jan-2024, OPRA 544573253
+3: OPRA Apple Equity Option 190 Call Jan 2024 , Equity Cash Option, Call 190 USD 19-Jan-2024, OPRA 544573269
+4: OPRA Apple Equity Option 200 Call Jan 2024 , Equity Cash Option, Call 200 USD 19-Jan-2024, OPRA 544573395
+5: OPRA Apple Equity Option 180 Call Jan 2024 , Equity Cash Option, Call 180 USD 19-Jan-2024, OPRA 544573264
+6: OPRA Apple Equity Option 185 Call Jan 2024 , Equity Cash Option, Call 185 USD 19-Jan-2024, OPRA 544573277
+        PermID              RIC
+1:        <NA>             <NA>
+2: 21839733204 AAPLA192419500.U
+3: 21839733215 AAPLA192419000.U
+4: 21839733354 AAPLA192420000.U
+5: 21839733241 AAPLA192418000.U
+6: 21839733218 AAPLA192418500.U

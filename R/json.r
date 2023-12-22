@@ -259,8 +259,8 @@ send_json_request <- function(json=NULL, service = "eikon", debug = TRUE, reques
     if("responses" %in% names(tryresults)){
        tryresults <- tryresults$responses[[1]]
     }
-
-
+# browser()
+    ticket <- NULL
     # Fetches the content from the query
     # Checks for ErrorCode and then aborts after printing message
     if (is.numeric(tryresults$ErrorCode) || is.numeric(tryresults$estimatedDuration)) {
@@ -271,12 +271,16 @@ send_json_request <- function(json=NULL, service = "eikon", debug = TRUE, reques
         } else if(is.numeric(tryresults$estimatedDuration)){
           WaitTime <- NULL
           WaitTime <- try(tryresults$estimatedDuration/1000, silent = TRUE)
+          ticket <- try(tryresults$ticket, silent = TRUE)
           message(paste("request not ready, server is asking to wait for",WaitTime, "seconds so waiting patiently"))
           if(!is.null(WaitTime) && WaitTime <= 60){
             Sys.sleep(WaitTime)
           } else {
             Sys.sleep(60)
           }# maximize waiting time to 60 seconds, not waiting for more than 60 seconds for server response
+          # send here new json call to
+
+
           counter <- counter + 1
         } else {
          stop(paste0("Error code: ", tryresults$ErrorCode, " ", tryresults$ErrorMessage))

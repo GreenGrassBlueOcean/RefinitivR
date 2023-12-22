@@ -1,0 +1,21 @@
+                                  CentralBankName
+1:                    Bangko Sentral ng Pilipinas
+2:                    Bangko Sentral ng Pilipinas
+3:                    Bangko Sentral ng Pilipinas
+4: National Bank of the Republic of Kazakhstan SI
+5: National Bank of the Republic of Kazakhstan SI
+6: National Bank of the Republic of Kazakhstan SI
+                                                                                                           DocumentTitle
+1: Philippines, Policy Rates, Reverse Repo, O/N (Borrowing)  Key Rate, Reuters Polls, Daily, Bangko Sentral ng Pilipinas
+2:                  Philippines, REVERSE REPO, O/N (BORROWING)  KEY RATE - BNP PARIBAS BK, Reuters Polls, Daily, Reuters
+3:                        Philippines, REVERSE REPO, O/N (BORROWING)  KEY RATE - BARCLAYS, Reuters Polls, Daily, Reuters
+4:                     Kazakhstan, Policy Rates, Base Repo Rate, Reuters Polls, Monthly, The National Bank of Kazakhstan
+5:                                            Kazakhstan, BASE REPO RATE - SOVA CAPITAL, Reuters Polls, Monthly, Reuters
+6:                                           Kazakhstan, BASE REPO RATE - ALFA BANK KAZ, Reuters Polls, Monthly, Reuters
+                  RIC ObservationValue
+1:         PHCBIR=ECI             6.50
+2: pPHCBIR=5001111230             3.00
+3: pPHCBIR=8589934333             6.75
+4:         KZCBIR=ECI            16.00
+5: pKZCBIR=4298028913             9.75
+6: pKZCBIR=5000064591             9.25
