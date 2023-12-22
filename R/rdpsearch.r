@@ -406,7 +406,7 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
   }
 
   # check search outcome
-  if(identical(class(python_SearchResult),c("python.builtin.NoneType", "python.builtin.object"))){
+  if(identical(class(python_SearchResult),c("python.builtin.NoneType", "python.builtin.object")) || identical(python_SearchResult,list())){
     warning("RDPsearch did not provide any result, check query")
     return(data.frame())
   }
