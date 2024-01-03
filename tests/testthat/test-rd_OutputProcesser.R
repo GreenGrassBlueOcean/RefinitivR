@@ -292,3 +292,22 @@ test_that("rd_OutputProcesser works case 3 json connect get_data with fields", {
 })
 
 
+test_that("rd_OutputProcesser can work with empty and failed requests"){
+
+  #failed request
+  x <- list(universe = list(ric = "someRic")
+           , status = list(code = "some error",
+                           message = "some message"))
+  suppressMessages(expect_equal(rd_OutputProcesser(x  , use_field_names_in_headers = TRUE, NA_cleaning = TRUE, SpaceConvertor = NULL)
+              , data.table::data.table()
+              ))
+
+  #empty request returned
+  x <- list(universe = list(ric = "someRic")
+            , data = list())
+  suppressMessages(expect_equal(rd_OutputProcesser(x  , use_field_names_in_headers = TRUE, NA_cleaning = TRUE, SpaceConvertor = NULL)
+               , data.table::data.table()
+  ))
+
+
+  }

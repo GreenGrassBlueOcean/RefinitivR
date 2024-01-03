@@ -267,7 +267,6 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
    if(any(DownloadCoordinator$retries > 4L)){
      warning("EikonGetTimeseries downloading data failed for one or more Rics")
    }
-
   # Process request and build return data.frame using data.table ----
    return_DT <- data.table::rbindlist(lapply( X =  TimeSeriesList
                                             , FUN =  rd_OutputProcesser
@@ -306,6 +305,16 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
 #' Output <- rd_OutputProcesser(response)
 #' }
 rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning = TRUE, SpaceConvertor = NULL){
+
+  #check input
+  if(!"data" %in% names(x)){
+    message(x)
+    return(data.table::data.table())
+  } else if(identical(x$data,list())){
+    message(paste(x$universe, "returned empty list"))
+    return(data.table::data.table())
+  }
+
   # bind rows
   CleanedData <- replaceInList(x$data, function(x)if(is.null(x) || identical(x,"") )NA else x)
   return_DT <- data.table::rbindlist(CleanedData)
