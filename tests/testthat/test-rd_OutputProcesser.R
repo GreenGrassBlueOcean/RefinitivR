@@ -292,7 +292,7 @@ test_that("rd_OutputProcesser works case 3 json connect get_data with fields", {
 })
 
 
-test_that("rd_OutputProcesser can work with empty and failed requests"){
+test_that("rd_OutputProcesser can work with empty and failed requests", {
 
   #failed request
   x <- list(universe = list(ric = "someRic")
@@ -310,4 +310,4 @@ test_that("rd_OutputProcesser can work with empty and failed requests"){
   ))
 
 
-  }
+  })
