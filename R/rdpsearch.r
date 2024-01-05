@@ -83,9 +83,24 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, SpaceConvertor = N
   r_json_dirty <- python_json |> reticulate::py_to_r() |> jsonlite::fromJSON()
   r_json_clean <- lapply(X =  r_json_dirty
                         , FUN =  function(x){replaceInList(x, function(y)if(is.null(y) || identical(y,"")) NA else y)})
+
   r_list <- lapply( X =  r_json_clean
-                  , FUN =  function(x){data.table::transpose(data.table::as.data.table(x))})
-  r_dt <- data.table::as.data.table(r_list)
+                  , FUN =  function(x){data.table::as.data.table(data.table::transpose(x))})
+
+  r_named_list <-lapply( X = 1:length(r_list)
+                  , FUN = function(x, r_list, namevec)(
+                     if(ncol(r_list[[x]]) < 2){
+                       data.table::setnames(r_list[[x]], new = namevec[x])
+                     } else {
+                       data.table::setnames(r_list[[x]], new = paste0(namevec[x], 1:ncol(r_list[[x]])))
+                     }
+                  )
+                  , r_list = r_list
+                  , namevec = names(r_list)
+                  )
+
+  r_dt <- data.table::setDT( unlist(r_named_list, recursive = FALSE)
+                           , check.names = FALSE)
 
   Date <- value <- NULL
   if("Date" %in% names(r_dt)){
@@ -356,6 +371,7 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
   }
 
   if("view" %in% names(Arglist) && !is.null(Arglist$view) ){
+    Arglist$view <- eval(Arglist$view, envir=sys.frame(-1))
     Arglist$view <- GetSearchView( ConnectionObject = RDP
                                  , SearchView = Arglist$view)
 
@@ -368,6 +384,8 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
  if(identical(ConnectionMetaData$name, "refinitiv.data")){
    RDP <- RDP$discovery
  }
+  #Make sure all arguments are evaluated before passing to the search api
+  Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
 
   if("top" %in% names(Arglist) && !is.null(Arglist$top)){
     Arglist$top <- as.integer(Arglist$top)
@@ -376,9 +394,6 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
   if("group_count" %in% names(Arglist) && !is.null(Arglist$group_count) ){
     Arglist$group_count <- as.integer(Arglist$group_count)
   }
-
-  #Make sure all arguments are evaluated before passing to the search api
-  Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
 
   # remove RDP from arglist if this is in it.
   if("RDP" %in% names(Arglist)){

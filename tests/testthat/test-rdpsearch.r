@@ -205,3 +205,43 @@ test_that("RDPShowAvailableSearchViews fails when it should",{
 
 })
 
+
+
+test_that("RDP search can handle nested results for both python and JSON",{
+
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+
+  View1 <- "FundQuotes"
+  view1a <- View1
+  top1 <- 25L
+  filter1 <- "(AssetState ne 'DC' and SearchAllCategoryv2 eq 'Funds' and ((RCSIssuerDomicileCountry xeq 'G:7M' or RCSIssuerDomicileCountry xeq 'G:6X' or RCSIssuerDomicileCountry xeq 'G:8W' or RCSIssuerDomicileCountry xeq 'G:7J' or RCSIssuerDomicileCountry xeq 'G:7K') and RCSCurrency xeq 'C:6' and RCSAssetCategoryGenealogy in ('A:KZ')))"
+  select1 <- "DTSubjectName,RIC,BusinessEntity,PI,SearchAllCategoryv3,SearchAllCategoryv2,SearchAllCategory,IssueISIN,IssueLipperGlobalSchemeName,RCSAssetCategoryLeaf,RCSIssuerDomicileCountryLeaf,RCSIssueCountryRegisteredForSale,RCSCurrencyLeaf,ExchangeName,iNAVRIC,RCSIssuerDomicileCountry,RCSCurrency,RCSAssetCategoryGenealogy"
+
+
+  ETFS_python <- RDPsearch( RDP = RDConnect(PythonModule = "RD")
+                          , view = view1a
+                          , top = top1
+                          , filter = filter1
+                          , select = select1
+                          )
+
+
+
+
+  ETFS_JSON <- RDPsearch( RDP = RDConnect(PythonModule = "JSON")
+                          , view = view1a
+                          , top = top1
+                          , filter = filter1
+                          , select = select1
+  )
+
+
+
+  expect_identical(ETFS_python, ETFS_JSON)
+
+})
+
+
+
+
+

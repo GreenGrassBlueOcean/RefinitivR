@@ -519,6 +519,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                          #json <- json_builder(directions, payload)
 
                          response <- send_json_request(payload, service = "rdp", EndPoint = EndPoint, request_type = "POST")
+                         response$Hits <- lapply(response$Hits, FUN = function(x){as.list(unlist(x, recursive = F))})
                          return_DT <- data.table::rbindlist(response$Hits,fill=TRUE, use.names = T)
                          #
                          # Check for lists columns with null inside and fix those
