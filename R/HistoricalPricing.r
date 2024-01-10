@@ -271,7 +271,7 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
    return_DT <- data.table::rbindlist(lapply( X =  TimeSeriesList
                                             , FUN =  rd_OutputProcesser
                                             , use_field_names_in_headers = FALSE)
-                                      , use.names = T, fill = T)
+                                      , use.names = TRUE, fill = TRUE)
 
   data.table::setnames(return_DT, new = EikonNameCleaner( names = names(return_DT)
                                                         , SpaceConvertor = SpaceConvertor))

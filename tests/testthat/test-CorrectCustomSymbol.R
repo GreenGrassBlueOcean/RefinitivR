@@ -15,7 +15,7 @@ test_that("CorrectCustomInstrument works", {
 
 test_that("CorrectCustomInstrument fails when it should", {
   expect_error(CorrectCustomInstrument(symbol = "testABCDE-123456" , UUID = "ABCDE-123456")
-               , "Custom Symbol 'testABCDE-123456' can not be corrected by CorrectCustomInstrument Check manually", fixed = T)
+               , "Custom Symbol 'testABCDE-123456' can not be corrected by CorrectCustomInstrument Check manually", fixed = TRUE)
 
 
 })

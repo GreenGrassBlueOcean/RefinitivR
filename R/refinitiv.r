@@ -66,7 +66,7 @@ CheckInstallationResult <- function(PyhtonModuleName, InstallationStat = NULL,en
 #' Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-eikon
 #'
 #' This function can also be used to update the required python packages so that you can always use the latest version of the pyhton packages numpy and eikon.
-#' For a pure reinstall of miniconda and the refinitiv python libraries set set reset = T and update = F
+#' For a pure reinstall of miniconda and the refinitiv python libraries set set reset = TRUE and update = FALSE
 #'
 #' @param method Installation method. By default, "auto" automatically finds a method that will work in the local environment. Change the default to force a specific installation method. Note that the "virtualenv" method is not available on Windows.
 #' @param conda  The path to a conda executable. Use "auto" to allow reticulate to automatically find an appropriate conda binary. See Finding Conda in the reticulate package for more details
@@ -90,7 +90,7 @@ CheckInstallationResult <- function(PyhtonModuleName, InstallationStat = NULL,en
 #' \dontrun{
 #' # when you get the error the refinitiv library cannot
 #' # be found anymore or errors during installation:
-#' install_eikon(update = F, reset = T)
+#' install_eikon(update = FALSE, reset = TRUE)
 #' }
 install_eikon <- function(method = "conda", conda = "auto", envname= "r-eikon", update = TRUE, reset = FALSE,restart_session = TRUE) {
 #"r-eikon"
@@ -167,7 +167,7 @@ install_eikon <- function(method = "conda", conda = "auto", envname= "r-eikon", 
     if(reset){
       message("uninstalling MiniConda")
       Sys.unsetenv("RETICULATE_PYTHON")
-      try(reticulate::miniconda_uninstall(), silent = T)
+      try(reticulate::miniconda_uninstall(), silent = TRUE)
     }
 
     tryCatch({ message("installing MiniConda")
@@ -363,7 +363,7 @@ PropertiesActiveRefinitivObject <- function(verbose = TRUE){
 #'
 #' @param Eikonapplication_port proxy port id
 #' @param Eikonapplication_id Eikon api key
-#' @param PythonModule character choose between Eikon (python),RDP (python),JSON (direct JSON message without python)
+#' @param PythonModule character choose between Eikon (python),RD (python),JSON (direct JSON message without python)
 #' @param TestConnection Boolean, TRUE or FALSE test connection after initiating contact with Eikon terminal
 #' @param UUID optional character parameter for custom instruments, not necessary for regular requests
 #'
@@ -495,7 +495,7 @@ RDConnect <- function(application_id = NA, PythonModule = "JSON", UUID = NA) {
   try(reticulate::use_miniconda(condaenv = "r-eikon"), silent = TRUE)
   #2. Run main programme ----
   options(.EikonApiKey = application_id)
-  rd <- reticulate::import(module = "refinitiv.data", convert = F, delay_load = F)
+  rd <- reticulate::import(module = "refinitiv.data", convert = FALSE, delay_load = FALSE)
   rd$open_session()
   GetandSetPyModuleNameandVersion(rd)
 

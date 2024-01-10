@@ -161,7 +161,7 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, SpaceConvertor = N
 #' GetSearchView(ConnectionObject = RDConnect(), SearchView = "SEARCH_ALL")
 #' }
 GetSearchView <- function(ConnectionObject = RDConnect()
-                         , ConnectionMetaData = PropertiesActiveRefinitivObject(verbose = F)
+                         , ConnectionMetaData = PropertiesActiveRefinitivObject(verbose = FALSE)
                         , SearchView = NULL){
 
   if(is.null(SearchView)){
@@ -231,7 +231,7 @@ RDPget_search_metadata <- function(RDP = RDConnect(), searchView = NULL){
   force(RDP)
 
 
-  ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
+  ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = FALSE)
 
   if(identical(ConnectionMetaData$name, "refinitiv.data")){
 
@@ -256,7 +256,7 @@ RDPget_search_metadata <- function(RDP = RDConnect(), searchView = NULL){
                                                  , data.table::rbindlist(metadata_r[x])
                                                  )}
                   , metadata_r = metadata_r) |>
-            data.table::rbindlist(use.names = T, fill = T)
+            data.table::rbindlist(use.names = TRUE, fill = TRUE)
 
     Properties <- NULL
     r_df <- r_DT[, Properties := NULL] |> data.table::setDF()
@@ -379,7 +379,7 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
 
  #RD -->  RDP$content$search$Views[[searchView]])
  #RDP --> RDP$SearchViews[[searchView]]
- ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
+ ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = FALSE)
 
  if(identical(ConnectionMetaData$name, "refinitiv.data")){
    RDP <- RDP$discovery
@@ -404,7 +404,7 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
     Arglist$SpaceConvertor <- NULL
   }
 
-  ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
+  ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = FALSE)
 
   # Execute search ----
 
@@ -456,14 +456,14 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
 #'
 #' Analytics <- RDPGetOptionAnalytics(OptionRics = OPtionInstruments)
 #' }
-RDPGetOptionAnalytics <- function(RDP = RDConnect(), OptionRics = NULL, raw = FALSE, verbose = T){
+RDPGetOptionAnalytics <- function(RDP = RDConnect(), OptionRics = NULL, raw = FALSE, verbose = TRUE){
 
   if(is.null(OptionRics) || !is.character(OptionRics)){
     stop("OptionRics should be supplied currently is not supplied or is in the wrong format")
   }
 
   force(RDP)
-  ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = F)
+  ConnectionMetaData <- PropertiesActiveRefinitivObject(verbose = FALSE)
   if(identical(ConnectionMetaData$name, "refinitiv.data")){
     RDP <- RDP$content
   }

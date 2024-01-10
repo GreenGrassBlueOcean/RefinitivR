@@ -19,7 +19,7 @@ EikonConnect(
 
 \item{UUID}{optional character parameter for custom instruments, not necessary for regular requests}
 
-\item{PythonModule}{character choose between Eikon (python),RDP (python),JSON (direct JSON message without python)}
+\item{PythonModule}{character choose between Eikon (python),RD (python),JSON (direct JSON message without python)}
 
 \item{TestConnection}{Boolean, TRUE or FALSE test connection after initiating contact with Eikon terminal}
 }

@@ -84,8 +84,8 @@ EikonGetNewsHeadlines <- function(EikonObject = EikonConnect()
     return(RawHeadlinesList)
   } else {
     Return_DT <- lapply( X = RawHeadlinesList
-                       , FUN = function(x){data.table::rbindlist(l=x$headlines,use.names = T, fill = T)}
-                       ) |> data.table::rbindlist(use.names = T, fill = T, idcol = "query" )
+                       , FUN = function(x){data.table::rbindlist(l=x$headlines,use.names = TRUE, fill = TRUE)}
+                       ) |> data.table::rbindlist(use.names = TRUE, fill = TRUE, idcol = "query" )
 
     Return_DT$query <- query[Return_DT$query]
     Return_df <- data.table::setDF(Return_DT)
@@ -169,7 +169,7 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
   if(!raw_output){
     # Newslines <- EikonNewsList[[1]]
 
-    dir <- tempfile()
+    dir <- tempfile(tmpdir = tempdir(check = TRUE))
     dir.create(dir)
     htmlFile <- file.path(dir, "index.html")
 

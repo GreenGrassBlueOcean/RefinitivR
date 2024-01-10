@@ -8,7 +8,7 @@ RDPGetOptionAnalytics(
   RDP = RDConnect(),
   OptionRics = NULL,
   raw = FALSE,
-  verbose = T
+  verbose = TRUE
 )
 }
 \arguments{

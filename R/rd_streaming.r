@@ -272,8 +272,8 @@ create_OMM_Stream <- function(name = "EUR="
                             shiny::invalidateLater(1000, session)
                             plot( x = 1:xrange
                                 , y = private$.StreamLog[1:xrange,][[Plotvariable]]
-                                , ylim= c( 0.999 * max(0, min(private$.StreamLog[1:xrange,][[Plotvariable]]), na.rm = T)
-                                         , 1.001 * max(0, max(private$.StreamLog[1:xrange,][[Plotvariable]]), na.rm = T))
+                                , ylim= c( 0.999 * max(0, min(private$.StreamLog[1:xrange,][[Plotvariable]]), na.rm = TRUE)
+                                         , 1.001 * max(0, max(private$.StreamLog[1:xrange,][[Plotvariable]]), na.rm = TRUE))
                                 , las=1
                                 , type="l"
                                 , xlab="ticks"
@@ -401,7 +401,7 @@ create_RDP_Stream <- function(service
   ws <- websocket::WebSocket$new( url =  "ws://localhost:9060/api/rdp/streaming/quantitative-analytics/beta1/financial-contracts/WebSocket"
                                   , protocols = "rdp_streaming"
                                   , headers = headers
-                                  , autoConnect = F
+                                  , autoConnect = FALSE
   )
 
   Create_login_request = function() {

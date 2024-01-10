@@ -13,7 +13,7 @@ rd_GetData(
   time_out = 60,
   verbose = FALSE,
   SpaceConvertor = NULL,
-  use_field_names_in_headers = F,
+  use_field_names_in_headers = FALSE,
   SyncFields = FALSE
 )
 }

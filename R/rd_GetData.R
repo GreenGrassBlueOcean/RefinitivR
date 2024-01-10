@@ -45,11 +45,11 @@
 #' }
 #'
 rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, Parameters = NULL, raw_output = FALSE
-                       , time_out = 60, verbose = FALSE, SpaceConvertor = NULL, use_field_names_in_headers = F, SyncFields = FALSE){
+                       , time_out = 60, verbose = FALSE, SpaceConvertor = NULL, use_field_names_in_headers = FALSE, SyncFields = FALSE){
 
 
   #Make sure that Python object has api key
-  try(RDObject$set_app_key(app_key = .Options$.EikonApiKey), silent = T)
+  try(RDObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
   # EikonObject$set_timeout(timeout = time_out) #add timeout to reduce chance on timeout error chance.
 
 
@@ -140,7 +140,7 @@ rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, P
                            , SpaceConvertor = SpaceConvertor
                            )
     }
-    ReturnElement <- data.table::rbindlist(ReturnList, use.names = T, fill = T) |> data.table::setDF()
+    ReturnElement <- data.table::rbindlist(ReturnList, use.names = TRUE, fill = TRUE) |> data.table::setDF()
 
   } else {
     ReturnElement <- EikonDataList

@@ -4,7 +4,7 @@ test_that("GetandSetPyModuleNameandVersion works", {
   OldVersion <- getOption(".RefinitivPyModuleVersion")
   OldType <- getOption(".RefinitivPyModuleType")
 
-  test <- reticulate::import(module = "numpy", delay_load = T)
+  test <- reticulate::import(module = "numpy", delay_load = TRUE)
   GetandSetPyModuleNameandVersion(test)
 
   TestModuleName <- getOption(".RefinitivPyModuleName")

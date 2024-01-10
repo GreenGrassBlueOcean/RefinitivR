@@ -64,7 +64,7 @@ EikonTestObject  <- function(testMode  = "replay"){
     Input[[1]] <- NULL
     #Make sure all arguments are evaluated before passing to the search api
     Arglist <- lapply(X = Input, FUN = function(x, env = parent.frame(4)){eval(x, envir=env)})
-    InputHash <- digest::digest(Arglist, algo="md5", serialize=T)
+    InputHash <- digest::digest(Arglist, algo="md5", serialize=TRUE)
 
     if(testMode  == "write"){
       #store input in archivist

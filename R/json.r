@@ -255,7 +255,7 @@ send_json_request <- function(json=NULL, service = "eikon", debug = TRUE, reques
     }
 
     if(request_type != "DELETE"){
-    tryresults <-  httr2::resp_body_json(query, check_type = F)
+    tryresults <-  httr2::resp_body_json(query, check_type = FALSE)
     if("responses" %in% names(tryresults)){
        tryresults <- tryresults$responses[[1]]
     }
@@ -519,8 +519,8 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                          #json <- json_builder(directions, payload)
 
                          response <- send_json_request(payload, service = "rdp", EndPoint = EndPoint, request_type = "POST")
-                         response$Hits <- lapply(response$Hits, FUN = function(x){as.list(unlist(x, recursive = F))})
-                         return_DT <- data.table::rbindlist(response$Hits,fill=TRUE, use.names = T)
+                         response$Hits <- lapply(response$Hits, FUN = function(x){as.list(unlist(x, recursive = FALSE))})
+                         return_DT <- data.table::rbindlist(response$Hits,fill=TRUE, use.names = TRUE)
                          #
                          # Check for lists columns with null inside and fix those
                           ListCols <- names(which(lapply(return_DT, class) == "list"))

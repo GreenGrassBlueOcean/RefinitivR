@@ -22,7 +22,7 @@ JsonHeaderAnalyzer <- function(JsonReturn, Selectedheader){
   }
 
   CleanedHeaders <- replaceInList(HeaderLoc, function(x)if(is.null(x) || identical(x,"") )NA else x)
-  headers <- data.table::rbindlist( CleanedHeaders, fill = TRUE, use.names = T)
+  headers <- data.table::rbindlist( CleanedHeaders, fill = TRUE, use.names = TRUE)
 
   if(identical(names(headers), c("name", "type", "decimalChar") )){
     headers <- data.table::setDF(headers)
