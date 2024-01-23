@@ -206,6 +206,7 @@ send_json_request <- function(json=NULL, service = "eikon", debug = TRUE, reques
         httr2::req_headers('Content-Type' = 'application/json') |>
         httr2::req_user_agent("RefinitivR (https://github.com/GreenGrassBlueOcean/RefinitivR)") |>
         #httr2::req_error(is_error = function(resp) FALSE) |>
+        httr2::req_timeout(60)
         httr2::req_body_json(json)|>
         httr2::req_perform()
 
