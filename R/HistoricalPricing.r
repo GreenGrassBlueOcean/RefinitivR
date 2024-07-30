@@ -346,7 +346,7 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning
 
   # set column names
 
-
+browser()
   data.table::setnames(x = return_DT, new = headernames)
 
   # add universe

@@ -26,7 +26,7 @@ get_rdp_streaming_url <- function(RDObject = RefinitivJsonConnect(), debug = TRU
 
 }
 
-#' Get bearer key from terminal
+#' Get bearer key from terminal (experimental, don't use in production)
 #'
 #' @param debug debug parameter print urls for json requests
 #'
@@ -36,8 +36,7 @@ get_rdp_streaming_url <- function(RDObject = RefinitivJsonConnect(), debug = TRU
 #'  \item(token_type)(type of token (bearer))
 #' }
 #'
-#' @keywords internal
-#' @noRd
+#' @export
 #'
 #' @examples
 #' \dontrun{

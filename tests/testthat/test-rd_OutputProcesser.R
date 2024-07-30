@@ -311,3 +311,22 @@ test_that("rd_OutputProcesser can work with empty and failed requests", {
 
 
   })
+
+
+
+
+test_that("rd_OutputProcesser can work with complte NA responses ", {
+
+
+ x <- list(columnHeadersCount = 1L, data = list(list("NVDA.O", NULL), list("ASMI.AS", NULL))
+           , error = list(list(code = 218L, col = 1L, message = "The formula must contain at least one field or function.",row = 0L)
+                        , list(code = 218L, col = 1L, message = "The formula must contain at least one field or function.", row = 1L))
+           , headerOrientation = "horizontal", headers = list(list(displayName = NULL)
+                                                             , list(displayName = "TR.IVPRICETOLNTRINSICVALUEGLOBALRANK"
+                                                                    , field = "TR.IVPRICETOLNTRINSICVALUEGLOBALRANK"))
+           , rowHeadersCount = 1L, totalColumnsCount = 2L, totalRowsCount = 3L)
+
+ suppressMessages(expect_equal(rd_OutputProcesser(x  , use_field_names_in_headers = TRUE, NA_cleaning = TRUE, SpaceConvertor = NULL)
+                               , data.table::data.table()))
+
+})
