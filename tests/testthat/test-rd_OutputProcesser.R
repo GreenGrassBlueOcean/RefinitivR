@@ -298,16 +298,16 @@ test_that("rd_OutputProcesser can work with empty and failed requests", {
   x <- list(universe = list(ric = "someRic")
            , status = list(code = "some error",
                            message = "some message"))
-  suppressMessages(expect_equal(rd_OutputProcesser(x  , use_field_names_in_headers = TRUE, NA_cleaning = TRUE, SpaceConvertor = NULL)
+  suppressMessages(suppressWarnings(expect_equal(rd_OutputProcesser(x  , use_field_names_in_headers = TRUE, NA_cleaning = TRUE, SpaceConvertor = NULL)
               , data.table::data.table()
-              ))
+              )))
 
   #empty request returned
   x <- list(universe = list(ric = "someRic")
             , data = list())
-  suppressMessages(expect_equal(rd_OutputProcesser(x  , use_field_names_in_headers = TRUE, NA_cleaning = TRUE, SpaceConvertor = NULL)
+  suppressMessages(suppressWarnings(expect_equal(rd_OutputProcesser(x  , use_field_names_in_headers = TRUE, NA_cleaning = TRUE, SpaceConvertor = NULL)
                , data.table::data.table()
-  ))
+  )))
 
 
   })
@@ -315,7 +315,7 @@ test_that("rd_OutputProcesser can work with empty and failed requests", {
 
 
 
-test_that("rd_OutputProcesser can work with complte NA responses ", {
+test_that("rd_OutputProcesser can work with complete NA responses ", {
 
 
  x <- list(columnHeadersCount = 1L, data = list(list("NVDA.O", NULL), list("ASMI.AS", NULL))
@@ -326,7 +326,12 @@ test_that("rd_OutputProcesser can work with complte NA responses ", {
                                                                     , field = "TR.IVPRICETOLNTRINSICVALUEGLOBALRANK"))
            , rowHeadersCount = 1L, totalColumnsCount = 2L, totalRowsCount = 3L)
 
- suppressMessages(expect_equal(rd_OutputProcesser(x  , use_field_names_in_headers = TRUE, NA_cleaning = TRUE, SpaceConvertor = NULL)
-                               , data.table::data.table()))
 
+ test <- suppressWarnings(suppressMessages(expect_warning(rd_OutputProcesser(x  , use_field_names_in_headers = TRUE, NA_cleaning = FALSE, SpaceConvertor = NULL))))
+
+ CorrectOutcome <- structure(list(V1 = c("NVDA.O", "ASMI.AS"), TR.IVPRICETOLNTRINSICVALUEGLOBALRANK = c(NA,NA)), row.names = c(NA, -2L)
+                            , class = c("data.table", "data.frame"))
+
+
+ expect_equal(CorrectOutcome, test)
 })

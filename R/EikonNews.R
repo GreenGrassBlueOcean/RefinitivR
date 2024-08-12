@@ -11,11 +11,11 @@
 #'
 #' @return  Returns a data frame of news headlines with the following columns:
 #' \itemize{
-#'  \item{"Index" }{Timestamp of the publication time}
-#'  \item{"version_created" }{Date of the latest update on the news}
-#'  \item{"text" }{Text of the Headline}
-#'  \item{"story_id" }{Identifier to be used to retrieve the full story using the get_news_story legacy}
-#'  \item{"source_code" }{Second news identifier}
+#'  \item"Index": Timestamp of the publication time
+#'  \item"version_created": Date of the latest update on the news
+#'  \item"text": Text of the Headline
+#'  \item"story_id": Identifier to be used to retrieve the full story using the get_news_story legacy
+#'  \item"source_code": Second news identifier
 #' }
 #' @export
 #'

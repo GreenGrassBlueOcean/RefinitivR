@@ -32,7 +32,7 @@ test_that("JsonHeaderAnalyzer works", {
                           type = "number", decimalChar = ".", description = "Represents a measure of a company's operating performance. Gross Profit states the profits earned directly from a company's revenues and direct costs."))))
 
 
-  TestOutcome <- JsonHeaderAnalyzer(jsonreturn)
+  TestOutcome <- JsonHeaderAnalyzer(jsonreturn, Selectedheader = "name")
 
   CorrectOutcome <- c("Instrument", "Date", "TR.Revenue.date", "TR.Revenue", "TR.GrossProfit")
 
@@ -126,3 +126,24 @@ TestOutcome <- c("Instrument", "Date", "TR.Revenue.date", "TR.Revenue", "TR.Gros
 
 expect_equal(Output, TestOutcome)
 })
+
+
+
+
+
+test_that("rd_OutputProcesser can work with complete NA responses ", {
+
+  inputjson <- list(columnHeadersCount = 1L, data = list(list("NVDA.O", NULL), list("ASMI.AS", NULL))
+            , error = list(list(code = 218L, col = 1L, message = "The formula must contain at least one field or function.",row = 0L)
+                           , list(code = 218L, col = 1L, message = "The formula must contain at least one field or function.", row = 1L))
+            , headerOrientation = "horizontal", headers = list(list(displayName = NULL)
+                                                               , list(displayName = "TR.IVPRICETOLNTRINSICVALUEGLOBALRANK"
+                                                                      , field = "TR.IVPRICETOLNTRINSICVALUEGLOBALRANK"))
+            , rowHeadersCount = 1L, totalColumnsCount = 2L, totalRowsCount = 3L)
+
+  suppressMessages(expect_equal(JsonHeaderAnalyzer(inputjson, Selectedheader = "displayName"  , use_field_names_in_headers = TRUE)
+                                ,c(NA, "TR.IVPRICETOLNTRINSICVALUEGLOBALRANK")))
+
+})
+
+

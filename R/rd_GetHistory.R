@@ -28,14 +28,14 @@
 #'
 #'  The supported values of adjustments :
 #'\itemize{
-#'  \item{"unadjusted"}   {Not apply both exchange/manual corrections and CORAX}
-#'  \item{"exchangeCorrection"}   {Apply exchange correction adjustment to historical pricing}
-#'  \item{"manualCorrection"}   {Apply manual correction adjustment to historical pricing i.e. annotations made by content analysts}
-#'  \item{"CCH"}  {Apply Capital Change adjustment to historical Pricing due to Corporate Actions e.g. stock split}
-#'  \item{"CRE"}  {Apply Currency Redenomination adjustment when there is redenomination of currency}
-#'  \item{"RPO"}  {Apply Reuters Price Only adjustment to adjust historical price only not volume}
-#'  \item{"RTS"}  {Apply Reuters TimeSeries adjustment to adjust both historical price and volume}
-#'  \item{"qualifiers"}   {Apply price or volume adjustment to historical pricing according to trade/quote qualifier summarization actions}
+#'  \item \bold{"unadjusted"}: Not apply both exchange/manual corrections and CORAX
+#'  \item \bold{"exchangeCorrection"}: Apply exchange correction adjustment to historical pricing
+#'  \item \bold{"manualCorrection"}: Apply manual correction adjustment to historical pricing i.e. annotations made by content analysts
+#'  \item \bold{"CCH"}: Apply Capital Change adjustment to historical Pricing due to Corporate Actions e.g. stock split
+#'  \item \bold{"CRE"}:Apply Currency Redenomination adjustment when there is redenomination of currency
+#'  \item \bold{"RPO"}:Apply Reuters Price Only adjustment to adjust historical price only not volume
+#'  \item \bold{"RTS"}:Apply Reuters TimeSeries adjustment to adjust both historical price and volume
+#'  \item \bold{"qualifiers"}:Apply price or volume adjustment to historical pricing according to trade/quote qualifier summarization actions
 #' }
 #'
 #'
