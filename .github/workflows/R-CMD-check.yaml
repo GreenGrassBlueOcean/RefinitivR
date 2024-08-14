@@ -60,7 +60,7 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v3
         with:
              auto-activate-base: true
-             activate-environment: ""
+             activate-environment: "r-eikon"
       
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -74,7 +74,7 @@ jobs:
         run: |
           library(reticulate)
           path_to_venv <- virtualenv_create(
-            envname = "r-reticulate",
+            envname = "r-eikon",
             python = Sys.which("python"), # placed on PATH by the setup-python action
             packages = c(
               "docutils", "pandas", "scipy", "matplotlib", "ipython",
