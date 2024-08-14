@@ -20,10 +20,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release', python: '3.12'}
-          - {os: windows-latest, r: 'release', python: '3.12'}
-          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release', python: '3.12'}
-          - {os: ubuntu-latest,  r: 'release', python: '3.12'}
+          - {os: macOS-latest,   r: 'release', python: '3.10'}
+          - {os: windows-latest, r: 'release', python: '3.10'}
+          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release', python: '3.10'}
+          - {os: ubuntu-latest,  r: 'release', python: '3.10'}
        
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
