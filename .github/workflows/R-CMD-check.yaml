@@ -56,6 +56,11 @@ jobs:
           sudo ln -sf /usr/bin/python3-dbg /usr/bin/python3
           sudo ln -sf /usr/bin/python3-dbg /usr/bin/python
 
+
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+             auto-activate-base: true
+             activate-environment: ""
       
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -79,11 +84,6 @@ jobs:
           writeLines(
             paste0("RETICULATE_PYTHON=", virtualenv_python(path_to_venv)),
             Sys.getenv("GITHUB_ENV"))
-
-      - uses: conda-incubator/setup-miniconda@v3
-        with:
-             auto-activate-base: true
-             activate-environment: ""
             
       - uses: r-lib/actions/check-r-package@v2
         with:
