@@ -3,12 +3,21 @@ test_that("stops when it has the wrong eikonobject", {
   OldModuleName <- getOption(".RefinitivPyModuleName")
   options(.RefinitivPyModuleName = "wrong object")
 
-    expect_error( rd_GetHistoricalPricing(RDObject = NULL)
+    expect_error( rd_GetHistoricalPricing(RDObject = NULL, universe = "AAPL.O")
                 , "historical pricing is only available when JSON --> RefinitivJsonConnect() or Python Refinitiv data --> RDConnect() is used as RDObject"
                 , fixed = TRUE)
 
   options(.RefinitivPyModuleName = OldModuleName)
 })
+
+
+test_that("stops when it receives the wrong interval", {
+
+  expect_error( rd_GetHistoricalPricing(universe = "AAPL.O", interval = "daily")
+                , "Interval is daily but can only be one of 'PT1M', 'PT5M', 'PT10M', 'PT30M', 'PT60M', 'PT1H', 'P1D', 'P7D', 'P1W', 'P1M', 'P3M', 'P12M', 'P1Y'"
+               , fixed = TRUE)
+})
+
 
 
 test_that("historical pricing delivers identical results", {

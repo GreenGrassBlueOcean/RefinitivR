@@ -256,6 +256,11 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     }
 
     if( is.null(fields) || !is.null(HistorticalPricingFields) ){
+
+      if(is.null(interval)){
+        interval <- "P1D"
+      }
+
       HistoricalPricingOutput <- rd_GetHistoricalPricing( RDObject = RD
                                                          , universe = universe
                                                          , interval = interval
@@ -270,7 +275,7 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                                                          )
 
       HistoricalPricingOutput <- HistoricalPricingOutput |>
-        data.table::as.data.table()
+                                 data.table::as.data.table()
 
        if("NAVALUE" %in% names(HistoricalPricingOutput)){
          NAVALUE <- NULL

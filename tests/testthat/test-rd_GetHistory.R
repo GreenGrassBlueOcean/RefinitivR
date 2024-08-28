@@ -96,16 +96,16 @@ test_that("rd_GetHistory can handle request with simple fields", {
                     ,"FRQ" = "FY", "Curn" = "EUR") #"Scale" = 6
 
   TestRDObject <- RDConnect(PythonModule = "RD")
-  test_python <- rd_GetHistory( RD = TestRDObject, universe = universe
+  test_python <- suppressWarnings(rd_GetHistory( RD = TestRDObject, universe = universe
                            , fields = fields
                            , parameters = parameters
-                           , use_field_names_in_headers = TRUE)
+                           , use_field_names_in_headers = TRUE))
 
   TestRDObject <- RDConnect(PythonModule = "JSON")
-  test_json <- rd_GetHistory( RD = TestRDObject, universe = universe
+  test_json <- suppressWarnings(rd_GetHistory( RD = TestRDObject, universe = universe
                             , fields = fields
                             , parameters = parameters
-                            , use_field_names_in_headers = TRUE)
+                            , use_field_names_in_headers = TRUE))
 
 
   expect_equal(class(test_python), "data.frame")

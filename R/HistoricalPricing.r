@@ -166,20 +166,32 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
                                    , debug = FALSE
                                    , SpaceConvertor = "."
                                    ){
-   force(RDObject)
-
-   if(!(getOption(".RefinitivPyModuleName")  %in% c("refinitiv.data", "JSON"))){
-     stop("historical pricing is only available when JSON --> RefinitivJsonConnect() or Python Refinitiv data --> RDConnect() is used as RDObject")
-   }
-
-  # Make sure that Python object has api key and change timeout
-  try(RDObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
 
   #In case no rics are supplied return nothing
   if(is.null(universe)){
     warning("no rics are supplied to GetHistoricalPricing")
     return(data.frame())
   }
+
+  AllowedIntervals <- c("PT1M", "PT5M", "PT10M", "PT30M", "PT60M", "PT1H"
+                        ,"P1D", "P7D", "P1W", "P1M", "P3M", "P12M", "P1Y")
+
+  if(!(interval %in% AllowedIntervals)){
+    stop(paste("Interval is", interval, "but can only be one of", paste0("'", AllowedIntervals, "'" , collapse = ", " )))
+  }
+
+  # start api call
+  force(RDObject)
+
+  if(!(getOption(".RefinitivPyModuleName")  %in% c("refinitiv.data", "JSON"))){
+    stop("historical pricing is only available when JSON --> RefinitivJsonConnect() or Python Refinitiv data --> RDConnect() is used as RDObject")
+  }
+
+  # Make sure that Python object has api key and change timeout
+  try(RDObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
+
+
+
 
   ChunckedRics <- universe
   TimeSeriesList <- as.list(rep(NA, times = length(ChunckedRics)))
@@ -270,8 +282,8 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
   # Process request and build return data.frame using data.table ----
    return_DT <- data.table::rbindlist(lapply( X =  TimeSeriesList
                                             , FUN =  rd_OutputProcesser
-                                            , use_field_names_in_headers = FALSE)
-                                      , use.names = TRUE, fill = TRUE)
+                                            , use_field_names_in_headers = FALSE, NA_cleaning = FALSE)
+                                      , use.names = TRUE, fill = TRUE )
 
   data.table::setnames(return_DT, new = EikonNameCleaner( names = names(return_DT)
                                                         , SpaceConvertor = SpaceConvertor))
