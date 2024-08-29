@@ -95,17 +95,18 @@ test_that("rd_GetHistory can handle request with simple fields", {
   parameters = list("SDate" = 0,"EDate" = -3
                     ,"FRQ" = "FY", "Curn" = "EUR") #"Scale" = 6
 
-  TestRDObject <- RDConnect(PythonModule = "RD")
-  test_python <- suppressWarnings(rd_GetHistory( RD = TestRDObject, universe = universe
+  test_python <- suppressWarnings(rd_GetHistory( RD = RDConnect(PythonModule = "RD")
+                                               , universe = universe
                            , fields = fields
                            , parameters = parameters
                            , use_field_names_in_headers = TRUE))
 
-  TestRDObject <- RDConnect(PythonModule = "JSON")
-  test_json <- suppressWarnings(rd_GetHistory( RD = TestRDObject, universe = universe
-                            , fields = fields
-                            , parameters = parameters
-                            , use_field_names_in_headers = TRUE))
+
+  test_json <- suppressWarnings(rd_GetHistory( RD = RDConnect(PythonModule = "JSON")
+                                             , universe = universe
+                                             , fields = fields
+                                             , parameters = parameters
+                                             , use_field_names_in_headers = TRUE))
 
 
   expect_equal(class(test_python), "data.frame")
@@ -273,3 +274,27 @@ test_that("rd_GetHistory can handle timedates", {
   expect_equal(test_python, test_json)
 
 })
+
+
+test_that("rd can handle problematic fields",{
+
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+
+  fields <- c('BID', 'ASK', 'TRDPRC_1', 'SETTLE')
+  universe <- c("AAPL.O", "NVDA.O")
+
+  timeseries2_python <- suppressMessages(suppressWarnings(rd_GetHistory(universe=universe
+                                      , fields = fields
+                                      , RD = RDConnect(PythonModule = "RD")
+                                      )))
+  timeseries2_JSON <- suppressMessages(suppressWarnings(rd_GetHistory(universe=universe
+                                  , fields = fields
+                                  , RD = RDConnect(PythonModule = "JSON")
+                                  )))
+
+  expect_equal(timeseries2_python, timeseries2_JSON)
+
+
+
+})
+

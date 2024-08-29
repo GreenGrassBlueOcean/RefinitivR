@@ -319,17 +319,18 @@ test_that("rd_OutputProcesser can work with complete NA responses ", {
 
 
  x <- list(columnHeadersCount = 1L, data = list(list("NVDA.O", NULL), list("ASMI.AS", NULL))
-           , error = list(list(code = 218L, col = 1L, message = "The formula must contain at least one field or function.",row = 0L)
-                        , list(code = 218L, col = 1L, message = "The formula must contain at least one field or function.", row = 1L))
            , headerOrientation = "horizontal", headers = list(list(displayName = NULL)
                                                              , list(displayName = "TR.IVPRICETOLNTRINSICVALUEGLOBALRANK"
                                                                     , field = "TR.IVPRICETOLNTRINSICVALUEGLOBALRANK"))
            , rowHeadersCount = 1L, totalColumnsCount = 2L, totalRowsCount = 3L)
 
 
- test <- suppressWarnings(suppressMessages(expect_warning(rd_OutputProcesser(x  , use_field_names_in_headers = TRUE, NA_cleaning = FALSE, SpaceConvertor = NULL))))
+ test <- rd_OutputProcesser(x  , use_field_names_in_headers = TRUE
+                            , NA_cleaning = FALSE, SpaceConvertor = NULL)
 
- CorrectOutcome <- structure(list(V1 = c("NVDA.O", "ASMI.AS"), TR.IVPRICETOLNTRINSICVALUEGLOBALRANK = c(NA,NA)), row.names = c(NA, -2L)
+ CorrectOutcome <- structure(list(V1 = c("NVDA.O", "ASMI.AS")
+                                  , TR.IVPRICETOLNTRINSICVALUEGLOBALRANK = c(NA,NA))
+                             , row.names = c(NA, -2L)
                             , class = c("data.table", "data.frame"))
 
 
@@ -500,5 +501,63 @@ input  <- list(universe = list(ric = "AAPL.O"), interval = "P1D", summaryTimesta
                                 , row.names = c(NA, -20L), class = c("data.table", "data.frame"))
 
     expect_equal(CorrectOutcome, test)
+})
+
+
+
+test_that("rd_OutputProcesser can work with full NA responses with one 1 ric", {
+
+  input <- list(columnHeadersCount = 1L
+                     , data = list(list("AAPL.O", "date Value", NULL))
+                     , headerOrientation = "horizontal"
+                     , headers = list(list( list(displayName = NULL)
+                                          , list(displayName = NULL)
+                                          , list(displayName = "RF.SD.SETTLE", field = "SETTLE")))
+                     , rowHeadersCount = 2L, totalColumnsCount = 3L, totalRowsCount = 2L)
+
+
+  SpaceConvertor <- NULL
+  RemoveNA <- FALSE
+  use_field_names_in_headers = TRUE
+
+  ReturnValue <- rd_OutputProcesser( x = input
+                                   , NA_cleaning = FALSE
+                                   , use_field_names_in_headers = use_field_names_in_headers
+                                   , SpaceConvertor = SpaceConvertor
+                                   )
+ Expectedoutcome <- structure(list(Instrument = "AAPL.O", Date = structure(NA_real_, class = "Date"),
+                                   SETTLE = NA)
+                              , row.names = c(NA, -1L), class = c("data.table", "data.frame"))
+ expect_equal(ReturnValue, Expectedoutcome)
+
+})
+
+
+test_that("rd_OutputProcesser can work with full NA responses with more rics", {
+
+
+  input <- list(columnHeadersCount = 1L, data = list( list("AAPL.O", "date Value", NULL)
+                                         , list("NVDA.O", "date Value", NULL))
+     , headerOrientation = "horizontal", headers = list(list(list(displayName = NULL), list(displayName = NULL), list(displayName = "RF.SD.SETTLE", field = "SETTLE"))),
+     rowHeadersCount = 2L, totalColumnsCount = 3L, totalRowsCount = 3L)
+
+  SpaceConvertor <- NULL
+  RemoveNA <- FALSE
+  use_field_names_in_headers = TRUE
+
+  ReturnValue <- rd_OutputProcesser( x = input
+                                     , NA_cleaning = FALSE
+                                     , use_field_names_in_headers = use_field_names_in_headers
+                                     , SpaceConvertor = SpaceConvertor
+  )
+
+  Expectedoutcome <- structure(list(Instrument = c("AAPL.O", "NVDA.O")
+                                   , Date = structure(c(NA_real_,NA_real_), class = "Date")
+                                   , SETTLE = c(NA, NA))
+                               , row.names = c(NA, -2L), class = c("data.table", "data.frame")
+                               )
+
+  expect_equal(ReturnValue, Expectedoutcome)
+
 })
 

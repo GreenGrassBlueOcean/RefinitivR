@@ -190,9 +190,6 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
   # Make sure that Python object has api key and change timeout
   try(RDObject$set_app_key(app_key = .Options$.EikonApiKey), silent = TRUE)
 
-
-
-
   ChunckedRics <- universe
   TimeSeriesList <- as.list(rep(NA, times = length(ChunckedRics)))
   DownloadCoordinator <- data.frame( index = 1:length(ChunckedRics)
@@ -310,8 +307,8 @@ rd_GetHistoricalPricing <- function( RDObject = RefinitivJsonConnect()
 printList <- function(list, hn = 6) {
 
   for (item in 1:length(list)) {
-    cat("\n", names(list[item]), ":\n")
-    print(head(list[[item]], hn), digits = 3)
+    message("\n", names(list[item]), ":\n")
+    message(head(list[[item]], hn), digits = 3)
 
   }
 }
@@ -385,6 +382,23 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, NA_cleaning
     return_DT <- return_DT[, universe := x$universe]
     data.table::setcolorder(return_DT,c("universe"))
   }
+
+  # check for casus with unnamed columns
+  if(all(c("V1","V2") %in% names(return_DT))){
+     DateValueCol <- names(return_DT)[sapply(return_DT, function(col) "date Value" %in% col)]
+
+    # Set the values in the identified column to NA
+    return_DT[, (DateValueCol) := NA]
+    data.table::setnames(return_DT, old = DateValueCol, new = "Date")
+
+
+    # Find the names of columns that start with "V"
+    if(!("Instrument" %in% names(return_DT))){
+      remaining_v_columns <- grep("^V", names(return_DT), value = TRUE)
+      data.table::setnames(x = return_DT, old = remaining_v_columns, new = "Instrument" )
+    }
+  }
+
 
   #Check if there are other fields that should be dates
   OtherDateColumns <- grep(pattern = ".date$|\\bdate\\b", x = tolower(names(return_DT)))

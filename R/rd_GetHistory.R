@@ -309,6 +309,12 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     Return_DT <- Return_DT[, Date  := as.Date(Date)]
     data.table::setorderv(Return_DT, c("Date", "Instrument"))
 
+    # Delete rows that entirely NA except for Instrument
+    # Identify the columns to check for NA values (all except 'Instrument')
+    columns_to_check <- setdiff(names(Return_DT), "Instrument")
+
+    # Remove rows where all columns except 'Instrument' are NA
+    Return_DT <- Return_DT[!rowSums(is.na(Return_DT[, columns_to_check, with = FALSE])) == length(columns_to_check)]
 
     # Return a data frame
     return(data.table::setDF(Return_DT))
