@@ -145,12 +145,16 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
     if(!exists("Arglist") || identical(list(),Arglist)){
       Arglist <- as.list(match.call(expand.dots=FALSE))
       Arglist[[1]] <- NULL
+      Arglist <- lapply(Arglist, eval, envir = parent.frame(1))
       # Arglist[["universe"]] <- NULL
     }
 
     #Make sure all arguments are evaluated before passing to the gethistory api
-    Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
 
+    # remove RDP from arglist if this is in it.
+    if("RD" %in% names(Arglist)){
+      Arglist$RD <- NULL
+    }
 
     if("count" %in% names(Arglist)){
       if (count <= 0){
@@ -158,11 +162,6 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
       } else {
         Arglist$count <- as.integer(Arglist$count)
       }
-    }
-
-    # remove RDP from arglist if this is in it.
-    if("RD" %in% names(Arglist)){
-      Arglist$RD <- NULL
     }
 
     Arglist[["use_field_names_in_headers"]] <- use_field_names_in_headers

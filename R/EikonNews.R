@@ -174,21 +174,23 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
     htmlFile <- file.path(dir, "index.html")
 
     Returnlines <- lapply( X = EikonNewsList
-                       , FUN =  function(x){
-                         if(is.list(x)){
-                           return(#c( x$story$headlineHtml,
-                                  x$story$storyHtml
-                                 #, x$story$storyInfoHtml)
-                                 )
+                         , FUN =  function(x){
+                           if(is.list(x) && "story" %in% names(x)){
+                             return(x$story$storyHtml)
+                           } else if(is.list(x) && "webURL" %in% names(x)){
+                             return(x$webURL)
                            } else {return(x)}}
-                       ) |> unlist()
+                           ) |> unlist()
 
     Newslines <- lapply( X = EikonNewsList
                            , FUN =  function(x){
-                             if(is.list(x)){
+                             if(is.list(x) && "story" %in% names(x)){
                                return(c( x$story$headlineHtml
                                        , x$story$storyHtml
-                                       , x$story$storyInfoHtml))
+                                       , x$story$storyInfoHtml
+                                       ))
+                             } else if(is.list(x) && "webURL" %in% names(x)){
+                               return(x$webURL)
                              } else {return(x)}}
     ) |> unlist()
 

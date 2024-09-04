@@ -520,9 +520,8 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                          #json <- json_builder(directions, payload)
 
                          response <- send_json_request(payload, service = "rdp", EndPoint = EndPoint, request_type = "POST")
-                         response$Hits <- lapply(response$Hits, FUN = function(x){as.list(unlist(x, recursive = FALSE))})
-                         return_DT <- data.table::rbindlist(response$Hits,fill=TRUE, use.names = TRUE)
-                         #
+                         return_DT <- ConvertNestedlisttoDT(response$Hits)
+
                          # Check for lists columns with null inside and fix those
                           ListCols <- names(which(lapply(return_DT, class) == "list"))
 
@@ -773,7 +772,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
                           Arglist <- as.list(match.call(expand.dots=FALSE))
                           Arglist[[1]] <- Arglist[["UUID"]] <- Arglist[["debug"]] <-
                             Arglist[["operation"]] <- NULL
-                          Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
+                          Arglist <- lapply(Arglist, eval, envir = parent.frame(1))
                           # perform get request to obtain missing data for put payload message
                           GET_data <- send_json_request( payload, service = "rdp"
                                                        , request_type = "GET"

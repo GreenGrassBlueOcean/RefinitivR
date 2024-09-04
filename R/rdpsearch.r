@@ -137,6 +137,10 @@ Process_RDP_output <- function(python_json, RemoveNA = FALSE, SpaceConvertor = N
     data.table::setnames(x = r_dt, new = EikonNameCleaner(names(r_dt), SpaceConvertor = SpaceConvertor ))
   }
 
+  # Remove rows where all columns are NA
+  r_dt <- r_dt[!rowSums(is.na(r_dt)) == ncol(r_dt)]
+
+
   return(data.table::setDF(r_dt))
 }
 
@@ -368,6 +372,7 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
   if(!exists("Arglist") || identical(list(),Arglist)){
     Arglist <- as.list(match.call(expand.dots=FALSE))
     Arglist[[1]] <- NULL
+    Arglist <- lapply(Arglist, eval, envir = parent.frame(1))
   }
 
   if("view" %in% names(Arglist) && !is.null(Arglist$view) ){
@@ -384,20 +389,18 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
  if(identical(ConnectionMetaData$name, "refinitiv.data")){
    RDP <- RDP$discovery
  }
-  #Make sure all arguments are evaluated before passing to the search api
-  Arglist <- lapply(X = Arglist, FUN = function(x){eval(x, envir=sys.frame(-3))})
 
-  if("top" %in% names(Arglist) && !is.null(Arglist$top)){
+  # remove RDP from arglist if this is in it.
+  if("RDP" %in% names(Arglist)){
+     Arglist$RDP <- NULL
+  }
+
+   if("top" %in% names(Arglist) && !is.null(Arglist$top)){
     Arglist$top <- as.integer(Arglist$top)
   }
 
   if("group_count" %in% names(Arglist) && !is.null(Arglist$group_count) ){
     Arglist$group_count <- as.integer(Arglist$group_count)
-  }
-
-  # remove RDP from arglist if this is in it.
-  if("RDP" %in% names(Arglist)){
-    Arglist$RDP <- NULL
   }
 
   if("SpaceConvertor" %in% names(Arglist)){

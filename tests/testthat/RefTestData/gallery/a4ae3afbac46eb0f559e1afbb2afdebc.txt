@@ -1,0 +1,24 @@
+                                                                                                  DocumentTitle            RIC
+                                                                                                         <char>         <char>
+1:                FLORA EXPRESS, Chemical Tanker, FUYO KAIUN CO LTD, Gulf of California|West Mexico Tanker Zone C}KM7309950197
+2: BOW EXPLORER, Chemical Tanker, ODFJELL MANAGEMENT AS, Gulf of Mexico|US Gulf Tanker Zone|Texas|United States C}KI7309868769
+3:                    GLOBAL GLORY, Chemical Tanker, Louisiana|Gulf of Mexico|US Gulf Tanker Zone|United States C}KI7309865599
+4:                                          TSUKUBA GALAXY, Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone C}KI7309814837
+5:                                 HARMONICS, Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone|United States C}KM7309844124
+6:                                                 MENUETT, Chemical Tanker, Gulf of Mexico|US Gulf Tanker Zone C}KI7309814843
+                                               OriginPort            DestinationPort RCSFlagLeaf      AssetName             AISStatus
+                                                   <char>                     <char>      <char>         <char>                <char>
+1: Manzanillo (Mex)\\Pemex Tml Espigon North (Manzanillo) MAZATLAN,MEXICO [Mazatlan]      Panama  FLORA EXPRESS             At Anchor
+2:      Corpus Christi\\Galveston Outer Anchg North (HOU)            ODFJELL WHARF 2      Norway   BOW EXPLORER                Moored
+3:   Ascension\\Paulina Beach Mississippi River Anchorage             SOUTHWEST PASS   Hong Kong   GLOBAL GLORY                Moored
+4:                                Houston\\Embisa MPP Tml         USTXT [Texas City]      Panama TSUKUBA GALAXY             At Anchor
+5:         Enterprise HSC (HOU)\\Enterprise HSC Tml (HOU)           US HOU [Houston]   Singapore      HARMONICS Underway Using Engine
+6:       Houston\\Exxon Baytown Refinery & Chemical Plant          HOUSTON [Houston]   Singapore        MENUETT             At Anchor
+       IMO VesselCurrentPortRIC
+    <char>               <char>
+1: 9903499                 <NA>
+2: 9828211       C}TS7309538920
+3: 9821859       C}TS7309539206
+4: 9796834                 <NA>
+5: 9799680       C}TS7309531803
+6: 9790634                 <NA>

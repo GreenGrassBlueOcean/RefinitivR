@@ -133,8 +133,8 @@ test_that("send_json_request can make a GET and POST request", {
                                 , url = "https://fakerapi.it/api/v1/companies?_seed=12456")
 
   expect_equal(lapply(test_GET, class)
-              , list(status = "character", code = "integer"
-                    , total = "integer", data = "list"))
+              , list(status = "character", code = "integer", locale = "character",
+                     seed = "character", total = "integer", data = "list"))
 
   directions <- 'DataGrid_StandardAsync'
   payload <- list('requests' = list(list('instruments' = list("TSLA.O"),

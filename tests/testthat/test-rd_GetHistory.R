@@ -41,16 +41,16 @@ test_that("rd_GetHistory can handle requests with only timeseries fields", {
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
 
 
-  fields <- c("TRDPRC_1", "HIGH_1", "LOW_1", "ACVOL_UNS",
+  Fields <- c("TRDPRC_1", "HIGH_1", "LOW_1", "ACVOL_UNS",
               "OPEN_PRC", "BID", "ASK", "TRNOVR_UNS", "VWAP", "BLKCOUNT", "BLKVOLUM",
               "NUM_MOVES", "TRD_STATUS", "SALTIM", "NAVALUE" )
 
   TestRDObject <- RDConnect(PythonModule = "RD")
   test_python <- rd_GetHistory(RD = TestRDObject,  universe="AAPL.O"
-                              , fields =fields)
+                              , fields =Fields)
 
   TestJSONObject <- RefinitivJsonConnect()
-  test_json <- rd_GetHistory(RD = TestJSONObject,  universe="AAPL.O", fields =fields)
+  test_json <- rd_GetHistory(RD = TestJSONObject,  universe="AAPL.O", fields =Fields)
 
   expect_equal(class(test_python), "data.frame")
 
@@ -70,11 +70,11 @@ test_that("rd_GetHistory can handle requests with only timeseries fields", {
   test_json <- data.table::as.data.table(test_json)
 
   data.table::setcolorder( test_python
-                          , neworder = c(keycol,  sort(fields))
+                          , neworder = c(keycol,  sort(Fields))
   )
 
   data.table::setcolorder( test_json
-                           , neworder = c(keycol,  sort(fields))
+                           , neworder = c(keycol,  sort(Fields))
   )
 
 
@@ -90,38 +90,40 @@ test_that("rd_GetHistory can handle request with simple fields", {
   # TestRD <- check_Eikonapi(ExecutionMode = "RD")
 
 
-  universe = c("GOOG.O","MSFT.O")
-  fields =  c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
-  parameters = list("SDate" = 0,"EDate" = -3
+  Universe = c("GOOG.O","MSFT.O")
+  Fields =  c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
+  Parameters = list("SDate" = 0,"EDate" = -3
                     ,"FRQ" = "FY", "Curn" = "EUR") #"Scale" = 6
 
-  test_python <- suppressWarnings(rd_GetHistory( RD = RDConnect(PythonModule = "RD")
-                                               , universe = universe
-                           , fields = fields
-                           , parameters = parameters
-                           , use_field_names_in_headers = TRUE))
-
-
   test_json <- suppressWarnings(rd_GetHistory( RD = RDConnect(PythonModule = "JSON")
-                                             , universe = universe
-                                             , fields = fields
-                                             , parameters = parameters
-                                             , use_field_names_in_headers = TRUE))
+                                               , universe = Universe
+                                               , fields = Fields
+                                               , parameters = Parameters
+                                               , use_field_names_in_headers = TRUE))
+
+  Universe2 <- Universe
+
+  test_python <- suppressWarnings(rd_GetHistory( RD = RDConnect(PythonModule = "RD")
+                                               , universe = Universe2
+                                               , fields = Fields
+                                               , parameters = Parameters
+                                               , use_field_names_in_headers = TRUE)
+                                  )
 
 
   expect_equal(class(test_python), "data.frame")
-  expect_equal(lapply(test_python, class),
-               list(Date = "Date", Instrument = "character", TR.GROSSPROFIT = "numeric",
-                    TR.REVENUE = "numeric", TR.REVENUE.DATE ="Date"))
+   expect_equal(lapply(test_python, class),
+                list(Date = "Date", Instrument = "character", TR.GROSSPROFIT = "numeric",
+                     TR.REVENUE = "numeric", TR.REVENUE.DATE ="Date"))
 
 
-  expect_equal(sort(unique(test_python$Instrument)), c("GOOG.O", "MSFT.O"))
+   expect_equal(sort(unique(test_python$Instrument)), c("GOOG.O", "MSFT.O"))
 
 
   keycol <- c("Date", "Instrument")
   test_python <- data.table::as.data.table(test_python)
   test_json <- data.table::as.data.table(test_json)
-
+  #
   data.table::setorderv(test_python, keycol, order = -1)
   data.table::setorderv(test_json, keycol, order = -1)
 
@@ -131,22 +133,22 @@ test_that("rd_GetHistory can handle request with simple fields", {
 test_that("rd_GetHistory can handle request with explicit date", {
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
 
-  universe = c("GOOG.O","MSFT.O")
-  start = "2020-01-01T01:00:00"
-  end = "2020-01-10T01:00:00"
+  Universe = c("GOOG.O","MSFT.O")
+  Start = "2020-01-01T01:00:00"
+  End = "2020-01-10T01:00:00"
 
   TestRDObject <- RDConnect(PythonModule = "RD")
   test_python <- rd_GetHistory( RD = TestRDObject
-                       , universe = universe
-                       , start = start
-                       , end = end
+                       , universe = Universe
+                       , start = Start
+                       , end = End
                        )
 
   TestRDObject <- RDConnect(PythonModule = "JSON")
   test_json <- rd_GetHistory( RD = TestRDObject
-                                , universe = universe
-                                , start = start
-                                , end = end
+                                , universe = Universe
+                                , start = Start
+                                , end = End
   )
 
   expect_equal(class(test_python), "data.frame")
@@ -164,15 +166,20 @@ test_that("rd_GetHistory can handle request with explicit date", {
 test_that("rd_GetHistory can handle with fields and dates", {
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
 
-  test_json <- rd_GetHistory(RD = RDConnect(PythonModule = "JSON"), universe= "AAPL.O"
-                      , fields = c("TR.IssueMarketCap(Scale=6,ShType=FFL)","TR.FreeFloatPct()/100/*FreefloatWeight*/"
-                                  ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/","TR.CLOSEPRICE(Adjusted=0)/*close*/")
-                      , parameters = list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01"))
+  Universe <- "AAPL.O"
+  Fields <- c("TR.IssueMarketCap(Scale=6,ShType=FFL)"
+             ,"TR.FreeFloatPct()/100/*FreefloatWeight*/"
+             ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/"
+             ,"TR.CLOSEPRICE(Adjusted=0)/*close*/")
 
-  test_python <-  rd_GetHistory(RD = RDConnect(PythonModule = "RD"),  universe= "AAPL.O"
-                               , fields = c("TR.IssueMarketCap(Scale=6,ShType=FFL)","TR.FreeFloatPct()/100/*FreefloatWeight*/"
-                                           ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/","TR.CLOSEPRICE(Adjusted=0)/*close*/")
-                               , parameters = list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01"))
+  Parameters <- list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01")
+
+  test_json <- rd_GetHistory( RD = RDConnect(PythonModule = "JSON"), universe= Universe
+                            , fields = Fields
+                            , parameters = Parameters)
+
+  test_python <-  rd_GetHistory(RD = RDConnect(PythonModule = "RD"),  universe= Universe
+                               , fields = Fields, parameters = Parameters)
 
   expect_equal(class(test_json), "data.frame")
   expect_equal(sort(unique(test_json$Date))
@@ -189,7 +196,6 @@ test_that("rd_GetHistory can handle with fields and dates", {
   data.table::setcolorder( test_json, neworder = names(test_python))
 
   expect_equal(test_json, test_python)
-
 
 })
 
@@ -216,16 +222,22 @@ test_that("rd_GetHistory will not handle requests ", {
 test_that("rd_GetHistory will handle requests with multiple instruments and one field",{
 
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
-  timeseries1_python <-  rd_GetHistory(universe=c("AAPL.O", "NVDA.O")
-                                      , fields = "TR.ClosePrice"
+
+  rics <- c("AAPL.O", "NVDA.O")
+  fields <- "TR.ClosePrice"
+  StartDate <- "2020-01-02"
+  EndDate <- "2020-01-10"
+
+  timeseries1_python <-  rd_GetHistory(universe= rics
+                                      , fields = fields
                                       , RD = RDConnect(PythonModule = "RD")
-                                      , start = "2020-01-02", end = "2020-01-10")
+                                      , start = StartDate, end = EndDate)
 
 
-  timeseries1_JSON <-  rd_GetHistory(universe=c("AAPL.O", "NVDA.O")
-                                       , fields = "TR.ClosePrice"
+  timeseries1_JSON <-  rd_GetHistory(universe= rics
+                                       , fields = fields
                                        , RD = RDConnect(PythonModule = "JSON")
-                                       , start = "2020-01-02", end = "2020-01-10")
+                                       , start = StartDate, end = EndDate)
 
   expect_equal(timeseries1_python, timeseries1_JSON)
 
@@ -237,15 +249,21 @@ test_that("rd_GetHistory will handle requests with multiple instruments and one 
 test_that("rd_GetHistory will handle requests with one instruments and multiple fields",{
 
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
-  timeseries2_python <-  rd_GetHistory(universe=c("AAPL.O")
-                                       , fields = c("TR.ClosePrice", "TR.OpenPrice")
-                                       , RD = RDConnect(PythonModule = "RD")
-                                       , start = "2020-01-02", end = "2020-01-10")
 
-  timeseries2_JSON <-  rd_GetHistory(universe=c("AAPL.O")
-                                       , fields = c("TR.ClosePrice", "TR.OpenPrice")
-                                       , RD = RDConnect(PythonModule = "JSON")
-                                       , start = "2020-01-02", end = "2020-01-10")
+  rics <- c("AAPL.O")
+  Fields <- c("TR.ClosePrice", "TR.OpenPrice")
+  StartDate <- "2020-01-02"
+  EndDate <- "2020-01-10"
+
+  timeseries2_python <- rd_GetHistory(universe=rics
+                                     , fields = Fields
+                                     , RD = RDConnect(PythonModule = "RD")
+                                     , start = StartDate, end = EndDate)
+
+  timeseries2_JSON <-  rd_GetHistory(universe=rics
+                                    , fields = Fields
+                                    , RD = RDConnect(PythonModule = "JSON")
+                                    , start = StartDate,  end = EndDate)
 
   expect_equal(timeseries2_python, timeseries2_JSON)
 

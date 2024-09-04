@@ -1,0 +1,10 @@
+   CentralBankName                                                                                                   DocumentTitle
+            <char>                                                                                                          <char>
+1:  Bank Indonesia                             Indonesia, Policy Rates, 7-Day Reverse Repo, Reuters Polls, Monthly, Bank Indonesia
+2:  Bank Indonesia Indonesia, ID 7-DAY REVERSE REPO RATE - LONG-TERM OUTLOOK - BANK MANDIRI, Long-Term Outlook, Quarterly, Reuters
+3:  Bank Indonesia     Indonesia, ID 7-DAY REVERSE REPO RATE - LONG-TERM OUTLOOK - PANTHEON, Long-Term Outlook, Quarterly, Reuters
+                     RIC ObservationValue
+                  <char>            <num>
+1:            IDCBRR=ECI             6.25
+2: pIDREVREQP=4295874338             4.50
+3: pIDREVREQP=5038911272             5.25
