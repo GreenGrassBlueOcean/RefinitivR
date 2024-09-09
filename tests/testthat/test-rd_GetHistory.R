@@ -328,5 +328,11 @@ test_that("rd_GetHistory can handle non existing rics",{
                                          , interval = "P1D", count = 20L, RD = RDConnect(PythonModule = "JSON")
                                          , fields = fields ) |> suppressWarnings()
 
+  CorrectOutcome <- structure(list( Instrument = character(0)
+                                  , Date = structure(numeric(0), class = "Date")
+                                  , `TR.ISSUEMARKETCAP(SCALE=6,SHTYPE=FFL,CURN=USD)` = logical(0))
+                              , row.names = integer(0), class = "data.frame")
+
+  expect_equal(NotExistingOption_json, CorrectOutcome)
 
 })
