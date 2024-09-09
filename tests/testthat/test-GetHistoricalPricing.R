@@ -161,3 +161,23 @@ test_that("historical pricing delivers identical interday results", {
 }
 
 })
+
+test_that("historical pricing delivers identical results for non exisiting ric", {
+
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+
+  fields <- c("BID","ASK")
+
+  NotExistingOption_python <- rd_GetHistoricalPricing(universe = c("AAPLA212216000.U^22")
+                                     , interval = "P1D", count = 20L, RDObject = RDConnect(PythonModule = "RD")
+                                     , fields = fields ) |> suppressWarnings()
+
+
+
+  NotExistingOption_json <- rd_GetHistoricalPricing(universe = c("AAPLA212216000.U^22")
+                                               , interval = "P1D", count = 20L, RDObject = RDConnect(PythonModule = "JSON")
+                                               , fields = fields ) |> suppressWarnings()
+
+  expect_equal(NotExistingOption_python, NotExistingOption_json)
+
+})

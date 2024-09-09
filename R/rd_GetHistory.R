@@ -80,7 +80,6 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
                          , debug = FALSE
                          ){
 
-
   #Check if universe is supplied
   if(is.null(universe)){
     stop("Parameter universe should be supplied and is not")
@@ -281,10 +280,12 @@ rd_GetHistory <- function(RD = RDConnect() #RefinitivJsonConnect() #
          HistoricalPricingOutput[ NAVALUE == FALSE  , NAVALUE := NA]
        }
 
-      data.table::setnames( HistoricalPricingOutput
-                          , old = c("Universe")
-                          , new = c("Instrument")
-                          )
+       if("Universe" %in% names(HistoricalPricingOutput)){
+          data.table::setnames( HistoricalPricingOutput
+                              , old = c("Universe")
+                              , new = c("Instrument")
+                              )
+       }
     }
 
     # unify the data

@@ -294,7 +294,7 @@ test_that("rd_GetHistory can handle timedates", {
 })
 
 
-test_that("rd can handle problematic fields",{
+test_that("rd_GetHistory can handle problematic fields",{
 
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
 
@@ -316,3 +316,17 @@ test_that("rd can handle problematic fields",{
 
 })
 
+
+test_that("rd_GetHistory can handle non existing rics",{
+
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+
+  fields <- c('BID', 'ASK', 'TRDPRC_1', "TR.IssueMarketCap(Scale=6,ShType=FFL,Curn=USD)")
+
+
+  NotExistingOption_json <- rd_GetHistory( universe = c("AAPLA212216000.U^22"),
+                                         , interval = "P1D", count = 20L, RD = RDConnect(PythonModule = "JSON")
+                                         , fields = fields ) |> suppressWarnings()
+
+
+})
