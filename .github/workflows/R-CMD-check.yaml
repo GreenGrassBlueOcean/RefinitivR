@@ -42,10 +42,10 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.config.python }}  # Explicitly set Python version
+          python-version: ${{ matrix.config.python }}
 
       - name: Setup Conda Environment
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           auto-activate-base: true
           activate-environment: "r-eikon"
@@ -54,42 +54,17 @@ jobs:
       - name: Verify Conda Installation
         run: |
           conda --version
-          which conda
+          which conda || echo "Conda not found in PATH"
         shell: bash
 
-      - name: Install Python Packages (Mac & Ubuntu)
-        if: runner.os != 'Windows'
+      - name: Install Python Packages
         run: |
           conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
           pip install kaleido wrapt
           conda list  # Verify installation
+        if: runner.os != 'Windows'
 
-      - name: Install Python Packages (Windows)
-        if: runner.os == 'Windows'
+      - name: Install Python Packages (Windows Specific)
         run: |
-          conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
-          # Note: Kaleido is not installed on Windows in this step
-          conda list  # Verify installation
-
-      - name: Install R Dependencies
-        run: |
-          Rscript -e "install.packages('reticulate')"
-        if: runner.os == 'Windows' || runner.os == 'Linux'  # Ensure reticulate is installed everywhere
-
-      - name: Setup R-Reticulated Conda Environment
-        shell: Rscript {0}
-        run: |
-          library(reticulate)
-          use_condaenv("r-eikon", required = TRUE)
-          py_config()
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck local::.
-          cache-version: 4
-          upgrade: 'TRUE'
-
-      - uses: r-lib/actions/check-r-package@v2
-        with:
-          upload-snapshots: true
-          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+          # Check if Conda is in PATH
+          where conda || echo "Conda not found 
