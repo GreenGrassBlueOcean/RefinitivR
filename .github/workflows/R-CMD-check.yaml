@@ -53,9 +53,14 @@ jobs:
 
       - name: Verify Conda Installation
         run: |
-          conda --version
-          which conda || echo "Conda not found in PATH"
+          conda --version || echo "Conda not found in PATH"
         shell: bash
+        if: runner.os != 'Windows'
+
+      - name: Verify Conda Installation (Windows Specific)
+        run: |
+          where conda || echo "Conda not found in PATH"
+        if: runner.os == 'Windows'
 
       - name: Install Python Packages
         run: |
@@ -66,7 +71,6 @@ jobs:
 
       - name: Install Python Packages (Windows Specific)
         run: |
-          where conda || echo "Conda not found in PATH"
           conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
           conda list
         if: runner.os == 'Windows'
