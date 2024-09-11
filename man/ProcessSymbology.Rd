@@ -34,4 +34,7 @@ ProcessSymbology(EikonSymbologyResult = Raw_output_BestMatch
 , from_symbol_type = "ISIN", to_symbol_type = "RIC")
 }
 }
+\seealso{
+[EikonGetSymbology()]
+}
 \keyword{internal}

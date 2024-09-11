@@ -213,6 +213,8 @@ return(FieldList)
 #' @param from_symbol_type character use her same input as in EikonGetSymbology
 #' @param to_symbol_type character use her same input as in EikonGetSymbology
 #'
+#' @seealso [EikonGetSymbology()]
+#'
 #' @return data.frame containing 4 columns to_symbol_type, from_symbol_type, BestMatch (as defined by Eikon), error
 #' @keywords internal
 #'
@@ -233,10 +235,11 @@ return(FieldList)
 ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_type){
 
   EikonSymbologyResult <- EikonSymbologyResult[[1]]$mappedSymbols
-  EikonSymbologyNames <- unlist(unique(lapply(X=EikonSymbologyResult, names)))
+  EikonSymbologyNames <- unique(unlist(lapply(X=EikonSymbologyResult, names)))
 
-  #replace NUll Lists with NA list when required
-  EikonSymbologyResult <- lapply(EikonSymbologyResult, function(x){replaceInList(x, function(x)if(is.null(x))NA else x)})
+  #replace NUll Lists with NA list when required and unlist list columns to aid data.table conversion
+  EikonSymbologyResult <- lapply(EikonSymbologyResult, function(x){replaceInList(x, function(x)if(is.null(x))NA else x)}) |>
+                          lapply(function(x){lapply(x, function(x) if(is.list(x)) unlist(x) else x)})
 
   #1. Check Input
 
@@ -250,21 +253,22 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
   }
 
   #2. Run main function
-  EikonSymbologyResult2 <- data.table::rbindlist(EikonSymbologyResult, fill = TRUE)
-  if("bestMatch" %in% names(EikonSymbologyResult2)){
-    EikonSymbologyResult2$bestMatch <- as.character(EikonSymbologyResult2$bestMatch)
+
+  #combine in single DT
+  EikonSymbologyResult_dt <- data.table::rbindlist(EikonSymbologyResult, fill = TRUE, use.names = TRUE)
+
+  if("bestMatch" %in% names(EikonSymbologyResult_dt)){
+    EikonSymbologyResult_dt$bestMatch <- as.character(EikonSymbologyResult_dt$bestMatch)
   }
    if(BestMatch){
-     data.table::setnames(EikonSymbologyResult2, old = c("bestMatch","symbol") , new = c(BestMatchName, from_symbol_type) )
+     data.table::setnames(EikonSymbologyResult_dt, old = c("bestMatch","symbol") , new = c(BestMatchName, from_symbol_type) )
 
    }
    else{
-     data.table::setnames(EikonSymbologyResult2, old = c("symbol") , new = c(from_symbol_type) )
+     data.table::setnames(EikonSymbologyResult_dt, old = c("symbol") , new = c(from_symbol_type) )
    }
 
-  #3. return output and remove lists in output
-  EikonSymbologyResult3 <- data.table::as.data.table(lapply(EikonSymbologyResult2, as.character))
-  return(data.table::setDF(EikonSymbologyResult3))
+  return(data.table::setDF(EikonSymbologyResult_dt))
 }
 
 

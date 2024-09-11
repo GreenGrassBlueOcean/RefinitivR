@@ -453,6 +453,26 @@ expect_equal(testEx7, structure(list(RICs = c("RDSa.AS", "RDSaEUR.xbo", "RDSaGBP
 })
 
 
+test_that("Eikon ProcessSymbology can convert \"Nan\" without converting the entire column to charachter" , {
+
+input_JSON <- list(list( mappedSymbols = list(
+  list(bestMatch = list(error = "No best match available"), error = "Unknown symbol", symbol = "xyz"),
+  list(RICs = list("ticker1", "ticker2"), bestMatch = list(RIC = "ticker2"), symbol = "abc")
+)))
+
+TestOutcome <- ProcessSymbology(EikonSymbologyResult = input_JSON, from_symbol_type = "isin", to_symbol_type = "RIC")
+
+CorrectOutcome <- structure(list(bestMatch = c("No best match available", "ticker2", "ticker2")
+                                 , error = c("Unknown symbol", NA, NA)
+                                 , isin = c("xyz", "abc", "abc")
+                                 , RICs = c(NA, "ticker1", "ticker2"))
+                            , row.names = c(NA, -3L), class = "data.frame")
+
+expect_equal(TestOutcome,CorrectOutcome)
+
+})
+
+
 test_that("Eikon PostProcessor can convert \"Nan\" without converting the entire column to charachter" , {
 
 
@@ -482,31 +502,3 @@ test_that("Eikon PostProcessor can convert \"Nan\" without converting the entire
     expect_identical(EikonPostProcessor(Eikon_get_dataOuput = Input)  , GoodOutcome)
 
 })
-
-test_that("Eikon PostProcessor can handle large requests from json" , {
-
-
-
-  })
-
-
-
-
-#' ex1 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "AAPL.O"
-#'  , to_symbol_type = "ISIN" )
-#' ex2 <- EikonGetSymbology(EikonObject = Eikon
-#' , symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
-#' ,  to_symbol_type = "RIC" , verbose = TRUE)
-#' ex3 <- EikonGetSymbology(EikonObject = Eikon
-#' , symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
-#' ,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
-#' ex4 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.AS"
-#' , to_symbol_type = "ISIN"  , verbose = TRUE)
-#' ex5 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
-#' , to_symbol_type = "ISIN"  , verbose = TRUE)
-#' ex6 <- EikonGetSymbology(EikonObject = Eikon
-#' , symbol =  c("GB00B03MLX29", "NL0015476987"), from_symbol_type = "ISIN"
-#' ,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
-#' ex7 <- EikonGetSymbology(EikonObject = Eikon
-#' , symbol =  c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN"
-#' ,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)

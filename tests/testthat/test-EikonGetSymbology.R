@@ -81,3 +81,62 @@ test_that("EikonGetSymbology works with raw_output", {
   expect_equal(names(ex7_raw[[1]]$mappedSymbols[[1]]), c("RICs", "bestMatch", "symbol"))
 
 })
+
+test_that("EikonGetSymbology works with existing and non existing rics", {
+
+testthat::skip_if(is.null(getOption(".EikonApiKey")))
+
+isin = c("NL0015001S78", "US0970231058")
+
+RefSymbologyList_RD <- EikonGetSymbology( EikonObject = EikonConnect(PythonModule = "RD")
+                                          , symbol = isin #CurrentIsins2$ISIN
+                                          , from_symbol_type = "ISIN"
+                                          , to_symbol_type = "RIC"
+                                          , verbose = TRUE
+                                          , bestMatch = FALSE
+                                          , raw_output = FALSE)
+
+expect_equal(RefSymbologyList_RD$RICs |> is.na() |> sum(), 1)
+
+
+RefSymbologyList_JSON <- EikonGetSymbology( EikonObject = EikonConnect(PythonModule = "JSON")
+                                            , symbol = isin #CurrentIsins2$ISIN
+                                            , from_symbol_type = "ISIN"
+                                            , to_symbol_type = "RIC"
+                                            , verbose = TRUE
+                                            , bestMatch = FALSE
+                                            , raw_output = FALSE)
+
+
+expect_equal(RefSymbologyList_JSON$RICs |> is.na() |> sum(), 1)
+
+expect_equal(RefSymbologyList_JSON, RefSymbologyList_RD)
+
+})
+
+test_that("EikonGetSymbology works with single non existing ric", {
+
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+
+  isin = c("NL0015001S78")
+
+  RefSymbologyList_RD <- EikonGetSymbology( EikonObject = EikonConnect(PythonModule = "RD")
+                                            , symbol = isin #CurrentIsins2$ISIN
+                                            , from_symbol_type = "ISIN"
+                                            , to_symbol_type = "RIC"
+                                            , verbose = TRUE
+                                            , bestMatch = FALSE
+                                            , raw_output = FALSE)
+
+
+  RefSymbologyList_JSON <- EikonGetSymbology( EikonObject = EikonConnect(PythonModule = "JSON")
+                                              , symbol = isin #CurrentIsins2$ISIN
+                                              , from_symbol_type = "ISIN"
+                                              , to_symbol_type = "RIC"
+                                              , verbose = TRUE
+                                              , bestMatch = FALSE
+                                              , raw_output = FALSE)
+
+ expect_equal(RefSymbologyList_JSON, RefSymbologyList_RD)
+
+})

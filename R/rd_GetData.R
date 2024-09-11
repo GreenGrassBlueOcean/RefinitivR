@@ -47,7 +47,8 @@
 #'\dontrun{
 #'  rics <- c("AAPL.O")
 #'  fields <- c("TR.IssueMarketCap(Scale=6,ShType=FFL)","TR.FreeFloatPct()/100/*FreefloatWeight*/"
-#'             ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/","TR.CLOSEPRICE(Adjusted=0)/*close*/")
+#'             ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/"
+#'             ,"TR.CLOSEPRICE(Adjusted=0)/*close*/")
 #'
 #'  parameters <- list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01", "Fill" ="None")
 #'  test_json <- rd_GetData( RD = RDConnect(PythonModule = "JSON")
