@@ -45,7 +45,7 @@ jobs:
           python-version: ${{ matrix.config.python }}
 
       - name: Setup Conda Environment
-        uses: conda-incubator/setup-miniconda@v3  # Updated to the latest available version
+        uses: conda-incubator/setup-miniconda@v3
         with:
           auto-activate-base: true
           activate-environment: "r-eikon"
@@ -59,4 +59,31 @@ jobs:
 
       - name: Install Python Packages
         run: |
-          conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython 
+          conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
+          pip install kaleido wrapt
+          conda list
+        if: runner.os != 'Windows'
+
+      - name: Install Python Packages (Windows Specific)
+        run: |
+          where conda || echo "Conda not found in PATH"
+          conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
+          conda list
+        if: runner.os == 'Windows'
+
+      - name: Install Reticulate
+        run: |
+          Rscript -e "install.packages('reticulate')"
+
+      - name: Setup R-Reticulated Conda Environment
+        shell: Rscript {0}
+        run: |
+          library(reticulate)
+          use_condaenv("r-eikon", required = TRUE)
+          py_config()
+
+      - name: Check R Package
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
