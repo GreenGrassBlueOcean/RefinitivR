@@ -45,7 +45,7 @@ jobs:
           python-version: ${{ matrix.config.python }}
 
       - name: Setup Conda Environment
-        uses: conda-incubator/setup-miniconda@v4
+        uses: conda-incubator/setup-miniconda@v3  # Updated to the latest available version
         with:
           auto-activate-base: true
           activate-environment: "r-eikon"
@@ -59,12 +59,4 @@ jobs:
 
       - name: Install Python Packages
         run: |
-          conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
-          pip install kaleido wrapt
-          conda list  # Verify installation
-        if: runner.os != 'Windows'
-
-      - name: Install Python Packages (Windows Specific)
-        run: |
-          # Check if Conda is in PATH
-          where conda || echo "Conda not found 
+          conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython 
