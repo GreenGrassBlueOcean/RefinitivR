@@ -75,6 +75,10 @@ jobs:
         run: |
           Rscript -e "install.packages('reticulate')"
 
+      - name: Install rcmdcheck
+        run: |
+          Rscript -e "install.packages('rcmdcheck')"
+
       - name: Setup R-Reticulated Conda Environment
         shell: Rscript {0}
         run: |
