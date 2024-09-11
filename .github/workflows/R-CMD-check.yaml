@@ -66,7 +66,7 @@ jobs:
       - name: Install R Dependencies
         run: |
           Rscript -e "install.packages('reticulate')"
-        if: runner.os == 'Windows' || runner.os == 'Linux'  # Ensure reticulate is installed everywhere
+        
 
       - name: Setup R-Reticulated Conda Environment
         shell: Rscript {0}
