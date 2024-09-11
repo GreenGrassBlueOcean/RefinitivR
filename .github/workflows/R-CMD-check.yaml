@@ -91,6 +91,14 @@ jobs:
           use_condaenv("r-eikon", required = TRUE)
           py_config()
 
+      - name: install eikon using miniconda
+        shell: Rscript {0}
+        run: |
+          library(reticulate)
+          use_condaenv("r-eikon", required = TRUE)
+          Refinitiv::install_eikon()
+          py_config()
+
       - name: Check R Package
         uses: r-lib/actions/check-r-package@v2
         with:
