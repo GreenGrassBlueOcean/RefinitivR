@@ -71,13 +71,14 @@ jobs:
           conda list
         if: runner.os == 'Windows'
 
+      - name: Install R Packages from DESCRIPTION
+        run: |
+          Rscript -e "if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')"
+          Rscript -e "remotes::install_deps(dependencies = TRUE, upgrade = 'always')"
+          
       - name: Install Reticulate
         run: |
           Rscript -e "install.packages('reticulate')"
-
-      - name: Install rcmdcheck
-        run: |
-          Rscript -e "install.packages('rcmdcheck')"
 
       - name: Setup R-Reticulated Conda Environment
         shell: Rscript {0}
