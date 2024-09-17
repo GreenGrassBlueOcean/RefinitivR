@@ -17,6 +17,8 @@
 #' @return data.frame with result
 #' @export
 #'
+#' @seealso [translate_to_iso8601_duration()] for translation from eikon legacy interval like e.g. 'daily' to 'P1D'
+#'
 #'
 #' @details
 #'
@@ -35,7 +37,7 @@
 #'  \item{Intraday Summaries Intervals}{ PT1M, PT5M, PT10M, PT30M, PT60M, and PT1H}
 #'  \item{Interday Summaries Tntervals}{ P1D, P7D, P1W, P1M, P3M, P12M, and P1Y.}
 #' }
-#' When interval is not specified, backend will return the lowest supported interday interval.
+#' When interval is not specified, back-end will return the lowest supported interday interval.
 #'
 #' ## \strong{start} & \strong{end}:
 #'\describe{

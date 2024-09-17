@@ -66,3 +66,41 @@ test_that("rd_GetData can handle with fields and dates", {
 
 })
 #
+
+
+
+test_that("rd_GetData can handle previous problem case", {
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+
+
+asset <- "AAPL.O"
+
+# Retrieve corporate events
+corp_event_rd <- rd_GetData( SpaceConvertor = ".",  RD = RDConnect(PythonModule = "JSON"),
+                        , rics = asset
+                        , Eikonformulas = c("TR.CAEffectiveDate", "TR.CAAdjustmentFactor", "TR.CAAdjustmentType")
+                        , Parameters = list("CAEventType" = "SSP"
+                                           ,"SDate" = as.character(format(Sys.Date() - lubridate::dyears(50), "%Y-%m-%d"))
+                                           , "EDate" = as.character(Sys.Date())
+                                           )
+                                          #, use_field_names_in_headers = TRUE
+                                          #, SyncFields = TRUE
+                                          #,
+                                          )
+corp_event_rd$Capital.Change.Effective.Date <- as.character(corp_event_rd$Capital.Change.Effective.Date)
+
+corp_event_eikon <- EikonGetData(EikonObject = EikonConnect()
+                          , rics = asset
+                          , Eikonformulas = c("TR.CAEffectiveDate", "TR.CAAdjustmentFactor", "TR.CAAdjustmentType")
+                          , Parameters = list("CAEventType" = "SSP"
+                                             ,"SDate" = as.character(format(Sys.Date() - lubridate::dyears(50), "%Y-%m-%d"))
+                                             , "EDate" = as.character(Sys.Date()))
+
+                                            #, use_field_names_in_headers = TRUE
+                                            #, SyncFields = TRUE
+
+                          )
+
+testthat::expect_equal(corp_event_rd, corp_event_eikon$PostProcessedEikonGetData)
+
+})
