@@ -96,7 +96,7 @@ jobs:
         run: |
           library(reticulate)
           use_condaenv("r-eikon", required = TRUE)
-          Refinitiv::install_eikon()
+
           py_config()
 
       - name: Check R Package
