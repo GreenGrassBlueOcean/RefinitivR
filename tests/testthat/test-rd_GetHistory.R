@@ -112,12 +112,19 @@ test_that("rd_GetHistory can handle request with simple fields", {
 
 
   expect_equal(class(test_python), "data.frame")
-   expect_equal(lapply(test_python, class),
-                list(Date = "Date", Instrument = "character", TR.GROSSPROFIT = "numeric",
-                     TR.REVENUE = "numeric", TR.REVENUE.DATE ="Date"))
+
+  actual <- lapply(test_python, class)
+  actual <- actual[order(names(actual))]
+
+  expected <- list(Date = "Date", Instrument = "character"
+                   , TR.GROSSPROFIT = "numeric",
+                   TR.REVENUE = "numeric", TR.REVENUE.DATE ="Date")
+  expected <- expected[order(names(expected))]
+
+  expect_equal(actual, expected)
 
 
-   expect_equal(sort(unique(test_python$Instrument)), c("GOOG.O", "MSFT.O"))
+  expect_equal(sort(unique(test_python$Instrument)), c("GOOG.O", "MSFT.O"))
 
 
   keycol <- c("Date", "Instrument")
@@ -126,6 +133,8 @@ test_that("rd_GetHistory can handle request with simple fields", {
   #
   data.table::setorderv(test_python, keycol, order = -1)
   data.table::setorderv(test_json, keycol, order = -1)
+
+  data.table::setcolorder( test_json, neworder = names(test_python))
 
   expect_equal(test_python, test_json)
 })
@@ -239,6 +248,11 @@ test_that("rd_GetHistory will handle requests with multiple instruments and one 
                                        , RD = RDConnect(PythonModule = "JSON")
                                        , start = StartDate, end = EndDate)
 
+
+  timeseries2_python <- timeseries2_python[order(names(timeseries2_python))]
+  timeseries2_JSON <- timeseries2_JSON[order(names(timeseries2_JSON))]
+
+
   expect_equal(timeseries1_python, timeseries1_JSON)
 
 
@@ -289,6 +303,27 @@ test_that("rd_GetHistory can handle timedates", {
                                            , parameters = NULL, adjustments = NULL
   )
 
+
+  test_python <- test_python[order(names(test_python))]
+  test_json <- test_json[order(names(test_json))]
+
+  keycol <- c("Date", "Instrument")
+  test_python <- data.table::as.data.table(test_python)
+  test_json <- data.table::as.data.table(test_json)
+
+
+  data.table::setcolorder( test_json
+                           , neworder = names(test_python)
+  )
+
+
+  data.table::setorderv(test_python, keycol)
+  data.table::setorderv(test_json, keycol)
+
+
+
+
+
   expect_equal(test_python, test_json)
 
 })
@@ -309,6 +344,24 @@ test_that("rd_GetHistory can handle problematic fields",{
                                   , fields = fields
                                   , RD = RDConnect(PythonModule = "JSON")
                                   )))
+  timeseries2_python <- timeseries2_python[order(names(timeseries2_python))]
+  timeseries2_JSON <- timeseries2_JSON[order(names(timeseries2_JSON))]
+
+
+  keycol <- c("Date", "Instrument")
+  timeseries2_python <- data.table::as.data.table(timeseries2_python)
+  timeseries2_JSON <- data.table::as.data.table(timeseries2_JSON)
+
+
+  data.table::setcolorder( timeseries2_JSON
+                           , neworder = names(timeseries2_python)
+  )
+
+
+  data.table::setorderv(timeseries2_python, keycol)
+  data.table::setorderv(timeseries2_JSON, keycol)
+
+
 
   expect_equal(timeseries2_python, timeseries2_JSON)
 
@@ -332,6 +385,9 @@ test_that("rd_GetHistory can handle non existing rics",{
                                   , Date = structure(numeric(0), class = "Date")
                                   , `TR.ISSUEMARKETCAP(SCALE=6,SHTYPE=FFL,CURN=USD)` = logical(0))
                               , row.names = integer(0), class = "data.frame")
+
+  NotExistingOption_json <- NotExistingOption_json[order(names(NotExistingOption_json))]
+  CorrectOutcome <- CorrectOutcome[order(names(CorrectOutcome))]
 
   expect_equal(NotExistingOption_json, CorrectOutcome)
 

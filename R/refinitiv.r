@@ -610,6 +610,13 @@ EikonNameCleaner <- function(names, SpaceConvertor = "."){
 #' \dontrun{"internal function no examples"}
 EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Duration = NULL, MaxRicsperChunk = 300) {
 
+  if(is.null(RICS)){
+    stop("RICS have to be supplid other wise no api call can be made")
+  }
+
+  #clean out NA RICS
+  RICS <- RICS[!is.na(RICS)]
+
   if (!is.null(Eikonfields) & is.null(Duration)) {
     totalDataPoints <- length(RICS) * length(Eikonfields)
   } else if (!is.null(Duration) & is.null(Eikonfields)) {

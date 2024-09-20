@@ -25,7 +25,7 @@ test_that("historical pricing delivers identical results", {
   testthat::skip_if(is.null(getOption(".EikonApiKey")))
 
   Vodafone <- rd_GetHistoricalPricing( universe = "VOD.L", interval = "P1D"
-                                      , count = 20L, RDObject = RDConnect(PythonModule = "RD")
+                                      , count = 500L, RDObject = RDConnect(PythonModule = "RD")
                                       , fields = c("universe", "DATE", "TRDPRC_1", "MKT_HIGH", "MKT_LOW", "ACVOL_UNS",
                                           "MKT_OPEN", "BID", "ASK", "TRNOVR_UNS", "VWAP", "MID_PRICE",
                                           "PERATIO", "ORDBK_VOL", "NUM_MOVES", "IND_AUCVOL", "OFFBK_VOL",
@@ -36,7 +36,7 @@ test_that("historical pricing delivers identical results", {
                                       )
 
   expect_is(Vodafone, 'data.frame')
-  expect_equal(nrow(Vodafone), 20L)
+  expect_equal(nrow(Vodafone), 500)
 
 
   expected <- list(ACVOL_UNS = "integer", ALL_C_MOVE = "integer", ASK = "numeric",
@@ -61,7 +61,7 @@ test_that("historical pricing delivers identical results", {
   expect_equal(unique(Vodafone$Universe), "VOD.L")
 
   Vodafone_json <- rd_GetHistoricalPricing( universe = "VOD.L", interval = "P1D"
-                                       , count = 20L, RDObject = RefinitivJsonConnect()
+                                       , count = 500L, RDObject = RefinitivJsonConnect()
                                        , fields = c("universe", "DATE", "TRDPRC_1", "MKT_HIGH", "MKT_LOW", "ACVOL_UNS",
                                                     "MKT_OPEN", "BID", "ASK", "TRNOVR_UNS", "VWAP", "MID_PRICE",
                                                     "PERATIO", "ORDBK_VOL", "NUM_MOVES", "IND_AUCVOL", "OFFBK_VOL",
