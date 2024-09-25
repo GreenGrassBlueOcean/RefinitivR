@@ -376,7 +376,7 @@ PropertiesActiveRefinitivObject <- function(verbose = TRUE){
 #' Eikon <- EikonConnect(Eikonapplication_id = "your key", Eikonapplication_port = 9000L
 #' , PythonModule = "Eikon")
 #' Eikon <- EikonConnect(Eikonapplication_id = "your key", Eikonapplication_port = 9000L
-#' , PythonModule = "RDP")
+#' , PythonModule = "RD")
 #' }
 EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 9000L
                         , UUID = NA, PythonModule = "JSON", TestConnection = FALSE) {
@@ -409,7 +409,9 @@ EikonConnect <- function( Eikonapplication_id = NA , Eikonapplication_port = 900
 
   #2. Run main programme ----
   options(.EikonApiKey = Eikonapplication_id)
-  options(.EikonApplicationPort = Eikonapplication_port)
+  CheckTerminalType()
+  # options(.EikonApplicationPort = Eikonapplication_port)
+
   options(.RefinitivAPI = PythonModule)
   options(.RefinitivUUID = UUID)
 

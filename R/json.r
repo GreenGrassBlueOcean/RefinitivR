@@ -113,7 +113,7 @@ Construct_url <- function(service="eikon", EndPoint = NULL) {
 
     )
 
-    "http://localhost:9060/api/udf"
+    # "http://localhost:9060/api/udf"
 
     #print(url)
   } else if(tolower(service) == "rdp") {
@@ -373,6 +373,7 @@ JsonListBuilder <- function(x){
 #' }
 RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_port = 9000L){
 
+  CheckTerminalType()
   # 1. check input ----
   if (is.na(Eikonapplication_id)){
     try(Eikonapplication_id <- getOption(".EikonApiKey") )

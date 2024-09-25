@@ -249,8 +249,8 @@ test_that("rd_GetHistory will handle requests with multiple instruments and one 
                                        , start = StartDate, end = EndDate)
 
 
-  timeseries2_python <- timeseries2_python[order(names(timeseries2_python))]
-  timeseries2_JSON <- timeseries2_JSON[order(names(timeseries2_JSON))]
+  timeseries1_python <- timeseries1_python[order(names(timeseries1_python))]
+  timeseries1_JSON <- timeseries1_JSON[order(names(timeseries1_JSON))]
 
 
   expect_equal(timeseries1_python, timeseries1_JSON)
