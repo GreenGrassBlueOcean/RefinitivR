@@ -44,19 +44,21 @@ get_rdp_streaming_url <- function(RDObject = RefinitivJsonConnect(), debug = TRU
 #' }
 rd_handshake <- function(debug = FALSE){
 
+  CheckTerminalType()
+
   payload <- list( 'AppKey' = 'DEFAULT_WORKSPACE_APP_KEY'
                  , 'AppScope' = 'trapi'
                  , 'ApiVersion'= '1'
                  , 'LibraryName' = 'RDP Python Library'
                  , 'LibraryVersion'= '1.3.1'
                  )
-
+  handshake_url <-  paste0("http://localhost:", getOption("eikon_port"), "/api/handshake")
 
   response <- send_json_request( payload
                                , request_type = "POST"
                                , debug = debug
                                , apikey = 'DEFAULT_WORKSPACE_APP_KEY'
-                               , url = "http://localhost:9060/api/handshake"
+                               , url = handshake_url
                                )
   return(response)
 }
