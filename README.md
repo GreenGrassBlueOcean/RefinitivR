@@ -1,4 +1,8 @@
 # Important messages:
+
+You can now use both Eikon and Workspace. The package only supports a desktop session not platform sessions.
+This is theoretically possible but currently not implemented.
+
 1. Python is now optional, the package can now also send direct JSON messages to the terminal.
 2. When using the pyton libraries and if you update the package: also run `Refinitiv::install_eikon()` again.
 3. Python Eikon and RDP libraries are depricated and can no longer be used. The current commit of the package is reverse compatible with previous commits.
