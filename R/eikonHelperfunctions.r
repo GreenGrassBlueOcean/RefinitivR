@@ -317,7 +317,6 @@ replaceInList <- function (x, FUN, ...)
 #' }
 PostProcessTimeSeriesRequest <- function(RawTimeSeriesRequest){
 
-
   GetSingleRicTimeSeries <- function(TS, ListPos){
 
     if( identical(TS[["timeseriesData"]][[ListPos]][["statusCode"]],  "Error")){

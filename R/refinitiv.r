@@ -790,11 +790,19 @@ EikonGetTimeseries <- function(EikonObject, rics, interval = "daily", calender =
 
       }
     })
+    if(identical(TimeSeriesList[[j]], structure(list(), names = character(0)))) {
+      cat("failed api call")
+      #length(TimeSeriesList[[j]]) == 0 & identical(names(TimeSeriesList[[j]]), character(0))
+
+      #browser()
+    }
     InspectRequest(df = TimeSeriesList[[j]], functionname = "EikonGetTimeseries", verbose = verbose)
     Sys.sleep(time = 0.5)
 
 
-    if (!identical(TimeSeriesList[[j]], NA)){DownloadCoordinator$succes[j] <- TRUE }
+    if (!identical(TimeSeriesList[[j]], NA) & !identical(TimeSeriesList[[j]], structure(list(), names = character(0)))  ){
+      DownloadCoordinator$succes[j] <- TRUE
+    }
     if(verbose){
       message(paste0("Download Status:\n", paste0(capture.output(DownloadCoordinator), collapse = "\n"), collapse = "\n") )
     }
@@ -920,7 +928,9 @@ while (!all(DownloadCoordinator$succes) & !any(DownloadCoordinator$retries > 4L)
 
 
 
-  if (!identical(EikonDataList[[j]], NA) ){DownloadCoordinator$succes[j] <- TRUE }
+  if (!identical(EikonDataList[[j]], NA)  & !identical(EikonDataList[[j]], structure(list(), names = character(0)))  ){
+    DownloadCoordinator$succes[j] <- TRUE
+  }
 
   if(verbose){
       message(paste0("Download Status:\n", paste0(capture.output(DownloadCoordinator), collapse = "\n"), collapse = "\n") )

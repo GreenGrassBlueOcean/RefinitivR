@@ -34,6 +34,6 @@ Initialize Eikon Python api
 Eikon <- EikonConnect(Eikonapplication_id = "your key", Eikonapplication_port = 9000L
 , PythonModule = "Eikon")
 Eikon <- EikonConnect(Eikonapplication_id = "your key", Eikonapplication_port = 9000L
-, PythonModule = "RDP")
+, PythonModule = "RD")
 }
 }

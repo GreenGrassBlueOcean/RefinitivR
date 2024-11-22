@@ -303,14 +303,16 @@ test_that("RDP search can handle nested results for both python and JSON",{
                           , top = top1
                           , filter = filter1
                           , select = select1
-                          )
+                          ) |> data.table::as.data.table()
 
   ETFS_JSON <- RDPsearch( RDP = RDConnect(PythonModule = "JSON")
                           , view = view1a
                           , top = top1
                           , filter = filter1
                           , select = select1
-  )
+  ) |> data.table::as.data.table()
+
+  try(data.table::setcolorder(ETFS_JSON, colnames(ETFS_python)))
 
   expect_identical(ETFS_python, ETFS_JSON)
 

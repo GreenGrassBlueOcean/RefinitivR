@@ -185,4 +185,6 @@ Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "PT1M", count
 }
 \seealso{
 [translate_to_iso8601_duration()] for translation from eikon legacy interval like e.g. 'daily' to 'P1D'
+
+[mapEikonTimefieldsToRd()] for translation of eikon timeseries field names to RD field names.
 }

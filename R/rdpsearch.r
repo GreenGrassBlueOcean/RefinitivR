@@ -458,6 +458,8 @@ RDPsearch <- function(RDP = RDConnect() #RefinitivJsonConnect() #
 #' , x = OPtionInstruments$RIC),]$RIC
 #'
 #' Analytics <- RDPGetOptionAnalytics(OptionRics = OPtionInstruments)
+#' Analytics <- RDPGetOptionAnalytics(OptionRics = c("AAPLL032112500.U", "AAPLL032113700.U"))
+#'
 #' }
 RDPGetOptionAnalytics <- function(RDP = RDConnect(), OptionRics = NULL, raw = FALSE, verbose = TRUE){
 
