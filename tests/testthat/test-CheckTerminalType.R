@@ -14,7 +14,7 @@ test_that("CheckTerminalType correctly sets eikon_port for Eikon", {
   CheckTerminalType(verbose = FALSE)
 
   # Check that eikon_port is set to 9060
-  expect_equal(getOption("eikon_port"), 9060L)
+  expect_equal(getOption("eikon_port"), 9000L)
 })
 
 test_that("CheckTerminalType correctly sets eikon_port for Workspace", {
@@ -33,7 +33,7 @@ test_that("CheckTerminalType correctly sets eikon_port for Workspace", {
   CheckTerminalType(verbose = FALSE)
 
   # Check that eikon_port is set to 9000
-  expect_equal(getOption("eikon_port"), 9000L)
+  expect_equal(getOption("eikon_port"), 9060L)
 })
 
 test_that("CheckTerminalType handles no terminal connection", {
@@ -49,7 +49,7 @@ test_that("CheckTerminalType handles no terminal connection", {
   mockery::stub(CheckTerminalType, 'rd_check_proxy_url', mock_rd_check_proxy_url)
 
   # Expect the function to throw an error
-  expect_error(CheckTerminalType(),
+  expect_warning(CheckTerminalType(),
                "There is no terminal connection. Please make sure Eikon or Workspace Desktop is running.")
 })
 
@@ -79,7 +79,7 @@ test_that("CheckTerminalType rechecks when force is TRUE", {
   on.exit(options(eikon_port = original_port), add = TRUE)
 
   # Manually set eikon_port before the test
-  options(eikon_port = 9000L)
+  options(eikon_port = 9060L)
 
   # Mock the rd_check_proxy_url function to simulate Eikon running on port 9060
   mock_rd_check_proxy_url <- mockery::mock(TRUE)
@@ -89,7 +89,7 @@ test_that("CheckTerminalType rechecks when force is TRUE", {
   CheckTerminalType(verbose = FALSE, force = TRUE)
 
   # Check that eikon_port is reset to 9060
-  expect_equal(getOption("eikon_port"), 9060L)
+  expect_equal(getOption("eikon_port"), 9000L)
 })
 
 test_that("CheckTerminalType prints verbose messages", {
@@ -105,5 +105,5 @@ test_that("CheckTerminalType prints verbose messages", {
   mockery::stub(CheckTerminalType, 'rd_check_proxy_url', mock_rd_check_proxy_url)
 
   # Capture the output from verbose messages
-  expect_message(CheckTerminalType(verbose = TRUE), "Eikon detected, setting port 9060 for Eikon/UDF use.")
+  expect_message(CheckTerminalType(verbose = TRUE), "Workspace detected, setting port 9000 for Eikon/UDF use.")
 })

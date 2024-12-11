@@ -379,6 +379,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA , Eikonapplication_por
     try(Eikonapplication_id <- getOption(".EikonApiKey") )
     if(is.null(Eikonapplication_id)){stop("Please supply Eikonapplication_id")}
   }
+
   payload <- NULL
   options(.EikonApiKey = Eikonapplication_id)
   options(.RefinitivPyModuleName = "JSON")

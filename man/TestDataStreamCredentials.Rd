@@ -2,20 +2,22 @@
 % Please edit documentation in R/DataStreamConnection.r
 \name{TestDataStreamCredentials}
 \alias{TestDataStreamCredentials}
-\title{Function to test if the DataStream Credentials are really working}
+\title{Test if the DataStream Credentials are valid}
 \usage{
-TestDataStreamCredentials(DatastreamUsername, DatastreamPassword)
+TestDataStreamCredentials(DatastreamUsername = NULL, DatastreamPassword = NULL)
 }
 \arguments{
-\item{DatastreamUsername}{character datastream Username}
+\item{DatastreamUsername}{Character. The DataStream username.}
 
-\item{DatastreamPassword}{character datastream password}
+\item{DatastreamPassword}{Character. The DataStream password.}
 }
 \value{
-TRUE if the DataStream credentials are working and returns the JSON message when not.
+Logical. Returns `TRUE` if the credentials are valid. If invalid,
+  returns `FALSE` and issues a warning with the error message.
 }
 \description{
-Function to test if the DataStream Credentials are really working
+This function checks the validity of the provided DataStream username and
+password by sending a request to the DataStream API.
 }
 \examples{
 TestDataStreamCredentials(DatastreamUsername = "wrongusername"

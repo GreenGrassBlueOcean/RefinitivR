@@ -1,69 +1,3 @@
-#' Show all available custom instruments that have been created
-#'
-#' @param RDObject Refinitiv Data connection object, defaults to RefinitivJsonConnect()
-#' @param debug show api calls defaults to FALSE
-#'
-#' @return a list of custom Instruments created with all parameters
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' test <- get_rdp_streaming_url()
-#' }
-get_rdp_streaming_url <- function(RDObject = RefinitivJsonConnect(), debug = TRUE){
-
-  handshake <- rd_handshake()
-  Request <- RDObject$get_rdp_streaming_url( debug = debug)
-  EndPoint <- "streaming/pricing/v1/"
-  payload <- NULL
-  response <- send_json_request(payload, service = "rdp"
-                                , EndPoint = EndPoint
-                                , request_type = "GET"
-                                , debug = debug
-                                )
-
-  return(Request)
-
-}
-
-#' Get bearer key from terminal (experimental, don't use in production)
-#'
-#' @param debug debug parameter print urls for json requests
-#'
-#' @return list with the following fields \itemize{
-#'  \item(access_token)(key)
-#'  \item(expires_in)(unknown what this means)
-#'  \item(token_type)(type of token (bearer))
-#' }
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#'  rd_handshake()
-#' }
-rd_handshake <- function(debug = FALSE){
-
-  CheckTerminalType()
-
-  payload <- list( 'AppKey' = 'DEFAULT_WORKSPACE_APP_KEY'
-                 , 'AppScope' = 'trapi'
-                 , 'ApiVersion'= '1'
-                 , 'LibraryName' = 'RDP Python Library'
-                 , 'LibraryVersion'= '1.3.1'
-                 )
-  handshake_url <-  paste0("http://localhost:", getOption("eikon_port"), "/api/handshake")
-
-  response <- send_json_request( payload
-                               , request_type = "POST"
-                               , debug = debug
-                               , apikey = 'DEFAULT_WORKSPACE_APP_KEY'
-                               , url = handshake_url
-                               )
-  return(response)
-}
-
-
 #' Check if refinitiv proxy url is alive
 #'
 #' @param port 9060 or 9000
@@ -82,7 +16,7 @@ rd_check_proxy_url <- function(port = 9060, debug = TRUE){
   response <- send_json_request( request_type = "GET"
                                , debug = debug
                                , apikey = 'DEFAULT_WORKSPACE_APP_KEY'
-                               , url = paste0("http://localhost:", port, "/api/status")
+                               , url = paste0(getOption("refinitiv_base_url"), ":", port, "/api/status")
                                )
 
 

@@ -1,7 +1,7 @@
 test_that("EikonGetNewsHeadlines works", {
 
 
-  Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
+  Eikon <- check_Eikonapi(ExecutionMode = "JSON")
   CheckHeadlines <- EikonGetNewsHeadlines(EikonObject = Eikon
                                               , query = "R:MSFT.O", count = 2)
 
@@ -15,7 +15,7 @@ test_that("EikonGetNewsHeadlines works", {
 
 test_that("EikonGetNewsStory works", {
 
-  Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
+  Eikon <- check_Eikonapi(ExecutionMode = "JSON")
 
   story_id <- "urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"
   stories <- EikonGetNewsStory( story_id = story_id
@@ -33,7 +33,7 @@ test_that("EikonGetNewsStory works", {
 
 test_that("EikonGetNewsStory works", {
 
- Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
+ Eikon <- check_Eikonapi(ExecutionMode = "JSON")
  story_id2 <- "urn:newsml:newswire.refinitiv.com:20231025:nNRAqewpdh:1"
  stories2 <- EikonGetNewsStory( story_id = story_id2
                                  , EikonObject = Eikon, debug = TRUE, raw_output = TRUE)
@@ -59,7 +59,7 @@ test_that("EikonGetNewsStory fails when it should", {
 
 test_that("EikonGetNewsStory can handle multiple story ids", {
 
-    Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
+    Eikon <- check_Eikonapi(ExecutionMode = "JSON")
     stories3 <- EikonGetNewsStory( story_id = c( "urn:newsml:newswire.refinitiv.com:20231025:nNRAqewpdh:1"
                                                , "urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"
                                                )
@@ -82,7 +82,7 @@ test_that("EikonGetNewsStory can handle multiple story ids", {
 
 test_that("EikonGetNewsStory can handle web urls as only content of story", {
 
- Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
+ Eikon <- check_Eikonapi(ExecutionMode = "JSON")
  headlines <- structure(list(query = c("R:MSFT.O", "R:MSFT.O")
                , displayDirection = c("LeftToRight", "LeftToRight")
                , documentType = c("WebUrl", "WebUrl")

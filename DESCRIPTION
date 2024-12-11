@@ -10,12 +10,10 @@ License: LGPL (>= 2.0, < 3) | Mozilla Public License
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    qdapRegex,
     reticulate,
     zoo,
     methods,
     DatastreamDSWS2R,
-    httr,
     stringi,
     data.table,
     jsonlite,
@@ -23,7 +21,8 @@ Imports:
     here,
     rstudioapi,
     httr2,
-    R6
+    R6,
+    base64enc
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
 Config/reticulate:

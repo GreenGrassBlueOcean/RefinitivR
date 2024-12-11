@@ -39,14 +39,24 @@ CheckTerminalType <- function(verbose = FALSE, force = FALSE) {
 
   #1. main function ----
   if (force || is.null(getOption("eikon_port"))) {
-    if (check_connectivity(9060, verbose)) {
+     if (check_connectivity(getOption("rdp_port", default = 9000L), verbose)) {
+      if(is.null(getOption("rdp_port"))){
+          options(eikon_port = 9000L)
+      } else {
+          options(eikon_port = getOption("rdp_port"))
+      }
+      if (verbose) message(paste("Workspace detected, setting port",  getOption("eikon_port"), "for Eikon/UDF use."))
+     } else if (check_connectivity(getOption("eikon_port", default = 9060L), verbose)) {
+      if(is.null(getOption("eikon_port"))){
+        options(eikon_port = 9060L)
+      } else {
+        options(eikon_port = getOption("eikon_port"))
+      }
+
       options(eikon_port = 9060L)
       if (verbose) message("Eikon detected, setting port 9060 for Eikon/UDF use.")
-    } else if (check_connectivity(9000, verbose)) {
-      options(eikon_port = 9000L)
-      if (verbose) message("Workspace detected, setting port 9000 for Eikon/UDF use.")
     } else {
-      stop("There is no terminal connection. Please make sure Eikon or Workspace Desktop is running.")
+      warning("There is no terminal connection. Please make sure Eikon or Workspace Desktop is running.")
     }
   }
 }

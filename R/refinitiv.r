@@ -260,46 +260,6 @@ install_eikon <- function(method = "conda", conda = "auto", envname= "r-eikon", 
 #
 # options(reticulate.conda_binary = "C:\\Users\\LaurensVdb\\AppData\\Local\\miniconda3\\_conda.exe")
 
-
-
-#Data stream r api------------------
-
-#' Initialize DataStream Connection
-#'
-#' @param DatastreamUserName Refinitiv DataStream username
-#' @param DatastreamPassword Refinitiv DataStream password
-#'
-#' @return a DataStream R5 object
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' DatastreamUserName <- "Your datastream username"
-#' DatastreamPassword <- "Your datastream password"
-#' DataStream <- DataStreamConnect(DatastreamUserName, DatastreamPassword)
-#' }
-DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA){
-
-  # 1. check input ----
-  if (is.na(DatastreamUserName)){
-    try(DatastreamUserName <- getOption("Datastream.Username") )
-    if(is.null(DatastreamUserName)){stop("Please supply Datastream Username")}
-  }
-
-  if (is.na(DatastreamPassword)){
-    try(DatastreamPassword <- getOption("Datastream.Password") )
-    if (is.null(DatastreamPassword)){stop("Please supply Datastream Password")}
-  }
-
-  #2. Perform Main operation ----
-  options(Datastream.Username = DatastreamUserName)
-  options(Datastream.Password = DatastreamPassword)
-  mydsws <- DatastreamDSWS2R::dsws$new()
-  return(mydsws)
-
-}
-
-
 #' Get and Set pythonmodule name and version as an R option
 #'
 #' @param PythonModule python module
@@ -579,11 +539,32 @@ EikonNameCleaner <- function(names, SpaceConvertor = "."){
 
   #1. Main Function ----
 
-  returnNames <- unlist(qdapRegex::rm_between(names, '/*', '*/', extract = TRUE))
+  #returnNames <- unlist(qdapRegex::rm_between(names, '/*', '*/', extract = TRUE))
 
-  returnNames[is.na(returnNames)] <- stringi::stri_split(str = names[is.na(returnNames)], fixed = " ") |>
-                                     lapply(FUN =  firstup) |>
-                                     lapply(FUN = paste, collapse = " ")
+  # Extract text between /* and */ using stringi
+  # The regex captures text between /* and */, non-greedy
+  extracted <- stringi::stri_extract_first_regex(names, "/\\*(.*?)\\*/")
+
+  # Remove the /* and */ from the extracted text
+  returnNames <- stringi::stri_replace_all_regex(extracted, "^/\\*|\\*/$", "", vectorize_all = FALSE)
+
+  # For names without /* */, process them by capitalizing the first letter of each word
+  no_match <- is.na(returnNames)
+  if (any(no_match)) {
+    processed_names <- names[no_match]
+
+    # Split by space, capitalize first letter, and rejoin
+    processed_names <- stringi::stri_split_fixed(processed_names, " ") |>
+      lapply(firstup) |>
+      sapply(paste, collapse = " ")
+
+    returnNames[no_match] <- processed_names
+  }
+
+
+  # returnNames[is.na(returnNames)] <- stringi::stri_split(str = names[is.na(returnNames)], fixed = " ") |>
+  #                                    lapply(FUN =  firstup) |>
+  #                                    lapply(FUN = paste, collapse = " ")
 
 
   if(isTRUE(SpaceConvertor %in% c(".", "," , "-", "_"))){

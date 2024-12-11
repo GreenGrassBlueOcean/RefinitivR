@@ -128,10 +128,15 @@ EikonGetNewsHeadlines <- function(EikonObject = EikonConnect()
 #' }
 EikonGetNewsStory <- function(EikonObject = EikonConnect()
                              , story_id = NULL, raw_output = FALSE, debug=FALSE){
+
+
+
   if(is.null(story_id)){
     stop("Parameter story_id has to be supplied and cannot be empty")
   }
 
+  htmlFile <- NULL
+  on.exit(unlink(htmlFile))
 
   EikonNewsList <- as.list(rep(NA, times = length(story_id)))
 
@@ -167,44 +172,80 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
   }
 
   if(!raw_output){
-    # Newslines <- EikonNewsList[[1]]
+    # Normalize the temporary directory path to use forward slashes
+    normalized_tempdir <- normalizePath(tempdir(check = TRUE), winslash = "/")
+    if(debug){
+      message(paste("Normalized temporary directory:", normalized_tempdir))
+    }
 
-    dir <- tempfile(tmpdir = tempdir(check = TRUE))
-    dir.create(dir)
+    # Create a unique temporary subdirectory
+    dir <- tempfile(tmpdir = normalized_tempdir)
+    if(debug){
+      message(paste("Creating temporary directory:", dir))
+    }
+    dir_created <- dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+    if(!dir_created){
+      stop(sprintf("Failed to create temporary directory: %s", dir))
+    }
+
     htmlFile <- file.path(dir, "index.html")
+    if(debug){
+      message(paste("HTML file path:", htmlFile))
+    }
 
-    Returnlines <- lapply( X = EikonNewsList
-                         , FUN =  function(x){
-                           if(is.list(x) && "story" %in% names(x)){
-                             return(x$story$storyHtml)
-                           } else if(is.list(x) && "webURL" %in% names(x)){
-                             return(x$webURL)
-                           } else {return(x)}}
-                           ) |> unlist()
+    # Process the downloaded news stories
+    Returnlines <- lapply(EikonNewsList, function(x) {
+      if(is.list(x) && "story" %in% names(x)){
+        return(x$story$storyHtml)
+      } else if(is.list(x) && "webURL" %in% names(x)){
+        return(x$webURL)
+      } else {
+        return(x)
+      }
+    }) |> unlist()
 
-    Newslines <- lapply( X = EikonNewsList
-                           , FUN =  function(x){
-                             if(is.list(x) && "story" %in% names(x)){
-                               return(c( x$story$headlineHtml
-                                       , x$story$storyHtml
-                                       , x$story$storyInfoHtml
-                                       ))
-                             } else if(is.list(x) && "webURL" %in% names(x)){
-                               return(x$webURL)
-                             } else {return(x)}}
-    ) |> unlist()
+    Newslines <- lapply(EikonNewsList, function(x) {
+      if(is.list(x) && "story" %in% names(x)){
+        return(c(
+          x$story$headlineHtml,
+          x$story$storyHtml,
+          x$story$storyInfoHtml
+        ))
+      } else if(is.list(x) && "webURL" %in% names(x)){
+        return(x$webURL)
+      } else {
+        return(x)
+      }
+    }) |> unlist()
 
-    writeLines( Newslines, con = htmlFile)
+    # Write the news content to the HTML file
+    if(debug){
+      message("Writing news content to HTML file...")
+    }
+    write_result <- try(writeLines(Newslines, con = htmlFile), silent = TRUE)
+    if(inherits(write_result, "try-error")){
+      stop(sprintf("Failed to write to HTML file: %s", htmlFile))
+    }
 
-    if (requireNamespace("rstudioapi", quietly = TRUE)
-        && rstudioapi::hasFun("viewer")){
+    if(debug){
+      message(sprintf("Successfully wrote to HTML file: %s", htmlFile))
+    }
+
+    # Open the HTML file in RStudio viewer or default browser
+    if (requireNamespace("rstudioapi", quietly = TRUE) &&
+        rstudioapi::hasFun("viewer")){
+      if(debug){
+        message("Opening HTML file in RStudio viewer...")
+      }
       rstudioapi::viewer(htmlFile)
     } else {
+      if(debug){
+        message("Opening HTML file in default browser...")
+      }
       utils::browseURL(htmlFile)
     }
     return(Returnlines)
   }
-
 
   return(EikonNewsList)
 }
