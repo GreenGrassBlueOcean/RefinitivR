@@ -100,6 +100,7 @@ EikonGetNewsHeadlines <- function(EikonObject = EikonConnect()
 #' @param story_id The story id. The story id is a field you will find in every headline you retrieved with the legacy get_news_headlines
 #' @param raw_output boolean if TRUE provide only the raw downloaded info from Eikon
 #' @param debug boolean if TRUE prints out the python call to the console
+#' @param renderHTML boolean if TRUE renders HTML output file for use in website defaults to FALSE
 #'
 #' @return data.frame
 #' @export
@@ -127,7 +128,7 @@ EikonGetNewsHeadlines <- function(EikonObject = EikonConnect()
 #'  identical(stories_RD, stories_JSON)
 #' }
 EikonGetNewsStory <- function(EikonObject = EikonConnect()
-                             , story_id = NULL, raw_output = FALSE, debug=FALSE){
+                             , story_id = NULL, raw_output = FALSE, debug=FALSE, renderHTML = FALSE){
 
 
 
@@ -172,6 +173,20 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
   }
 
   if(!raw_output){
+
+    # Process the downloaded news stories
+    Returnlines <- lapply(EikonNewsList, function(x) {
+      if(is.list(x) && "story" %in% names(x)){
+        return(x$story$storyHtml)
+      } else if(is.list(x) && "webURL" %in% names(x)){
+        return(x$webURL)
+      } else {
+        return(x)
+      }
+    }) |> unlist()
+
+    if(renderHTML){
+
     # Normalize the temporary directory path to use forward slashes
     normalized_tempdir <- normalizePath(tempdir(check = TRUE), winslash = "/")
     if(debug){
@@ -188,21 +203,11 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
       stop(sprintf("Failed to create temporary directory: %s", dir))
     }
 
-    htmlFile <- file.path(dir, "index.html")
+    htmlFile <- file.path(dir, paste0("index.html"))
     if(debug){
       message(paste("HTML file path:", htmlFile))
     }
 
-    # Process the downloaded news stories
-    Returnlines <- lapply(EikonNewsList, function(x) {
-      if(is.list(x) && "story" %in% names(x)){
-        return(x$story$storyHtml)
-      } else if(is.list(x) && "webURL" %in% names(x)){
-        return(x$webURL)
-      } else {
-        return(x)
-      }
-    }) |> unlist()
 
     Newslines <- lapply(EikonNewsList, function(x) {
       if(is.list(x) && "story" %in% names(x)){
@@ -217,6 +222,8 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
         return(x)
       }
     }) |> unlist()
+
+    #if(renderHTML){
 
     # Write the news content to the HTML file
     if(debug){
@@ -238,11 +245,14 @@ EikonGetNewsStory <- function(EikonObject = EikonConnect()
         message("Opening HTML file in RStudio viewer...")
       }
       rstudioapi::viewer(htmlFile)
+
     } else {
       if(debug){
         message("Opening HTML file in default browser...")
       }
       utils::browseURL(htmlFile)
+
+    }
     }
     return(Returnlines)
   }
