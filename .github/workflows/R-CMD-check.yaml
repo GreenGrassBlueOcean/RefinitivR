@@ -13,9 +13,7 @@ name: R-CMD-check
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
-
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
     strategy:
       fail-fast: false
       matrix:
@@ -51,52 +49,39 @@ jobs:
           activate-environment: "r-eikon"
           python-version: "3.10"
 
-      - name: Verify Conda Installation
-        run: |
-          conda --version || echo "Conda not found in PATH"
-        shell: bash
+      - name: Verify Conda Installation (Non‑Windows)
         if: runner.os != 'Windows'
+        run: conda --version || echo "Conda not found in PATH"
+        shell: bash
 
-      - name: Verify Conda Installation (Windows Specific)
-        run: |
-          where conda || echo "Conda not found in PATH"
+      - name: Verify Conda Installation (Windows)
         if: runner.os == 'Windows'
+        run: where conda || echo "Conda not found in PATH"
 
-      - name: Install Python Packages
+      - name: Install Python Packages (Non‑Windows)
+        if: runner.os != 'Windows'
         run: |
           conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
           pip install kaleido wrapt
           conda list
-        if: runner.os != 'Windows'
 
-      - name: Install Python Packages (Windows Specific)
+      - name: Install Python Packages (Windows)
+        if: runner.os == 'Windows'
         run: |
           conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
           conda list
-        if: runner.os == 'Windows'
 
-      - name: Install R Packages from DESCRIPTION
+      - name: Install R Packages and Reticulate
         run: |
           Rscript -e "if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')"
           Rscript -e "remotes::install_deps(dependencies = TRUE, upgrade = 'always')"
-          
-      - name: Install Reticulate
-        run: |
           Rscript -e "install.packages('reticulate')"
 
-      - name: Setup R-Reticulated Conda Environment
+      - name: Setup R-Reticulated Conda Environment and Verify Python Config
         shell: Rscript {0}
         run: |
           library(reticulate)
           use_condaenv("r-eikon", required = TRUE)
-          py_config()
-
-      - name: install eikon using miniconda
-        shell: Rscript {0}
-        run: |
-          library(reticulate)
-          use_condaenv("r-eikon", required = TRUE)
-
           py_config()
 
       - name: Check R Package
