@@ -8,7 +8,8 @@ EikonGetNewsStory(
   EikonObject = EikonConnect(),
   story_id = NULL,
   raw_output = FALSE,
-  debug = FALSE
+  debug = FALSE,
+  renderHTML = FALSE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ EikonGetNewsStory(
 \item{raw_output}{boolean if TRUE provide only the raw downloaded info from Eikon}
 
 \item{debug}{boolean if TRUE prints out the python call to the console}
+
+\item{renderHTML}{boolean if TRUE renders HTML output file for use in website defaults to FALSE}
 }
 \value{
 data.frame

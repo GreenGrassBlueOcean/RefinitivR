@@ -7,3 +7,4 @@ R/test_eikonobject.r
 *.pyc
 problem.Rdata
 .httr-oauth
+Refinitiv.Rproj
