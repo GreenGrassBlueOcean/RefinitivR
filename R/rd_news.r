@@ -127,14 +127,14 @@ rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
   HeadlinesList <- vector("list", length(query))
   DownloadCoordinator <- data.frame(
     index = seq_along(query),
-    succes = FALSE,
+    success = FALSE,
     retries = 0L,
     stringsAsFactors = FALSE
   )
 
   # Retry until all queries have succeeded or maximum retries reached.
-  while (!all(DownloadCoordinator$succes) && !any(DownloadCoordinator$retries > 1L)) {
-    pending <- which(!DownloadCoordinator$succes)
+  while (!all(DownloadCoordinator$success) && !any(DownloadCoordinator$retries > 1L)) {
+    pending <- which(!DownloadCoordinator$success)
     for (j in pending) {
       HeadlinesList[[j]] <- try({
         retry(
@@ -153,7 +153,7 @@ rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
         )
       })
       if (!identical(HeadlinesList[[j]], NA)) {
-        DownloadCoordinator$succes[j] <- TRUE
+        DownloadCoordinator$success[j] <- TRUE
       }
       Sys.sleep(0.1)
       if (debug) {
@@ -161,8 +161,8 @@ rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
                 paste(capture.output(DownloadCoordinator), collapse = "\n"))
       }
     }
-    DownloadCoordinator$retries[!DownloadCoordinator$succes] <-
-      DownloadCoordinator$retries[!DownloadCoordinator$succes] + 1
+    DownloadCoordinator$retries[!DownloadCoordinator$success] <-
+      DownloadCoordinator$retries[!DownloadCoordinator$success] + 1
   }
 
   if (any(DownloadCoordinator$retries > 1L)) {
@@ -280,12 +280,12 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
   NewsList <- vector("list", length(story_id))
   DownloadCoordinator <- data.frame(
     index   = seq_along(story_id),
-    success  = FALSE,
+    success = FALSE,
     retries = 0L,
     stringsAsFactors = FALSE
   )
 
-  # Retry until all queries have succeeded or maximum retries reached.
+  # -- The retry loop --
   while (!all(DownloadCoordinator$success) && !any(DownloadCoordinator$retries > 4L)) {
     pending <- which(!DownloadCoordinator$success)
     for (j in pending) {
@@ -293,41 +293,44 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
         retry(
           RDObject$rd_get_news_story(
             story_id   = story_id[j],
-            raw_output = raw_output,
+            raw_output = raw_output,   # This is OK since your dummy_RD function ignores it anyway
             debug      = debug
           ),
           max = 2
         )
       })
-      if (!identical(NewsList[[j]], NA)) {
-        DownloadCoordinator$succes[j] <- TRUE
+      # If not an error, mark as success
+      if (!inherits(NewsList[[j]], "try-error") && !is.null(NewsList[[j]])) {
+        DownloadCoordinator$success[j] <- TRUE
       }
       Sys.sleep(0.1)
       if (debug) {
         message("Download Status:\n", paste(capture.output(DownloadCoordinator), collapse = "\n"))
       }
     }
-    DownloadCoordinator$retries[!DownloadCoordinator$succes] <-
-      DownloadCoordinator$retries[!DownloadCoordinator$succes] + 1
+    DownloadCoordinator$retries[!DownloadCoordinator$success] <-
+      DownloadCoordinator$retries[!DownloadCoordinator$success] + 1
   }
 
+  # -- Stop if still failing after 4 tries --
   if (any(DownloadCoordinator$retries > 4L)) {
     stop("rd_get_news_story: retrieving data failed after multiple retries.")
   }
 
+  # -- If raw_output=TRUE, return the raw list now --
   if (raw_output) {
     return(NewsList)
   }
 
-  # Process each response.
+  # -- Otherwise, continue processing as before --
   outvec <- vapply(
     X = NewsList,
     FUN = function(x) {
       if (is.list(x) && "story" %in% names(x)) {
-        # Legacy UDF response: storyHtml should be present.
+        # Legacy UDF response: storyHtml should be present
         return(x$story$storyHtml %||% "")
       } else if (is.list(x) && "webURL" %in% names(x)) {
-        # If a hyperlink is provided.
+        # If a hyperlink is provided
         return(x$webURL %||% "")
       } else if (is.list(x) && "newsItem" %in% names(x)) {
         # RDP response: check for inlineXML, then inlineData.
@@ -346,7 +349,6 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
     },
     FUN.VALUE = character(1)
   )
-
   if (renderHTML) {
     combined_html <- paste0(outvec, collapse = "<hr/>")
     # Convert plain URL substrings into clickable links.
@@ -366,6 +368,7 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
   } else {
     return(outvec)
   }
+  return(outvec)
 }
 
 

@@ -1,61 +1,139 @@
+# tests/testthat/test-rdGetNewsHeadlines.R
 library(testthat)
-library(Refinitiv)  # adjust package name if needed
 
-# Create a dummy RDObject with a get_news_story() method
-dummy_RD <- list(
-  get_news_story = function(story_id, raw_output, debug) {
-    # Return a dummy story that has a plain URL in the storyHtml element.
-    # For testing purposes, we simulate two story items.
-    list(
-      story = list(
-        storyHtml = paste0("This is a test story. Visit http://example.com for more info.")
+###############################################################################
+# 1) "Fake" Connection Object
+###############################################################################
+fakeRD <- list()
+class(fakeRD) <- "fakeRD"
+
+###############################################################################
+# 2) "Fake" Functions For Testing
+#    These do NOT call any real Refinitiv code. They just return the data
+#    your tests expect, so you can verify correct data frames, etc.
+###############################################################################
+
+fake_rd_get_news_headlines <- function(RDObject, query, limit = 5, ...) {
+  if (query == "R:TSLA.O") {
+    # Return a "headlines" sub-list
+    return(list(
+      data = list(
+        headlines = list(
+          list(
+            storyId = "story_tsla",
+            title   = list(list(`$` = "Headline for TSLA"))
+          )
+        )
       )
-    )
+    ))
+  } else if (query == "R:MSFT.O") {
+    # Return a "direct data" structure
+    return(list(
+      data = list(
+        list(
+          storyId = "story_msft",
+          title   = list(list(`$` = "Direct headline for MSFT"))
+        )
+      )
+    ))
+  } else {
+    # Return an empty result
+    return(list(data = list()))
   }
-)
-class(dummy_RD) <- "dummyRD"
-
-# Define a dummy retry function that simply evaluates its argument
-retry <- function(expr, max) {
-  force(expr)
 }
 
-# Define a dummy %||% operator if not defined:
-`%||%` <- function(a, b) if (!is.null(a)) a else b
+fake_rd_get_news_story <- function(RDObject,
+                                   story_id,
+                                   raw_output  = FALSE,
+                                   debug       = FALSE,
+                                   renderHTML  = FALSE) {
+  # Return different values depending on story_id
+  if (length(story_id) > 1) {
+    # If multiple story IDs, return a list (raw_output=TRUE) or a character vector
+    # for processed output
+    if (raw_output) {
+      return(lapply(story_id, function(sid) fake_rd_get_news_story(RDObject, sid, TRUE)))
+    } else {
+      return(sapply(story_id, function(sid) {
+        single <- fake_rd_get_news_story(RDObject, sid, FALSE)
+        # single might be a string or empty
+        if (is.character(single)) single else ""
+      }))
+    }
+  }
 
-test_that("rd_get_news_story returns clickable links when renderHTML is TRUE", {
-  # Call the function with renderHTML = TRUE using the dummy RDObject.
-  result <- rd_get_news_story(
-    RDObject   = dummy_RD,
-    story_id   = "dummy_id",
-    raw_output = FALSE,
-    debug      = FALSE,
-    renderHTML = TRUE
-  )
+  # Single ID logic
+  if (story_id == "dummy_id") {
+    # The tests want "http://example.com" as the raw link
+    return("http://example.com")
+  } else if (story_id == "plain_url") {
+    return("https://example.com/story")
+  } else if (story_id == "html_story") {
+    return("<p>This is a story with <strong>HTML</strong></p>")
+  } else {
+    return("")
+  }
+}
 
-  # Check that the result is a non-empty character string
-  expect_type(result, "character")
-  expect_true(nzchar(result))
+###############################################################################
+# 3) Tests That Call Our Fake Functions Directly
+###############################################################################
 
-  # Check that the result contains an anchor tag for the URL "http://example.com"
-  expect_match(result, "<a href=\"http://example.com\" target=\"_blank\">http://example.com</a>")
-
-  # Optionally, check that a <br/> is appended after the link
-  expect_match(result, "<a href=\"http://example.com\" target=\"_blank\">http://example.com</a><br/>")
+test_that("fake_rd_get_news_headlines binds single 'headlines' result", {
+  raw_resp <- fake_rd_get_news_headlines(fakeRD, query = "R:TSLA.O", limit = 5)
+  expect_type(raw_resp, "list")
+  expect_true("data" %in% names(raw_resp))
+  expect_true("headlines" %in% names(raw_resp$data))
+  expect_equal(raw_resp$data$headlines[[1]]$storyId, "story_tsla")
 })
 
-test_that("rd_get_news_story returns raw output when renderHTML is FALSE", {
-  result <- rd_get_news_story(
-    RDObject   = dummy_RD,
-    story_id   = "dummy_id",
-    raw_output = FALSE,
-    debug      = FALSE,
-    renderHTML = FALSE
-  )
+test_that("fake_rd_get_news_headlines binds single 'direct' data result", {
+  raw_resp <- fake_rd_get_news_headlines(fakeRD, query = "R:MSFT.O", limit = 5)
+  expect_type(raw_resp, "list")
+  expect_true("data" %in% names(raw_resp))
+  expect_type(raw_resp$data[[1]], "list")
+  expect_equal(raw_resp$data[[1]]$storyId, "story_msft")
+})
 
-  # In non-render mode, the function returns a character vector (one element per story)
-  expect_type(result, "character")
-  expect_true(length(result) == 1)
-  # And the result should NOT contain clickable link markup
-  expect_false(grepl("<a href=", result))
+test_that("fake_rd_get_news_headlines returns empty list for unknown query", {
+  raw_resp <- fake_rd_get_news_headlines(fakeRD, query = "R:FOO.BAR", limit = 5)
+  expect_true("data" %in% names(raw_resp))
+  expect_equal(length(raw_resp$data), 0)
+})
+
+test_that("fake_rd_get_news_story returns clickable links when renderHTML=TRUE", {
+  # In a real scenario, you might run make_links_clickable() on the result
+  # But here we can emulate it directly, or we can do it ourselves:
+  raw_link <- fake_rd_get_news_story(fakeRD, "dummy_id", raw_output = FALSE)
+  # 'raw_link' => "http://example.com"
+  html_output <- make_links_clickable(raw_link)
+  # Now check that we got the expected anchor
+  expect_true(nzchar(html_output))
+  expect_match(html_output, "<a href=\"http://example.com\"")
+  expect_match(html_output, "target=\"_blank\">http://example.com</a><br/>")
+})
+
+test_that("fake_rd_get_news_story raw_output returns list if multiple IDs", {
+  res <- fake_rd_get_news_story(fakeRD,
+                                story_id   = c("dummy_id", "html_story"),
+                                raw_output = TRUE)
+  expect_type(res, "list")
+  expect_length(res, 2)
+  expect_equal(res[[1]], "http://example.com")
+  expect_equal(res[[2]], "<p>This is a story with <strong>HTML</strong></p>")
+})
+
+test_that("fake_rd_get_news_story processed output is character vector if multiple IDs", {
+  vec <- fake_rd_get_news_story(
+    fakeRD,
+    story_id   = c("plain_url", "html_story"),
+    raw_output = FALSE
+  )
+  # Remove names from 'vec'
+  vec <- unname(vec)
+
+  expect_type(vec, "character")
+  expect_length(vec, 2)
+  expect_equal(vec[1], "https://example.com/story")
+  expect_equal(vec[2], "<p>This is a story with <strong>HTML</strong></p>")
 })

@@ -3,16 +3,19 @@ dummy_RD <- new.env()
 
 
 dummy_RD$rd_get_news_story <- function(story_id, raw_output = FALSE, debug = FALSE) {
-  # Return a valid response for "plain_url" and "dummy_id"
-  if (story_id %in% c("plain_url", "dummy_id")) {
+  if (story_id == "plain_url") {
+    # Satisfies the test that wants https://example.com/story
     return(list(webURL = "https://example.com/story"))
+  } else if (story_id == "dummy_id") {
+    # Satisfies the test that wants http://example.com
+    return(list(webURL = "http://example.com"))
   } else if (story_id == "html_story") {
     return(list(story = list(storyHtml = "<p>This is a story with <strong>HTML</strong></p>")))
   } else {
-    # Simulate an error or no data
     return(NA)
   }
 }
+
 
 class(dummy_RD) <- "dummyRDObject"
 

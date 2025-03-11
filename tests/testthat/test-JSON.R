@@ -52,7 +52,7 @@ test_that("RefinitivJsonConnect does not work without application id", {
   options(.EikonApiKey = NULL)
 
   if (is.null(getOption(".EikonApiKey"))){
-    expect_error( RefinitivJsonConnect()
+    expect_error( suppressWarnings(RefinitivJsonConnect())
                   , "Please supply Eikonapplication_id")
   }
 
@@ -67,15 +67,18 @@ test_that("RefinitivJsonConnect does work with application id", {
 
   options(.EikonApiKey = "testing_key")
 
-  EikonJson <- RefinitivJsonConnect(Eikonapplication_port = 9000L)
+  EikonJson <- suppressWarnings(RefinitivJsonConnect(Eikonapplication_port = 9000L))
 
   expect_equal(names(EikonJson)
-              , c("get_intraday_custominstrument_pricing", "create_custom_instrument",
-                  "search", "set_app_port", "get_rdp_streaming_url", "get_interday_custominstrument_pricing",
-                  "get_data", "manage_custom_instrument", "set_app_key", "get_symbology",
-                  "get_historical_pricing", "get_search_metadata", "get_news_story",
-                  "get_app_port", "get_timeseries", "get_news_headlines", "get_app_key",
-                  "search_custom_instrument", "get_data_rdp")
+              , c(
+                "get_intraday_custominstrument_pricing", "create_custom_instrument",
+                "search", "set_app_port", "get_rdp_streaming_url", "get_interday_custominstrument_pricing",
+                "get_data", "rd_get_news_headlines", "rd_get_news_story", "manage_custom_instrument",
+                "set_app_key", "get_symbology", "get_historical_pricing", "get_search_metadata",
+                "get_news_story", "get_app_port", "get_timeseries", "get_news_headlines",
+                "get_app_key", "search_custom_instrument", "get_data_rdp"
+              )
+
               )
 
   expect_equal(EikonJson$get_app_key(), "testing_key")
