@@ -18,16 +18,15 @@ rd_get_news_headlines(
 )
 }
 \arguments{
-\item{RDObject}{A connection object returned by \code{RefinitivJsonConnect()}. If not
-supplied, defaults to \code{RefinitivJsonConnect()}.}
+\item{RDObject}{A connection object returned by \code{RefinitivJsonConnect()}. Defaults to \code{RefinitivJsonConnect()} if not supplied.}
 
-\item{query}{A character string or vector representing the search query.}
+\item{query}{A character string (or vector) representing the search query.}
 
-\item{limit}{An integer indicating the maximum number of headlines to retrieve.}
+\item{limit}{An integer indicating the maximum number of headlines to retrieve. Maximum allowed value is 100.}
 
-\item{sort}{An optional sort order (e.g., "NewToOld"). If not specified, the service default is used.}
+\item{sort}{An optional sort order (e.g. \code{"NewToOld"}). If not specified, the service default is used.}
 
-\item{relevancy}{An optional relevancy filter (e.g., "All" or "High").}
+\item{relevancy}{An optional relevancy filter (e.g. \code{"All"} or \code{"High"}).}
 
 \item{cursor}{An optional pagination cursor.}
 
@@ -35,12 +34,12 @@ supplied, defaults to \code{RefinitivJsonConnect()}.}
 
 \item{dateTo}{An optional end date/time (ISO 8601 format).}
 
-\item{raw_output}{If TRUE, returns the raw JSON response; otherwise, the response is processed.}
+\item{raw_output}{If \code{TRUE}, returns the raw JSON response; otherwise, the response is flattened.}
 
-\item{debug}{If TRUE, prints debugging messages.}
+\item{debug}{If \code{TRUE}, prints debugging messages.}
 }
 \value{
-The JSON response from the headlines endpoint as returned by \code{send_json_request()}.
+A \code{data.frame} with flattened fields, or the raw JSON if \code{raw_output = TRUE}.
 }
 \description{
 This function constructs an HTTP GET query to retrieve news headlines from the
@@ -136,4 +135,7 @@ Examples of queries include:
   \preformatted{
     rd_get_news_headlines(query = "Major breaking news", dateFrom = "2024-04-13T00:00:00Z", dateTo = "2024-04-14T00:00:00Z")
   }
+
+**Note:** The parameter \code{limit} must not exceed 100. If a value greater than 100
+is provided, the function will throw an error.
 }

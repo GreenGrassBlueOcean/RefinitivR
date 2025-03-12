@@ -93,19 +93,22 @@
 #'     rd_get_news_headlines(query = "Major breaking news", dateFrom = "2024-04-13T00:00:00Z", dateTo = "2024-04-14T00:00:00Z")
 #'   }
 #'
-#' @param query A character string or vector representing the search query.
-#' @param limit An integer indicating the maximum number of headlines to retrieve.
-#' @param sort An optional sort order (e.g., "NewToOld"). If not specified, the service default is used.
-#' @param relevancy An optional relevancy filter (e.g., "All" or "High").
+#' **Note:** The parameter \code{limit} must not exceed 100. If a value greater than 100
+#' is provided, the function will throw an error.
+#'
+#' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. Defaults to \code{RefinitivJsonConnect()} if not supplied.
+#' @param query A character string (or vector) representing the search query.
+#' @param limit An integer indicating the maximum number of headlines to retrieve. Maximum allowed value is 100.
+#' @param sort An optional sort order (e.g. \code{"NewToOld"}). If not specified, the service default is used.
+#' @param relevancy An optional relevancy filter (e.g. \code{"All"} or \code{"High"}).
 #' @param cursor An optional pagination cursor.
 #' @param dateFrom An optional start date/time (ISO 8601 format).
 #' @param dateTo An optional end date/time (ISO 8601 format).
-#' @param raw_output If TRUE, returns the raw JSON response; otherwise, the response is processed.
-#' @param debug If TRUE, prints debugging messages.
-#' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. If not
-#'   supplied, defaults to \code{RefinitivJsonConnect()}.
+#' @param raw_output If \code{TRUE}, returns the raw JSON response; otherwise, the response is flattened.
+#' @param debug If \code{TRUE}, prints debugging messages.
 #'
-#' @return The JSON response from the headlines endpoint as returned by \code{send_json_request()}.
+#' @return A \code{data.frame} with flattened fields, or the raw JSON if \code{raw_output = TRUE}.
+#'
 #'
 #' @export
 rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
@@ -118,6 +121,11 @@ rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
                                   dateTo     = NULL,
                                   raw_output = FALSE,
                                   debug      = TRUE) {
+  # Check that limit is not greater than 100
+  if (limit > 100) {
+    stop("rd_get_news_headlines: 'limit' cannot exceed 100.")
+  }
+
   if (is.null(query)) {
     query <- ""
   }
@@ -139,15 +147,15 @@ rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
       HeadlinesList[[j]] <- try({
         retry(
           RDObject$rd_get_news_headlines(
-            query     = query[j],
-            limit     = as.integer(limit),
-            sort      = sort,
-            relevancy = relevancy,
-            cursor    = cursor,
-            dateFrom  = dateFrom,
-            dateTo    = dateTo,
-            raw_output= TRUE,
-            debug     = debug
+            query      = query[j],
+            limit      = as.integer(limit),
+            sort       = sort,
+            relevancy  = relevancy,
+            cursor     = cursor,
+            dateFrom   = dateFrom,
+            dateTo     = dateTo,
+            raw_output = TRUE,
+            debug      = debug
           ),
           max = 2
         )
@@ -157,8 +165,7 @@ rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
       }
       Sys.sleep(0.1)
       if (debug) {
-        message("Download Status:\n",
-                paste(capture.output(DownloadCoordinator), collapse = "\n"))
+        message("Download Status:\n", paste(capture.output(DownloadCoordinator), collapse = "\n"))
       }
     }
     DownloadCoordinator$retries[!DownloadCoordinator$success] <-
@@ -173,35 +180,152 @@ rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
     return(HeadlinesList)
   }
 
-  # Process each response: if the headlines are stored in data$headlines, use that;
-  # otherwise assume data itself is a list of headline items.
-  dtlist <- lapply(HeadlinesList, function(x) {
+  # -- Flatten each headline in each response --
+  # Each element of HeadlinesList is presumed to be a list with a 'data' field.
+    dtlist <- lapply(seq_along(HeadlinesList), function(i) {
+    x <- HeadlinesList[[i]]
     if (!is.list(x) || is.null(x$data)) {
       return(data.table::data.table())
     }
-    if (!is.null(x$data$headlines)) {
-      return(data.table::rbindlist(x$data$headlines, fill = TRUE, use.names = TRUE))
-    } else {
-      return(data.table::rbindlist(x$data, fill = TRUE, use.names = TRUE))
+    # Assume x$data is a list of headlines
+    headlines_vec <- x$data
+    # Flatten each news item
+    flattened_list <- lapply(headlines_vec, flatten_headline_item)
+    flattened_list <- Filter(Negate(is.null), flattened_list)
+    if (length(flattened_list) == 0) {
+      return(data.table::data.table())
     }
+    outdt <- data.table::rbindlist(flattened_list, fill = TRUE)
+    outdt[, query := orig_query[i]]
+    return(outdt)
   })
 
   if (length(dtlist) == 0 || all(sapply(dtlist, nrow) == 0)) {
     return(data.frame())
   }
 
-  out <- data.table::rbindlist(dtlist, fill = TRUE, use.names = TRUE, idcol = "query_index")
-  if ("query_index" %in% names(out)) {
-    query_index <- NULL
-    out[, query := orig_query[out$query_index]]
-    out[, query_index := NULL]
-  } else {
-    out[, query := orig_query[1]]
-  }
-
-  return(data.table::setDF(out))
+  final_dt <- data.table::rbindlist(dtlist, fill = TRUE, use.names = TRUE)
+  # Ensure that the returned product is a data.frame
+  return(data.table::setDF(final_dt))
 }
 
+
+
+#' Flatten a Headline JSON Object
+#'
+#' This helper function takes a JSON object representing a news headline (extracted
+#' from a Refinitiv RDP response) and flattens it into a named list. It extracts key
+#' fields such as \code{storyId}, \code{version}, \code{urgency}, \code{firstCreated},
+#' \code{versionCreated}, and \code{title}. Additionally, array fields such as
+#' \code{creator}, \code{infoSource}, \code{language}, and \code{subject} are collapsed
+#' into comma-separated strings.
+#'
+#'
+#' @param h A list representing a single headline JSON object as returned by the RDP service.
+#'
+#' @return A named list with the following elements:
+#' \itemize{
+#'   \item \code{storyId} - The unique identifier for the headline.
+#'   \item \code{version} - The revision version of the news.
+#'   \item \code{urgency} - The urgency level of the news.
+#'   \item \code{firstCreated} - The timestamp when the news was first created.
+#'   \item \code{versionCreated} - The timestamp when the news was updated.
+#'   \item \code{title} - The headline title.
+#'   \item \code{creator} - A comma-separated string of creator \code{_qcode}s.
+#'   \item \code{infoSource} - A comma-separated string of infoSource \code{_qcode}s.
+#'   \item \code{language} - A comma-separated string of language tags.
+#'   \item \code{subject} - A comma-separated string of subject \code{_qcode}s.
+#' }
+#'
+#' @examples
+#' \dontrun{
+#' # Create a dummy headline JSON structure
+#' dummy_headline <- list(
+#'   storyId = "urn:newsml:reuters.com:20250312:nABC123:1",
+#'   newsItem = list(
+#'     `_version` = 1L,
+#'     contentMeta = list(
+#'       creator = list(list(`_qcode` = "NS:RTRS", `_role` = "sRole:source")),
+#'       infoSource = list(list(`_qcode` = "NS:RTRS", `_role` = "sRole:source")),
+#'       language = list(list(`_tag` = "en")),
+#'       subject = list(list(`_qcode` = "G:1"), list(`_qcode` = "M:1QD")),
+#'       urgency = list(`$` = 3L)
+#'     ),
+#'     itemMeta = list(
+#'       firstCreated = list(`$` = "2025-03-12T15:55:31.127Z"),
+#'       versionCreated = list(`$` = "2025-03-12T15:55:31.127Z"),
+#'       title = list(list(`$` = "Dummy headline"))
+#'     )
+#'   )
+#' )
+#'
+#' # Flatten the dummy headline
+#' flat <- flatten_headline_item(dummy_headline)
+#' print(flat)
+#' }
+#'
+#' @keywords Internal
+#' @noRd
+flatten_headline_item <- function(h) {
+
+  # Optional helper to handle NULLs
+  `%||%` <- function(x, y) { if (is.null(x)) y else x }
+
+  if (!is.list(h) || is.null(h[["newsItem"]])) {
+    return(NULL)
+  }
+
+  news_item <- h[["newsItem"]]
+  cm <- news_item[["contentMeta"]]
+  im <- news_item[["itemMeta"]]
+
+  out <- list(
+    storyId = h[["storyId"]] %||% NA_character_,
+    version = news_item[["_version"]] %||% NA_integer_,
+    urgency = if (!is.null(cm$urgency$`$`)) cm$urgency$`$` else NA_integer_,
+    firstCreated = if (!is.null(im$firstCreated$`$`)) im$firstCreated$`$` else NA_character_,
+    versionCreated = if (!is.null(im$versionCreated$`$`)) im$versionCreated$`$` else NA_character_
+  )
+
+  # Flatten title (assume first element in the title list)
+  if (!is.null(im$title) && length(im$title) > 0) {
+    out$title <- im$title[[1]]$`$` %||% NA_character_
+  } else {
+    out$title <- NA_character_
+  }
+
+  # Flatten array fields by concatenating the relevant codes/tags with commas
+
+  # Creator
+  if (!is.null(cm$creator) && length(cm$creator) > 0) {
+    out$creator <- paste(sapply(cm$creator, function(x) x[["_qcode"]]), collapse = ",")
+  } else {
+    out$creator <- NA_character_
+  }
+
+  # InfoSource
+  if (!is.null(cm$infoSource) && length(cm$infoSource) > 0) {
+    out$infoSource <- paste(sapply(cm$infoSource, function(x) x[["_qcode"]]), collapse = ",")
+  } else {
+    out$infoSource <- NA_character_
+  }
+
+  # Language
+  if (!is.null(cm$language) && length(cm$language) > 0) {
+    out$language <- paste(sapply(cm$language, function(x) x[["_tag"]]), collapse = ",")
+  } else {
+    out$language <- NA_character_
+  }
+
+  # Subject
+  if (!is.null(cm$subject) && length(cm$subject) > 0) {
+    out$subject <- paste(sapply(cm$subject, function(x) x[["_qcode"]]), collapse = ",")
+  } else {
+    out$subject <- NA_character_
+  }
+
+  return(out)
+}
 
 
 
