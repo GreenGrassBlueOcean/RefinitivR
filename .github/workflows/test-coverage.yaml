@@ -1,62 +1,119 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
-# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+name: CI
+
 on:
   push:
     branches: [main, master]
   pull_request:
+  schedule:
+    - cron: '0 6 * * *'
 
-name: test-coverage.yaml
-
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: r-lib/actions/setup-r@v2
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          extra-packages: any::covr, any::xml2
-          needs: coverage
+          python-version: '3.10'
 
-      - name: Test coverage
+      - name: Setup Conda Environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: true
+          activate-environment: "r-eikon"
+          python-version: "3.10"
+
+      - name: Install Python Packages
         run: |
-          cov <- covr::package_coverage(
-            quiet = FALSE,
-            clean = FALSE,
-            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
-          )
-          print(cov)
-          covr::to_cobertura(cov)
+          conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
+          pip install kaleido wrapt
+          conda list
+
+      - name: Install R Packages and Reticulate
+        run: |
+          Rscript -e "install.packages(c('covr','xml2','reticulate'))"
+
+      - name: Setup R-Reticulated Conda Environment and Verify Python Config
+        run: |
+          Rscript -e "library(reticulate); use_condaenv('r-eikon', required = TRUE); py_config()"
+
+      - name: Run Test Coverage
+        run: |
+          Rscript -e "cov <- covr::package_coverage(clean = FALSE, quiet = FALSE); print(cov); covr::to_cobertura(cov)"
         shell: Rscript {0}
 
-      - uses: codecov/codecov-action@v4
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
         with:
-          # Fail if error if not on PR, or if on PR and token is given
-          fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
           file: ./cobertura.xml
-          plugin: noop
-          disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Show testthat output
-        if: always()
-        run: |
-          ## --------------------------------------------------------------------
-          find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
-        shell: bash
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      matrix:
+        config:
+          - { os: windows-latest, r: 'release', python: '3.10' }
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v4
+      - name: Setup Pandoc
+        uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
         with:
-          name: coverage-test-failures
-          path: ${{ runner.temp }}/package
+          r-version: ${{ matrix.config.r }}
+          use-public-rspm: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.config.python }}
+
+      - name: Setup Conda Environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: true
+          activate-environment: "r-eikon"
+          python-version: "3.10"
+
+      - name: Install Python Packages (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
+          conda list
+
+      - name: Install R Packages and Reticulate
+        run: |
+          Rscript -e "if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')"
+          Rscript -e "remotes::install_deps(dependencies = TRUE, upgrade = 'always')"
+          Rscript -e "install.packages('reticulate')"
+
+      - name: Setup R-Reticulated Conda Environment and Verify Python Config
+        run: |
+          Rscript -e "library(reticulate); use_condaenv('r-eikon', required = TRUE); py_config()"
+
+      - name: Check R Package
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+          build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
