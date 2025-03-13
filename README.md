@@ -7,8 +7,10 @@ This is theoretically possible but currently not implemented.
 2. When using the pyton libraries and if you update the package: also run `Refinitiv::install_eikon()` again.
 3. Python Eikon and RDP libraries are depricated and can no longer be used. The current commit of the package is reverse compatible with previous commits.
 
-[![Codecov test coverage](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR/branch/master/graph/badge.svg)](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR?branch=master)
-[![R build status](https://github.com/GreenGrassBlueOcean/RefinitivR/workflows/R-CMD-check/badge.svg)](https://github.com/GreenGrassBlueOcean/RefinitivR/actions)
+<!-- badges: start -->
+  [![Codecov test coverage](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR/graph/badge.svg)](https://app.codecov.io/gh/GreenGrassBlueOcean/RefinitivR)
+  [![R build status](https://github.com/GreenGrassBlueOcean/RefinitivR/workflows/R-CMD-check/badge.svg)](https://github.com/GreenGrassBlueOcean/RefinitivR/actions)
+  <!-- badges: end -->
 
 # RefinitivR
 An R interface to Refinitv Eikon and Refinitiv DataStream.
