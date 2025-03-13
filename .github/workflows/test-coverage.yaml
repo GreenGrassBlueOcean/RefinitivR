@@ -50,12 +50,19 @@ jobs:
         run: |
           Rscript -e "library(reticulate); use_condaenv('r-eikon', required = TRUE); py_config()"
 
-      - name: Run Test Coverage
-        shell: Rscript {0}
+      - name: Test coverage
         run: |
+            # Install remotes if needed
+            if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+
+            # Install package dependencies
+            remotes::install_deps(dependencies = TRUE, upgrade = "always")
+
+            # Run covr
             cov <- covr::package_coverage(clean = FALSE, quiet = FALSE)
             print(cov)
             covr::to_cobertura(cov)
+  shell: Rscript {0}
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
