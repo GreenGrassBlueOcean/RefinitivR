@@ -52,7 +52,7 @@ jobs:
 
       - name: Run Test Coverage
         run: |
-          Rscript -e "cov <- covr::package_coverage(clean = FALSE, quiet = FALSE); print(cov); covr::to_cobertura(cov)"
+          Rscript -e 'cov <- covr::package_coverage(clean = FALSE, quiet = FALSE); print(cov); covr::to_cobertura(cov)'
         shell: Rscript {0}
 
       - name: Upload Coverage to Codecov
