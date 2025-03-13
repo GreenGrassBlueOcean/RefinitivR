@@ -65,7 +65,7 @@
 #'
 #' - **Explicit Token News Source (NS):**
 #'   \preformatted{
-#'     rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR" )
+#'     rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR")
 #'   }
 #'
 #' - **Increasing the Limit:**
@@ -94,7 +94,7 @@
 #'   }
 #'
 #' **Note:** The parameter \code{limit} must not exceed 100. If a value greater than 100
-#' is provided, the function will throw an error.
+#' is provided, the function will throw an error. When \code{raw_output = TRUE}, a list of raw JSON responses is returned.
 #'
 #' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. Defaults to \code{RefinitivJsonConnect()} if not supplied.
 #' @param query A character string (or vector) representing the search query.
@@ -104,11 +104,10 @@
 #' @param cursor An optional pagination cursor.
 #' @param dateFrom An optional start date/time (ISO 8601 format).
 #' @param dateTo An optional end date/time (ISO 8601 format).
-#' @param raw_output If \code{TRUE}, returns the raw JSON response; otherwise, the response is flattened.
+#' @param raw_output If \code{TRUE}, returns the raw JSON response; otherwise, the response is flattened into a \code{data.frame}.
 #' @param debug If \code{TRUE}, prints debugging messages.
 #'
 #' @return A \code{data.frame} with flattened fields, or the raw JSON if \code{raw_output = TRUE}.
-#'
 #'
 #' @export
 rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
@@ -268,8 +267,23 @@ rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
 #' @noRd
 flatten_headline_item <- function(h) {
 
-  # Optional helper to handle NULLs
-  `%||%` <- function(x, y) { if (is.null(x)) y else x }
+  # Helper to extract a single field (e.g., title)
+  extract_single_field <- function(x_list) {
+    if (!is.null(x_list) && length(x_list) > 0 && !is.null(x_list[[1]]$`$`)) {
+      return(x_list[[1]]$`$`)
+    }
+    return(NA_character_)
+  }
+
+  # Helper to extract multiple '_qcode' values into a comma-separated string
+  extract_qcodes <- function(x_list) {
+    if (!is.null(x_list) && length(x_list) > 0) {
+      codes <- sapply(x_list, function(x) x[["_qcode"]])
+      return(paste(codes, collapse = ","))
+    }
+    return(NA_character_)
+  }
+
 
   if (!is.list(h) || is.null(h[["newsItem"]])) {
     return(NULL)
@@ -279,53 +293,40 @@ flatten_headline_item <- function(h) {
   cm <- news_item[["contentMeta"]]
   im <- news_item[["itemMeta"]]
 
+  # Inline defaulting without %||%
+  storyId_val        <- if (is.null(h[["storyId"]])) NA_character_ else h[["storyId"]]
+  version_val        <- if (is.null(news_item[["_version"]])) NA_integer_ else news_item[["_version"]]
+  urgency_val        <- if (!is.null(cm$urgency$`$`)) cm$urgency$`$` else NA_integer_
+  firstCreated_val   <- if (!is.null(im$firstCreated$`$`)) im$firstCreated$`$` else NA_character_
+  versionCreated_val <- if (!is.null(im$versionCreated$`$`)) im$versionCreated$`$` else NA_character_
+
   out <- list(
-    storyId = h[["storyId"]] %||% NA_character_,
-    version = news_item[["_version"]] %||% NA_integer_,
-    urgency = if (!is.null(cm$urgency$`$`)) cm$urgency$`$` else NA_integer_,
-    firstCreated = if (!is.null(im$firstCreated$`$`)) im$firstCreated$`$` else NA_character_,
-    versionCreated = if (!is.null(im$versionCreated$`$`)) im$versionCreated$`$` else NA_character_
+    storyId        = storyId_val,
+    version        = version_val,
+    urgency        = urgency_val,
+    firstCreated   = firstCreated_val,
+    versionCreated = versionCreated_val,
+
+    # Use helper for single-field extraction
+    title          = extract_single_field(im$title),
+
+    # Use helper for qcode extraction
+    creator        = extract_qcodes(cm$creator),
+    infoSource     = extract_qcodes(cm$infoSource),
+
+    # For language, extract the '_tag' field from each element
+    language       = if (!is.null(cm$language) && length(cm$language) > 0) {
+      tags <- sapply(cm$language, function(x) x[["_tag"]])
+      paste(tags, collapse = ",")
+    } else {
+      NA_character_
+    },
+    subject        = extract_qcodes(cm$subject)
   )
-
-  # Flatten title (assume first element in the title list)
-  if (!is.null(im$title) && length(im$title) > 0) {
-    out$title <- im$title[[1]]$`$` %||% NA_character_
-  } else {
-    out$title <- NA_character_
-  }
-
-  # Flatten array fields by concatenating the relevant codes/tags with commas
-
-  # Creator
-  if (!is.null(cm$creator) && length(cm$creator) > 0) {
-    out$creator <- paste(sapply(cm$creator, function(x) x[["_qcode"]]), collapse = ",")
-  } else {
-    out$creator <- NA_character_
-  }
-
-  # InfoSource
-  if (!is.null(cm$infoSource) && length(cm$infoSource) > 0) {
-    out$infoSource <- paste(sapply(cm$infoSource, function(x) x[["_qcode"]]), collapse = ",")
-  } else {
-    out$infoSource <- NA_character_
-  }
-
-  # Language
-  if (!is.null(cm$language) && length(cm$language) > 0) {
-    out$language <- paste(sapply(cm$language, function(x) x[["_tag"]]), collapse = ",")
-  } else {
-    out$language <- NA_character_
-  }
-
-  # Subject
-  if (!is.null(cm$subject) && length(cm$subject) > 0) {
-    out$subject <- paste(sapply(cm$subject, function(x) x[["_qcode"]]), collapse = ",")
-  } else {
-    out$subject <- NA_character_
-  }
 
   return(out)
 }
+
 
 
 
@@ -366,35 +367,26 @@ make_links_clickable <- function(text) {
 #' to clickable links via a helper function \code{make_links_clickable()} (which you should
 #' define elsewhere in your package), and the combined HTML is opened in the viewer.
 #'
-#' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. If not
-#'   supplied, defaults to \code{RefinitivJsonConnect()}.
+#' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. Defaults to \code{RefinitivJsonConnect()} if not supplied.
 #' @param story_id Vector of story IDs.
-#' @param raw_output If TRUE, returns the raw list of responses.
-#' @param debug If TRUE, prints debug messages.
-#' @param renderHTML If TRUE, the function will open the combined HTML in a browser viewer,
+#' @param raw_output If \code{TRUE}, returns the raw list of responses.
+#' @param debug If \code{TRUE}, prints debugging messages.
+#' @param renderHTML If \code{TRUE}, the function will open the combined HTML in a browser viewer,
 #'   and also return the HTML string.
 #'
 #' @return If \code{raw_output = FALSE} (the default), a character vector of the story HTML
 #'   (or a single combined HTML string if \code{renderHTML = TRUE}). Otherwise, the raw list
 #'   of responses.
 #'
-#' @importFrom rlang %||%
 #' @export
-#'
-#' @examples
-#' \dontrun{
-#'   # Retrieve and process a story:
-#'   RObj <- RefinitivJsonConnect()
-#'   story_html <- rd_get_news_story(RObj, story_id = "urn:newsml:newsroom:20250209:nNRAvd1b4o:0")
-#'
-#'   # Retrieve the story and open it in your RStudio viewer:
-#'   rd_get_news_story(RObj, story_id = "urn:newsml:newsroom:20250209:nNRAvd1b4o:0", renderHTML = TRUE)
-#' }
 rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
                               story_id   = NULL,
                               raw_output = FALSE,
                               debug      = FALSE,
                               renderHTML = FALSE) {
+
+
+
   if (is.null(story_id)) {
     stop("rd_get_news_story: must supply 'story_id'")
   } else {
@@ -451,13 +443,18 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
     X = NewsList,
     FUN = function(x) {
       if (is.list(x) && "story" %in% names(x)) {
-        # Legacy UDF response: storyHtml should be present
-        return(x$story$storyHtml %||% "")
+        if (!is.null(x$story$storyHtml)) {
+          return(x$story$storyHtml)
+        } else {
+          return("")
+        }
       } else if (is.list(x) && "webURL" %in% names(x)) {
-        # If a hyperlink is provided
-        return(x$webURL %||% "")
+        if (!is.null(x$webURL)) {
+          return(x$webURL)
+        } else {
+          return("")
+        }
       } else if (is.list(x) && "newsItem" %in% names(x)) {
-        # RDP response: check for inlineXML, then inlineData.
         if (!is.null(x$newsItem$contentSet$inlineXML) &&
             !is.null(x$newsItem$contentSet$inlineXML$`$`)) {
           return(x$newsItem$contentSet$inlineXML$`$`)
@@ -473,6 +470,7 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
     },
     FUN.VALUE = character(1)
   )
+
   if (renderHTML) {
     combined_html <- paste0(outvec, collapse = "<hr/>")
     # Convert plain URL substrings into clickable links.
@@ -536,36 +534,28 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #' - **AWP Top News**: Includes pages such as "AWP German Top News" and "AWP French Top News".
 #'
 #' In addition to returning key fields from the top news packages (group, page name, revision information,
-#' and the **topNewsId**), this function now makes an additional GET call for each page by calling
-#' `/data/news/v1/top-news/<topNewsId>`. This call retrieves the actual story details including the story
-#' identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
+#' and the **topNewsId**), this function makes an additional GET call for each page by calling
+#' `/data/news/v1/top-news/<topNewsId>`. This call retrieves the actual story details including the
+#' story identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
 #' be used with \code{rd_get_news_story}.
+#'
+#' **Note:** If a top news package contains multiple stories, the function expands the output so that there is one
+#' row per story (with the page-level metadata repeated across rows). In the case of a single story, a single row is returned.
 #'
 #' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. If not supplied,
 #'   defaults to \code{RefinitivJsonConnect()}.
 #' @param group Optional character string (or regular expression) to filter the top news groups by name.
 #' @param page Optional character string (or regular expression) to filter the pages by name.
-#' @param raw_output If TRUE, returns the raw JSON response from the top-news endpoint.
-#' @param debug If TRUE, prints debugging messages.
+#' @param raw_output If \code{TRUE}, returns the raw JSON response from the top-news endpoint.
+#' @param debug If \code{TRUE}, prints debugging messages.
 #'
-#' @return A data frame with one row per top news page and the following columns:
+#' @return A data frame with one row per top news page or per story (if multiple stories exist for a page)
+#' and the following columns:
 #'   \code{group}, \code{page_name}, \code{po}, \code{revisionId}, \code{revisionDate},
 #'   \code{topNewsId}, \code{storyId}, \code{title} (news headline), and \code{snippet} (news summary).
 #'
 #' @importFrom data.table rbindlist setDF
 #' @export
-#'
-#' @examples
-#' \dontrun{
-#'   # Retrieve all top news packages along with the actual story details:
-#'   top_news <- rd_get_top_news()
-#'
-#'   # Retrieve only the "Main" group:
-#'   top_news_main <- rd_get_top_news(group = "Main")
-#'
-#'   # Retrieve only pages whose name contains "Front":
-#'   top_news_front <- rd_get_top_news(page = "Front")
-#' }
 rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
                             group = NULL,
                             page = NULL,
@@ -595,7 +585,7 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     return(data.frame())
   }
 
-  # Parse the nested JSON structure.
+  # Parse the nested JSON structure to get topNewsId-level info (one row per page).
   dt <- data.table::rbindlist(lapply(response$data, function(g) {
     if (is.null(g$pages)) return(NULL)
     data.table::rbindlist(lapply(g$pages, function(p) {
@@ -618,59 +608,76 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     dt <- dt[grepl(page, dt$page_name, ignore.case = TRUE)]
   }
 
+  # If no rows remain after filtering, return an empty data frame.
+  if (nrow(dt) == 0) {
+    if (debug) message("No matching top news pages after filtering.")
+    return(data.frame())
+  }
+
   # For each topNewsId, retrieve the additional story details.
-  details <- lapply(dt$topNewsId, function(tnid) {
+  expanded_rows <- lapply(seq_len(nrow(dt)), function(i) {
+    row_info <- dt[i, ]
+    tnid <- row_info$topNewsId
+
+    if (debug) {
+      message(sprintf("Requesting story details for topNewsId: %s", tnid))
+    }
+
     # Construct endpoint for an individual top news page.
     top_story_endpoint <- paste0("data/news/v1/top-news/", tnid)
-    if (debug) message("Requesting story details for topNewsId: ", tnid)
-    story_resp <- try(send_json_request(service = "rdp",
-                                        request_type = "GET",
-                                        EndPoint = top_story_endpoint,
-                                        debug = debug), silent = TRUE)
+    story_resp <- try(
+      send_json_request(
+        service      = "rdp",
+        request_type = "GET",
+        EndPoint     = top_story_endpoint,
+        debug        = debug
+      ),
+      silent = TRUE
+    )
+
+    # If we fail to retrieve story details or data is NULL, return one empty row.
     if (inherits(story_resp, "try-error") || is.null(story_resp$data)) {
       if (debug) message("Failed to retrieve story details for ", tnid)
-      return(list(storyId = NA_character_, title = NA_character_, snippet = NA_character_))
+      row_info$storyId <- NA_character_
+      row_info$title   <- NA_character_
+      row_info$snippet <- NA_character_
+      return(row_info)
     }
 
-    # Helper function to extract a given field. If more than one value is returned,
-    # they are concatenated with a comma.
-    extract_field <- function(field) {
-      result <- NA_character_
-      tryCatch({
-        if (is.list(story_resp$data)) {
-          # If the data directly contains the field, use it.
-          if (!is.null(story_resp$data[[field]])) {
-            result <- as.character(story_resp$data[[field]])
-          } else {
-            # Otherwise assume data is a list of story items.
-            vals <- sapply(story_resp$data, function(x) x[[field]])
-            # Remove any NULL or NA values.
-            vals <- vals[!is.null(vals) & !is.na(vals)]
-            if (length(vals) > 1) {
-              result <- paste(vals, collapse = ",")
-            } else if (length(vals) == 1) {
-              result <- vals[1]
-            }
-          }
-        }
-      }, error = function(e) NA_character_)
-      result
+    # The story response might include multiple stories in the "data" list
+    # or a single item. Let's handle both cases cleanly:
+    story_data <- story_resp$data
+
+    # If story_data is a flat list (a single story), wrap it in a list.
+    if (!is.list(story_data[[1]])) {
+      story_data <- list(story_data)
     }
 
-    list(
-      storyId = extract_field("storyId"),
-      title   = extract_field("text"),
-      snippet = extract_field("snippet")
+    # Build a data.table with one row per story.
+    dt_stories <- data.table::rbindlist(
+      lapply(story_data, function(s) {
+        data.table::data.table(
+          storyId = if (!is.null(s$storyId)) s$storyId else NA_character_,
+          title   = if (!is.null(s$text))    s$text    else NA_character_,
+          snippet = if (!is.null(s$snippet)) s$snippet else NA_character_
+        )
+      }),
+      fill = TRUE
     )
+
+    # Repeat the "page-level" data for each story row.
+    row_info_repeated <- row_info[rep(1, nrow(dt_stories)), ]
+    row_info_repeated$storyId <- dt_stories$storyId
+    row_info_repeated$title   <- dt_stories$title
+    row_info_repeated$snippet <- dt_stories$snippet
+
+    row_info_repeated
   })
 
-  snippet <- storyId <-  title <- NULL
+  # Combine all expanded rows into a single data.table.
+  out_dt <- data.table::rbindlist(expanded_rows, fill = TRUE)
 
-  # Add the retrieved story details to the data table.
-  dt[, storyId := sapply(details, function(x) x$storyId)]
-  dt[, title   := sapply(details, function(x) x$title)]
-  dt[, snippet := sapply(details, function(x) x$snippet)]
-
-  return(data.table::setDF(dt))
+  # Convert back to a data.frame and return.
+  return(data.table::setDF(out_dt))
 }
 

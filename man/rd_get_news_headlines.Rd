@@ -34,7 +34,7 @@ rd_get_news_headlines(
 
 \item{dateTo}{An optional end date/time (ISO 8601 format).}
 
-\item{raw_output}{If \code{TRUE}, returns the raw JSON response; otherwise, the response is flattened.}
+\item{raw_output}{If \code{TRUE}, returns the raw JSON response; otherwise, the response is flattened into a \code{data.frame}.}
 
 \item{debug}{If \code{TRUE}, prints debugging messages.}
 }
@@ -108,7 +108,7 @@ Examples of queries include:
 
 - **Explicit Token News Source (NS):**
   \preformatted{
-    rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR" )
+    rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR")
   }
 
 - **Increasing the Limit:**
@@ -137,5 +137,5 @@ Examples of queries include:
   }
 
 **Note:** The parameter \code{limit} must not exceed 100. If a value greater than 100
-is provided, the function will throw an error.
+is provided, the function will throw an error. When \code{raw_output = TRUE}, a list of raw JSON responses is returned.
 }

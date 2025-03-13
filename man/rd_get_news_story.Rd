@@ -13,16 +13,15 @@ rd_get_news_story(
 )
 }
 \arguments{
-\item{RDObject}{A connection object returned by \code{RefinitivJsonConnect()}. If not
-supplied, defaults to \code{RefinitivJsonConnect()}.}
+\item{RDObject}{A connection object returned by \code{RefinitivJsonConnect()}. Defaults to \code{RefinitivJsonConnect()} if not supplied.}
 
 \item{story_id}{Vector of story IDs.}
 
-\item{raw_output}{If TRUE, returns the raw list of responses.}
+\item{raw_output}{If \code{TRUE}, returns the raw list of responses.}
 
-\item{debug}{If TRUE, prints debug messages.}
+\item{debug}{If \code{TRUE}, prints debugging messages.}
 
-\item{renderHTML}{If TRUE, the function will open the combined HTML in a browser viewer,
+\item{renderHTML}{If \code{TRUE}, the function will open the combined HTML in a browser viewer,
 and also return the HTML string.}
 }
 \value{
@@ -47,14 +46,4 @@ different places:
 If \code{renderHTML} is TRUE, any plain URLs in the resulting HTML will be converted
 to clickable links via a helper function \code{make_links_clickable()} (which you should
 define elsewhere in your package), and the combined HTML is opened in the viewer.
-}
-\examples{
-\dontrun{
-  # Retrieve and process a story:
-  RObj <- RefinitivJsonConnect()
-  story_html <- rd_get_news_story(RObj, story_id = "urn:newsml:newsroom:20250209:nNRAvd1b4o:0")
-
-  # Retrieve the story and open it in your RStudio viewer:
-  rd_get_news_story(RObj, story_id = "urn:newsml:newsroom:20250209:nNRAvd1b4o:0", renderHTML = TRUE)
-}
 }

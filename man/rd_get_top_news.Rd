@@ -20,12 +20,13 @@ defaults to \code{RefinitivJsonConnect()}.}
 
 \item{page}{Optional character string (or regular expression) to filter the pages by name.}
 
-\item{raw_output}{If TRUE, returns the raw JSON response from the top-news endpoint.}
+\item{raw_output}{If \code{TRUE}, returns the raw JSON response from the top-news endpoint.}
 
-\item{debug}{If TRUE, prints debugging messages.}
+\item{debug}{If \code{TRUE}, prints debugging messages.}
 }
 \value{
-A data frame with one row per top news page and the following columns:
+A data frame with one row per top news page or per story (if multiple stories exist for a page)
+and the following columns:
   \code{group}, \code{page_name}, \code{po}, \code{revisionId}, \code{revisionDate},
   \code{topNewsId}, \code{storyId}, \code{title} (news headline), and \code{snippet} (news summary).
 }
@@ -69,20 +70,11 @@ news category.
 - **AWP Top News**: Includes pages such as "AWP German Top News" and "AWP French Top News".
 
 In addition to returning key fields from the top news packages (group, page name, revision information,
-and the **topNewsId**), this function now makes an additional GET call for each page by calling
-`/data/news/v1/top-news/<topNewsId>`. This call retrieves the actual story details including the story
-identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
+and the **topNewsId**), this function makes an additional GET call for each page by calling
+`/data/news/v1/top-news/<topNewsId>`. This call retrieves the actual story details including the
+story identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
 be used with \code{rd_get_news_story}.
-}
-\examples{
-\dontrun{
-  # Retrieve all top news packages along with the actual story details:
-  top_news <- rd_get_top_news()
 
-  # Retrieve only the "Main" group:
-  top_news_main <- rd_get_top_news(group = "Main")
-
-  # Retrieve only pages whose name contains "Front":
-  top_news_front <- rd_get_top_news(page = "Front")
-}
+**Note:** If a top news package contains multiple stories, the function expands the output so that there is one
+row per story (with the page-level metadata repeated across rows). In the case of a single story, a single row is returned.
 }
