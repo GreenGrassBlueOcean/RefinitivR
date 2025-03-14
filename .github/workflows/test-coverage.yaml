@@ -24,7 +24,7 @@ jobs:
         uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
-          r-version: '4.3'  # Specify a recent R version for consistency
+          r-version: '4.3'
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -34,13 +34,15 @@ jobs:
       - name: Setup Conda Environment
         uses: conda-incubator/setup-miniconda@v3
         with:
-          auto-activate-base: false  # Avoid base env conflicts
+          auto-activate-base: false
           activate-environment: "r-eikon"
           python-version: "3.10"
+          auto-update-conda: true
 
       - name: Install Python Packages
-        shell: bash -el {0}  # Ensure Conda commands work on Windows
+        shell: pwsh  # Use PowerShell for Windows compatibility
         run: |
+          conda activate r-eikon
           conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
           pip install kaleido wrapt
           conda list -n r-eikon
@@ -49,33 +51,43 @@ jobs:
         run: |
           Rscript -e "install.packages(c('covr', 'testthat', 'remotes', 'reticulate', 'xml2'), repos = 'https://cran.rstudio.com/')"
 
-      - name: Configure Reticulate with Conda Environment
+      - name: Configure and Verify Reticulate
+        shell: pwsh
         run: |
-          Rscript -e "library(reticulate); use_condaenv('r-eikon', required = TRUE); py_config()"
+          conda activate r-eikon
+          $env:RETICULATE_PYTHON = (conda info --base) + "\envs\r-eikon\python.exe"
+          Rscript -e "library(reticulate); use_condaenv('r-eikon', required = TRUE); py_config(); py_module_available('pandas')"
+          if ($LASTEXITCODE -ne 0) { throw "Reticulate failed to configure Python environment" }
 
-      - name: Install Package Dependencies
+      - name: Install Package Dependencies and Load Package
+        shell: pwsh
         run: |
-          Rscript -e "remotes::install_deps(dependencies = TRUE, upgrade = 'always')"
+          conda activate r-eikon
+          $env:RETICULATE_PYTHON = (conda info --base) + "\envs\r-eikon\python.exe"
+          Rscript -e "remotes::install_deps(dependencies = TRUE, upgrade = 'always'); devtools::load_all()"
 
       - name: Run Tests and Generate Coverage
+        shell: pwsh
         run: |
-          Rscript -e "library(testthat); library(covr); testthat::test_dir('tests/testthat'); cov <- package_coverage(quiet = FALSE, clean = FALSE); print(cov); covr::to_cobertura(cov, file = 'cobertura.xml')"
-        continue-on-error: true  # Allow workflow to continue even if tests fail
+          conda activate r-eikon
+          $env:RETICULATE_PYTHON = (conda info --base) + "\envs\r-eikon\python.exe"
+          Rscript -e "library(testthat); library(covr); test_dir('tests/testthat', stop_on_failure = FALSE); cov <- package_coverage(quiet = FALSE, clean = FALSE); print(cov); covr::to_cobertura(cov, file = 'cobertura.xml')"
+        continue-on-error: true
 
       - name: Verify Coverage Output
-        shell: bash
+        shell: pwsh
         run: |
-          if [ -f "cobertura.xml" ]; then
-            echo "Coverage file generated successfully:"
-            cat cobertura.xml
-          else
-            echo "Error: cobertura.xml not found!"
+          if (Test-Path "cobertura.xml") {
+            Write-Host "Coverage file generated successfully:"
+            Get-Content "cobertura.xml"
+          } else {
+            Write-Error "Error: cobertura.xml not found!"
             exit 1
-          fi
+          }
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           file: ./cobertura.xml
           token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true  # Fail the CI if upload fails
+          fail_ci_if_error: true
