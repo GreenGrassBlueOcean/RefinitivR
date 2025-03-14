@@ -15,6 +15,7 @@ jobs:
     runs-on: windows-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,6 +24,7 @@ jobs:
         uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
+          r-version: '4.3'  # Specify a recent R version for consistency
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -32,33 +34,48 @@ jobs:
       - name: Setup Conda Environment
         uses: conda-incubator/setup-miniconda@v3
         with:
-          auto-activate-base: true
+          auto-activate-base: false  # Avoid base env conflicts
           activate-environment: "r-eikon"
           python-version: "3.10"
 
       - name: Install Python Packages
+        shell: bash -el {0}  # Ensure Conda commands work on Windows
         run: |
           conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
           pip install kaleido wrapt
-          conda list
+          conda list -n r-eikon
 
-      - name: Install R Packages and Reticulate
+      - name: Install R Dependencies
         run: |
-          Rscript -e "install.packages(c('covr','xml2','reticulate','testthat','remotes'))"
+          Rscript -e "install.packages(c('covr', 'testthat', 'remotes', 'reticulate', 'xml2'), repos = 'https://cran.rstudio.com/')"
 
-      - name: Setup R-Reticulated Conda Environment and Verify Python Config
+      - name: Configure Reticulate with Conda Environment
         run: |
           Rscript -e "library(reticulate); use_condaenv('r-eikon', required = TRUE); py_config()"
 
-      - name: Test coverage
+      - name: Install Package Dependencies
         run: |
-          Rscript -e "if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')"
           Rscript -e "remotes::install_deps(dependencies = TRUE, upgrade = 'always')"
-          Rscript -e "cov <- covr::package_coverage(clean = FALSE, quiet = FALSE); print(cov); covr::to_cobertura(cov)"
+
+      - name: Run Tests and Generate Coverage
+        run: |
+          Rscript -e "library(testthat); library(covr); testthat::test_dir('tests/testthat'); cov <- package_coverage(quiet = FALSE, clean = FALSE); print(cov); covr::to_cobertura(cov, file = 'cobertura.xml')"
         continue-on-error: true  # Allow workflow to continue even if tests fail
+
+      - name: Verify Coverage Output
+        shell: bash
+        run: |
+          if [ -f "cobertura.xml" ]; then
+            echo "Coverage file generated successfully:"
+            cat cobertura.xml
+          else
+            echo "Error: cobertura.xml not found!"
+            exit 1
+          fi
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           file: ./cobertura.xml
           token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true  # Fail the CI if upload fails

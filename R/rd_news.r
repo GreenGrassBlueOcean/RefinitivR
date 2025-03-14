@@ -607,12 +607,11 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     return(if (raw_output) list() else data.frame())
   }
 
-  library(data.table)
-  dt_pages <- rbindlist(
+  dt_pages <- data.table::rbindlist(
     lapply(response$data, function(g) {
       if (is.null(g$pages)) return(NULL)
-      rbindlist(lapply(g$pages, function(p) {
-        data.table(
+      data.table::rbindlist(lapply(g$pages, function(p) {
+        data.table::data.table(
           group        = g$name,
           page_name    = p$name,
           po           = p$po,
@@ -635,21 +634,22 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     group_pattern <- paste(group, collapse = "|")
     dt_group <- dt_pages[grepl(group_pattern, group, ignore.case = TRUE)]
   } else {
-    dt_group <- data.table()  # empty
+    dt_group <- data.table::data.table()  # empty
   }
 
   # 2) If page is specified, find matching rows
   if (!is.null(page)) {
     page_pattern <- paste(page, collapse = "|")
+    page_name <- NULL
     dt_page <- dt_pages[grepl(page_pattern, page_name, ignore.case = TRUE)]
   } else {
-    dt_page <- data.table()
+    dt_page <- data.table::data.table()
   }
 
   # 3) Combine (union) the two sets of matches if both are given,
   #    or use whichever is non-empty.
   if (!is.null(group) && !is.null(page)) {
-    dt_pages <- unique(rbindlist(list(dt_group, dt_page), fill = TRUE))
+    dt_pages <- unique(data.table::rbindlist(list(dt_group, dt_page), fill = TRUE))
   } else if (!is.null(group)) {
     dt_pages <- dt_group
   } else if (!is.null(page)) {
@@ -708,9 +708,9 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
       story_data <- list(story_data)
     }
 
-    dt_stories <- rbindlist(
+    dt_stories <- data.table::rbindlist(
       lapply(story_data, function(s) {
-        data.table(
+        data.table::data.table(
           storyId = if (!is.null(s$storyId)) s$storyId else NA_character_,
           title   = if (!is.null(s$text))    s$text    else NA_character_,
           snippet = if (!is.null(s$snippet)) s$snippet else NA_character_
@@ -726,6 +726,6 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     row_expanded
   })
 
-  out_dt <- rbindlist(expanded_rows, fill = TRUE)
-  setDF(out_dt)
+  out_dt <- data.table::rbindlist(expanded_rows, fill = TRUE)
+  data.table::setDF(out_dt)
 }
