@@ -123,26 +123,11 @@ and the **topNewsId**), this function makes an additional GET call for each page
 `/data/news/v1/top-news/&lt;topNewsId&gt;`. This call retrieves the actual story details including the
 story identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
 be used with <code>rd_get_news_story</code>.</p>
-<p>**Examples for Filtering:**</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># Example 1: Retrieve all top news from the "Main" group</span></span></span>
-<span class="r-in"><span><span class="va">main_news</span> <span class="op">&lt;-</span> <span class="fu">rd_get_top_news</span><span class="op">(</span>group <span class="op">=</span> <span class="st">"^Main$"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Example 2: Retrieve only the "Front Page" of top news by filtering on page name</span></span></span>
-<span class="r-in"><span><span class="va">front_page_news</span> <span class="op">&lt;-</span> <span class="fu">rd_get_top_news</span><span class="op">(</span>page <span class="op">=</span> <span class="st">"^Front Page$"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Example 3: Retrieve stories from the "Sports &amp; Lifestyle" group where the page is "Sport"</span></span></span>
-<span class="r-in"><span><span class="va">sports_news</span> <span class="op">&lt;-</span> <span class="fu">rd_get_top_news</span><span class="op">(</span>group <span class="op">=</span> <span class="st">"Sports &amp; Lifestyle"</span>, page <span class="op">=</span> <span class="st">"Sport"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Example 4: Filtering yields no results (empty data frame)</span></span></span>
-<span class="r-in"><span><span class="va">no_news</span> <span class="op">&lt;-</span> <span class="fu">rd_get_top_news</span><span class="op">(</span>group <span class="op">=</span> <span class="st">"NonExistent"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
+
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
