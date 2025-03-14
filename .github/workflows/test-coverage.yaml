@@ -44,7 +44,7 @@ jobs:
 
       - name: Install R Packages and Reticulate
         run: |
-          Rscript -e "install.packages(c('covr','xml2','reticulate','testthat','remotes')"
+          Rscript -e "install.packages(c('covr','xml2','reticulate','testthat','remotes'))"
 
       - name: Setup R-Reticulated Conda Environment and Verify Python Config
         run: |
