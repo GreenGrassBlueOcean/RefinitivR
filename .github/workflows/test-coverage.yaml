@@ -1,4 +1,4 @@
-name: CI
+name: test-coverage
 
 on:
   push:
@@ -52,77 +52,12 @@ jobs:
 
       - name: Test coverage
         run: |
-            # Install remotes if needed
-            if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
-
-            # Install package dependencies
-            remotes::install_deps(dependencies = TRUE, upgrade = "always")
-
-            # Run covr
-            cov <- covr::package_coverage(clean = FALSE, quiet = FALSE)
-            print(cov)
-            covr::to_cobertura(cov)
-  shell: Rscript {0}
+          Rscript -e "if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')"
+          Rscript -e "remotes::install_deps(dependencies = TRUE, upgrade = 'always')"
+          Rscript -e "cov <- covr::package_coverage(clean = FALSE, quiet = FALSE); print(cov); covr::to_cobertura(cov)"
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           file: ./cobertura.xml
           token: ${{ secrets.CODECOV_TOKEN }}
-
-  R-CMD-check:
-    runs-on: ${{ matrix.config.os }}
-    strategy:
-      matrix:
-        config:
-          - { os: windows-latest, r: 'release', python: '3.10' }
-    env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_KEEP_PKG_SOURCE: yes
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Pandoc
-        uses: r-lib/actions/setup-pandoc@v2
-
-      - name: Setup R
-        uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: ${{ matrix.config.r }}
-          use-public-rspm: true
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.config.python }}
-
-      - name: Setup Conda Environment
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          auto-activate-base: true
-          activate-environment: "r-eikon"
-          python-version: "3.10"
-
-      - name: Install Python Packages (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          conda install -n r-eikon -c conda-forge docutils pandas scipy matplotlib ipython tabulate plotly psutil numpy
-          conda list
-
-      - name: Install R Packages and Reticulate
-        run: |
-          Rscript -e "if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')"
-          Rscript -e "remotes::install_deps(dependencies = TRUE, upgrade = 'always')"
-          Rscript -e "install.packages('reticulate')"
-
-      - name: Setup R-Reticulated Conda Environment and Verify Python Config
-        run: |
-          Rscript -e "library(reticulate); use_condaenv('r-eikon', required = TRUE); py_config()"
-
-      - name: Check R Package
-        uses: r-lib/actions/check-r-package@v2
-        with:
-          upload-snapshots: true
-          build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
