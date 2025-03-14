@@ -86,11 +86,11 @@ and the **topNewsId**), this function makes an additional GET call for each page
 `/data/news/v1/top-news/<topNewsId>`. This call retrieves the actual story details including the
 story identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
 be used with \code{rd_get_news_story}.
-
-**Examples for Filtering:**
 }
 \examples{
 \dontrun{
+
+**Examples for Filtering:**
 # Example 1: Retrieve all top news from the "Main" group
 main_news <- rd_get_top_news(group = "^Main$")
 
@@ -103,5 +103,8 @@ sports_news <- rd_get_top_news(group = "Sports & Lifestyle", page = "Sport")
 # Example 4: Filtering yields no results (empty data frame)
 no_news <- rd_get_top_news(group = "NonExistent")
 }
+
+
+
 
 }

@@ -542,10 +542,21 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #' story identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
 #' be used with \code{rd_get_news_story}.
 #'
-#' **Examples for Filtering:**
+#'
+#' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. If not supplied,
+#'   defaults to \code{RefinitivJsonConnect()}.
+#' @param group Optional character string (or regular expression) to filter top news groups by name.
+#' @param page Optional character string (or regular expression) to filter pages by name.
+#' @param raw_output If \code{TRUE}, returns the raw JSON response (list) for each page in a named list keyed by \code{topNewsId}.
+#' @param debug If \code{TRUE}, prints debugging messages.
+#'
+#' @importFrom data.table rbindlist setDF
+#'
 #'
 #' @examples
 #' \dontrun{
+#'
+#' **Examples for Filtering:**
 #' # Example 1: Retrieve all top news from the "Main" group
 #' main_news <- rd_get_top_news(group = "^Main$")
 #'
@@ -559,12 +570,8 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #' no_news <- rd_get_top_news(group = "NonExistent")
 #' }
 #'
-#' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. If not supplied,
-#'   defaults to \code{RefinitivJsonConnect()}.
-#' @param group Optional character string (or regular expression) to filter top news groups by name.
-#' @param page Optional character string (or regular expression) to filter pages by name.
-#' @param raw_output If \code{TRUE}, returns the raw JSON response (list) for each page in a named list keyed by \code{topNewsId}.
-#' @param debug If \code{TRUE}, prints debugging messages.
+#'
+#'
 #'
 #' @return A data frame (by default) with one row per story and the following columns:
 #'   \itemize{
@@ -580,14 +587,13 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #'   }
 #'   If \code{raw_output = TRUE}, a named list of raw responses, keyed by each \code{topNewsId}, is returned.
 #'
-#' @importFrom data.table rbindlist setDF
+#'
 #' @export
 rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
                             group = NULL,
                             page = NULL,
                             raw_output = FALSE,
                             debug = FALSE) {
-  # 1) Request the top-news overview
   base_endpoint <- "data/news/v1/top-news"
   response <- send_json_request(
     service      = "rdp",
@@ -596,21 +602,17 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     debug        = debug
   )
 
-  if (debug) {
-    message("Top-news overview response received.")
-  }
-
   if (is.null(response$data)) {
     if (debug) message("No data found in /top-news response.")
     return(if (raw_output) list() else data.frame())
   }
 
-  # 2) Parse the nested JSON
-  dt_pages <- data.table::rbindlist(
+  library(data.table)
+  dt_pages <- rbindlist(
     lapply(response$data, function(g) {
       if (is.null(g$pages)) return(NULL)
-      data.table::rbindlist(lapply(g$pages, function(p) {
-        data.table::data.table(
+      rbindlist(lapply(g$pages, function(p) {
+        data.table(
           group        = g$name,
           page_name    = p$name,
           po           = p$po,
@@ -623,32 +625,49 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     fill = TRUE
   )
 
-  # 3) Filter (handle vector inputs by collapsing into a single OR pattern)
+  ## --- New “OR” Logic ---
+  # If both `group` and `page` are NULL, no filter is applied (all pages are returned).
+  # If only `group` is non-null, filter by group. If only `page` is non-null, filter by page.
+  # If both are non-null, we union the matches from each filter.
+
+  # 1) If group is specified, find matching rows
   if (!is.null(group)) {
-    group_pattern <- paste(group, collapse = "|")  # "Main|Breakingviews|Companies", etc.
-    dt_pages <- dt_pages[grepl(group_pattern, dt_pages$group, ignore.case = TRUE)]
+    group_pattern <- paste(group, collapse = "|")
+    dt_group <- dt_pages[grepl(group_pattern, group, ignore.case = TRUE)]
+  } else {
+    dt_group <- data.table()  # empty
   }
+
+  # 2) If page is specified, find matching rows
   if (!is.null(page)) {
-    page_pattern <- paste(page, collapse = "|")    # "Front Page|U\\.S\\. Companies|...", etc.
-    dt_pages <- dt_pages[grepl(page_pattern, dt_pages$page_name, ignore.case = TRUE)]
+    page_pattern <- paste(page, collapse = "|")
+    dt_page <- dt_pages[grepl(page_pattern, page_name, ignore.case = TRUE)]
+  } else {
+    dt_page <- data.table()
   }
+
+  # 3) Combine (union) the two sets of matches if both are given,
+  #    or use whichever is non-empty.
+  if (!is.null(group) && !is.null(page)) {
+    dt_pages <- unique(rbindlist(list(dt_group, dt_page), fill = TRUE))
+  } else if (!is.null(group)) {
+    dt_pages <- dt_group
+  } else if (!is.null(page)) {
+    dt_pages <- dt_page
+  }
+  ## --- End of new “OR” logic ---
 
   if (nrow(dt_pages) == 0) {
     if (debug) message("No matching top news pages after filtering.")
     return(if (raw_output) list() else data.frame())
   }
 
-  # 4) Retrieve stories for unique topNewsIds
   unique_ids <- unique(dt_pages$topNewsId)
   top_news_dict <- list()
 
   for (tnid in unique_ids) {
     if (!is.null(top_news_dict[[tnid]])) next
-
     top_story_endpoint <- paste0("data/news/v1/top-news/", tnid)
-    if (debug) {
-      message(sprintf("Requesting story details for topNewsId='%s'", tnid))
-    }
 
     story_resp <- try(
       send_json_request(
@@ -661,12 +680,10 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     )
 
     if (inherits(story_resp, "try-error") || is.null(story_resp$data)) {
-      if (debug) message("Failed to retrieve stories for ", tnid)
       top_news_dict[[tnid]] <- NULL
     } else {
       top_news_dict[[tnid]] <- story_resp
     }
-
     Sys.sleep(0.05)
   }
 
@@ -674,12 +691,11 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     return(top_news_dict)
   }
 
-  # 5) Expand each page into multiple rows (one per story)
   expanded_rows <- lapply(seq_len(nrow(dt_pages)), function(i) {
     row_info <- dt_pages[i, ]
     tnid     <- row_info$topNewsId
+    resp     <- top_news_dict[[tnid]]
 
-    resp <- top_news_dict[[tnid]]
     if (is.null(resp) || is.null(resp$data)) {
       row_info$storyId <- NA_character_
       row_info$title   <- NA_character_
@@ -692,9 +708,9 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
       story_data <- list(story_data)
     }
 
-    dt_stories <- data.table::rbindlist(
+    dt_stories <- rbindlist(
       lapply(story_data, function(s) {
-        data.table::data.table(
+        data.table(
           storyId = if (!is.null(s$storyId)) s$storyId else NA_character_,
           title   = if (!is.null(s$text))    s$text    else NA_character_,
           snippet = if (!is.null(s$snippet)) s$snippet else NA_character_
@@ -710,8 +726,6 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     row_expanded
   })
 
-  out_dt <- data.table::rbindlist(expanded_rows, fill = TRUE)
-  data.table::setDF(out_dt)
+  out_dt <- rbindlist(expanded_rows, fill = TRUE)
+  setDF(out_dt)
 }
-
-
