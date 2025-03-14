@@ -494,7 +494,7 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 }
 
 
-#' Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection
+#' Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection, Then Fetch Stories
 #'
 #' This function retrieves the top news packages from the Refinitiv RDP service using the
 #' endpoint `/data/news/v1/top-news`. The endpoint returns a nested JSON structure containing
@@ -520,6 +520,9 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #' - **Industries**: Contains pages such as "Technology, Media & Telecoms",
 #'   "Heavy Industry & Transport", "Consumer & Retail", and "Healthcare & Pharma".
 #'
+#' - **Companies**: Typically includes sub-groups such as "U.S. Companies", "European Companies",
+#'   and "Asian Companies".
+#'
 #' - **Regional**: Groups news by region with pages such as "Australia & New Zealand",
 #'   "Japan & the Koreas", "Greater China", "Southeast Asia", "India & South Asia",
 #'   "Middle East & Africa", "Europe & Russia", "United Kingdom", "Latin America",
@@ -539,20 +542,43 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #' story identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
 #' be used with \code{rd_get_news_story}.
 #'
-#' **Note:** If a top news package contains multiple stories, the function expands the output so that there is one
-#' row per story (with the page-level metadata repeated across rows). In the case of a single story, a single row is returned.
+#' **Examples for Filtering:**
+#'
+#' @examples
+#' \dontrun{
+#' # Example 1: Retrieve all top news from the "Main" group
+#' main_news <- rd_get_top_news(group = "^Main$")
+#'
+#' # Example 2: Retrieve only the "Front Page" of top news by filtering on page name
+#' front_page_news <- rd_get_top_news(page = "^Front Page$")
+#'
+#' # Example 3: Retrieve stories from the "Sports & Lifestyle" group where the page is "Sport"
+#' sports_news <- rd_get_top_news(group = "Sports & Lifestyle", page = "Sport")
+#'
+#' # Example 4: Filtering yields no results (empty data frame)
+#' no_news <- rd_get_top_news(group = "NonExistent")
+#' }
 #'
 #' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. If not supplied,
 #'   defaults to \code{RefinitivJsonConnect()}.
-#' @param group Optional character string (or regular expression) to filter the top news groups by name.
-#' @param page Optional character string (or regular expression) to filter the pages by name.
-#' @param raw_output If \code{TRUE}, returns the raw JSON response from the top-news endpoint.
+#' @param group Optional character string (or regular expression) to filter top news groups by name.
+#' @param page Optional character string (or regular expression) to filter pages by name.
+#' @param raw_output If \code{TRUE}, returns the raw JSON response (list) for each page in a named list keyed by \code{topNewsId}.
 #' @param debug If \code{TRUE}, prints debugging messages.
 #'
-#' @return A data frame with one row per top news page or per story (if multiple stories exist for a page)
-#' and the following columns:
-#'   \code{group}, \code{page_name}, \code{po}, \code{revisionId}, \code{revisionDate},
-#'   \code{topNewsId}, \code{storyId}, \code{title} (news headline), and \code{snippet} (news summary).
+#' @return A data frame (by default) with one row per story and the following columns:
+#'   \itemize{
+#'     \item \code{group}
+#'     \item \code{page_name}
+#'     \item \code{po}
+#'     \item \code{revisionId}
+#'     \item \code{revisionDate}
+#'     \item \code{topNewsId}
+#'     \item \code{storyId}
+#'     \item \code{title} (the headline)
+#'     \item \code{snippet} (the short text summary)
+#'   }
+#'   If \code{raw_output = TRUE}, a named list of raw responses, keyed by each \code{topNewsId}, is returned.
 #'
 #' @importFrom data.table rbindlist setDF
 #' @export
@@ -561,70 +587,69 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
                             page = NULL,
                             raw_output = FALSE,
                             debug = FALSE) {
-  # Define the top-news endpoint for RDP.
-  EndPoint <- "data/news/v1/top-news"
-
-  # Send the GET request for top news packages.
-  response <- send_json_request(service = "rdp",
-                                request_type = "GET",
-                                EndPoint = EndPoint,
-                                debug = debug)
+  # 1) Request the top-news overview
+  base_endpoint <- "data/news/v1/top-news"
+  response <- send_json_request(
+    service      = "rdp",
+    request_type = "GET",
+    EndPoint     = base_endpoint,
+    debug        = debug
+  )
 
   if (debug) {
-    message("Top news endpoint response received.")
+    message("Top-news overview response received.")
   }
 
-  # If raw_output is requested, return the raw JSON response.
-  if (raw_output) {
-    return(response)
-  }
-
-  # If no data is found, return an empty data frame.
   if (is.null(response$data)) {
-    if (debug) message("No data found in response.")
-    return(data.frame())
+    if (debug) message("No data found in /top-news response.")
+    return(if (raw_output) list() else data.frame())
   }
 
-  # Parse the nested JSON structure to get topNewsId-level info (one row per page).
-  dt <- data.table::rbindlist(lapply(response$data, function(g) {
-    if (is.null(g$pages)) return(NULL)
-    data.table::rbindlist(lapply(g$pages, function(p) {
-      data.table::data.table(
-        group        = g$name,
-        page_name    = p$name,
-        po           = p$po,
-        revisionId   = p$revisionId,
-        revisionDate = p$revisionDate,
-        topNewsId    = p$topNewsId
-      )
-    }), fill = TRUE)
-  }), fill = TRUE)
+  # 2) Parse the nested JSON
+  dt_pages <- data.table::rbindlist(
+    lapply(response$data, function(g) {
+      if (is.null(g$pages)) return(NULL)
+      data.table::rbindlist(lapply(g$pages, function(p) {
+        data.table::data.table(
+          group        = g$name,
+          page_name    = p$name,
+          po           = p$po,
+          revisionId   = p$revisionId,
+          revisionDate = p$revisionDate,
+          topNewsId    = p$topNewsId
+        )
+      }), fill = TRUE)
+    }),
+    fill = TRUE
+  )
 
-  # Apply filtering if requested.
+  # 3) Filter (handle vector inputs by collapsing into a single OR pattern)
   if (!is.null(group)) {
-    dt <- dt[grepl(group, dt$group, ignore.case = TRUE)]
+    group_pattern <- paste(group, collapse = "|")  # "Main|Breakingviews|Companies", etc.
+    dt_pages <- dt_pages[grepl(group_pattern, dt_pages$group, ignore.case = TRUE)]
   }
   if (!is.null(page)) {
-    dt <- dt[grepl(page, dt$page_name, ignore.case = TRUE)]
+    page_pattern <- paste(page, collapse = "|")    # "Front Page|U\\.S\\. Companies|...", etc.
+    dt_pages <- dt_pages[grepl(page_pattern, dt_pages$page_name, ignore.case = TRUE)]
   }
 
-  # If no rows remain after filtering, return an empty data frame.
-  if (nrow(dt) == 0) {
+  if (nrow(dt_pages) == 0) {
     if (debug) message("No matching top news pages after filtering.")
-    return(data.frame())
+    return(if (raw_output) list() else data.frame())
   }
 
-  # For each topNewsId, retrieve the additional story details.
-  expanded_rows <- lapply(seq_len(nrow(dt)), function(i) {
-    row_info <- dt[i, ]
-    tnid <- row_info$topNewsId
+  # 4) Retrieve stories for unique topNewsIds
+  unique_ids <- unique(dt_pages$topNewsId)
+  top_news_dict <- list()
 
+  for (tnid in unique_ids) {
+    if (!is.null(top_news_dict[[tnid]])) next
+
+    top_story_endpoint <- paste0("data/news/v1/top-news/", tnid)
     if (debug) {
-      message(sprintf("Requesting story details for topNewsId: %s", tnid))
+      message(sprintf("Requesting story details for topNewsId='%s'", tnid))
     }
 
-    # Construct endpoint for an individual top news page.
-    top_story_endpoint <- paste0("data/news/v1/top-news/", tnid)
     story_resp <- try(
       send_json_request(
         service      = "rdp",
@@ -635,25 +660,38 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
       silent = TRUE
     )
 
-    # If we fail to retrieve story details or data is NULL, return one empty row.
     if (inherits(story_resp, "try-error") || is.null(story_resp$data)) {
-      if (debug) message("Failed to retrieve story details for ", tnid)
+      if (debug) message("Failed to retrieve stories for ", tnid)
+      top_news_dict[[tnid]] <- NULL
+    } else {
+      top_news_dict[[tnid]] <- story_resp
+    }
+
+    Sys.sleep(0.05)
+  }
+
+  if (raw_output) {
+    return(top_news_dict)
+  }
+
+  # 5) Expand each page into multiple rows (one per story)
+  expanded_rows <- lapply(seq_len(nrow(dt_pages)), function(i) {
+    row_info <- dt_pages[i, ]
+    tnid     <- row_info$topNewsId
+
+    resp <- top_news_dict[[tnid]]
+    if (is.null(resp) || is.null(resp$data)) {
       row_info$storyId <- NA_character_
       row_info$title   <- NA_character_
       row_info$snippet <- NA_character_
       return(row_info)
     }
 
-    # The story response might include multiple stories in the "data" list
-    # or a single item. Let's handle both cases cleanly:
-    story_data <- story_resp$data
-
-    # If story_data is a flat list (a single story), wrap it in a list.
+    story_data <- resp$data
     if (!is.list(story_data[[1]])) {
       story_data <- list(story_data)
     }
 
-    # Build a data.table with one row per story.
     dt_stories <- data.table::rbindlist(
       lapply(story_data, function(s) {
         data.table::data.table(
@@ -665,19 +703,15 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
       fill = TRUE
     )
 
-    # Repeat the "page-level" data for each story row.
-    row_info_repeated <- row_info[rep(1, nrow(dt_stories)), ]
-    row_info_repeated$storyId <- dt_stories$storyId
-    row_info_repeated$title   <- dt_stories$title
-    row_info_repeated$snippet <- dt_stories$snippet
-
-    row_info_repeated
+    row_expanded <- row_info[rep(1, nrow(dt_stories)), ]
+    row_expanded$storyId <- dt_stories$storyId
+    row_expanded$title   <- dt_stories$title
+    row_expanded$snippet <- dt_stories$snippet
+    row_expanded
   })
 
-  # Combine all expanded rows into a single data.table.
   out_dt <- data.table::rbindlist(expanded_rows, fill = TRUE)
-
-  # Convert back to a data.frame and return.
-  return(data.table::setDF(out_dt))
+  data.table::setDF(out_dt)
 }
+
 

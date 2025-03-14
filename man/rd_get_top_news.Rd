@@ -2,7 +2,7 @@
 % Please edit documentation in R/rd_news.r
 \name{rd_get_top_news}
 \alias{rd_get_top_news}
-\title{Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection}
+\title{Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection, Then Fetch Stories}
 \usage{
 rd_get_top_news(
   RDObject = RefinitivJsonConnect(),
@@ -16,19 +16,28 @@ rd_get_top_news(
 \item{RDObject}{A connection object returned by \code{RefinitivJsonConnect()}. If not supplied,
 defaults to \code{RefinitivJsonConnect()}.}
 
-\item{group}{Optional character string (or regular expression) to filter the top news groups by name.}
+\item{group}{Optional character string (or regular expression) to filter top news groups by name.}
 
-\item{page}{Optional character string (or regular expression) to filter the pages by name.}
+\item{page}{Optional character string (or regular expression) to filter pages by name.}
 
-\item{raw_output}{If \code{TRUE}, returns the raw JSON response from the top-news endpoint.}
+\item{raw_output}{If \code{TRUE}, returns the raw JSON response (list) for each page in a named list keyed by \code{topNewsId}.}
 
 \item{debug}{If \code{TRUE}, prints debugging messages.}
 }
 \value{
-A data frame with one row per top news page or per story (if multiple stories exist for a page)
-and the following columns:
-  \code{group}, \code{page_name}, \code{po}, \code{revisionId}, \code{revisionDate},
-  \code{topNewsId}, \code{storyId}, \code{title} (news headline), and \code{snippet} (news summary).
+A data frame (by default) with one row per story and the following columns:
+  \itemize{
+    \item \code{group}
+    \item \code{page_name}
+    \item \code{po}
+    \item \code{revisionId}
+    \item \code{revisionDate}
+    \item \code{topNewsId}
+    \item \code{storyId}
+    \item \code{title} (the headline)
+    \item \code{snippet} (the short text summary)
+  }
+  If \code{raw_output = TRUE}, a named list of raw responses, keyed by each \code{topNewsId}, is returned.
 }
 \description{
 This function retrieves the top news packages from the Refinitiv RDP service using the
@@ -56,6 +65,9 @@ news category.
 - **Industries**: Contains pages such as "Technology, Media & Telecoms",
   "Heavy Industry & Transport", "Consumer & Retail", and "Healthcare & Pharma".
 
+- **Companies**: Typically includes sub-groups such as "U.S. Companies", "European Companies",
+  and "Asian Companies".
+
 - **Regional**: Groups news by region with pages such as "Australia & New Zealand",
   "Japan & the Koreas", "Greater China", "Southeast Asia", "India & South Asia",
   "Middle East & Africa", "Europe & Russia", "United Kingdom", "Latin America",
@@ -75,6 +87,21 @@ and the **topNewsId**), this function makes an additional GET call for each page
 story identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
 be used with \code{rd_get_news_story}.
 
-**Note:** If a top news package contains multiple stories, the function expands the output so that there is one
-row per story (with the page-level metadata repeated across rows). In the case of a single story, a single row is returned.
+**Examples for Filtering:**
+}
+\examples{
+\dontrun{
+# Example 1: Retrieve all top news from the "Main" group
+main_news <- rd_get_top_news(group = "^Main$")
+
+# Example 2: Retrieve only the "Front Page" of top news by filtering on page name
+front_page_news <- rd_get_top_news(page = "^Front Page$")
+
+# Example 3: Retrieve stories from the "Sports & Lifestyle" group where the page is "Sport"
+sports_news <- rd_get_top_news(group = "Sports & Lifestyle", page = "Sport")
+
+# Example 4: Filtering yields no results (empty data frame)
+no_news <- rd_get_top_news(group = "NonExistent")
+}
+
 }
