@@ -2,7 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-03-14T15:43Z
+last_built: 2025-03-14T15:51Z
 urls:
   reference: https://greengrassblueocean.github.io/RefinitivR/reference
   article: https://greengrassblueocean.github.io/RefinitivR/articles
