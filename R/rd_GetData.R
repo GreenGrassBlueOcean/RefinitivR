@@ -149,7 +149,7 @@ rd_GetData <- function(RDObject = RefinitivJsonConnect(), rics, Eikonformulas, P
     }
     if(getOption(".RefinitivPyModuleName") =="JSON"){
       ReturnList <-  lapply( X =  EikonDataList
-                           , FUN =  F
+                           , FUN = rd_OutputProcesser
                            , NA_cleaning = FALSE
                            , use_field_names_in_headers = use_field_names_in_headers
                            , SpaceConvertor = SpaceConvertor
