@@ -263,7 +263,10 @@ RDPget_search_metadata <- function(RDP = RDConnect(), searchView = NULL){
             data.table::rbindlist(use.names = TRUE, fill = TRUE)
 
     Properties <- NULL
-    r_df <- r_DT[, Properties := NULL] |> data.table::setDF()
+    if ("Properties" %in% names(r_DT)) {
+      r_DT[, Properties := NULL]
+    }
+    r_df <- data.table::setDF(r_DT)
   } else {
     if(is.null(searchView)){
       searchView <- "SearchAll"

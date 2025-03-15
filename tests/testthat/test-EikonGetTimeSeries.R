@@ -1,6 +1,6 @@
 testthat::test_that("Check EikonGetTimeseries can handle fields = NULL"
                     , {
-                      Eikon <- check_Eikonapi(ExecutionMode = "Eikon")
+                      Eikon <- check_Eikonapi()
                       CheckTimeSeries <- EikonGetTimeseries( EikonObject = Eikon,
                                                                  rics = c("MMM", "III.L"),
                                                                  fields = NULL,

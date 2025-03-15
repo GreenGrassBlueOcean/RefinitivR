@@ -392,3 +392,250 @@ test_that("rd_GetHistory can handle non existing rics",{
   expect_equal(NotExistingOption_json, CorrectOutcome)
 
 })
+
+
+library(testthat)
+library(mockery)
+library(data.table)
+
+#####
+# 1. Error & Input Validation Tests (live)
+#####
+
+test_that("rd_GetHistory fails when universe is not supplied", {
+  expect_error(
+    rd_GetHistory(RD = NULL, fields = c("BID", "ASK")),
+    "Parameter universe should be supplied and is not"
+  )
+})
+
+test_that("rd_GetHistory errors on problematic fields with use_field_names_in_headers=FALSE", {
+  expect_error(
+    rd_GetHistory(RD = list(), universe = "AAPL.O", fields = "TR.Eikonformula.date", use_field_names_in_headers = FALSE),
+    "Fields should not contain Tr.Eikonformula.date"
+  )
+})
+
+#####
+# 2. Live API tests (if available)
+#####
+test_that("rd_GetHistory can handle requests with no fields", {
+  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+  TestRDObject <- RDConnect(PythonModule = "RD")
+  res_rd <- rd_GetHistory(RD = TestRDObject, universe = "AAPL.O")
+
+  TestJSONObject <- RefinitivJsonConnect()
+  res_json <- rd_GetHistory(RD = TestJSONObject, universe = "AAPL.O")
+
+  expect_true(is.data.frame(res_rd))
+  expect_equal(unique(res_rd$Instrument), "AAPL.O")
+
+  # Compare the two outputs (after ordering and aligning columns)
+  dt_rd <- data.table::as.data.table(res_rd)
+  dt_json <- data.table::as.data.table(res_json)
+  data.table::setcolorder(dt_json, neworder = names(dt_rd))
+  data.table::setorderv(dt_rd, c("Date", "Instrument"))
+  data.table::setorderv(dt_json, c("Date", "Instrument"))
+  expect_equal(dt_rd, dt_json)
+})
+
+#####
+# 3. Stubbed Tests for the JSON branch using mockery::stub
+#####
+test_that("rd_GetHistory (JSON branch) processes stubbed GetData and HistoricalPricing outputs correctly", {
+  # Force JSON branch and set HistoricalPricingFields to force field split.
+  options(.RefinitivPyModuleName = "JSON", HistoricalPricingFields = "BID")
+
+  # Create a dummy RD object; not used by the stubs below.
+  dummy_RD <- list()
+
+  # Stub CheckifCustomInstrument to always return FALSE.
+  stub(rd_GetHistory, "CheckifCustomInstrument", function(symbol, UUID) FALSE)
+
+  # Create dummy data.tables to mimic outputs:
+  # rd_GetData returns data with the "ASK" field.
+  dummy_GetData <- data.table(
+    Date = as.Date("2020-01-01") + 0:2,
+    Instrument = rep("AAPL.O", 3),
+    ASK = c(110, 111, 112)
+  )
+  # rd_GetHistoricalPricing returns data with the "BID" field.
+  dummy_HistPricing <- data.table(
+    Date = as.Date("2020-01-01") + 0:2,
+    Instrument = rep("AAPL.O", 3),
+    BID = c(100, 101, 102)
+  )
+
+  # Stub out external calls so that the function uses our dummy data.
+  stub(rd_GetHistory, "rd_GetData", function(...) dummy_GetData)
+  stub(rd_GetHistory, "rd_GetHistoricalPricing", function(...) dummy_HistPricing)
+
+  # Call rd_GetHistory with fields forcing both branches.
+  res <- rd_GetHistory(
+    RD = dummy_RD,
+    universe = "AAPL.O",
+    fields = c("BID", "ASK"),
+    start = "2020-01-01",
+    end = "2020-01-03",
+    debug = TRUE
+  )
+
+  expect_true(is.data.frame(res))
+  # Expect both BID and ASK columns present after merge.
+  expect_true("BID" %in% names(res))
+  expect_true("ASK" %in% names(res))
+  expect_equal(nrow(res), 3)
+  expect_equal(unique(res$Instrument), "AAPL.O")
+
+  # Clean up the option so it doesn't affect other tests.
+  options(HistoricalPricingFields = NULL)
+})
+
+
+#####
+# 4. Stubbed Tests for the RD branch using a fake get_history call
+#####
+test_that("rd_GetHistory (refinitiv.data branch) processes a stubbed get_history call", {
+  # Force refinitiv.data branch.
+  options(.RefinitivPyModuleName = "refinitiv.data")
+
+  # Create a dummy RD object with a stubbed get_history function.
+  dummy_py_obj <- list(
+    columns = list(
+      nlevels = 1,         # Force single level columns
+      name = "AAPL.O"
+    ),
+    # Create minimal stubs for the methods that will be called:
+    insert = function(pos, colname, value) {
+      self <<- list(Instrument = value)
+      return(invisible(NULL))
+    },
+    stack = function(index) { return(dummy_py_obj) },
+    reset_index = function() { return(dummy_py_obj) },
+    set_index = function(col) { return(dummy_py_obj) }
+  )
+  # Simulate a py object that, after processing, returns a JSON string.
+  dummy_py_obj$to_json <- function(date_format) '{"Date":["2020-01-01","2020-01-02","2020-01-03"],"Instrument":["AAPL.O","AAPL.O","AAPL.O"],"BID":[100,101,102]}'
+
+  # Stub the call to RD[["get_history"]] so that it returns our dummy_py_obj.
+  fake_get_history <- function(...) dummy_py_obj
+  stub(rd_GetHistory, "RD[[\"get_history\"]]", fake_get_history)
+
+  # Also, stub reticulate::py_to_r to just return the value from dummy_py_obj$columns.
+  stub(rd_GetHistory, "reticulate::py_to_r", function(x, ...) { x })
+
+  # Stub Process_RDP_output to simply convert the JSON to a data.frame.
+  stub(rd_GetHistory, "Process_RDP_output", function(JsonString, RemoveNA, SpaceConvertor) {
+    df <- data.frame(
+      Date = as.Date(c("2020-01-01", "2020-01-02", "2020-01-03")),
+      Instrument = rep("AAPL.O", 3),
+      BID = c(100, 101, 102),
+      stringsAsFactors = FALSE
+    )
+    return(df)
+  })
+
+  # Create a dummy RD object as a list that supports the get_history call.
+  dummy_RD <- list()
+  dummy_RD[["get_history"]] <- fake_get_history
+
+  res <- rd_GetHistory(
+    RD = dummy_RD,
+    universe = "AAPL.O",
+    fields = "BID",
+    debug = TRUE
+  )
+
+  expect_true(is.data.frame(res))
+  expect_equal(unique(res$Instrument), "AAPL.O")
+  expect_equal(nrow(res), 3)
+})
+
+#####
+# 5. Cleanup: reset options if needed
+#####
+options(.RefinitivPyModuleName = NULL)
+
+test_that("rd_GetHistory warns when SDate and EDate in parameters are in invalid format", {
+  # Force JSON branch.
+  options(.RefinitivPyModuleName = "JSON")
+
+  # Stub dateFormatCheck to always return FALSE (simulate invalid date format).
+  stub(rd_GetHistory, "dateFormatCheck", function(x) FALSE)
+
+  # Create a dummy RD object.
+  dummy_RD <- list()
+
+  # Return minimal but non-empty data.tables that have Date & Instrument columns
+  dummy_dt_data <- data.table::data.table(
+    Date = as.Date("2020-01-01"),
+    Instrument = "AAPL.O",
+    Value = 100
+  )
+  dummy_dt_hist <- data.table::data.table(
+    Date = as.Date("2020-01-01"),
+    Instrument = "AAPL.O",
+    Price = 101
+  )
+
+  # Stub out data-fetching so that we do get columns for merging & ordering.
+  stub(rd_GetHistory, "rd_GetData", function(...) dummy_dt_data)
+  stub(rd_GetHistory, "rd_GetHistoricalPricing", function(...) dummy_dt_hist)
+
+  # Provide parameters with SDate and EDate in an invalid format.
+  params <- list(SDate = "invalid_date", EDate = "invalid_date")
+
+  # Capture warnings during the call.
+  warns <- testthat::capture_warnings(
+    res <- rd_GetHistory(RD = dummy_RD, universe = "AAPL.O", parameters = params)
+  )
+
+  expect_true(any(grepl("List parameters has 'SDate'", warns)),
+              info = "Expected warning about invalid SDate format not found.")
+  expect_true(any(grepl("List parameters has 'EDate'", warns)),
+              info = "Expected warning about invalid EDate format not found.")
+  # Confirm result is a data.frame, so the function can proceed after warnings
+  expect_true(is.data.frame(res))
+})
+
+test_that("rd_GetHistory uses SDate and EDate from parameters without warning when valid", {
+  # Force JSON branch.
+  options(.RefinitivPyModuleName = "JSON")
+
+  # Stub dateFormatCheck to always return TRUE (simulate valid date format).
+  stub(rd_GetHistory, "dateFormatCheck", function(x) TRUE)
+
+  # Create a dummy RD object.
+  dummy_RD <- list()
+
+  # Again, return minimal but non-empty data.tables with Date & Instrument
+  dummy_dt_data <- data.table::data.table(
+    Date = as.Date("2020-01-01"),
+    Instrument = "AAPL.O",
+    Value = 100
+  )
+  dummy_dt_hist <- data.table::data.table(
+    Date = as.Date("2020-01-01"),
+    Instrument = "AAPL.O",
+    Price = 101
+  )
+
+  stub(rd_GetHistory, "rd_GetData", function(...) dummy_dt_data)
+  stub(rd_GetHistory, "rd_GetHistoricalPricing", function(...) dummy_dt_hist)
+
+  # Provide valid date strings.
+  params <- list(SDate = "2020-10-27", EDate = "2020-12-01")
+
+  # Capture warnings.
+  warns <- testthat::capture_warnings(
+    res <- rd_GetHistory(RD = dummy_RD, universe = "AAPL.O", parameters = params)
+  )
+
+  # No warnings for valid format
+  expect_equal(length(warns), 0, info = "No warnings should be produced with valid SDate/EDate.")
+
+  # Confirm the function returns a data.frame (with the stubbed data).
+  expect_true(is.data.frame(res))
+  expect_equal(nrow(res), 1)
+  expect_equal(unique(res$Instrument), "AAPL.O")
+})

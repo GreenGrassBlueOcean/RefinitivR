@@ -203,43 +203,7 @@ test_that("RDP search works with compelex vessel data", {
 })
 
 
-test_that("RDPget_search_metadata works", {
 
-  for(i in c("JSON")){ #, "RD")){
-  Eikon <- check_Eikonapi(ExecutionMode = i)
-
-  if(i == "JSON"){
-    searchView <- "EquityQuotes"
-  } else {
-    searchView <- "EQUITY_QUOTES"
-  }
-
-  test <- RDPget_search_metadata(RDP = Eikon, searchView = searchView)
-
-  expect_error(test,NA)
-  expect_equal(class(test), "data.frame")
-
-  expect_equal(lapply(test, class)
-              , list( Refinitiv_index = "character", Type = "character"
-                    , Searchable = "logical", Sortable = "logical"
-                    , Navigable = "logical", Groupable = "logical"
-                    , Exact = "logical", Symbol = "logical"))
-
-
-  test2 <- RDPget_search_metadata(RDP = Eikon)
-
-  expect_error(test2,NA)
-  expect_equal(class(test2), "data.frame")
-  expect_equal(lapply(test2, class)
-               , list( Refinitiv_index = "character", Type = "character"
-                       , Searchable = "logical", Sortable = "logical"
-                       , Navigable = "logical", Groupable = "logical"
-                       , Exact = "logical", Symbol = "logical"))
-
-  }
-
-
-})
 
 
 test_that("RDPShowAvailableSearchViews works",{

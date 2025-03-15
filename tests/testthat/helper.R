@@ -16,7 +16,7 @@
 #' check_Eikonapi("replay")
 #' check_Eikonapi("write")
 #' }
-check_Eikonapi <- function(testMode = "replay", ExecutionMode = "Eikon") {
+check_Eikonapi <- function(testMode = "replay", ExecutionMode = "JSON") {
 
   if (is.null(getOption(".EikonApiKey")) && testMode != "write"  ) {
     warning("API not available, using offline database for testing")

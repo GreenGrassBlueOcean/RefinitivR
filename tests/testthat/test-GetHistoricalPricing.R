@@ -1,3 +1,7 @@
+library(testthat)
+library(mockery)
+library(data.table)
+
 test_that("stops when it has the wrong eikonobject", {
 
   OldModuleName <- getOption(".RefinitivPyModuleName")
@@ -180,4 +184,109 @@ test_that("historical pricing delivers identical results for non exisiting ric",
 
   expect_equal(NotExistingOption_python, NotExistingOption_json)
 
+})
+
+
+
+#####
+# Stub test for rd_GetHistoricalPricing (JSON branch)
+#####
+test_that("rd_GetHistoricalPricing (JSON branch) processes stubbed response correctly", {
+  # Force JSON branch.
+  options(.RefinitivPyModuleName = "JSON")
+
+  # Stub CheckifCustomInstrument to always return FALSE.
+  stub(rd_GetHistoricalPricing, "CheckifCustomInstrument", function(x, ...) FALSE)
+
+  # Create a dummy RD object with a stubbed get_historical_pricing method.
+  dummy_RD <- list()
+  dummy_request <- list(
+    get_data = function() {
+      # Simulate that get_data() returns a list with data$raw containing our JSON.
+      list(data = list(raw = '{"Date":["2020-01-01","2020-01-02"], "Universe":["AAPL.O","AAPL.O"], "BID":[100,101]}'))
+    }
+  )
+  dummy_RD$get_historical_pricing <- function(universe, interval, start, end, adjustments, count, fields, sessions) {
+    list(dummy_request)
+  }
+
+  # Stub rd_OutputProcesser to convert our dummy response into a fixed data frame.
+  stub(rd_GetHistoricalPricing, "rd_OutputProcesser", function(x, use_field_names_in_headers, NA_cleaning) {
+    data.frame(
+      Date = as.Date(c("2020-01-01", "2020-01-02")),
+      Universe = rep("AAPL.O", 2),
+      BID = c(100, 101),
+      stringsAsFactors = FALSE
+    )
+  })
+
+  # Call rd_GetHistoricalPricing with our dummy RD object.
+  res <- rd_GetHistoricalPricing(
+    RDObject = dummy_RD,
+    universe = "AAPL.O",
+    interval = "P1D",
+    count = 2L,
+    fields = "BID",
+    debug = TRUE
+  )
+
+  expect_true(is.data.frame(res))
+  expect_equal(nrow(res), 2)
+  expect_equal(unique(res$Universe), "AAPL.O")
+  expect_equal(res$BID, c(100, 101))
+
+  # Reset the option to avoid side effects.
+  options(.RefinitivPyModuleName = NULL)
+})
+
+#####
+# Stub test for rd_GetHistoricalPricing (refinitiv.data branch)
+#####
+test_that("rd_GetHistoricalPricing (refinitiv.data branch) processes stubbed response correctly", {
+  # Force refinitiv.data branch.
+  options(.RefinitivPyModuleName = "refinitiv.data")
+
+  # Create a dummy RD object with a nested content element simulating the Python object.
+  dummy_RD <- list()
+  dummy_request <- list(
+    get_data = function() {
+      list(data = list(raw = '{"Date":["2020-01-01","2020-01-02"], "Universe":["AAPL.O","AAPL.O"], "BID":[200,201]}'))
+    }
+  )
+  dummy_RD$content <- list(
+    historical_pricing = list(
+      summaries = list(
+        Definition = function(universe, interval, start, end, adjustments, count, fields, sessions) {
+          dummy_request
+        }
+      )
+    )
+  )
+
+  # Stub rd_OutputProcesser so that it returns a fixed data frame.
+  stub(rd_GetHistoricalPricing, "rd_OutputProcesser", function(x, use_field_names_in_headers, NA_cleaning) {
+    data.frame(
+      Date = as.Date(c("2020-01-01", "2020-01-02")),
+      Universe = rep("AAPL.O", 2),
+      BID = c(200, 201),
+      stringsAsFactors = FALSE
+    )
+  })
+
+  # Call rd_GetHistoricalPricing with the dummy RD object.
+  res <- rd_GetHistoricalPricing(
+    RDObject = dummy_RD,
+    universe = "AAPL.O",
+    interval = "P1D",
+    count = 2L,
+    fields = "BID",
+    debug = TRUE
+  )
+
+  expect_true(is.data.frame(res))
+  expect_equal(nrow(res), 2)
+  expect_equal(unique(res$Universe), "AAPL.O")
+  expect_equal(res$BID, c(200, 201))
+
+  options(.RefinitivPyModuleName = NULL)
 })

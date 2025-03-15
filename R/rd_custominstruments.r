@@ -506,11 +506,6 @@ rd_ManageCustomInstruments <- function( RDObject = RefinitivJsonConnect()
 }
 
   return(Request)
-
-
-
-
-
 }
 
 
