@@ -97,20 +97,26 @@ TestDataStreamCredentials <- function(DatastreamUsername = NULL, DatastreamPassw
 DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA){
 
   # 1. check input ----
-  if (is.na(DatastreamUserName)){
-    try(DatastreamUserName <- getOption("Datastream.Username") )
-    if(is.null(DatastreamUserName)){stop("Please supply the DataStream username.")}
+  if (is.na(DatastreamUserName) || (is.character(DatastreamUserName) && trimws(DatastreamUserName) == "")) {
+    DatastreamUserName <- getOption("Datastream.Username")
+    if (is.na(DatastreamUserName) || is.null(DatastreamUserName) ||
+        (is.character(DatastreamUserName) && trimws(DatastreamUserName) == "")) {
+      stop("Please supply the DataStream username.")
+    }
   }
 
-  if (is.na(DatastreamPassword)){
-    try(DatastreamPassword <- getOption("Datastream.Password") )
-    if (is.null(DatastreamPassword)){stop("Please supply the DataStream password.")}
+  if (is.na(DatastreamPassword) || (is.character(DatastreamPassword) && trimws(DatastreamPassword) == "")) {
+    DatastreamPassword <- getOption("Datastream.Password")
+    if (is.na(DatastreamPassword) || is.null(DatastreamPassword) ||
+        (is.character(DatastreamPassword) && trimws(DatastreamPassword) == "")) {
+      stop("Please supply the DataStream password.")
+    }
   }
 
-  #2. Perform Main operation ----
+  # 2. Perform Main operation ----
   options(Datastream.Username = DatastreamUserName)
   options(Datastream.Password = DatastreamPassword)
   mydsws <- DatastreamDSWS2R::dsws$new()
   return(mydsws)
-
 }
+

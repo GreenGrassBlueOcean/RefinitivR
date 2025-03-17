@@ -1,5 +1,7 @@
 test_that("Basic RDP search works", {
 
+  print(paste("getOption('.EikonApiKey')", getOption(".EikonApiKey")))
+
   Eikon <- check_Eikonapi(ExecutionMode = "JSON")
 
   #Eikon <- check_Eikonapi(ExecutionMode = "RD")

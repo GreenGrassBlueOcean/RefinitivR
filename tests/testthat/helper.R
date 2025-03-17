@@ -16,10 +16,10 @@
 #' check_Eikonapi("replay")
 #' check_Eikonapi("write")
 #' }
-check_Eikonapi <- function(testMode = "replay", ExecutionMode = "JSON") {
+check_Eikonapi <- function(testMode = "replay", ExecutionMode = "Eikon") {
 
   if (is.null(getOption(".EikonApiKey")) && testMode != "write"  ) {
-    warning("API not available, using offline database for testing")
+    message("API not available, using offline database for testing")
     ReturnObject <- EikonTestObject (testMode = "replay")
     options(.RefinitivPyModuleName = "testing object")
     options(.RefinitivPyModuleVersion = "NA")

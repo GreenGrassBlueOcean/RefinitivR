@@ -1,11 +1,9 @@
 # tests/testthat/test-RDPget_search_metadata.R
 
-# tests/testthat/test-RDPget_search_metadata.R
+test_that("RDPget_search_metadata works against real environment (optional)", {
 
-library(testthat)
+  Eikon <- check_Eikonapi()
 
-test_that("RDPget_search_metadata works (mocked/stubbed environment)", {
-  # For demonstration only
   for (i in c("JSON")) {
     Eikon <- check_Eikonapi(ExecutionMode = i)
 
@@ -53,34 +51,11 @@ test_that("RDPget_search_metadata works (mocked/stubbed environment)", {
   }
 })
 
-test_that("RDPget_search_metadata works against real environment (optional)", {
-  # Check if the application key is available
-  app_key <- getOption(".EikonApiKey", default = Sys.getenv("EIKON_API_KEY", ""))
-
-  if (nzchar(app_key) == FALSE) {
-    skip("No Refinitiv application_id found; skipping real-environment test.")
-  }
-
-  # You can also skip on CI if you like:
-  # skip_on_ci()
-
-  # Attempt a real call:
-  # Make sure your local Eikon or RDP is running at localhost:9000
-  real_conn <- RDConnect(PythonModule = "JSON")  # This requires an app_key
-  out <- RDPget_search_metadata(RDP = real_conn, searchView = "EquityQuotes")
-  expect_s3_class(out, "data.frame")
-})
-
-
-
-# test-RDPget_search_metadata.R
 
 library(testthat)
 library(mockery)
 library(data.table)
 library(jsonlite)
-
-context("Testing RDPget_search_metadata")
 
 # We create dummy metadata for testing; everything is in memory (no real calls).
 dummy_metadata <- list(

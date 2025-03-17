@@ -14,31 +14,40 @@ test_that("RDConnect errors when application_id is not supplied", {
 
 # Test 2: Invalid PythonModule value.
 test_that("RDConnect errors with invalid PythonModule", {
+  oldEikon <- getOption(".EikonApiKey")
   expect_error(
     RDConnect(application_id = "dummy_key", PythonModule = "FOO"),
     "RDConnect parameter PythonModule can only be RD \\(python\\) or JSON \\(direct JSON message\\) but is FOO"
   )
+  options(.EikonApiKey = oldEikon)
 })
 
 # Test 3: When PythonModule is "JSON", it should call RefinitivJsonConnect().
 test_that("RDConnect returns RefinitivJsonConnect output when PythonModule is JSON", {
+  oldEikon <- getOption(".EikonApiKey")
   dummy_obj <- list(dummy = "json")
   stub(RDConnect, "RefinitivJsonConnect", function() dummy_obj)
   result <- RDConnect(application_id = "dummy_key", PythonModule = "JSON")
   expect_equal(result, dummy_obj)
+  options(.EikonApiKey = oldEikon)
 })
 
 # Test 4: When PythonModule is "RD" and CondaExists() returns FALSE, it errors.
 test_that("RDConnect errors when PythonModule is RD and CondaExists returns FALSE", {
+  oldEikon <- getOption(".EikonApiKey")
   stub(RDConnect, "CondaExists", function() FALSE)
   expect_error(
     RDConnect(application_id = "dummy_key", PythonModule = "RD"),
     "Conda/reticulate does not seem to be available please run install_eikon or change parameter PythonModule to 'JSON'"
   )
+  options(.EikonApiKey = oldEikon)
 })
 
 # Test 5: When PythonModule is "RD" and CondaExists() returns TRUE, it should import and return the RD object.
 test_that("RDConnect returns RD object when PythonModule is RD and CondaExists returns TRUE", {
+
+  oldEikon <- getOption(".EikonApiKey")
+
   # Stub CondaExists to return TRUE.
   stub(RDConnect, "CondaExists", function() TRUE)
   # Stub reticulate::use_miniconda to do nothing.
@@ -56,4 +65,6 @@ test_that("RDConnect returns RD object when PythonModule is RD and CondaExists r
 
   result <- RDConnect(application_id = "dummy_key", PythonModule = "RD")
   expect_equal(result, dummy_rd)
+
+  options(.EikonApiKey = oldEikon)
 })
