@@ -349,6 +349,150 @@ make_links_clickable <- function(text) {
   return(clickable)
 }
 
+# #' Retrieve Full News Story from a Refinitiv RDP (JSON) Connection
+# #'
+# #' This function retrieves a full news story identified by its story ID via a
+# #' Refinitiv JSON connection. In the RDP response the story text may be found in
+# #' different places:
+# #'
+# #' - If the response comes from the legacy UDF service, the story is expected in the
+# #'   \code{story$storyHtml} element.
+# #'
+# #' - If the response comes from the RDP service, the content will be located under
+# #'   \code{newsItem$contentSet}. In that case, the function first checks for HTML content
+# #'   in \code{newsItem$contentSet$inlineXML} (if available) and, if not, in
+# #'   \code{newsItem$contentSet$inlineData}.
+# #'
+# #' If \code{renderHTML} is TRUE, any plain URLs in the resulting HTML will be converted
+# #' to clickable links via a helper function \code{make_links_clickable()} (which you should
+# #' define elsewhere in your package), and the combined HTML is opened in the viewer.
+# #'
+# #' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. Defaults to \code{RefinitivJsonConnect()} if not supplied.
+# #' @param story_id Vector of story IDs.
+# #' @param raw_output If \code{TRUE}, returns the raw list of responses.
+# #' @param debug If \code{TRUE}, prints debugging messages.
+# #' @param renderHTML If \code{TRUE}, the function will open the combined HTML in a browser viewer,
+# #'   and also return the HTML string.
+# #'
+# #' @return If \code{raw_output = FALSE} (the default), a character vector of the story HTML
+# #'   (or a single combined HTML string if \code{renderHTML = TRUE}). Otherwise, the raw list
+# #'   of responses.
+# #'
+# #' @export
+# rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
+#                               story_id   = NULL,
+#                               raw_output = FALSE,
+#                               debug      = FALSE,
+#                               renderHTML = FALSE) {
+#
+#
+#
+#   if (is.null(story_id)) {
+#     stop("rd_get_news_story: must supply 'story_id'")
+#   } else {
+#     story_id <- unique(story_id)
+#   }
+#
+#   NewsList <- vector("list", length(story_id))
+#   DownloadCoordinator <- data.frame(
+#     index   = seq_along(story_id),
+#     success = FALSE,
+#     retries = 0L,
+#     stringsAsFactors = FALSE
+#   )
+#
+#   # -- The retry loop --
+#   while (!all(DownloadCoordinator$success) && !any(DownloadCoordinator$retries > 4L)) {
+#     pending <- which(!DownloadCoordinator$success)
+#     for (j in pending) {
+#       NewsList[[j]] <- try({
+#         retry(
+#           RDObject$rd_get_news_story(
+#             story_id   = story_id[j],
+#             raw_output = raw_output,   # This is OK since your dummy_RD function ignores it anyway
+#             debug      = debug
+#           ),
+#           max = 2
+#         )
+#       })
+#       # If not an error, mark as success
+#       if (!inherits(NewsList[[j]], "try-error") && !is.null(NewsList[[j]])) {
+#         DownloadCoordinator$success[j] <- TRUE
+#       }
+#       Sys.sleep(0.1)
+#       if (debug) {
+#         message("Download Status:\n", paste(capture.output(DownloadCoordinator), collapse = "\n"))
+#       }
+#     }
+#     DownloadCoordinator$retries[!DownloadCoordinator$success] <-
+#       DownloadCoordinator$retries[!DownloadCoordinator$success] + 1
+#   }
+#
+#   # -- Stop if still failing after 4 tries --
+#   if (any(DownloadCoordinator$retries > 4L)) {
+#     stop("rd_get_news_story: retrieving data failed after multiple retries.")
+#   }
+#
+#   # -- If raw_output=TRUE, return the raw list now --
+#   if (raw_output) {
+#     return(NewsList)
+#   }
+#
+#   # -- Otherwise, continue processing as before --
+#   outvec <- vapply(
+#     X = NewsList,
+#     FUN = function(x) {
+#       if (is.list(x) && "story" %in% names(x)) {
+#         if (!is.null(x$story$storyHtml)) {
+#           return(x$story$storyHtml)
+#         } else {
+#           return("")
+#         }
+#       } else if (is.list(x) && "webURL" %in% names(x)) {
+#         if (!is.null(x$webURL)) {
+#           return(x$webURL)
+#         } else {
+#           return("")
+#         }
+#       } else if (is.list(x) && "newsItem" %in% names(x)) {
+#         if (!is.null(x$newsItem$contentSet$inlineXML) &&
+#             !is.null(x$newsItem$contentSet$inlineXML$`$`)) {
+#           return(x$newsItem$contentSet$inlineXML$`$`)
+#         } else if (!is.null(x$newsItem$contentSet$inlineData) &&
+#                    !is.null(x$newsItem$contentSet$inlineData$`$`)) {
+#           return(x$newsItem$contentSet$inlineData$`$`)
+#         } else {
+#           return("")
+#         }
+#       } else {
+#         return("")
+#       }
+#     },
+#     FUN.VALUE = character(1)
+#   )
+#
+#   if (renderHTML) {
+#     combined_html <- paste0(outvec, collapse = "<hr/>")
+#     # Convert plain URL substrings into clickable links.
+#     combined_html <- make_links_clickable(combined_html)
+#     tmpfile <- tempfile(fileext = ".html")
+#     writeLines(combined_html, con = tmpfile)
+#     if (debug) {
+#       message("Opening story content in browser: ", tmpfile)
+#     }
+#     if (requireNamespace("rstudioapi", quietly = TRUE) &&
+#         rstudioapi::hasFun("viewer")) {
+#       rstudioapi::viewer(tmpfile)
+#     } else {
+#       utils::browseURL(tmpfile)
+#     }
+#     return(combined_html)
+#   } else {
+#     return(outvec)
+#   }
+#   return(outvec)
+# }
+
 #' Retrieve Full News Story from a Refinitiv RDP (JSON) Connection
 #'
 #' This function retrieves a full news story identified by its story ID via a
@@ -363,9 +507,11 @@ make_links_clickable <- function(text) {
 #'   in \code{newsItem$contentSet$inlineXML} (if available) and, if not, in
 #'   \code{newsItem$contentSet$inlineData}.
 #'
-#' If \code{renderHTML} is TRUE, any plain URLs in the resulting HTML will be converted
-#' to clickable links via a helper function \code{make_links_clickable()} (which you should
-#' define elsewhere in your package), and the combined HTML is opened in the viewer.
+#' If no content is found, it falls back to the headline (from \code{newsItem$itemMeta$title})
+#' formatted as HTML. If \code{renderHTML} is TRUE, any plain URLs in the resulting HTML
+#' will be converted to clickable links via a helper function \code{make_links_clickable()}
+#' (which you should define elsewhere in your package), and the combined HTML is opened
+#' in the viewer. Base64-encoded images in the response are decoded and embedded.
 #'
 #' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. Defaults to \code{RefinitivJsonConnect()} if not supplied.
 #' @param story_id Vector of story IDs.
@@ -374,9 +520,18 @@ make_links_clickable <- function(text) {
 #' @param renderHTML If \code{TRUE}, the function will open the combined HTML in a browser viewer,
 #'   and also return the HTML string.
 #'
-#' @return If \code{raw_output = FALSE} (the default), a character vector of the story HTML
-#'   (or a single combined HTML string if \code{renderHTML = TRUE}). Otherwise, the raw list
-#'   of responses.
+#' @return If \code{raw_output = FALSE} (the default), a named list keyed by story_id,
+#'   where each element is a sub-list containing:
+#'   \itemize{
+#'     \item \code{inline}: Plain text content from \code{inlineData}.
+#'     \item \code{html}: HTML content from \code{inlineXML}.
+#'     \item \code{headline}: Extracted headline.
+#'     \item \code{versionCreated}: Version created timestamp.
+#'     \item \code{urgency}: Urgency level.
+#'   }
+#'   If no content is available, the sub-list fields will be empty or NA.
+#'   For \code{renderHTML = TRUE}, returns a single combined HTML string.
+#'   If \code{raw_output = TRUE}, returns a named list of raw responses keyed by story_id.
 #'
 #' @export
 rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
@@ -385,95 +540,133 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
                               debug      = FALSE,
                               renderHTML = FALSE) {
 
-
-
   if (is.null(story_id)) {
     stop("rd_get_news_story: must supply 'story_id'")
   } else {
     story_id <- unique(story_id)
   }
 
-  NewsList <- vector("list", length(story_id))
-  DownloadCoordinator <- data.frame(
-    index   = seq_along(story_id),
-    success = FALSE,
-    retries = 0L,
-    stringsAsFactors = FALSE
-  )
-
-  # -- The retry loop --
-  while (!all(DownloadCoordinator$success) && !any(DownloadCoordinator$retries > 4L)) {
-    pending <- which(!DownloadCoordinator$success)
-    for (j in pending) {
-      NewsList[[j]] <- try({
-        retry(
-          RDObject$rd_get_news_story(
-            story_id   = story_id[j],
-            raw_output = raw_output,   # This is OK since your dummy_RD function ignores it anyway
-            debug      = debug
-          ),
-          max = 2
-        )
-      })
-      # If not an error, mark as success
-      if (!inherits(NewsList[[j]], "try-error") && !is.null(NewsList[[j]])) {
-        DownloadCoordinator$success[j] <- TRUE
+  fetch_single <- function(id) {
+    retries <- 0
+    max_retries <- 5
+    backoff <- 0.5
+    while (retries < max_retries) {
+      response <- try(RDObject$rd_get_news_story(story_id = id, raw_output = raw_output, debug = debug))
+      if (!inherits(response, "try-error") && !is.null(response)) {
+        if (debug) message("Successfully fetched story for ID: ", id)
+        return(response)
       }
-      Sys.sleep(0.1)
-      if (debug) {
-        message("Download Status:\n", paste(capture.output(DownloadCoordinator), collapse = "\n"))
-      }
+      retries <- retries + 1
+      if (debug) message("Failed fetch for ", id, " (retry ", retries, ")")
+      Sys.sleep(backoff)
+      backoff <- backoff * 2
     }
-    DownloadCoordinator$retries[!DownloadCoordinator$success] <-
-      DownloadCoordinator$retries[!DownloadCoordinator$success] + 1
+    if (debug) message("Failed to fetch ", id, " after ", max_retries, " retries.")
+    stop("rd_get_news_story: retrieval failed after maximum retries for ID: ", id)
   }
 
-  # -- Stop if still failing after 4 tries --
-  if (any(DownloadCoordinator$retries > 4L)) {
-    stop("rd_get_news_story: retrieving data failed after multiple retries.")
+  NewsList <- lapply(story_id, fetch_single)
+
+  # Name the NewsList by story_id
+  names(NewsList) <- story_id
+
+  # Check for failures
+  failed <- sapply(NewsList, is.null)
+  if (any(failed)) {
+    warning("Failed to fetch stories for IDs: ", paste(story_id[failed], collapse = ", "))
   }
 
-  # -- If raw_output=TRUE, return the raw list now --
+  # -- If raw_output=TRUE, return the named raw list now --
   if (raw_output) {
     return(NewsList)
   }
 
-  # -- Otherwise, continue processing as before --
-  outvec <- vapply(
-    X = NewsList,
-    FUN = function(x) {
-      if (is.list(x) && "story" %in% names(x)) {
-        if (!is.null(x$story$storyHtml)) {
-          return(x$story$storyHtml)
-        } else {
-          return("")
-        }
-      } else if (is.list(x) && "webURL" %in% names(x)) {
-        if (!is.null(x$webURL)) {
-          return(x$webURL)
-        } else {
-          return("")
-        }
-      } else if (is.list(x) && "newsItem" %in% names(x)) {
-        if (!is.null(x$newsItem$contentSet$inlineXML) &&
-            !is.null(x$newsItem$contentSet$inlineXML$`$`)) {
-          return(x$newsItem$contentSet$inlineXML$`$`)
-        } else if (!is.null(x$newsItem$contentSet$inlineData) &&
-                   !is.null(x$newsItem$contentSet$inlineData$`$`)) {
-          return(x$newsItem$contentSet$inlineData$`$`)
-        } else {
-          return("")
-        }
-      } else {
-        return("")
+  # -- Otherwise, process content --
+  out_list <- list()
+  for (i in seq_along(NewsList)) {
+    x <- NewsList[[i]]
+    id <- story_id[i]  # Use the corresponding story_id for debug
+
+    if (is.null(x)) {
+      out_list[[id]] <- list(inline = "(Fetch failed)", html = "(Fetch failed)", headline = "", versionCreated = NA, urgency = NA)
+      next
+    }
+
+    # Extract content
+    inline <- ""
+    html <- ""
+    headline <- ""
+    versionCreated <- NA
+    urgency <- NA
+
+    if (is.list(x) && "story" %in% names(x)) {
+      html <- x$story$storyHtml %||% ""
+      headline <- x$story$headline %||% ""  # Assume headline field if available
+    } else if (is.list(x) && "webURL" %in% names(x)) {
+      inline <- x$webURL %||% ""
+      headline <- x$headline %||% ""  # Assume if available
+    } else if (is.list(x) && "newsItem" %in% names(x)) {
+      # Headline
+      if (!is.null(x$newsItem$itemMeta$title) && length(x$newsItem$itemMeta$title) > 0 &&
+          !is.null(x$newsItem$itemMeta$title[[1]]$`$`)) {
+        headline <- x$newsItem$itemMeta$title[[1]]$`$`
+        if (debug) message("Extracted headline: ", headline, " for ID: ", id)
       }
-    },
-    FUN.VALUE = character(1)
-  )
+
+      # Content - Unlist to get the string
+      if (!is.null(x$newsItem$contentSet$inlineXML) &&
+          !is.null(x$newsItem$contentSet$inlineXML$`$`)) {
+        html <- x$newsItem$contentSet$inlineXML$`$`[[1]] %||% ""
+        if (debug) message("Extracted from inlineXML for ID: ", id)
+      }
+
+      if (!is.null(x$newsItem$contentSet$inlineData) &&
+                 !is.null(x$newsItem$contentSet$inlineData$`$`)) {
+        inline <- x[["newsItem"]][["contentSet"]][["inlineData"]][["$"]][[1]] %||% ""
+        if (debug) message("Extracted from inlineData for ID: ", id)
+      }
+
+      # Metadata
+      if (!is.null(x$newsItem$itemMeta$versionCreated$`$`)) {
+        versionCreated <- x$newsItem$itemMeta$versionCreated$`$`
+      }
+      if (!is.null(x$newsItem$contentMeta$urgency$`$`)) {
+        urgency <- x$newsItem$contentMeta$urgency$`$`
+      }
+
+      # Handle base64 images if present in html
+      if (nzchar(html) > 0 && grepl("^data:image", html)) {
+        if (requireNamespace("base64enc", quietly = TRUE)) {
+          img_src <- paste0("<img src='", html, "' alt='Embedded Image'/>")
+          html <- gsub("^data:image/[^;]+;base64,[^']+", img_src, html)  # Embed
+        } else {
+          warning("base64enc package required for image decoding.")
+        }
+      }
+    }
+
+    # Fallback to headline if no content
+    if (nzchar(inline) == 0 && nzchar(html) == 0 && nzchar(headline) > 0) {
+      if (debug) message("No full content; using headline for ID: ", id)
+      html <- paste0("<h3>", headline, "</h3><p>(No full story available)</p>")
+    } else if (nzchar(inline) == 0 && nzchar(html) == 0) {
+      inline <- ""
+      html <- ""
+    }
+
+    # Store in structured sub-list
+    out_list[[id]] <- list(
+      inline = inline,
+      html = html,
+      headline = headline,
+      versionCreated = versionCreated,
+      urgency = urgency
+    )
+  }
 
   if (renderHTML) {
-    combined_html <- paste0(outvec, collapse = "<hr/>")
-    # Convert plain URL substrings into clickable links.
+    combined_html <- paste0(sapply(out_list, function(s) s$html), collapse = "<hr/>")
+    # Convert plain URL substrings into clickable links (assume make_links_clickable defined)
     combined_html <- make_links_clickable(combined_html)
     tmpfile <- tempfile(fileext = ".html")
     writeLines(combined_html, con = tmpfile)
@@ -488,11 +681,9 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
     }
     return(combined_html)
   } else {
-    return(outvec)
+    return(out_list)
   }
-  return(outvec)
 }
-
 
 #' Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection, Then Fetch Stories
 #'

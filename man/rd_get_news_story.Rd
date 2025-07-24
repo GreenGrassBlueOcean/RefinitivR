@@ -25,9 +25,18 @@ rd_get_news_story(
 and also return the HTML string.}
 }
 \value{
-If \code{raw_output = FALSE} (the default), a character vector of the story HTML
-  (or a single combined HTML string if \code{renderHTML = TRUE}). Otherwise, the raw list
-  of responses.
+If \code{raw_output = FALSE} (the default), a named list keyed by story_id,
+  where each element is a sub-list containing:
+  \itemize{
+    \item \code{inline}: Plain text content from \code{inlineData}.
+    \item \code{html}: HTML content from \code{inlineXML}.
+    \item \code{headline}: Extracted headline.
+    \item \code{versionCreated}: Version created timestamp.
+    \item \code{urgency}: Urgency level.
+  }
+  If no content is available, the sub-list fields will be empty or NA.
+  For \code{renderHTML = TRUE}, returns a single combined HTML string.
+  If \code{raw_output = TRUE}, returns a named list of raw responses keyed by story_id.
 }
 \description{
 This function retrieves a full news story identified by its story ID via a
@@ -43,7 +52,9 @@ different places:
   in \code{newsItem$contentSet$inlineXML} (if available) and, if not, in
   \code{newsItem$contentSet$inlineData}.
 
-If \code{renderHTML} is TRUE, any plain URLs in the resulting HTML will be converted
-to clickable links via a helper function \code{make_links_clickable()} (which you should
-define elsewhere in your package), and the combined HTML is opened in the viewer.
+If no content is found, it falls back to the headline (from \code{newsItem$itemMeta$title})
+formatted as HTML. If \code{renderHTML} is TRUE, any plain URLs in the resulting HTML
+will be converted to clickable links via a helper function \code{make_links_clickable()}
+(which you should define elsewhere in your package), and the combined HTML is opened
+in the viewer. Base64-encoded images in the response are decoded and embedded.
 }

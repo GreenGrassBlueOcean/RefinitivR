@@ -38,14 +38,19 @@ test_that("rd_get_news_story errors after multiple retries when retrieval fails"
     stop("Simulated retrieval failure")
   }
   RDObj_fail <- list(rd_get_news_story = always_fail_rd_get_news_story)
+  retry_count <- 0
+  max_retries <- 5
 
-  # Override retry() so that it always returns a try-error.
+  # Override retry() to simulate multiple failures
   with_mocked_bindings({
     expect_error(
       rd_get_news_story(RDObject = RDObj_fail, story_id = "any_story", debug = FALSE),
-      "rd_get_news_story: retrieving data failed after multiple retries."
+      "rd_get_news_story: retrieval failed after maximum retries for ID: any_story"
     )
-  }, retry = function(expr, max) try(expr, silent = TRUE))
+  }, retry = function(expr, max) {
+    retry_count <<- retry_count + 1
+    if (retry_count <= max) try(expr, silent = TRUE) else stop("Max retries exceeded")
+  })
 })
 
 ###############################################################################
@@ -63,11 +68,12 @@ test_that("rd_get_news_story returns raw output when raw_output is TRUE", {
                                raw_output = TRUE,
                                debug = FALSE)
   expect_true(is.list(raw_out))
-  expect_equal(raw_out[[1]]$raw, "raw test_story")
+  expect_named(raw_out, "test_story")
+  expect_equal(raw_out[["test_story"]]$raw, "raw test_story")
 })
 
 ###############################################################################
-# Test 4: Legacy branch returns correct HTML without %||%
+# Test 4: Legacy branch returns correct HTML
 ###############################################################################
 dummy_legacy_rd_get_news_story <- function(story_id, raw_output, debug) {
   # Simulate a legacy response with storyHtml.
@@ -81,41 +87,58 @@ test_that("rd_get_news_story returns legacy story HTML correctly", {
                               raw_output = FALSE,
                               debug = FALSE,
                               renderHTML = FALSE)
-  expect_type(result, "character")
-  expect_equal(result, "HTML for dummy_story")
+  expect_type(result, "list")
+  expect_named(result, "dummy_story")
+  expect_equal(result[["dummy_story"]]$html, "HTML for dummy_story")
+  expect_equal(result[["dummy_story"]]$inline, "")
 })
 
 ###############################################################################
-# Test 5: Other branches in the vapply
+# Test 5: Other branches return correct content
 ###############################################################################
 test_that("rd_get_news_story handles 'webURL' branch correctly", {
   RDObj <- list(rd_get_news_story = fake_rd_get_news_story)
   result <- rd_get_news_story(RDObject = RDObj, story_id = "web_url", debug = FALSE)
-  expect_equal(result, "https://example.com/story")
+  expect_type(result, "list")
+  expect_named(result, "web_url")
+  expect_equal(result[["web_url"]]$inline, "https://example.com/story")
+  expect_equal(result[["web_url"]]$html, "")
 })
 
 test_that("rd_get_news_story handles newsItem inlineXML branch correctly", {
   RDObj <- list(rd_get_news_story = fake_rd_get_news_story)
   result <- rd_get_news_story(RDObject = RDObj, story_id = "inline_xml", debug = FALSE)
-  expect_equal(result, "<p>Inline XML</p>")
+  expect_type(result, "list")
+  expect_named(result, "inline_xml")
+  expect_equal(result[["inline_xml"]]$html, "<p>Inline XML</p>")
+  expect_equal(result[["inline_xml"]]$inline, "")
 })
 
 test_that("rd_get_news_story handles newsItem inlineData branch correctly", {
   RDObj <- list(rd_get_news_story = fake_rd_get_news_story)
   result <- rd_get_news_story(RDObject = RDObj, story_id = "inline_data", debug = FALSE)
-  expect_equal(result, "<p>Inline Data</p>")
+  expect_type(result, "list")
+  expect_named(result, "inline_data")
+  expect_equal(result[["inline_data"]]$inline, "<p>Inline Data</p>")
+  expect_equal(result[["inline_data"]]$html, "")
 })
 
-test_that("rd_get_news_story returns empty string for empty newsItem", {
+test_that("rd_get_news_story returns empty sub-list for empty newsItem", {
   RDObj <- list(rd_get_news_story = fake_rd_get_news_story)
   result <- rd_get_news_story(RDObject = RDObj, story_id = "empty_newsItem", debug = FALSE)
-  expect_equal(result, "")
+  expect_type(result, "list")
+  expect_named(result, "empty_newsItem")
+  expect_equal(result[["empty_newsItem"]]$inline, "")
+  expect_equal(result[["empty_newsItem"]]$html, "")
 })
 
-test_that("rd_get_news_story returns empty string when no recognized fields", {
+test_that("rd_get_news_story returns empty sub-list when no recognized fields", {
   RDObj <- list(rd_get_news_story = fake_rd_get_news_story)
   result <- rd_get_news_story(RDObject = RDObj, story_id = "not_a_list", debug = FALSE)
-  expect_equal(result, "")
+  expect_type(result, "list")
+  expect_named(result, "not_a_list")
+  expect_equal(result[["not_a_list"]]$inline, "")
+  expect_equal(result[["not_a_list"]]$html, "")
 })
 
 ###############################################################################
@@ -127,9 +150,11 @@ test_that("rd_get_news_story handles multiple story IDs at once", {
                                story_id = c("web_url", "inline_data"),
                                debug = FALSE,
                                renderHTML = FALSE)
+  expect_type(stories, "list")
   expect_length(stories, 2)
-  expect_equal(stories[1], "https://example.com/story")
-  expect_equal(stories[2], "<p>Inline Data</p>")
+  expect_named(stories, c("web_url", "inline_data"))
+  expect_equal(stories[["web_url"]]$inline, "https://example.com/story")
+  expect_equal(stories[["inline_data"]]$inline, "<p>Inline Data</p>")
 })
 
 ###############################################################################
@@ -142,14 +167,13 @@ test_that("rd_get_news_story prints debug messages when debug = TRUE", {
                       story_id = "inline_xml",
                       debug = TRUE,
                       renderHTML = FALSE),
-    "Download Status:"
+    "Successfully fetched story for ID: inline_xml"
   )
 })
 
 ###############################################################################
 # Test 8: rd_get_news_story handles renderHTML = TRUE
 ###############################################################################
-
 test_that("rd_get_news_story handles renderHTML = TRUE branch", {
   RDObj <- list(rd_get_news_story = fake_rd_get_news_story)
   mock_viewer <- mock()
@@ -165,7 +189,6 @@ test_that("rd_get_news_story handles renderHTML = TRUE branch", {
       # For "inline_xml", fake_rd_get_news_story returns "<p>Inline XML</p>"
       # For "legacy_story", it returns "<p>Legacy HTML content</p>"
       # They will be joined by "<hr/>" (via paste0) and then passed through make_links_clickable.
-      # Since there are no URL substrings in the expected text, the output should be identical.
       expected <- paste0(c("<p>Inline XML</p>", "<p>Legacy HTML content</p>"), collapse = "<hr/>")
 
       expect_true(grepl("<p>Inline XML</p>", result))
@@ -179,4 +202,18 @@ test_that("rd_get_news_story handles renderHTML = TRUE branch", {
     hasFun = function(name) TRUE,
     viewer = mock_viewer
   )
+})
+
+###############################################################################
+# Test 9: Headline fallback when no content
+###############################################################################
+test_that("rd_get_news_story falls back to headline when no content", {
+  RDObj <- list(rd_get_news_story = function(story_id, raw_output, debug) {
+    list(newsItem = list(itemMeta = list(title = list(list(`$` = "Fallback Headline")))))
+  })
+  result <- rd_get_news_story(RDObject = RDObj, story_id = "fallback_story", debug = FALSE)
+  expect_type(result, "list")
+  expect_named(result, "fallback_story")
+  expect_equal(result[["fallback_story"]]$html, "<h3>Fallback Headline</h3><p>(No full story available)</p>")
+  expect_equal(result[["fallback_story"]]$inline, "")
 })
