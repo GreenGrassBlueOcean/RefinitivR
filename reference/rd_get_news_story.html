@@ -79,9 +79,15 @@ and also return the HTML string.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>If <code>raw_output = FALSE</code> (the default), a character vector of the story HTML
-  (or a single combined HTML string if <code>renderHTML = TRUE</code>). Otherwise, the raw list
-  of responses.</p>
+    <p>If <code>raw_output = FALSE</code> (the default), a named list keyed by story_id,
+  where each element is a sub-list containing:</p><ul><li><p><code>inline</code>: Plain text content from <code>inlineData</code>.</p></li>
+<li><p><code>html</code>: HTML content from <code>inlineXML</code>.</p></li>
+<li><p><code>headline</code>: Extracted headline.</p></li>
+<li><p><code>versionCreated</code>: Version created timestamp.</p></li>
+<li><p><code>urgency</code>: Urgency level.</p></li>
+</ul><p>If no content is available, the sub-list fields will be empty or NA.
+  For <code>renderHTML = TRUE</code>, returns a single combined HTML string.
+  If <code>raw_output = TRUE</code>, returns a named list of raw responses keyed by story_id.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -91,9 +97,11 @@ and also return the HTML string.</p></dd>
   <code>newsItem$contentSet</code>. In that case, the function first checks for HTML content
   in <code>newsItem$contentSet$inlineXML</code> (if available) and, if not, in
   <code>newsItem$contentSet$inlineData</code>.</p>
-<p>If <code>renderHTML</code> is TRUE, any plain URLs in the resulting HTML will be converted
-to clickable links via a helper function <code><a href="make_links_clickable.html">make_links_clickable()</a></code> (which you should
-define elsewhere in your package), and the combined HTML is opened in the viewer.</p>
+<p>If no content is found, it falls back to the headline (from <code>newsItem$itemMeta$title</code>)
+formatted as HTML. If <code>renderHTML</code> is TRUE, any plain URLs in the resulting HTML
+will be converted to clickable links via a helper function <code><a href="make_links_clickable.html">make_links_clickable()</a></code>
+(which you should define elsewhere in your package), and the combined HTML is opened
+in the viewer. Base64-encoded images in the response are decoded and embedded.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -105,7 +113,7 @@ define elsewhere in your package), and the combined HTML is opened in the viewer
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>
