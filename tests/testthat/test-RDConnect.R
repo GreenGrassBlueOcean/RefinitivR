@@ -26,7 +26,7 @@ test_that("RDConnect errors with invalid PythonModule", {
 test_that("RDConnect returns RefinitivJsonConnect output when PythonModule is JSON", {
   oldEikon <- getOption(".EikonApiKey")
   dummy_obj <- list(dummy = "json")
-  stub(RDConnect, "RefinitivJsonConnect", function() dummy_obj)
+  stub(RDConnect, "RefinitivJsonConnect", function(Eikonapplication_id ) dummy_obj)
   result <- RDConnect(application_id = "dummy_key", PythonModule = "JSON")
   expect_equal(result, dummy_obj)
   options(.EikonApiKey = oldEikon)

@@ -2,50 +2,46 @@
 title: "RefinitivR"
 output: 
   md_document:
-    variant: markdown_github
+    variant: gfm
     preserve_yaml: TRUE
 ---
 
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
 # Important Messages
 
-You can now use both Eikon and Workspace. The package only supports a
-desktop session, not platform sessions. This is theoretically possible
-but currently not implemented.
+You can now use both Eikon and Workspace. The package only supports a desktop session, not platform sessions. This is theoretically possible but currently not implemented.
 
-1.  **Python is now optional** - The package can send direct JSON
-    messages to the terminal.
-2.  **When using Python libraries** - If you update the package, also
-    run `Refinitiv::install_eikon()` again.
-3.  **Python Eikon and RDP libraries are deprecated** - Can no longer be
-    used. The current commit is reverse compatible with previous
-    commits.
+1. **Python is now optional** - The package can send direct JSON messages to the terminal.
+2. **When using Python libraries** - If you update the package, also run `Refinitiv::install_eikon()` again.
+3. **Python Eikon and RDP libraries are deprecated** - Can no longer be used. The current commit is reverse compatible with previous commits.
 
 <!-- badges: start -->
-
-[![Codecov test
-coverage](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR/graph/badge.svg)](https://app.codecov.io/gh/GreenGrassBlueOcean/RefinitivR)
-[![R build
-status](https://github.com/GreenGrassBlueOcean/RefinitivR/workflows/R-CMD-check/badge.svg)](https://github.com/GreenGrassBlueOcean/RefinitivR/actions)
+[![Codecov test coverage](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR/graph/badge.svg)](https://app.codecov.io/gh/GreenGrassBlueOcean/RefinitivR)
+[![R build status](https://github.com/GreenGrassBlueOcean/RefinitivR/workflows/R-CMD-check/badge.svg)](https://github.com/GreenGrassBlueOcean/RefinitivR/actions)
 <!-- badges: end -->
 
 ## Overview
 
-**RefinitivR** is an R interface to Refinitiv Eikon and Refinitiv
-DataStream. It provides:
+**RefinitivR** is an R interface to Refinitiv Eikon and Refinitiv DataStream. It provides:
 
--   **Direct JSON API access** (no Python required)
--   **Python API support** via reticulate (optional)
--   **Real-time streaming data** with WebSocket support ⭐ NEW
--   **DataStream integration** via DatastreamDSWS2R
--   **Robust error handling** with automatic retries and chunking
+- **Direct JSON API access** (no Python required)
+- **Python API support** via reticulate (optional)
+- **Real-time streaming data** with WebSocket support ⭐ NEW
+- **DataStream integration** via DatastreamDSWS2R
+- **Robust error handling** with automatic retries and chunking
 
-This package is in no way affiliated with Thomson Reuters, Refinitiv,
-Eikon, Datastream, or LSEG. A subscription to Eikon and Datastream is
-required. Use at your own risk!
+This package is in no way affiliated with Thomson Reuters, Refinitiv, Eikon, Datastream, or LSEG. A subscription to Eikon and Datastream is required. Use at your own risk!
 
 ## Installation
 
-``` r
+```r
 install.packages("devtools")
 devtools::install_github("GreenGrassBlueOcean/RefinitivR")
 library(Refinitiv)
@@ -55,7 +51,7 @@ library(Refinitiv)
 
 ### Basic Connection (JSON - No Python Required)
 
-``` r
+```r
 # Connect to Refinitiv Data Platform
 RD <- RDConnect(application_id = "YOUR API KEY", PythonModule = "JSON")
 
@@ -65,7 +61,7 @@ data <- rd_GetHistory(RDObject = RD, universe = c("AAPL.O", "MSFT.O"))
 
 ### Real-Time Streaming ⭐ NEW
 
-``` r
+```r
 # Create a streaming connection
 stream <- rd_get_streaming_data(
   universe = "EUR=",
@@ -89,26 +85,25 @@ print(stream$get_summary())
 stream$close()
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Table of Contents
 
-1.  [Connecting to Refinitiv](#connecting-to-refinitiv)
-2.  [Real-Time Streaming](#real-time-streaming) ⭐ NEW
-3.  [Working with Refinitiv Data (RD)](#working-with-refinitiv-data-rd)
-4.  [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
-5.  [DataStream](#datastream)
-6.  [Custom Instruments](#custom-instruments)
-7.  [Building Custom Visualizations](#building-custom-visualizations) ⭐
-    NEW
+1. [Connecting to Refinitiv](#connecting-to-refinitiv)
+2. [Real-Time Streaming](#real-time-streaming) ⭐ NEW
+3. [Working with Refinitiv Data (RD)](#working-with-refinitiv-data-rd)
+4. [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
+5. [DataStream](#datastream)
+6. [Custom Instruments](#custom-instruments)
+7. [Building Custom Visualizations](#building-custom-visualizations) ⭐ NEW
 
-------------------------------------------------------------------------
+---
 
 ## Connecting to Refinitiv
 
 ### Direct JSON Method (Recommended - No Python Required)
 
-``` r
+```r
 # Refinitiv Data Platform
 RD <- RDConnect(application_id = "YOUR API KEY", PythonModule = "JSON")
 
@@ -120,38 +115,36 @@ Eikon <- EikonConnect(Eikonapplication_id = "YOUR EIKON API KEY", PythonModule =
 
 First install the Python environment:
 
-``` r
+```r
 # Run RStudio with elevated permissions/Administrator
 Refinitiv::install_eikon()
 ```
 
 Then connect:
 
-``` r
+```r
 RD <- RDConnect(application_id = "YOUR API KEY", PythonModule = "RD")
 Eikon <- EikonConnect(Eikonapplication_id = "YOUR EIKON API KEY", PythonModule = "RD")
 ```
 
-**Note:** Make sure Eikon/LSEG Workspace is running and online before
-connecting.
+**Note:** Make sure Eikon/LSEG Workspace is running and online before connecting.
 
-------------------------------------------------------------------------
+---
 
 ## Real-Time Streaming ⭐ NEW
 
-The package now includes a powerful real-time streaming API for live
-market data using WebSocket connections.
+The package now includes a powerful real-time streaming API for live market data using WebSocket connections.
 
 ### Prerequisites
 
-``` r
+```r
 # Required packages (installed automatically)
 install.packages(c("websocket", "later", "shiny", "data.table"))
 ```
 
 ### Quick Example
 
-``` r
+```r
 library(Refinitiv)
 
 # Create stream
@@ -174,7 +167,7 @@ stream$close()
 
 ### Multiple Instruments
 
-``` r
+```r
 stream <- rd_get_streaming_data(
   universe = c("EUR=", "GBP=", "JPY="),
   fields = c("BID", "ASK", "OPEN_PRC", "DSPLY_NAME")
@@ -183,7 +176,7 @@ stream <- rd_get_streaming_data(
 
 ### Event Callbacks
 
-``` r
+```r
 # Refresh callback - called when initial data is received
 stream$on_refresh(function(stream, instrument, fields) {
   cat(sprintf("Initial data for %s received\n", instrument))
@@ -202,7 +195,7 @@ stream$on_error(function(stream, error_message) {
 
 ### Accessing Data
 
-``` r
+```r
 # Latest snapshot (all instruments)
 latest <- stream$get_latest_data()
 
@@ -219,7 +212,7 @@ summary_eur <- stream$get_summary(instrument = "EUR=")
 
 ### Built-in Live Plotting
 
-``` r
+```r
 # Create and open live plot
 app <- stream$plot_live(field = "BID", instrument = "EUR=")
 shiny::runApp(app)
@@ -227,7 +220,7 @@ shiny::runApp(app)
 
 ### Advanced Usage
 
-``` r
+```r
 # Enable debug logging
 options(refinitiv_streaming_debug = TRUE)
 
@@ -244,7 +237,7 @@ stream$open()
 
 Run the included examples:
 
-``` r
+```r
 # Quick example (~10 seconds)
 source(system.file("examples", "streaming_quick_example.R", package = "Refinitiv"))
 
@@ -257,17 +250,17 @@ source(system.file("examples", "streaming_test_debug.R", package = "Refinitiv"))
 
 Or use the helper script:
 
-``` r
-source("run_examples.R")  # Interactive menu
+```r
+source(system.file("examples", "run_examples.R", package = "Refinitiv")) # Interactive menu
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Working with Refinitiv Data (RD)
 
 ### Searching
 
-``` r
+```r
 # Basic search
 results <- RDPsearch(RD, query = "AAPL.O")
 
@@ -285,7 +278,7 @@ Presidents <- RDPsearch(
 
 ### Get History
 
-``` r
+```r
 # Simple timeseries
 timeseries <- rd_GetHistory(
   RDObject = RD, 
@@ -303,7 +296,7 @@ data <- rd_GetHistory(
 
 ### Get Data
 
-``` r
+```r
 # Basic data request
 ex1 <- rd_GetData(
   RDObject = RD, 
@@ -315,7 +308,7 @@ ex1 <- rd_GetData(
 
 ### Historical Pricing
 
-``` r
+```r
 # Daily data
 daily <- rd_GetHistoricalPricing(
   universe = "VOD.L", 
@@ -334,13 +327,13 @@ intraday <- rd_GetHistoricalPricing(
 )
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Working with the Legacy Eikon Functions
 
 ### Connecting
 
-``` r
+```r
 Eikon <- EikonConnect(
   Eikonapplication_id = "YOUR EIKON API KEY", 
   PythonModule = "JSON"
@@ -349,7 +342,7 @@ Eikon <- EikonConnect(
 
 ### News
 
-``` r
+```r
 # Get headlines
 headlines <- EikonGetNewsHeadlines(
   EikonObject = Eikon,
@@ -366,7 +359,7 @@ stories <- EikonGetNewsStory(
 
 ### Timeseries
 
-``` r
+```r
 Timeseries <- EikonGetTimeseries(
   EikonObject = Eikon, 
   rics = c("MMM", "III.L"),
@@ -377,7 +370,7 @@ Timeseries <- EikonGetTimeseries(
 
 ### Data Requests
 
-``` r
+```r
 Data <- EikonGetData(
   EikonObject = Eikon, 
   rics = c("MMM", "III.L"),
@@ -386,53 +379,40 @@ Data <- EikonGetData(
 )
 ```
 
-**Note:** For large integers (e.g., market cap), see the section on
-[retrieving large
-integers](#retrieving-large-integers-with-eikongetdata-python-only-not-for-json-method)
-below.
+**Note:** For large integers (e.g., market cap), see the section on [retrieving large integers](#retrieving-large-integers-with-eikongetdata-python-only-not-for-json-method) below.
 
 ### Retrieving Large Integers with EikonGetData (Python only, not for JSON method)
 
-There is currently an issue with the reticulate package handling large
-integers (like e.g. market capatilization) from python to r. This issue
-is described [here](https://github.com/rstudio/reticulate/issues/323)
-and try for yourself
-[here](https://community.rstudio.com/t/large-integer-conversion-from-python-to-r/82568)
+There is currently an issue with the reticulate package handling large integers (like e.g. market capatilization) from python to r. This issue is described [here](https://github.com/rstudio/reticulate/issues/323) and try for yourself [here](https://community.rstudio.com/t/large-integer-conversion-from-python-to-r/82568)
 
 This leads to the following behaviour:
 
-``` r
+```r
 ex2 <- EikonGetData( EikonObject = Eikon, rics = "AAPl.O"
                     , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
                     )
 ```
 
-ex2 will return `-1` for the Market capitalization. Which can never be
-the correct number.
+ex2 will return `-1` for the Market capitalization. Which can never be the correct number.
 
-A workaround is to scale back the expected output to a smaller number.
-By expressing the market capatalization in millions the produced integer
-becomes smaller and so prevents the integer of becoming too large. This
-can be done by adding a named list in the parameters field:
-`Parameters = list("scale" = 6)` in which the `6` stands for millions.
+A workaround is to scale back the expected output to a smaller number. By expressing the market capatalization in millions the produced integer becomes smaller and so prevents the integer of becoming too large. This can be done by adding a named list in the parameters field: `Parameters = list("scale" = 6)` in which the `6` stands for millions.
 
-``` r
+```r
 ex2a <- EikonGetData( EikonObject = Eikon, rics = "AAPl.O"
                     , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
                     , Parameters = list("scale" = 6)
                     )
 ```
 
-Or for more complex formula’s scale back in the formula itself by adding
-`scale = 6` to `TR.CompanyMarketCap`
+Or for more complex formula's scale back in the formula itself by adding `scale = 6` to `TR.CompanyMarketCap`
 
-``` r
+```r
 ex2b <- EikonGetData( EikonObject = Eikon, rics = "AAPl.O"
                     , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D, scale=6)/*Market Cap*/"
                     )
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Custom Instruments
 
@@ -440,7 +420,7 @@ Custom instruments can only be created using the JSON connection method.
 
 ### Setup
 
-``` r
+```r
 # Get UUID from Eikon Terminal: Help → About → User Details
 RD <- RDConnect(
   application_id = NA, 
@@ -451,7 +431,7 @@ RD <- RDConnect(
 
 ### Create Simple Instrument
 
-``` r
+```r
 # Create
 rd_ManageCustomInstruments(
   operation = "CREATE", 
@@ -481,7 +461,7 @@ rd_ManageCustomInstruments(
 
 ### Basket Instruments
 
-``` r
+```r
 # Build basket
 basket <- CustomInstrumentBasketBuilder(
   RICs = c("AAPL.O", "AMZN.O"), 
@@ -511,7 +491,7 @@ rd_ManageCustomInstruments(
 
 ### Utilities
 
-``` r
+```r
 # List all custom instruments
 AllActiveCustomInstruments <- rd_SearchCustomInstruments()
 
@@ -519,11 +499,11 @@ AllActiveCustomInstruments <- rd_SearchCustomInstruments()
 RealInstrumentName <- CorrectCustomInstrument("InterestingBasket")
 ```
 
-------------------------------------------------------------------------
+---
 
 ## DataStream
 
-``` r
+```r
 DatastreamUserName <- "Your datastream username"
 DatastreamPassword <- "Your datastream password"
 DataStream <- DataStreamConnect(DatastreamUserName, DatastreamPassword)
@@ -535,10 +515,9 @@ DSResult <- DataStream$snapshotRequest(
 )
 ```
 
-For further details, see
-[DatastreamDSWS2R](https://github.com/CharlesCara/DatastreamDSWS2R).
+For further details, see [DatastreamDSWS2R](https://github.com/CharlesCara/DatastreamDSWS2R).
 
-------------------------------------------------------------------------
+---
 
 ## Building Custom Visualizations ⭐ NEW
 
@@ -548,7 +527,7 @@ The streaming API provides several ways to build custom visualizations:
 
 The simplest approach uses the built-in Shiny app:
 
-``` r
+```r
 stream <- rd_get_streaming_data(universe = "EUR=", fields = c("BID", "ASK"))
 stream$open()
 
@@ -557,14 +536,15 @@ app <- stream$plot_live(field = "BID", instrument = "EUR=")
 shiny::runApp(app)
 ```
 
-**Requirements:** - `shiny` package: `install.packages("shiny")` -
-Stream must be open and receiving data
+**Requirements:**
+- `shiny` package: `install.packages("shiny")`
+- Stream must be open and receiving data
 
 ### Method 2: Custom Shiny App
 
 Build your own Shiny app using stream data:
 
-``` r
+```r
 library(shiny)
 library(Refinitiv)
 
@@ -607,7 +587,7 @@ shinyApp(ui, server)
 
 Create static plots from history data:
 
-``` r
+```r
 library(ggplot2)
 
 stream <- rd_get_streaming_data(universe = "EUR=", fields = c("BID", "ASK"))
@@ -630,7 +610,7 @@ ggplot(history, aes(x = timestamp, y = BID)) +
 
 For interactive plots:
 
-``` r
+```r
 library(plotly)
 
 stream <- rd_get_streaming_data(universe = "EUR=", fields = c("BID", "ASK"))
@@ -656,7 +636,7 @@ stream$on_update(function(stream, instrument, fields) {
 
 For maximum flexibility, access data directly:
 
-``` r
+```r
 # Get latest snapshot
 latest <- stream$get_latest_data()
 
@@ -672,34 +652,36 @@ recent <- history[timestamp > Sys.time() - 3600]  # Last hour
 
 ### Visualization Dependencies
 
-**For built-in plotting:** - `shiny` - Required for `plot_live()` -
-`data.table` - For data history (already included)
+**For built-in plotting:**
+- `shiny` - Required for `plot_live()`
+- `data.table` - For data history (already included)
 
-**For custom visualizations:** - `shiny` - For interactive web apps -
-`ggplot2` - For static plots - `plotly` - For interactive plots
-(optional) - `dygraphs` - For time series plots (optional)
+**For custom visualizations:**
+- `shiny` - For interactive web apps
+- `ggplot2` - For static plots
+- `plotly` - For interactive plots (optional)
+- `dygraphs` - For time series plots (optional)
 
 Install as needed:
-
-``` r
+```r
 install.packages(c("shiny", "ggplot2", "plotly", "dygraphs"))
 ```
 
 ### Best Practices
 
-1.  **Always close streams** when done to free resources
-2.  **Use callbacks** for real-time updates instead of polling
-3.  **Filter history** for large datasets before plotting
-4.  **Handle errors** in callbacks to prevent crashes
-5.  **Use `later::run_now()`** in long-running scripts to process events
+1. **Always close streams** when done to free resources
+2. **Use callbacks** for real-time updates instead of polling
+3. **Filter history** for large datasets before plotting
+4. **Handle errors** in callbacks to prevent crashes
+5. **Use `later::run_now()`** in long-running scripts to process events
 
-------------------------------------------------------------------------
+---
 
 ## Examples
 
 Example scripts are included in the package:
 
-``` r
+```r
 # List available examples
 list.files(system.file("examples", package = "Refinitiv"))
 
@@ -709,22 +691,20 @@ source(system.file("examples", "streaming_quick_example.R", package = "Refinitiv
 
 Or use the interactive runner:
 
-``` r
+```r
 source("run_examples.R")
 ```
 
-------------------------------------------------------------------------
+---
 
 ## License
 
 See LICENSE file.
 
-------------------------------------------------------------------------
+---
 
 ## Acknowledgments
 
--   Uses
-    [DatastreamDSWS2R](https://github.com/CharlesCara/DatastreamDSWS2R)
-    for DataStream connections
--   Built for stability and robustness with automatic retries and
-    chunking
+- Uses [DatastreamDSWS2R](https://github.com/CharlesCara/DatastreamDSWS2R) for DataStream connections
+- Built for stability and robustness with automatic retries and chunking
+

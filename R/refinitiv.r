@@ -438,7 +438,7 @@ RDConnect <- function(application_id = NA, PythonModule = "JSON", UUID = NA) {
 
   if(PythonModule == "JSON"){
 
-    rd <- RefinitivJsonConnect()
+    rd <- RefinitivJsonConnect(Eikonapplication_id = application_id)
     return(rd)
 
 

@@ -36,6 +36,16 @@
     options(rdp_port = 9000L)
   }
 
+  if (is.null(getOption("streaming_port"))) { # Port for streaming WebSocket connections
+    # Default to eikon_port if available, otherwise rdp_port, otherwise 9060
+    eikon_port <- getOption("eikon_port")
+    if (!is.null(eikon_port)) {
+      options(streaming_port = eikon_port)
+    } else {
+      options(streaming_port = getOption("rdp_port", 9060L))
+    }
+  }
+
   if (is.null(getOption("HistoricalPricingFields"))) {
     options(HistoricalPricingFields  = c(
       "HIGH_1", "LOW_1", "OPEN_PRC", "TRDPRC_1",

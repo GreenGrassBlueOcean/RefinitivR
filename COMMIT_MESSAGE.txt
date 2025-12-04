@@ -1,0 +1,46 @@
+Add real-time streaming API with live visualizations and fix RDConnect bug
+
+This commit introduces a comprehensive real-time streaming API for live
+market data and fixes a critical bug in RDConnect when API keys are not
+properly configured.
+
+Major Features Added:
+- Real-time streaming API with WebSocket support for live market data
+- Built-in live plotting with Shiny integration (plot_live() method)
+- Event-driven architecture with refresh, update, and error callbacks
+- Data history tracking and summary statistics
+- Support for multiple instruments and fields
+- Comprehensive documentation and examples
+
+Streaming API Highlights:
+- Simple API: rd_get_streaming_data() for quick setup
+- Callback system: on_refresh(), on_update(), on_error() for event handling
+- Data access: get_latest_data(), get_data_history(), get_summary()
+- Live visualization: plot_live() creates interactive Shiny apps
+- Advanced usage: R6 classes for custom stream definitions and managers
+
+Visualization Capabilities:
+- Built-in Shiny app for live plotting (plot_live())
+- Support for custom Shiny applications
+- Integration with ggplot2 for static plots
+- Compatible with plotly for interactive visualizations
+- Programmatic data access for any visualization framework
+
+Bug Fixes:
+- Fixed RDConnect() to properly handle missing API keys by correctly
+  retrieving from options or providing clear error messages instead of
+  passing invalid arguments to RefinitivJsonConnect
+
+Documentation:
+- Comprehensive README.Rmd with streaming API documentation
+- "Building Custom Visualizations" guide with 5 different approaches
+- Example scripts in inst/examples/ demonstrating all features
+- Clear quick start guide and advanced usage examples
+
+Technical Improvements:
+- Fixed all R CMD check warnings (documentation parsing issues)
+- Improved test suite with environment-based state tracking
+- Code quality improvements (removed global assignments)
+- Standard package structure (examples in inst/examples/)
+
+All tests pass. R CMD check completes successfully.
