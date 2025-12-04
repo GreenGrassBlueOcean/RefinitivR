@@ -1,0 +1,70 @@
+# Return a single news story corresponding to the identifier provided in story_id
+
+Return a single news story corresponding to the identifier provided in
+story_id
+
+## Usage
+
+``` r
+EikonGetNewsStory(
+  EikonObject = EikonConnect(),
+  story_id = NULL,
+  raw_output = FALSE,
+  debug = FALSE,
+  renderHTML = FALSE
+)
+```
+
+## Arguments
+
+- EikonObject:
+
+  Connection Object result from EikonConnect()
+
+- story_id:
+
+  The story id. The story id is a field you will find in every headline
+  you retrieved with the legacy get_news_headlines
+
+- raw_output:
+
+  boolean if TRUE provide only the raw downloaded info from Eikon
+
+- debug:
+
+  boolean if TRUE prints out the python call to the console
+
+- renderHTML:
+
+  boolean if TRUE renders HTML output file for use in website defaults
+  to FALSE
+
+## Value
+
+data.frame
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+ EikonJson <- RefinitivJsonConnect()
+ headlines <- EikonGetNewsHeadlines(EikonObject = EikonJson
+                                   , query = "R:MSFT.O", count = 2)
+ stories <- EikonGetNewsStory(story_id = headlines$storyId
+ , EikonObject = EikonJson)
+
+} # }
+
+if (FALSE) { # \dontrun{
+  Eikon <- Refinitiv::EikonConnect()
+  story_id <- "urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"
+  stories_RD <- EikonGetNewsStory(story_id = story_id
+  , EikonObject = Eikon, debug = TRUE, raw_output  = FALSE)
+
+  EikonJson <- RefinitivJsonConnect()
+  stories_JSON <- EikonGetNewsStory(story_id = story_id
+  , EikonObject = EikonJson, debug = TRUE, raw_output  = FALSE)
+
+ identical(stories_RD, stories_JSON)
+} # }
+```

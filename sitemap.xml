@@ -41,8 +41,6 @@
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/TR_Field.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/TestDataStreamCredentials.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/build_get_query_string.html</loc></url>
-<url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/create_OMM_Stream.html</loc></url>
-<url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/create_RDP_Stream.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/flattenNestedlist.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/get_rdp_streaming_url.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/index.html</loc></url>
@@ -59,8 +57,11 @@
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/rd_check_proxy_url.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_news_headlines.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_news_story.html</loc></url>
+<url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_streaming_data.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_top_news.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/rd_handshake.html</loc></url>
+<url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/rd_streaming_debug.html</loc></url>
+<url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/rd_streaming_pricing.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/replaceInList.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/retry.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/translate_to_iso8601_duration.html</loc></url>
