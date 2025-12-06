@@ -244,7 +244,7 @@ source(system.file("examples", "streaming_test_debug.R", package = "Refinitiv"))
 Or use the helper script:
 
 ``` r
-source("run_examples.R")  # Interactive menu
+source(system.file("examples", "run_examples.R", package = "Refinitiv")) # Interactive menu
 ```
 
 ------------------------------------------------------------------------
