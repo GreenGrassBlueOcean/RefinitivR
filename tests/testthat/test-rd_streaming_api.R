@@ -5,6 +5,22 @@ library(mockery)
 
 context("Streaming API - rd_get_streaming_data")
 
+# Teardown: Close all streams and stop event loops after each test
+teardown({
+  # Run any pending later callbacks to clear the queue
+  if (requireNamespace("later", quietly = TRUE)) {
+    # Process and clear all pending callbacks
+    tryCatch({
+      later::run_now()
+      # Give a moment for any scheduled callbacks to complete
+      Sys.sleep(0.1)
+      later::run_now()
+    }, error = function(e) {
+      # Ignore errors during cleanup
+    })
+  }
+})
+
 # Test rd_get_streaming_data
 test_that("rd_get_streaming_data creates stream with valid parameters", {
   # Mock dependencies
@@ -225,5 +241,6 @@ test_that("rd_get_streaming_data creates independent streams", {
   expect_equal(stream1$get_definition()$get_universe(), "EUR=")
   expect_equal(stream2$get_definition()$get_universe(), "GBP=")
 })
+
 
 

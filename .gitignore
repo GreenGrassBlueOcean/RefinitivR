@@ -9,3 +9,11 @@ problem.Rdata
 .httr-oauth
 Refinitiv.Rproj
 docs
+/lib
+coverage_detailed.csv
+coverage_missing.csv
+coverage_report.html
+coverage_summary.txt
+COMMIT_MESSAGE.txt
+COMMIT_MESSAGE.txt
+COMMIT_MESSAGE.txt

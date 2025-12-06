@@ -2,7 +2,7 @@
 title: "RefinitivR"
 output: 
   md_document:
-    variant: markdown_github
+    variant: gfm
     preserve_yaml: TRUE
 ---
 
@@ -99,8 +99,7 @@ stream$close()
 4.  [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
 5.  [DataStream](#datastream)
 6.  [Custom Instruments](#custom-instruments)
-7.  [Building Custom Visualizations](#building-custom-visualizations) ⭐
-    NEW
+7.  [Building Custom Visualizations](#building-custom-visualizations) ⭐ NEW
 
 ------------------------------------------------------------------------
 
@@ -258,7 +257,7 @@ source(system.file("examples", "streaming_test_debug.R", package = "Refinitiv"))
 Or use the helper script:
 
 ``` r
-source("run_examples.R")  # Interactive menu
+source(system.file("examples", "run_examples.R", package = "Refinitiv")) # Interactive menu
 ```
 
 ------------------------------------------------------------------------
@@ -386,10 +385,7 @@ Data <- EikonGetData(
 )
 ```
 
-**Note:** For large integers (e.g., market cap), see the section on
-[retrieving large
-integers](#retrieving-large-integers-with-eikongetdata-python-only-not-for-json-method)
-below.
+**Note:** For large integers (e.g., market cap), see the section on [retrieving large integers](#retrieving-large-integers-with-eikongetdata-python-only-not-for-json-method) below.
 
 ### Retrieving Large Integers with EikonGetData (Python only, not for JSON method)
 

@@ -860,17 +860,29 @@ Stream <- R6::R6Class("Stream",
     },
     
     .schedule_next_event_loop = function() {
+      # Double-check before scheduling - if already closed, don't schedule
       if (!private$.is_open || !private$.event_loop_active) {
         return()
       }
       
       if (requireNamespace("later", quietly = TRUE)) {
+        # Store reference to self for callback
+        self_ref <- self
+        
         later::later(function() {
-          if (private$.is_open && private$.event_loop_active) {
-            # Run event loop to process any pending messages
-            later::run_now()
-            # Schedule next run
-            private$.schedule_next_event_loop()
+          # Re-check state at execution time - stream might have been closed
+          # Access private fields through self reference
+          private_env <- self_ref$.__enclos_env__$private
+          if (!private_env$.is_open || !private_env$.event_loop_active) {
+            return()  # Stream closed, don't reschedule
+          }
+          
+          # Run event loop to process any pending messages
+          later::run_now()
+          
+          # Only reschedule if still open and active (check again after run_now)
+          if (private_env$.is_open && private_env$.event_loop_active) {
+            private_env$.schedule_next_event_loop()
           }
         }, delay = 0.1)
       }

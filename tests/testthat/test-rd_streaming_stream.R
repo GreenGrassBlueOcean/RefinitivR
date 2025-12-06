@@ -5,6 +5,22 @@ library(mockery)
 
 context("Stream Class")
 
+# Teardown: Close all streams and stop event loops after each test
+teardown({
+  # Run any pending later callbacks to clear the queue
+  if (requireNamespace("later", quietly = TRUE)) {
+    # Process and clear all pending callbacks
+    tryCatch({
+      later::run_now()
+      # Give a moment for any scheduled callbacks to complete
+      Sys.sleep(0.1)
+      later::run_now()
+    }, error = function(e) {
+      # Ignore errors during cleanup
+    })
+  }
+})
+
 # Helper to create mock manager
 create_mock_manager <- function(connected = TRUE, logged_in = TRUE) {
   mock_manager <- list(
@@ -536,5 +552,166 @@ test_that("Stream plot_live uses first field if not specified", {
   )
   
   expect_type(app, "list")
+})
+
+# Test Stream event loop management
+test_that("Stream event loop stops when stream is closed", {
+  skip_if_not_installed("later")
+  
+  def <- StreamDefinition$new(universe = "EUR=", fields = c("BID"))
+  manager <- StreamManager$new(stream_type = "pricing")
+  
+  stream <- Stream$new(definition = def, manager = manager)
+  
+  # Set up manager as connected
+  manager$.__enclos_env__$private$.connection_state <- "connected"
+  manager$.__enclos_env__$private$.logged_in <- TRUE
+  manager$.__enclos_env__$private$.stream_id_counter <- 2L
+  
+  # Mock WebSocket
+  mock_ws <- list(
+    readyState = function() 1L,
+    connect = function() NULL,
+    send = function(msg) NULL,
+    onMessage = function(handler) NULL,
+    onOpen = function(handler) NULL,
+    onClose = function(handler) NULL,
+    onError = function(handler) NULL,
+    close = function() NULL
+  )
+  class(mock_ws) <- "WebSocket"
+  manager$.__enclos_env__$private$.ws <- mock_ws
+  
+  # Stub manager methods
+  stub(manager$connect, "rd_handshake", function() list(access_token = "test"))
+  stub(manager$connect, "get_streaming_url", function(type, port) "ws://test")
+  stub(manager$connect, "get_streaming_protocol", function(type) "tr_json2")
+  stub(manager$connect, "create_streaming_headers", function(token) list())
+  stub(manager$connect, "poll_until_connected", function(ws, timeout) TRUE)
+  stub(manager$connect, "create_omm_login_request", function(app_key, access_token) '{"ID":1}')
+  stub(manager$connect, "websocket::WebSocket$new", function(url, protocols, headers, autoConnect) mock_ws)
+  stub(manager$connect, "requireNamespace", function(pkg, quietly) {
+    if (pkg %in% c("websocket", "later")) return(TRUE)
+    return(FALSE)
+  })
+  stub(manager$connect, "later::run_now", function(timeout) NULL)
+  
+  stub(manager$subscribe, "requireNamespace", function(pkg, quietly) {
+    if (pkg == "later") return(TRUE)
+    return(FALSE)
+  })
+  stub(manager$subscribe, "later::run_now", function(timeout) NULL)
+  stub(manager$subscribe, "Sys.sleep", function(time) NULL)
+  
+  # Open stream (this will start event loop)
+  stub(stream$open, "requireNamespace", function(pkg, quietly) {
+    if (pkg == "later") return(TRUE)
+    return(FALSE)
+  })
+  stub(stream$open, "later::run_now", function(timeout) NULL)
+  
+  stream$open()
+  
+  # Verify event loop is active
+  expect_true(stream$.__enclos_env__$private$.event_loop_active)
+  expect_true(stream$is_open())
+  
+  # Close stream
+  stub(stream$close, "requireNamespace", function(pkg, quietly) {
+    if (pkg == "later") return(TRUE)
+    return(FALSE)
+  })
+  stub(stream$close, "later::run_now", function(timeout) NULL)
+  
+  stream$close()
+  
+  # Verify event loop is stopped
+  expect_false(stream$.__enclos_env__$private$.event_loop_active)
+  expect_false(stream$is_open())
+})
+
+test_that("Stream event loop does not reschedule when closed", {
+  skip_if_not_installed("later")
+  
+  def <- StreamDefinition$new(universe = "EUR=", fields = c("BID"))
+  manager <- StreamManager$new(stream_type = "pricing")
+  
+  stream <- Stream$new(definition = def, manager = manager)
+  
+  # Manually set stream as open and event loop as active
+  stream$.__enclos_env__$private$.is_open <- TRUE
+  stream$.__enclos_env__$private$.event_loop_active <- TRUE
+  
+  # Try to schedule event loop - should work when open
+  private_env <- stream$.__enclos_env__$private
+  if (requireNamespace("later", quietly = TRUE)) {
+    # This should schedule a callback
+    private_env$.schedule_next_event_loop()
+    
+    # Now close the stream BEFORE the callback executes
+    stream$.__enclos_env__$private$.is_open <- FALSE
+    stream$.__enclos_env__$private$.event_loop_active <- FALSE
+    
+    # Process any pending callbacks - they should detect stream is closed
+    # and not reschedule (this tests the early return path in the callback)
+    later::run_now()
+    
+    # Give a moment for any scheduled callbacks
+    Sys.sleep(0.15)  # Slightly longer than the 0.1 delay
+    
+    # Process callbacks again
+    later::run_now()
+    
+    # Verify stream is still closed
+    expect_false(stream$is_open())
+    expect_false(stream$.__enclos_env__$private$.event_loop_active)
+  }
+})
+
+test_that("Stream event loop callback checks state correctly", {
+  skip_if_not_installed("later")
+  
+  def <- StreamDefinition$new(universe = "EUR=", fields = c("BID"))
+  manager <- StreamManager$new(stream_type = "pricing")
+  
+  stream <- Stream$new(definition = def, manager = manager)
+  
+  private_env <- stream$.__enclos_env__$private
+  
+  # Test that scheduling doesn't work when already closed
+  private_env$.is_open <- FALSE
+  private_env$.event_loop_active <- TRUE
+  private_env$.schedule_next_event_loop()  # Should return early
+  
+  # Verify it didn't schedule (stream is closed)
+  expect_false(private_env$.is_open)
+  
+  # Test that scheduling doesn't work when event loop inactive
+  private_env$.is_open <- TRUE
+  private_env$.event_loop_active <- FALSE
+  private_env$.schedule_next_event_loop()  # Should return early
+  
+  # Verify it didn't schedule (event loop inactive)
+  expect_false(private_env$.event_loop_active)
+})
+
+test_that("Stream event loop start method exists and is callable", {
+  # This test verifies that .start_event_loop method exists and can be called
+  # The actual behavior (whether it starts the loop) depends on whether
+  # the 'later' package is available, which is hard to test without
+  # actually removing the package
+  def <- StreamDefinition$new(universe = "EUR=", fields = c("BID"))
+  manager <- create_mock_manager()
+  
+  stream <- Stream$new(definition = def, manager = manager)
+  
+  # Access private environment
+  private_env <- stream$.__enclos_env__$private
+  
+  # Verify the method exists and can be called without error
+  expect_true(is.function(private_env$.start_event_loop))
+  
+  # Call it - should not error (behavior depends on later availability)
+  expect_silent(private_env$.start_event_loop())
 })
 

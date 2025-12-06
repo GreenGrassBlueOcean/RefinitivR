@@ -5,6 +5,22 @@ library(mockery)
 
 context("Streaming Utilities")
 
+# Teardown: Clear any pending event loops after each test
+teardown({
+  # Run any pending later callbacks to clear the queue
+  if (requireNamespace("later", quietly = TRUE)) {
+    # Process and clear all pending callbacks
+    tryCatch({
+      later::run_now()
+      # Give a moment for any scheduled callbacks to complete
+      Sys.sleep(0.1)
+      later::run_now()
+    }, error = function(e) {
+      # Ignore errors during cleanup
+    })
+  }
+})
+
 # Test get_streaming_url
 test_that("get_streaming_url constructs correct URL with default port", {
   options(refinitiv_base_url = "http://localhost")

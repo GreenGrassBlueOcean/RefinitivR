@@ -5,6 +5,22 @@ library(mockery)
 
 context("StreamManager")
 
+# Teardown: Disconnect all managers and stop event loops after each test
+teardown({
+  # Run any pending later callbacks to clear the queue
+  if (requireNamespace("later", quietly = TRUE)) {
+    # Process and clear all pending callbacks
+    tryCatch({
+      later::run_now()
+      # Give a moment for any scheduled callbacks to complete
+      Sys.sleep(0.1)
+      later::run_now()
+    }, error = function(e) {
+      # Ignore errors during cleanup
+    })
+  }
+})
+
 # Helper function to create mock WebSocket
 create_mock_websocket <- function(ready_state = 1L, connected = TRUE) {
   mock_ws <- list(
