@@ -55,6 +55,56 @@ test_that("EikonRepairMic satisfies testcases", {
 
 })
 
+test_that("EikonRepairMic verbose parameter and multi-key logic work", {
+
+  # Setup: Mock data with diverse issues
+  # WM has NYQ, so it should be repaired to XNYS
+  test_data <- data.frame(
+    RDN_ExchangeCode = c("NYQ", "LSE", "XYZ"), # XYZ is unknown
+    "Operating MIC" = c("XXXX", "", NA),
+    stringsAsFactors = FALSE,
+    check.names = FALSE
+  )
+  # 1. Test Verbose Output (Repair Case)
+  # Should emit a message when repairs happen
+  expect_message(
+    EikonRepairMic(test_data, verbose = TRUE),
+    "Repair Success: Corrected 2 MIC codes using RDN_ExchangeCode"
+  )
+  # 2. Test Silence (Verbose = FALSE)
+  expect_silent(EikonRepairMic(test_data, verbose = FALSE))
+  # 3. Test Multi-Key Prioritization
+  # If both Code and ID are present, it should use Code (highest priority)
+  prio_data <- data.frame(
+    RDN_ExchangeCode = "NYQ",
+    RDN_EXCHID = "LSE", # Conflicting ID for testing
+    "Operating MIC" = "XXXX",
+    stringsAsFactors = FALSE,
+    check.names = FALSE
+  )
+
+  res_prio <- EikonRepairMic(prio_data, verbose = TRUE)
+  # Should be XNYS (from NYQ) not XLON (from LSE)
+  expect_equal(res_prio$`Operating MIC`, "XNYS")
+  # 4. Test ID Fallback (when Code is missing)
+  id_data <- data.frame(
+    RDN_EXCHID = "LSE",
+    "Operating.MIC" = NA,
+    stringsAsFactors = FALSE
+  )
+  expect_message(
+    res_id <- EikonRepairMic(id_data, verbose = TRUE),
+    "using RDN_EXCHID"
+  )
+  expect_equal(res_id$Operating.MIC, "XLON")
+  # 5. Test "Skill Skip" message (No repairable keys)
+  # Using a column that isn't a repair trigger should trigger the error now
+  # (as per the refined 'stop' logic)
+  expect_error(
+    EikonRepairMic(data.frame(Ticker = "AAPL.O", MIC = "XXXX"), verbose = TRUE),
+    "Input data does not contain required exchange identifiers"
+  )
+})
 
 test_that("ProcessSymbology returns an error when it should", {
   expect_error(ProcessSymbology(EikonSymbologyResult = list(data.frame()), from_symbol_type = "ISIN", to_symbol_type = "RIC")

@@ -95,60 +95,88 @@ EikonPostProcessor <- function(Eikon_get_dataOuput, SpaceConvertor = "."){
 }
 
 
-
-
-
-
-
-
-#' Often operating Mics are missing from the Eikon api, this function does repair these missing operating Mics based upon an internal list of codes.
+#' Repair Market Identifier Codes (MIC) utilizing RDN Exchange Identifiers
 #'
-#' @param Fundamentals_Data a data.frame containing at leasts the columns "RDN_EXCHD2" and "Operating MIC"
+#' @description
+#' `EikonRepairMic` addresses the unreliability of the `TR.OperatingMIC` field in Refinitiv
+#' Eikon data. It repairs missing (`NA`), empty (`""`), or invalid (`"XXXX"`) MIC codes
+#' by cross-referencing against an internal lookup table (`Refinitiv::OperatingMicLookup`).
 #'
-#' @return the corrected data.frame in which the column "Operating MIC" empty string and NA elements are replaced with an operating MIC based on RDN_EXCHD2
+#' The function is designed to be "invisible" in a pipeline, automatically detecting
+#' available exchange identifiers and handling both space and dot-separated column names.
+#'
+#' @param Fundamentals_Data data.frame or data.table. The dataset containing fundamentals,
+#'   which must include at least one exchange identifier (e.g., `RDN_ExchangeCode`).
+#' @param verbose logical. If `TRUE`, prints a summary of repairs made to the console.
+#'
+#' @return A \code{data.frame} (matches input class) with corrected Market Identifier Codes.
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' DataStream <- Refinitiv::DataStreamConnect(DatastreamUserName = DatastreamUserName,
-#'                        DatastreamPassword = DatastreamPassword)
-#' Stoxx1800Constits <- DataStream$listRequest(instrument = "LDJS180E",
-#'                        datatype = c("RIC", "NAME"), requestDate = "0D")
-#' Eikon <- Refinitiv::EikonConnect()
-#' EikonDataWithFailingOPeratingMics <- EikonGetData(EikonObject = Eikon,
-#'       rics = Stoxx1800Constits$RIC,
-#'      Eikonformulas = c( "RDN_EXCHD2", "TR.OperatingMIC", "TR.CompanyName"))
-#' EikonDataWithRepairedOPeratingMics <- EikonRepairMic(EikonDataWithFailingOPeratingMics)
+#' # Standard usage in a data fetching pipeline
+#' rics <- c("WM", "AAPL.O", "VOD.L")
+#' fields <- c("TR.RDNExchangeCode", "TR.OperatingMIC", "TR.CompanyName")
+#'
+#' raw_data <- EikonGetData(Eikon, rics, fields)$PostProcessedEikonGetData
+#'
+#' # WM often returns "XXXX" for OperatingMIC; this fixes it using RDNExchangeCode
+#' clean_data <- EikonRepairMic(raw_data, verbose = TRUE)
 #' }
-EikonRepairMic <- function(Fundamentals_Data){
+EikonRepairMic <- function(Fundamentals_Data, verbose = FALSE) {
+  # Initialize data.table variables to NULL for R CMD check
+  repairedMIC <- NULL
 
+  # 1. Validate and convert
   if (!is.data.frame(Fundamentals_Data)) {
-    stop("the input should be a data.frame containing the columns RDN_EXCHD2 and Operating MIC and it is not!")
-  } else if (all(!(c("RDN_EXCHD2", "Operating MIC") %in% names(Fundamentals_Data)))) {
-    args <- methods::formalArgs(EikonRepairMic)
-    stop("The data.frame ",args , " presented to EikonRepairMic does not contain the columns RDN_EXCHD2 and Operating MIC and can therefore not be processed!")
+    stop("Input 'Fundamentals_Data' must be a data.frame or data.table.")
+  }
+  DT <- data.table::as.data.table(Fundamentals_Data)
+
+  # 2. Identify primary repair key (Priority: ExchangeCode > EXCHID > EXCHD2)
+  potential_keys <- c("RDN_ExchangeCode", "RDN_EXCHID", "RDN_EXCHD2")
+  join_key <- intersect(potential_keys, names(DT))[1]
+
+  if (is.na(join_key)) {
+    stop("Input data does not contain required exchange identifiers: RDN_ExchangeCode, RDN_EXCHID, or RDN_EXCHD2.")
   }
 
-  #Get operating mics from package data
-  MicLookup <- Refinitiv::OperatingMicLookup
-
-  MergedwithLookup <- merge( x = Fundamentals_Data
-                           , y = MicLookup
-                           , by = "RDN_EXCHD2"
-                           , all.x = TRUE
-                           , sort = FALSE
-                           )
-  #Repair only if really required
-  if ( any(c("", NA) %in% MergedwithLookup$`Operating.MIC`)) {
-    MergedwithLookup[((MergedwithLookup$`Operating.MIC` %in% "") | is.na(MergedwithLookup$`Operating.MIC`)  ),]$`Operating.MIC` <- MergedwithLookup[((MergedwithLookup$`Operating.MIC` %in% "") | is.na(MergedwithLookup$`Operating.MIC`) ),]$repairedMIC
+  # 3. Identify and normalize MIC column (support both space and dot notation)
+  mic_col <- intersect(c("Operating MIC", "Operating.MIC"), names(DT))[1]
+  if (is.na(mic_col)) {
+    mic_col <- "Operating.MIC"
+    DT[, (mic_col) := NA_character_]
+  } else {
+    # CRITICAL: Ensure the column is character type to prevent coercion warnings and test failures
+    DT[, (mic_col) := as.character(get(mic_col))]
   }
 
-  # Remove repaired field again before delivering back
-  MergedwithLookup$repairedMIC <- NULL
+  # 4. Enrich with Internal LookupTable
+  MicLookup <- data.table::as.data.table(Refinitiv::OperatingMicLookup)
 
-  return(MergedwithLookup)
+  # Join using the identified key against lookup's primary key (RDN_EXCHD2)
+  DT <- merge(
+    x = DT,
+    y = MicLookup,
+    by.x = join_key,
+    by.y = "RDN_EXCHD2",
+    all.x = TRUE,
+    sort = FALSE
+  )
+
+  # 5. Execute Repair (Trigger on NA, empty string, or "XXXX")
+  repair_filter <- is.na(DT[[mic_col]]) | (DT[[mic_col]] %in% c("", "XXXX"))
+  actual_repair <- repair_filter & !is.na(DT$repairedMIC)
+
+  if (any(actual_repair)) {
+    if (verbose) message(sprintf("Repair Success: Corrected %d MIC codes using %s.", sum(actual_repair), join_key))
+    DT[actual_repair, (mic_col) := repairedMIC]
+  }
+
+  # 6. Finalize and return
+  DT[, repairedMIC := NULL]
+  return(data.table::setDF(DT))
 }
-
 
 #' Helper function to build the Eikonformulas parameter for the EikonGetData function.
 #'
