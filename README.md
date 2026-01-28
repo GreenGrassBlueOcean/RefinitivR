@@ -1,11 +1,3 @@
----
-title: "RefinitivR"
-output: 
-  md_document:
-    variant: gfm
-    preserve_yaml: TRUE
----
-
 # Important Messages
 
 You can now use both Eikon and Workspace. The package only supports a
