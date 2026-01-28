@@ -1,40 +1,49 @@
-# Often operating Mics are missing from the Eikon api, this function does repair these missing operating Mics based upon an internal list of codes.
+# Repair Market Identifier Codes (MIC) utilizing RDN Exchange Identifiers
 
-Often operating Mics are missing from the Eikon api, this function does
-repair these missing operating Mics based upon an internal list of
-codes.
+\`EikonRepairMic\` addresses the unreliability of the
+\`TR.OperatingMIC\` field in Refinitiv Eikon data. It repairs missing
+(\`NA\`), empty (\`""\`), or invalid (\`"XXXX"\`) MIC codes by
+cross-referencing against an internal lookup table
+(\`Refinitiv::OperatingMicLookup\`).
+
+The function is designed to be "invisible" in a pipeline, automatically
+detecting available exchange identifiers and handling both space and
+dot-separated column names.
 
 ## Usage
 
 ``` r
-EikonRepairMic(Fundamentals_Data)
+EikonRepairMic(Fundamentals_Data, verbose = FALSE)
 ```
 
 ## Arguments
 
 - Fundamentals_Data:
 
-  a data.frame containing at leasts the columns "RDN_EXCHD2" and
-  "Operating MIC"
+  data.frame or data.table. The dataset containing fundamentals, which
+  must include at least one exchange identifier (e.g.,
+  \`RDN_ExchangeCode\`).
+
+- verbose:
+
+  logical. If \`TRUE\`, prints a summary of repairs made to the console.
 
 ## Value
 
-the corrected data.frame in which the column "Operating MIC" empty
-string and NA elements are replaced with an operating MIC based on
-RDN_EXCHD2
+A `data.frame` (matches input class) with corrected Market Identifier
+Codes.
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
-DataStream <- Refinitiv::DataStreamConnect(DatastreamUserName = DatastreamUserName,
-                       DatastreamPassword = DatastreamPassword)
-Stoxx1800Constits <- DataStream$listRequest(instrument = "LDJS180E",
-                       datatype = c("RIC", "NAME"), requestDate = "0D")
-Eikon <- Refinitiv::EikonConnect()
-EikonDataWithFailingOPeratingMics <- EikonGetData(EikonObject = Eikon,
-      rics = Stoxx1800Constits$RIC,
-     Eikonformulas = c( "RDN_EXCHD2", "TR.OperatingMIC", "TR.CompanyName"))
-EikonDataWithRepairedOPeratingMics <- EikonRepairMic(EikonDataWithFailingOPeratingMics)
+# Standard usage in a data fetching pipeline
+rics <- c("WM", "AAPL.O", "VOD.L")
+fields <- c("TR.RDNExchangeCode", "TR.OperatingMIC", "TR.CompanyName")
+
+raw_data <- EikonGetData(Eikon, rics, fields)$PostProcessedEikonGetData
+
+# WM often returns "XXXX" for OperatingMIC; this fixes it using RDNExchangeCode
+clean_data <- EikonRepairMic(raw_data, verbose = TRUE)
 } # }
 ```

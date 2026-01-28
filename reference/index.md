@@ -32,9 +32,8 @@
   : Function to obtain timeseries from Eikon. Based on the Eikon python
   function get_timeseries
 - [`EikonRepairMic()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonRepairMic.md)
-  : Often operating Mics are missing from the Eikon api, this function
-  does repair these missing operating Mics based upon an internal list
-  of codes.
+  : Repair Market Identifier Codes (MIC) utilizing RDN Exchange
+  Identifiers
 - [`EikonShowAttributes()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonShowAttributes.md)
   : Show the attributes of the Python Eikon
 - [`NagerHolidayData`](https://greengrassblueocean.github.io/RefinitivR/reference/NagerHolidayData.md)
