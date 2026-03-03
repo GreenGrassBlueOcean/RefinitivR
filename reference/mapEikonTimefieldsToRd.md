@@ -30,10 +30,10 @@ A character vector of translated column names for Refinitiv Data (RD).
 ## Examples
 
 ``` r
-mapEikonTimefieldsToRd()
+Refinitiv:::mapEikonTimefieldsToRd()
 #>   TIMESTAMP      VOLUME        HIGH         LOW        OPEN       CLOSE 
 #> "TIMESTAMP" "ACVOL_UNS"  "MKT_HIGH"   "MKT_LOW"  "MKT_OPEN"   "CLS_AUC" 
-mapEikonTimefieldsToRd(c("TIMESTAMP", "UNKNOWN_COLUMN", "CLOSE"))
+Refinitiv:::mapEikonTimefieldsToRd(c("TIMESTAMP", "UNKNOWN_COLUMN", "CLOSE"))
 #>        TIMESTAMP   UNKNOWN_COLUMN            CLOSE 
 #>      "TIMESTAMP" "UNKNOWN_COLUMN"        "CLS_AUC" 
 ```

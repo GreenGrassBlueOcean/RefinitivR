@@ -1,7 +1,6 @@
-# Function to check through which Refinitiv Connection object requests are made
+# Function to check which Refinitiv connection method is active
 
-Function to check through which Refinitiv Connection object requests are
-made
+Function to check which Refinitiv connection method is active
 
 ## Usage
 
@@ -17,13 +16,12 @@ PropertiesActiveRefinitivObject(verbose = TRUE)
 
 ## Value
 
-named list
+named list with connection properties
 
 ## Examples
 
 ``` r
+if (FALSE) { # \dontrun{
 test <- PropertiesActiveRefinitivObject()
-#> Refinitiv Connection method = not loaded 
-#>  Version =  
-#>  Type = 
+} # }
 ```

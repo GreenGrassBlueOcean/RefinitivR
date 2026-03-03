@@ -6,7 +6,7 @@ RDP search function is a wrapper for the pyton rdp.search function
 
 ``` r
 RDPsearch(
-  RDP = RDConnect(),
+  RDP = rd_connection(),
   query = NULL,
   view = NULL,
   select = NULL,
@@ -19,7 +19,8 @@ RDPsearch(
   navigators = NULL,
   features = NULL,
   SpaceConvertor = ".",
-  Arglist = list()
+  Arglist = list(),
+  cache = NULL
 )
 ```
 
@@ -84,6 +85,14 @@ RDPsearch(
   optional named list pass the above parameters as a named list
   withouding needing to use to do.call.
 
+- cache:
+
+  Controls caching. `NULL` (default) defers to
+  `getOption("refinitiv_cache", FALSE)`. `TRUE` uses the function
+  default TTL (300 s). `FALSE` disables caching. A positive numeric
+  value sets the cache TTL in seconds. See
+  [`rd_ClearCache`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md).
+
 ## Value
 
 data.frame with search results
@@ -91,7 +100,7 @@ data.frame with search results
 ## Details
 
 For additional examples see
-<https://github.com/Refinitiv-API-Samples/Article.RDPLibrary.Python.Search>
+<https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/documentation>
 
 ## See also
 
@@ -101,59 +110,75 @@ RDPShowAvailableSearchViews()
 
 ``` r
 if (FALSE) { # \dontrun{
-RDConnect('your api key')
-test <- RDPsearch(query =  "AAPL.O", select = "ContractType,RIC")
+RDConnect("your api key")
+test <- RDPsearch(query = "AAPL.O", select = "ContractType,RIC")
 
-Presidents <- RDPsearch( view = "People", query = 'president'
-                       , filter = "startswith(LastName,'H')"
-                       , select = 'DocumentTitle'
-                       , boost = ''
-                       , order_by = 'DocumentTitle asc'
-                       , group_by = 'FirstName'
-                       , group_count = 2
-                       , top = 20
-                       , navigators = 'HullType'
-                       , features = 'spell' )
+Presidents <- RDPsearch(
+  view = "People", query = "president",
+  filter = "startswith(LastName,'H')",
+  select = "DocumentTitle",
+  boost = "",
+  order_by = "DocumentTitle asc",
+  group_by = "FirstName",
+  group_count = 2,
+  top = 20,
+  navigators = "HullType",
+  features = "spell"
+)
 
-reporates <- RDPsearch( view = "IndicatorQuotes"
-                      , query = "repo rate", group_by = "CentralBankName"
-                      , group_count = 3
-                      , select = paste0("CentralBankName,DocumentTitle,"
-                                       ,"RIC,ObservationValue")
-                      , top = 1000)
+reporates <- RDPsearch(
+  view = "IndicatorQuotes",
+  query = "repo rate", group_by = "CentralBankName",
+  group_count = 3,
+  select = paste0(
+    "CentralBankName,DocumentTitle,",
+    "RIC,ObservationValue"
+  ),
+  top = 1000
+)
 
-EquitiesSearch <-  RDPsearch( view = "EquityQuotes"
-                            , filter = paste0("Eps gt 6.0 and "
-                                      , "RCSTRBC2012Name eq 'Personal & "
-                                      , "Household Products & Services' "
-                                      , "and MktCapTotalUsd gt 100000000 "
-                                      , "and IsPrimaryRIC eq true")
-                            , top =  10000
-                            , select = paste0("DocumentTitle , RIC, Eps,"
-                                             ," MktCapTotalUsd"))
+EquitiesSearch <- RDPsearch(
+  view = "EquityQuotes",
+  filter = paste0(
+    "Eps gt 6.0 and ",
+    "RCSTRBC2012Name eq 'Personal & ",
+    "Household Products & Services' ",
+    "and MktCapTotalUsd gt 100000000 ",
+    "and IsPrimaryRIC eq true"
+  ),
+  top = 10000,
+  select = paste0(
+    "DocumentTitle , RIC, Eps,",
+    " MktCapTotalUsd"
+  )
+)
 
 
-Vessels <- RDPsearch( view = "VesselPhysicalAssets"
-                    , filter = paste0( "RCSAssetTypeLeaf eq 'tanker'"
-                               , " and RCSRegionLeaf eq 'Gulf of Mexico'")
-                    , top =  10000
-                    , navigators = "OriginPort"
-                    , select = paste0( "DocumentTitle,RIC,OriginPort"
-                                     , " ,DestinationPort,RCSFlagLeaf"
-                                     , ",AssetName,AISStatus,"
-                                     , "VesselCurrentPortRIC,IMO")
-                    )
+Vessels <- RDPsearch(
+  view = "VesselPhysicalAssets",
+  filter = paste0(
+    "RCSAssetTypeLeaf eq 'tanker'",
+    " and RCSRegionLeaf eq 'Gulf of Mexico'"
+  ),
+  top = 10000,
+  navigators = "OriginPort",
+  select = paste0(
+    "DocumentTitle,RIC,OriginPort",
+    " ,DestinationPort,RCSFlagLeaf",
+    ",AssetName,AISStatus,",
+    "VesselCurrentPortRIC,IMO"
+  )
+)
 
 
 ListedSearch <- RDPsearch(Arglist = list(query = "president", view = "People"))
 
-SearchQuery = "aapl.o"
+SearchQuery <- "aapl.o"
 ListedSearch <- RDPsearch(query = SearchQuery)
 } # }
 
 if (FALSE) { # \dontrun{
-  SearchQuery = "aapl.o"
-  ListedSearch <- RDPsearch(RDP = RefinitivJsonConnect(), query = SearchQuery)
-
+SearchQuery <- "aapl.o"
+ListedSearch <- RDPsearch(RDP = RefinitivJsonConnect(), query = SearchQuery)
 } # }
 ```

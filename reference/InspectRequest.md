@@ -34,7 +34,7 @@ Refinitiv:::InspectRequest(data.frame(), functionname = "test")
 #> 
 #> 
 #> test request returned with length 0
-Refinitiv:::InspectRequest(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
+Refinitiv:::InspectRequest(data.frame(test = c(1, 2), test2 = c("a", "b")), functionname = "test")
 #> data.frame
 #> testtest2
 #> NULLNULL

@@ -5,18 +5,26 @@ Get search metadata from RDP
 ## Usage
 
 ``` r
-RDPget_search_metadata(RDP = RDConnect(), searchView = NULL)
+RDPget_search_metadata(RDP = rd_connection(), searchView = NULL, cache = NULL)
 ```
 
 ## Arguments
 
 - RDP:
 
-  Refinitiv DataPlatform Connection object
+  Refinitiv JSON connection object
 
 - searchView:
 
   character choose from @seealso RDPShowAvailableSearchViews
+
+- cache:
+
+  Controls caching. `NULL` (default) defers to
+  `getOption("refinitiv_cache", FALSE)`. `TRUE` uses the function
+  default TTL (3600 s / 1 hour). `FALSE` disables caching. A positive
+  numeric value sets the cache TTL in seconds. See
+  [`rd_ClearCache`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md).
 
 ## Value
 
@@ -30,9 +38,9 @@ RDPShowAvailableSearchViews
 
 ``` r
 if (FALSE) { # \dontrun{
-test_json <- RDPget_search_metadata(RDP =  RefinitivJsonConnect()
-                              , searchView = "EquityQuotes")
-test_rd <- RDPget_search_metadata(RDP = RDConnect()
-                              , searchView = "EQUITY_QUOTES")
+test_json <- RDPget_search_metadata(
+  RDP = RefinitivJsonConnect(),
+  searchView = "EquityQuotes"
+)
 } # }
 ```

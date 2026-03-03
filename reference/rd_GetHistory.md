@@ -8,7 +8,7 @@ call.
 
 ``` r
 rd_GetHistory(
-  RD = RDConnect(),
+  RD = rd_connection(),
   universe = NULL,
   fields = NULL,
   parameters = NULL,
@@ -19,7 +19,8 @@ rd_GetHistory(
   count = NULL,
   use_field_names_in_headers = TRUE,
   SpaceConvertor = NULL,
-  debug = FALSE
+  debug = FALSE,
+  cache = NULL
 )
 ```
 
@@ -27,7 +28,7 @@ rd_GetHistory(
 
 - RD:
 
-  Refinitiv data object (currently only RDconnect())
+  Refinitiv JSON connection object, default is RDConnect()
 
 - universe:
 
@@ -87,14 +88,19 @@ rd_GetHistory(
   boolean, default = FALSE, if TRUE, prints out the url used to retrieve
   the data
 
+- cache:
+
+  Controls caching. `NULL` (default) defers to
+  `getOption("refinitiv_cache", FALSE)`. `TRUE` uses the function
+  default TTL (300 s). `FALSE` disables caching. A positive numeric
+  value sets the cache TTL in seconds. See
+  [`rd_ClearCache`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md).
+
 ## Value
 
 data.frame
 
 ## Details
-
-This function is currently work in progress and only works with
-RDConnect (python), directJson is not available for this function.
 
 \#section regarding adjustments parameters:
 
@@ -127,33 +133,72 @@ The supported values of adjustments :
 - **"qualifiers"**:Apply price or volume adjustment to historical
   pricing according to trade/quote qualifier summarization actions
 
+## Merge behavior
+
+When the requested `fields` include both historical-pricing fields (e.g.
+`BID`, `TRDPRC_1`) and fundamental/reference fields (e.g. `TR.Revenue`),
+the function routes them to two different backend endpoints and merges
+the results with a **full outer join** on `(Instrument, Date)`.
+
+If the two endpoints return data at different date granularity (e.g.
+daily prices vs. quarterly fundamentals), the merged result will contain
+rows where one set of columns is populated and the other is `NA`. A
+warning is emitted when the date-count ratio exceeds 5:1 for any
+instrument.
+
+The result carries a `"merge_info"` attribute (when both endpoints
+contributed data) with row counts and merge type. Inspect with
+`attr(result, "merge_info")`.
+
+For full control over date alignment, call
+[`rd_GetHistoricalPricing`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistoricalPricing.md)
+and
+[`rd_GetData`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md)
+separately.
+
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
-RDObject <-  RDConnect("your api key here", PythonModule = "JSON")
-timeseries1 <-  rd_GetHistory(universe=c("AAPL.O", "NVDA.O"))
-timeseries2 <- rd_GetHistory(universe="GOOG.O"
-                            ,fields = c("BID", "ASK"),interval="tick",count=5)
+RDObject <- RDConnect("your api key here")
+timeseries1 <- rd_GetHistory(universe = c("AAPL.O", "NVDA.O"))
+timeseries2 <- rd_GetHistory(
+  universe = "GOOG.O",
+  fields = c("BID", "ASK"), interval = "tick", count = 5
+)
 
-test <- rd_GetHistory(universe= "AAPL.O"
-                     , fields = c("TR.IssueMarketCap(Scale=6,ShType=FFL)"
-                       ,"TR.FreeFloatPct()/100/*FreefloatWeight*/"
-                       ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/"
-                       ,"TR.CLOSEPRICE(Adjusted=0)/*close*/")
-                     , parameters = list("Curn" = "USD"
-                     , "SDate" = "2020-10-27", "EDate" = "2020-12-01"))
+test <- rd_GetHistory(
+  universe = "AAPL.O",
+  fields = c(
+    "TR.IssueMarketCap(Scale=6,ShType=FFL)",
+    "TR.FreeFloatPct()/100/*FreefloatWeight*/",
+    "TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/",
+    "TR.CLOSEPRICE(Adjusted=0)/*close*/"
+  ),
+  parameters = list(
+    "Curn" = "USD",
+    "SDate" = "2020-10-27", "EDate" = "2020-12-01"
+  )
+)
 
-test <- rd_GetHistory(universe = c("GOOG.O","AAPL.O")
-                       , fields = c("TR.Revenue","TR.GrossProfit")
-                       , parameters = list("SDate" = "0CY", "Curn" = "CAD"))
-test <-  rd_GetHistory(universe = c("GOOG.O","AAPL.O")
-                      , fields = c("TR.PriceTargetMean(SDate:0CY)","TR.LOWPRICE(SDate:0d)"))
+test <- rd_GetHistory(
+  universe = c("GOOG.O", "AAPL.O"),
+  fields = c("TR.Revenue", "TR.GrossProfit"),
+  parameters = list("SDate" = "0CY", "Curn" = "CAD")
+)
+test <- rd_GetHistory(
+  universe = c("GOOG.O", "AAPL.O"),
+  fields = c("TR.PriceTargetMean(SDate:0CY)", "TR.LOWPRICE(SDate:0d)")
+)
 
 
-test <- rd_GetHistory( universe = c("GOOG.O","MSFT.O","FB.O","AMZN.O")
-                     ,fields = c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
-                     ,parameters = list("Scale" = 6,"SDate" = 0
-                     ,"EDate" = -3,"FRQ" = "FY", "Curn" = "EUR"))
+test <- rd_GetHistory(
+  universe = c("GOOG.O", "MSFT.O", "FB.O", "AMZN.O"),
+  fields = c("TR.Revenue.date", "TR.Revenue", "TR.GrossProfit"),
+  parameters = list(
+    "Scale" = 6, "SDate" = 0,
+    "EDate" = -3, "FRQ" = "FY", "Curn" = "EUR"
+  )
+)
 } # }
 ```

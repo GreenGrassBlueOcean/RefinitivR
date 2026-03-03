@@ -34,6 +34,6 @@ object with user defined continuation
 
 ``` r
 if (FALSE) { # \dontrun{
- # no example cause function not implemented yet
+# no example cause function not implemented yet
 } # }
 ```

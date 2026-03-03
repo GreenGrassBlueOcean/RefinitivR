@@ -7,11 +7,12 @@ story_id
 
 ``` r
 EikonGetNewsStory(
-  EikonObject = EikonConnect(),
+  EikonObject = rd_connection(),
   story_id = NULL,
   raw_output = FALSE,
   debug = FALSE,
-  renderHTML = FALSE
+  renderHTML = FALSE,
+  cache = NULL
 )
 ```
 
@@ -32,12 +33,21 @@ EikonGetNewsStory(
 
 - debug:
 
-  boolean if TRUE prints out the python call to the console
+  boolean if TRUE prints out API call details to the console
 
 - renderHTML:
 
   boolean if TRUE renders HTML output file for use in website defaults
   to FALSE
+
+- cache:
+
+  Controls caching. `NULL` (default) defers to
+  `getOption("refinitiv_cache", FALSE)`. `TRUE` uses the function
+  default TTL (Inf / session lifetime, since stories are immutable).
+  `FALSE` disables caching. A positive numeric value sets the cache TTL
+  in seconds. See
+  [`rd_ClearCache`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md).
 
 ## Value
 
@@ -47,24 +57,31 @@ data.frame
 
 ``` r
 if (FALSE) { # \dontrun{
- EikonJson <- RefinitivJsonConnect()
- headlines <- EikonGetNewsHeadlines(EikonObject = EikonJson
-                                   , query = "R:MSFT.O", count = 2)
- stories <- EikonGetNewsStory(story_id = headlines$storyId
- , EikonObject = EikonJson)
-
+EikonJson <- RefinitivJsonConnect()
+headlines <- EikonGetNewsHeadlines(
+  EikonObject = EikonJson,
+  query = "R:MSFT.O", count = 2
+)
+stories <- EikonGetNewsStory(
+  story_id = headlines$storyId,
+  EikonObject = EikonJson
+)
 } # }
 
 if (FALSE) { # \dontrun{
-  Eikon <- Refinitiv::EikonConnect()
-  story_id <- "urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"
-  stories_RD <- EikonGetNewsStory(story_id = story_id
-  , EikonObject = Eikon, debug = TRUE, raw_output  = FALSE)
+Eikon <- Refinitiv::EikonConnect()
+story_id <- "urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"
+stories_RD <- EikonGetNewsStory(
+  story_id = story_id,
+  EikonObject = Eikon, debug = TRUE, raw_output = FALSE
+)
 
-  EikonJson <- RefinitivJsonConnect()
-  stories_JSON <- EikonGetNewsStory(story_id = story_id
-  , EikonObject = EikonJson, debug = TRUE, raw_output  = FALSE)
+EikonJson <- RefinitivJsonConnect()
+stories_JSON <- EikonGetNewsStory(
+  story_id = story_id,
+  EikonObject = EikonJson, debug = TRUE, raw_output = FALSE
+)
 
- identical(stories_RD, stories_JSON)
+identical(stories_RD, stories_JSON)
 } # }
 ```

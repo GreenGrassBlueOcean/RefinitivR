@@ -6,14 +6,14 @@
 
 ## Citation
 
-van der Burg L (2026). *Refinitiv: Connect to Datastream and python
-Eikon api in r*. R package version 0.1.0.9004,
+van der Burg L (2026). *Refinitiv: Connect to LSEG/Refinitiv Eikon and
+DataStream from R*. R package version 0.2.0,
 <https://greengrassblueocean.github.io/RefinitivR/>.
 
     @Manual{,
-      title = {Refinitiv: Connect to Datastream and python Eikon api in r},
+      title = {Refinitiv: Connect to LSEG/Refinitiv Eikon and DataStream from R},
       author = {Laurens {van der Burg}},
       year = {2026},
-      note = {R package version 0.1.0.9004},
+      note = {R package version 0.2.0},
       url = {https://greengrassblueocean.github.io/RefinitivR/},
     }

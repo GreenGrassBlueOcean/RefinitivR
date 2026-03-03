@@ -11,7 +11,7 @@ different places:"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,11 +44,12 @@ different places:</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rd_get_news_story</span><span class="op">(</span></span>
-<span>  RDObject <span class="op">=</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  RDObject <span class="op">=</span> <span class="fu"><a href="rd_connection.html">rd_connection</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  story_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  raw_output <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  debug <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  renderHTML <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  renderHTML <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -75,6 +76,14 @@ different places:</p>
 <dt id="arg-renderhtml">renderHTML<a class="anchor" aria-label="anchor" href="#arg-renderhtml"></a></dt>
 <dd><p>If <code>TRUE</code>, the function will open the combined HTML in a browser viewer,
 and also return the HTML string.</p></dd>
+
+
+<dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
+<dd><p>Controls caching. <code>NULL</code> (default) defers to
+<code>getOption("refinitiv_cache", FALSE)</code>. <code>TRUE</code> uses the
+function default TTL (Inf / session lifetime, since stories are immutable).
+<code>FALSE</code> disables caching. A positive numeric value sets the cache TTL
+in seconds. See <code><a href="rd_ClearCache.html">rd_ClearCache</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

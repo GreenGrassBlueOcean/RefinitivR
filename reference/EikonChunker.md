@@ -52,5 +52,7 @@ with api limits.
 ## Examples
 
 ``` r
-if (FALSE) "internal function no examples" # \dontrun{}
+if (FALSE) { # \dontrun{
+"internal function no examples"
+} # }
 ```

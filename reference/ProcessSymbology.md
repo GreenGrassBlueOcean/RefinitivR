@@ -1,7 +1,7 @@
-# Function to process raw output of python get_symbology to better in r readable format
+# Function to process raw output of get_symbology to a more R-readable format
 
-Function to process raw output of python get_symbology to better in r
-readable format
+Function to process raw output of get_symbology to a more R-readable
+format
 
 ## Usage
 
@@ -37,16 +37,24 @@ BestMatch (as defined by Eikon), error
 
 ``` r
 if (FALSE) { # \dontrun{
-Raw_output_No_BestMatch <- EikonGetSymbology(EikonObject = Eikon
-, symbol =  c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN"
-, to_symbol_type = "RIC" , raw_output = TRUE, bestMatch = FALSE  )
-ProcessSymbology(EikonSymbologyResult = Raw_output_No_BestMatch
-, from_symbol_type = "ISIN", to_symbol_type = "RIC")
+Raw_output_No_BestMatch <- EikonGetSymbology(
+  EikonObject = Eikon,
+  symbol = c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN",
+  to_symbol_type = "RIC", raw_output = TRUE, bestMatch = FALSE
+)
+ProcessSymbology(
+  EikonSymbologyResult = Raw_output_No_BestMatch,
+  from_symbol_type = "ISIN", to_symbol_type = "RIC"
+)
 
-Raw_output_BestMatch <- EikonGetSymbology(EikonObject = Eikon
-, symbol =  c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN"
-, to_symbol_type = "RIC" , raw_output = TRUE, bestMatch = TRUE  )
-ProcessSymbology(EikonSymbologyResult = Raw_output_BestMatch
-, from_symbol_type = "ISIN", to_symbol_type = "RIC")
+Raw_output_BestMatch <- EikonGetSymbology(
+  EikonObject = Eikon,
+  symbol = c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN",
+  to_symbol_type = "RIC", raw_output = TRUE, bestMatch = TRUE
+)
+ProcessSymbology(
+  EikonSymbologyResult = Raw_output_BestMatch,
+  from_symbol_type = "ISIN", to_symbol_type = "RIC"
+)
 } # }
 ```

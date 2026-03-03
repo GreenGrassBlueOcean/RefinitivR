@@ -38,8 +38,10 @@ EikonGetTimeseries
 ## Examples
 
 ``` r
-test <- Refinitiv:::EikonTimeSeriesPreprocessor(interval = "daily"
-, rics = rep(letters, 1000), start_date = "2015-01-01", end_date = "2018-01-01")
+test <- Refinitiv:::EikonTimeSeriesPreprocessor(
+  interval = "daily",
+  rics = rep(letters, 1000), start_date = "2015-01-01", end_date = "2018-01-01"
+)
 #> The operation is too large for one api request and will be chunked in multiple requests
 #> the operation you intend to perform will cost 20358000 data points
 ```

@@ -33,12 +33,12 @@ not need to worry about the correct interval
 ## Examples
 
 ``` r
-translate_to_iso8601_duration('minute')   # Returns "PT1M"
+Refinitiv:::translate_to_iso8601_duration("minute") # Returns "PT1M"
 #> [1] "PT1M"
-translate_to_iso8601_duration('hour')     # Returns "PT1H"
+Refinitiv:::translate_to_iso8601_duration("hour") # Returns "PT1H"
 #> [1] "PT1H"
-translate_to_iso8601_duration('weekly')   # Returns "P1W"
+Refinitiv:::translate_to_iso8601_duration("weekly") # Returns "P1W"
 #> [1] "P1W"
-translate_to_iso8601_duration('unknown')  # Returns "P1D" (default)
+Refinitiv:::translate_to_iso8601_duration("unknown") # Returns "P1D" (default)
 #> [1] "P1D"
 ```

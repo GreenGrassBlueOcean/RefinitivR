@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,11 +38,12 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">EikonGetNewsStory</span><span class="op">(</span></span>
-<span>  EikonObject <span class="op">=</span> <span class="fu"><a href="EikonConnect.html">EikonConnect</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  EikonObject <span class="op">=</span> <span class="fu"><a href="rd_connection.html">rd_connection</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  story_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  raw_output <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  debug <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  renderHTML <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  renderHTML <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -63,11 +64,19 @@
 
 
 <dt id="arg-debug">debug<a class="anchor" aria-label="anchor" href="#arg-debug"></a></dt>
-<dd><p>boolean if TRUE prints out the python call to the console</p></dd>
+<dd><p>boolean if TRUE prints out API call details to the console</p></dd>
 
 
 <dt id="arg-renderhtml">renderHTML<a class="anchor" aria-label="anchor" href="#arg-renderhtml"></a></dt>
 <dd><p>boolean if TRUE renders HTML output file for use in website defaults to FALSE</p></dd>
+
+
+<dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
+<dd><p>Controls caching. <code>NULL</code> (default) defers to
+<code>getOption("refinitiv_cache", FALSE)</code>. <code>TRUE</code> uses the
+function default TTL (Inf / session lifetime, since stories are immutable).
+<code>FALSE</code> disables caching. A positive numeric value sets the cache TTL
+in seconds. See <code><a href="rd_ClearCache.html">rd_ClearCache</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -78,25 +87,32 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span> <span class="va">EikonJson</span> <span class="op">&lt;-</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="va">headlines</span> <span class="op">&lt;-</span> <span class="fu"><a href="EikonGetNewsHeadlines.html">EikonGetNewsHeadlines</a></span><span class="op">(</span>EikonObject <span class="op">=</span> <span class="va">EikonJson</span></span></span>
-<span class="r-in"><span>                                   , query <span class="op">=</span> <span class="st">"R:MSFT.O"</span>, count <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="va">stories</span> <span class="op">&lt;-</span> <span class="fu">EikonGetNewsStory</span><span class="op">(</span>story_id <span class="op">=</span> <span class="va">headlines</span><span class="op">$</span><span class="va">storyId</span></span></span>
-<span class="r-in"><span> , EikonObject <span class="op">=</span> <span class="va">EikonJson</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">EikonJson</span> <span class="op">&lt;-</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">headlines</span> <span class="op">&lt;-</span> <span class="fu"><a href="EikonGetNewsHeadlines.html">EikonGetNewsHeadlines</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  EikonObject <span class="op">=</span> <span class="va">EikonJson</span>,</span></span>
+<span class="r-in"><span>  query <span class="op">=</span> <span class="st">"R:MSFT.O"</span>, count <span class="op">=</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">stories</span> <span class="op">&lt;-</span> <span class="fu">EikonGetNewsStory</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  story_id <span class="op">=</span> <span class="va">headlines</span><span class="op">$</span><span class="va">storyId</span>,</span></span>
+<span class="r-in"><span>  EikonObject <span class="op">=</span> <span class="va">EikonJson</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span>  <span class="va">Eikon</span> <span class="op">&lt;-</span> <span class="fu">Refinitiv</span><span class="fu">::</span><span class="fu"><a href="EikonConnect.html">EikonConnect</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">story_id</span> <span class="op">&lt;-</span> <span class="st">"urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"</span></span></span>
-<span class="r-in"><span>  <span class="va">stories_RD</span> <span class="op">&lt;-</span> <span class="fu">EikonGetNewsStory</span><span class="op">(</span>story_id <span class="op">=</span> <span class="va">story_id</span></span></span>
-<span class="r-in"><span>  , EikonObject <span class="op">=</span> <span class="va">Eikon</span>, debug <span class="op">=</span> <span class="cn">TRUE</span>, raw_output  <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Eikon</span> <span class="op">&lt;-</span> <span class="fu">Refinitiv</span><span class="fu">::</span><span class="fu"><a href="EikonConnect.html">EikonConnect</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">story_id</span> <span class="op">&lt;-</span> <span class="st">"urn:newsml:newswire.refinitiv.com:20230829:nRTVm1b2r:5"</span></span></span>
+<span class="r-in"><span><span class="va">stories_RD</span> <span class="op">&lt;-</span> <span class="fu">EikonGetNewsStory</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  story_id <span class="op">=</span> <span class="va">story_id</span>,</span></span>
+<span class="r-in"><span>  EikonObject <span class="op">=</span> <span class="va">Eikon</span>, debug <span class="op">=</span> <span class="cn">TRUE</span>, raw_output <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">EikonJson</span> <span class="op">&lt;-</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">stories_JSON</span> <span class="op">&lt;-</span> <span class="fu">EikonGetNewsStory</span><span class="op">(</span>story_id <span class="op">=</span> <span class="va">story_id</span></span></span>
-<span class="r-in"><span>  , EikonObject <span class="op">=</span> <span class="va">EikonJson</span>, debug <span class="op">=</span> <span class="cn">TRUE</span>, raw_output  <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">EikonJson</span> <span class="op">&lt;-</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">stories_JSON</span> <span class="op">&lt;-</span> <span class="fu">EikonGetNewsStory</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  story_id <span class="op">=</span> <span class="va">story_id</span>,</span></span>
+<span class="r-in"><span>  EikonObject <span class="op">=</span> <span class="va">EikonJson</span>, debug <span class="op">=</span> <span class="cn">TRUE</span>, raw_output <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">stories_RD</span>, <span class="va">stories_JSON</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">stories_RD</span>, <span class="va">stories_JSON</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

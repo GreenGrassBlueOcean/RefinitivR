@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rd_GetHistory</span><span class="op">(</span></span>
-<span>  RD <span class="op">=</span> <span class="fu"><a href="RDConnect.html">RDConnect</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  RD <span class="op">=</span> <span class="fu"><a href="rd_connection.html">rd_connection</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  universe <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fields <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  parameters <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -49,7 +49,8 @@
 <span>  count <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  use_field_names_in_headers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  SpaceConvertor <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  debug <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  debug <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -58,7 +59,7 @@
 
 
 <dl><dt id="arg-rd">RD<a class="anchor" aria-label="anchor" href="#arg-rd"></a></dt>
-<dd><p>Refinitiv data object (currently only RDconnect())</p></dd>
+<dd><p>Refinitiv JSON connection object, default is RDConnect()</p></dd>
 
 
 <dt id="arg-universe">universe<a class="anchor" aria-label="anchor" href="#arg-universe"></a></dt>
@@ -104,6 +105,13 @@
 <dt id="arg-debug">debug<a class="anchor" aria-label="anchor" href="#arg-debug"></a></dt>
 <dd><p>boolean, default = FALSE, if TRUE, prints out the url used to retrieve the data</p></dd>
 
+
+<dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
+<dd><p>Controls caching. <code>NULL</code> (default) defers to
+<code>getOption("refinitiv_cache", FALSE)</code>. <code>TRUE</code> uses the
+function default TTL (300 s). <code>FALSE</code> disables caching. A positive
+numeric value sets the cache TTL in seconds. See <code><a href="rd_ClearCache.html">rd_ClearCache</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -111,8 +119,7 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function is currently work in progress and only works with RDConnect (python), directJson is not available for this function.</p>
-<p>#section regarding adjustments parameters:</p>
+    <p>#section regarding adjustments parameters:</p>
 <p>The vector of adjustment types (comma delimiter) that tells the system whether
  to apply or not apply CORAX (Corporate Actions) events or
  exchange/manual corrections to historical time series data.</p>
@@ -125,34 +132,71 @@
 <li><p><b>"RTS"</b>:Apply Reuters TimeSeries adjustment to adjust both historical price and volume</p></li>
 <li><p><b>"qualifiers"</b>:Apply price or volume adjustment to historical pricing according to trade/quote qualifier summarization actions</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="merge-behavior">Merge behavior<a class="anchor" aria-label="anchor" href="#merge-behavior"></a></h2>
+
+
+<p>When the requested <code>fields</code> include both historical-pricing fields
+(e.g. <code>BID</code>, <code>TRDPRC_1</code>) and fundamental/reference fields
+(e.g. <code>TR.Revenue</code>), the function routes them to two different
+backend endpoints and merges the results with a <strong>full outer join</strong>
+on <code>(Instrument, Date)</code>.</p>
+<p>If the two endpoints return data at different date granularity (e.g. daily
+prices vs. quarterly fundamentals), the merged result will contain rows
+where one set of columns is populated and the other is <code>NA</code>. A
+warning is emitted when the date-count ratio exceeds 5:1 for any
+instrument.</p>
+<p>The result carries a <code>"merge_info"</code> attribute (when both endpoints
+contributed data) with row counts and merge type. Inspect with
+<code>attr(result, "merge_info")</code>.</p>
+<p>For full control over date alignment, call
+<code><a href="rd_GetHistoricalPricing.html">rd_GetHistoricalPricing</a></code> and <code><a href="rd_GetData.html">rd_GetData</a></code>
+separately.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="va">RDObject</span> <span class="op">&lt;-</span>  <span class="fu"><a href="RDConnect.html">RDConnect</a></span><span class="op">(</span><span class="st">"your api key here"</span>, PythonModule <span class="op">=</span> <span class="st">"JSON"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">timeseries1</span> <span class="op">&lt;-</span>  <span class="fu">rd_GetHistory</span><span class="op">(</span>universe<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AAPL.O"</span>, <span class="st">"NVDA.O"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">timeseries2</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistory</span><span class="op">(</span>universe<span class="op">=</span><span class="st">"GOOG.O"</span></span></span>
-<span class="r-in"><span>                            ,fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BID"</span>, <span class="st">"ASK"</span><span class="op">)</span>,interval<span class="op">=</span><span class="st">"tick"</span>,count<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">RDObject</span> <span class="op">&lt;-</span> <span class="fu"><a href="RDConnect.html">RDConnect</a></span><span class="op">(</span><span class="st">"your api key here"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">timeseries1</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistory</span><span class="op">(</span>universe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AAPL.O"</span>, <span class="st">"NVDA.O"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">timeseries2</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistory</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  universe <span class="op">=</span> <span class="st">"GOOG.O"</span>,</span></span>
+<span class="r-in"><span>  fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BID"</span>, <span class="st">"ASK"</span><span class="op">)</span>, interval <span class="op">=</span> <span class="st">"tick"</span>, count <span class="op">=</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistory</span><span class="op">(</span>universe<span class="op">=</span> <span class="st">"AAPL.O"</span></span></span>
-<span class="r-in"><span>                     , fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TR.IssueMarketCap(Scale=6,ShType=FFL)"</span></span></span>
-<span class="r-in"><span>                       ,<span class="st">"TR.FreeFloatPct()/100/*FreefloatWeight*/"</span></span></span>
-<span class="r-in"><span>                       ,<span class="st">"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/"</span></span></span>
-<span class="r-in"><span>                       ,<span class="st">"TR.CLOSEPRICE(Adjusted=0)/*close*/"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                     , parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Curn"</span> <span class="op">=</span> <span class="st">"USD"</span></span></span>
-<span class="r-in"><span>                     , <span class="st">"SDate"</span> <span class="op">=</span> <span class="st">"2020-10-27"</span>, <span class="st">"EDate"</span> <span class="op">=</span> <span class="st">"2020-12-01"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistory</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  universe <span class="op">=</span> <span class="st">"AAPL.O"</span>,</span></span>
+<span class="r-in"><span>  fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"TR.IssueMarketCap(Scale=6,ShType=FFL)"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"TR.FreeFloatPct()/100/*FreefloatWeight*/"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"TR.CLOSEPRICE(Adjusted=0)/*close*/"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"Curn"</span> <span class="op">=</span> <span class="st">"USD"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"SDate"</span> <span class="op">=</span> <span class="st">"2020-10-27"</span>, <span class="st">"EDate"</span> <span class="op">=</span> <span class="st">"2020-12-01"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistory</span><span class="op">(</span>universe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GOOG.O"</span>,<span class="st">"AAPL.O"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                       , fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TR.Revenue"</span>,<span class="st">"TR.GrossProfit"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                       , parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"SDate"</span> <span class="op">=</span> <span class="st">"0CY"</span>, <span class="st">"Curn"</span> <span class="op">=</span> <span class="st">"CAD"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span>  <span class="fu">rd_GetHistory</span><span class="op">(</span>universe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GOOG.O"</span>,<span class="st">"AAPL.O"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                      , fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TR.PriceTargetMean(SDate:0CY)"</span>,<span class="st">"TR.LOWPRICE(SDate:0d)"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistory</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  universe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GOOG.O"</span>, <span class="st">"AAPL.O"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TR.Revenue"</span>, <span class="st">"TR.GrossProfit"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"SDate"</span> <span class="op">=</span> <span class="st">"0CY"</span>, <span class="st">"Curn"</span> <span class="op">=</span> <span class="st">"CAD"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistory</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  universe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GOOG.O"</span>, <span class="st">"AAPL.O"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TR.PriceTargetMean(SDate:0CY)"</span>, <span class="st">"TR.LOWPRICE(SDate:0d)"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistory</span><span class="op">(</span> universe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GOOG.O"</span>,<span class="st">"MSFT.O"</span>,<span class="st">"FB.O"</span>,<span class="st">"AMZN.O"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                     ,fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TR.Revenue.date"</span>,<span class="st">"TR.Revenue"</span>,<span class="st">"TR.GrossProfit"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                     ,parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Scale"</span> <span class="op">=</span> <span class="fl">6</span>,<span class="st">"SDate"</span> <span class="op">=</span> <span class="fl">0</span></span></span>
-<span class="r-in"><span>                     ,<span class="st">"EDate"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>,<span class="st">"FRQ"</span> <span class="op">=</span> <span class="st">"FY"</span>, <span class="st">"Curn"</span> <span class="op">=</span> <span class="st">"EUR"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistory</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  universe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GOOG.O"</span>, <span class="st">"MSFT.O"</span>, <span class="st">"FB.O"</span>, <span class="st">"AMZN.O"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TR.Revenue.date"</span>, <span class="st">"TR.Revenue"</span>, <span class="st">"TR.GrossProfit"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"Scale"</span> <span class="op">=</span> <span class="fl">6</span>, <span class="st">"SDate"</span> <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"EDate"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, <span class="st">"FRQ"</span> <span class="op">=</span> <span class="st">"FY"</span>, <span class="st">"Curn"</span> <span class="op">=</span> <span class="st">"EUR"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

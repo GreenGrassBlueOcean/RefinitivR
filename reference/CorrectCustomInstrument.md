@@ -31,10 +31,10 @@ character with corrected symbol
 ## Examples
 
 ``` r
-CorrectCustomInstrument(symbol = "test" , UUID = "ABCDE-123456")
+CorrectCustomInstrument(symbol = "test", UUID = "ABCDE-123456")
 #> [1] "S)test.ABCDE-123456"
-CorrectCustomInstrument(symbol = "S)test" , UUID = "ABCDE-123456")
+CorrectCustomInstrument(symbol = "S)test", UUID = "ABCDE-123456")
 #> [1] "S)test.ABCDE-123456"
-CorrectCustomInstrument(symbol = "test.ABCDE-123456" , UUID = "ABCDE-123456")
+CorrectCustomInstrument(symbol = "test.ABCDE-123456", UUID = "ABCDE-123456")
 #> [1] "S)test.ABCDE-123456"
 ```

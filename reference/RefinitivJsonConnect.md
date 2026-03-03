@@ -1,6 +1,6 @@
-# Connect to Eikon directly with JSON requests
+# Create a JSON connection object for the LSEG Workspace proxy
 
-Connect to Eikon directly with JSON requests
+Create a JSON connection object for the LSEG Workspace proxy
 
 ## Usage
 
@@ -12,20 +12,22 @@ RefinitivJsonConnect(Eikonapplication_id = NA, Eikonapplication_port = 9000L)
 
 - Eikonapplication_id:
 
-  character eikon api key
+  Optional application key. When `NA` (the default) the function checks
+  the credential vault, then falls back to
+  `"DEFAULT_WORKSPACE_APP_KEY"`.
 
 - Eikonapplication_port:
 
-  numeric proxy port 9000 or 9060 for RDP/RD
+  Deprecated and ignored (always 9000).
 
 ## Value
 
-RefinitivConnection Object
+A connection environment with API method closures.
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
- EikonJson <- RefinitivJsonConnect()
+conn <- RefinitivJsonConnect()
 } # }
 ```

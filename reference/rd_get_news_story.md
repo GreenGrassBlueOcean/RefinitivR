@@ -8,11 +8,12 @@ found in different places:
 
 ``` r
 rd_get_news_story(
-  RDObject = RefinitivJsonConnect(),
+  RDObject = rd_connection(),
   story_id = NULL,
   raw_output = FALSE,
   debug = FALSE,
-  renderHTML = FALSE
+  renderHTML = FALSE,
+  cache = NULL
 )
 ```
 
@@ -42,6 +43,15 @@ rd_get_news_story(
 
   If `TRUE`, the function will open the combined HTML in a browser
   viewer, and also return the HTML string.
+
+- cache:
+
+  Controls caching. `NULL` (default) defers to
+  `getOption("refinitiv_cache", FALSE)`. `TRUE` uses the function
+  default TTL (Inf / session lifetime, since stories are immutable).
+  `FALSE` disables caching. A positive numeric value sets the cache TTL
+  in seconds. See
+  [`rd_ClearCache`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md).
 
 ## Value
 

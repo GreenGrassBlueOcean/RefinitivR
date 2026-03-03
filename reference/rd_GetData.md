@@ -1,4 +1,4 @@
-# Function to obtain data from Eikon. Based on the Eikon python function get_data
+# Function to obtain data from Eikon/LSEG via the JSON API
 
 The function automatically chunks the list of rics into chunks that
 comply with the api limitations and in the end rebuilds the chunks again
@@ -8,7 +8,7 @@ into a single data.frame.
 
 ``` r
 rd_GetData(
-  RDObject = RefinitivJsonConnect(),
+  RDObject = rd_connection(),
   rics,
   Eikonformulas,
   Parameters = NULL,
@@ -17,7 +17,8 @@ rd_GetData(
   verbose = FALSE,
   SpaceConvertor = NULL,
   use_field_names_in_headers = FALSE,
-  SyncFields = FALSE
+  SyncFields = FALSE,
+  cache = NULL
 )
 ```
 
@@ -25,7 +26,7 @@ rd_GetData(
 
 - RDObject:
 
-  Refinitiv Data connection object
+  Refinitiv Data connection object, default is RefinitivJsonConnect()
 
 - rics:
 
@@ -50,8 +51,8 @@ rd_GetData(
 
 - verbose:
 
-  boolean, set to true to print out the actual python call with time
-  stamp for debugging.
+  boolean, set to TRUE to print out the API call details with time stamp
+  for debugging.
 
 - SpaceConvertor:
 
@@ -64,21 +65,19 @@ rd_GetData(
 
 - SyncFields:
 
-  boolean, synchronize fields over same time axis (only JSON!, because
-  not supported in Python (use GetHistory))
+  boolean, synchronize fields over same time axis
+
+- cache:
+
+  Controls caching. `NULL` (default) defers to
+  `getOption("refinitiv_cache", FALSE)`. `TRUE` uses the function
+  default TTL (300 s). `FALSE` disables caching. A positive numeric
+  value sets the cache TTL in seconds. See
+  [`rd_ClearCache`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md).
 
 ## Value
 
-a data.frame containing data.from Eikon
-
-## Details
-
-Currently there is a known bug in the reticulate package with large
-integers. If a request is made that returns large integers the
-reticulate package will return -1 for these integers. See also this
-issue <https://github.com/rstudio/reticulate/issues/323> or try for
-yourself as indicated here
-<https://community.rstudio.com/t/large-integer-conversion-from-python-to-r/82568>
+a data.frame containing data from Eikon
 
 ## References
 
@@ -88,36 +87,35 @@ yourself as indicated here
 
 ``` r
 if (FALSE) { # \dontrun{
-Refinitiv <- RDConnect(PythonModule = "RD")
-ex1 <- rd_GetData(RDObject = Refinitiv, rics = c("MMM", "III.L"),
-             Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
-             , "TR.CompanyName"), verbose = TRUE)
+Refinitiv <- RDConnect()
+ex1 <- rd_GetData(
+  RDObject = Refinitiv, rics = c("MMM", "III.L"),
+  Eikonformulas = c(
+    "TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/",
+    "TR.CompanyName"
+  ), verbose = TRUE
+)
 
-ex2 <- rd_GetData( RDObject = Refinitiv, rics = "AAPL.O"
-                   , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
-                   )
-} # }
-if (FALSE) { # \dontrun{
-Refinitiv <- RDConnect(PythonModule = "JSON")
-ex1 <- rd_GetData(RDObject = Refinitiv, rics = c("MMM", "III.L"),
-             Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
-             , "TR.CompanyName"), verbose = TRUE)
+ex2 <- rd_GetData(
+  RDObject = Refinitiv, rics = "AAPL.O",
+  Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
+)
 
-} # }
+rics <- c("AAPL.O")
+fields <- c(
+  "TR.IssueMarketCap(Scale=6,ShType=FFL)", "TR.FreeFloatPct()/100/*FreefloatWeight*/",
+  "TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/",
+  "TR.CLOSEPRICE(Adjusted=0)/*close*/"
+)
 
-if (FALSE) { # \dontrun{
- rics <- c("AAPL.O")
- fields <- c("TR.IssueMarketCap(Scale=6,ShType=FFL)","TR.FreeFloatPct()/100/*FreefloatWeight*/"
-            ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/"
-            ,"TR.CLOSEPRICE(Adjusted=0)/*close*/")
-
- parameters <- list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01", "Fill" ="None")
- test_json <- rd_GetData( RD = RDConnect(PythonModule = "JSON")
-                        , rics =  rics
-                        , Eikonformulas =  fields
-                        , Parameters = parameters
-                        , use_field_names_in_headers = TRUE
-                        , SyncFields = FALSE
-                        )
+parameters <- list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01", "Fill" = "None")
+test_json <- rd_GetData(
+  RDObject = Refinitiv,
+  rics = rics,
+  Eikonformulas = fields,
+  Parameters = parameters,
+  use_field_names_in_headers = TRUE,
+  SyncFields = FALSE
+)
 } # }
 ```

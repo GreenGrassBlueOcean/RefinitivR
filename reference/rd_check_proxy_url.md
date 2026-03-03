@@ -1,32 +1,31 @@
-# Check if refinitiv proxy url is alive
+# Check if the LSEG Workspace proxy is alive
 
-Check if refinitiv proxy url is alive
+Check if the LSEG Workspace proxy is alive
 
 ## Usage
 
 ``` r
-rd_check_proxy_url(port = 9060, debug = TRUE)
+rd_check_proxy_url(port = 9000L, debug = TRUE)
 ```
 
 ## Arguments
 
 - port:
 
-  9060 or 9000
+  Proxy port (default 9000).
 
 - debug:
 
-  boolean TRUE or False
+  Logical; if `TRUE`, prints request details.
 
 ## Value
 
-api status code and version
+API status code and version.
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
 test <- rd_check_proxy_url(port = 9000)
-test <- rd_check_proxy_url(port = 9060)
 } # }
 ```

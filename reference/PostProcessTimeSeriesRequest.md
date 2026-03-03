@@ -19,3 +19,16 @@ PostProcessTimeSeriesRequest(RawTimeSeriesRequest)
 data.frame
 
 ## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+RawTimeSeries <- try(EikonGetTimeseries(
+  EikonObject = Eikon,
+  rics = c("MMM"),
+  start_date = "2020-01-01T01:00:00",
+  end_date = "2020-01-10T01:00:00",
+  fields = "CLOSE", raw = TRUE
+))
+PostProcessTimeSeriesRequest(RawTimeSeries)
+} # }
+```

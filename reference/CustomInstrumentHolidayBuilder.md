@@ -29,8 +29,10 @@ object with holidays
 ## Examples
 
 ``` r
-CustomInstrumentHolidayBuilder(dates = c("2023-12-01", "2023-12-31")
-, reasons = c("Special Bank Holiday 1", "Special Bank Holiday 2"))
+CustomInstrumentHolidayBuilder(
+  dates = c("2023-12-01", "2023-12-31"),
+  reasons = c("Special Bank Holiday 1", "Special Bank Holiday 2")
+)
 #> [[1]]
 #> [[1]]$date
 #> [1] "2023-12-01"

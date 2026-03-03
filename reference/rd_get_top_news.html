@@ -13,7 +13,7 @@ news category."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,11 +47,12 @@ news category.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rd_get_top_news</span><span class="op">(</span></span>
-<span>  RDObject <span class="op">=</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  RDObject <span class="op">=</span> <span class="fu"><a href="rd_connection.html">rd_connection</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  group <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  page <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  raw_output <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  debug <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  debug <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -79,6 +80,13 @@ defaults to <code><a href="RefinitivJsonConnect.html">RefinitivJsonConnect()</a>
 <dt id="arg-debug">debug<a class="anchor" aria-label="anchor" href="#arg-debug"></a></dt>
 <dd><p>If <code>TRUE</code>, prints debugging messages.</p></dd>
 
+
+<dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
+<dd><p>Controls caching. <code>NULL</code> (default) defers to
+<code>getOption("refinitiv_cache", FALSE)</code>. <code>TRUE</code> uses the
+function default TTL (60 s). <code>FALSE</code> disables caching. A positive
+numeric value sets the cache TTL in seconds. See <code><a href="rd_ClearCache.html">rd_ClearCache</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -95,39 +103,76 @@ defaults to <code><a href="RefinitivJsonConnect.html">RefinitivJsonConnect()</a>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>**Overview of Top News Groups and Pages:**</p>
-<p>- **Main**: Typically includes pages such as "Front Page", "Central Banks &amp; Global Economy",
-  "Sustainable Finance", "World News", and "Regulation &amp; Compliance".</p>
-<p>- **Breakingviews**: Generally contains the page "Reuters Breakingviews".</p>
-<p>- **Banking &amp; Finance**: Often includes pages like "Financial Services", "Investment Banking",
-  "IFR", and "Digital Finance &amp; Crypto".</p>
-<p>- **Markets**: Usually features pages such as "Global Markets", "Foreign Exchange",
-  "Fixed Income", "Emerging Markets", and "IFR".</p>
-<p>- **Commodities**: Contains pages like "Commodities", "Energy", "Metals",
-  "Agricultural Commodities", and "Global Gas, Power &amp; LNG".</p>
-<p>- **Industries**: Contains pages such as "Technology, Media &amp; Telecoms",
-  "Heavy Industry &amp; Transport", "Consumer &amp; Retail", and "Healthcare &amp; Pharma".</p>
-<p>- **Companies**: Typically includes sub-groups such as "U.S. Companies", "European Companies",
-  and "Asian Companies".</p>
-<p>- **Regional**: Groups news by region with pages such as "Australia &amp; New Zealand",
-  "Japan &amp; the Koreas", "Greater China", "Southeast Asia", "India &amp; South Asia",
-  "Middle East &amp; Africa", "Europe &amp; Russia", "United Kingdom", "Latin America",
-  "United States", and "Canada".</p>
-<p>- **National Languages**: Offers news in various languages with pages such as
-  "日本語トップニュース", "路透中文新闻", "Deutschland", "L’essentiel de l'actualité",
-  "Brasil", and "Россия".</p>
-<p>- **Sports &amp; Lifestyle**: Contains pages like "Sport" and "Lifestyle &amp; Entertainment".</p>
-<p>- **AWP Top News**: Includes pages such as "AWP German Top News" and "AWP French Top News".</p>
-<p>In addition to returning key fields from the top news packages (group, page name, revision information,
-and the **topNewsId**), this function makes an additional GET call for each page by calling
-`/data/news/v1/top-news/&lt;topNewsId&gt;`. This call retrieves the actual story details including the
-story identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
-be used with <code>rd_get_news_story</code>.</p>
+    <p>Overview of Top News Groups and Pages:</p><dl><dt>Main</dt>
+<dd><p>Pages such as "Front Page", "Central Banks &amp; Global Economy",
+    "Sustainable Finance", "World News", and "Regulation &amp; Compliance".</p></dd>
+
+  <dt>Breakingviews</dt>
+<dd><p>Generally contains the page "Reuters Breakingviews".</p></dd>
+
+  <dt>Banking &amp; Finance</dt>
+<dd><p>Pages like "Financial Services", "Investment Banking",
+    "IFR", and "Digital Finance &amp; Crypto".</p></dd>
+
+  <dt>Markets</dt>
+<dd><p>Pages such as "Global Markets", "Foreign Exchange",
+    "Fixed Income", "Emerging Markets", and "IFR".</p></dd>
+
+  <dt>Commodities</dt>
+<dd><p>Pages like "Commodities", "Energy", "Metals",
+    "Agricultural Commodities", and "Global Gas, Power &amp; LNG".</p></dd>
+
+  <dt>Industries</dt>
+<dd><p>Pages such as "Technology, Media &amp; Telecoms",
+    "Heavy Industry &amp; Transport", "Consumer &amp; Retail", and "Healthcare &amp; Pharma".</p></dd>
+
+  <dt>Companies</dt>
+<dd><p>Sub-groups such as "U.S. Companies", "European Companies",
+    and "Asian Companies".</p></dd>
+
+  <dt>Regional</dt>
+<dd><p>Pages such as "Australia &amp; New Zealand", "Japan &amp; the Koreas",
+    "Greater China", "Southeast Asia", "India &amp; South Asia", "Middle East &amp; Africa",
+    "Europe &amp; Russia", "United Kingdom", "Latin America", "United States", and "Canada".</p></dd>
+
+  <dt>National Languages</dt>
+<dd><p>News in various languages including Japanese, Chinese,
+    German, French, Portuguese, and Russian top news.</p></dd>
+
+  <dt>Sports &amp; Lifestyle</dt>
+<dd><p>Pages like "Sport" and "Lifestyle &amp; Entertainment".</p></dd>
+
+  <dt>AWP Top News</dt>
+<dd><p>Pages such as "AWP German Top News" and "AWP French Top News".</p></dd>
+
+
+</dl><p>In addition to returning key fields from the top news packages (group, page name, revision
+information, and the <code>topNewsId</code>), this function makes an additional GET call for each
+page by calling <code>/data/news/v1/top-news/&lt;topNewsId&gt;</code>. This call retrieves the actual
+story details including the story identifier (in <code>storyId</code>), the title (in <code>text</code>),
+and a summary (in <code>snippet</code>) that can subsequently be used with
+<code>rd_get_news_story</code>.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Examples for Filtering:</span></span></span>
+<span class="r-in"><span><span class="co"># Example 1: Retrieve all top news from the "Main" group</span></span></span>
+<span class="r-in"><span><span class="va">main_news</span> <span class="op">&lt;-</span> <span class="fu">rd_get_top_news</span><span class="op">(</span>group <span class="op">=</span> <span class="st">"^Main$"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 2: Retrieve only the "Front Page" of top news by filtering on page name</span></span></span>
+<span class="r-in"><span><span class="va">front_page_news</span> <span class="op">&lt;-</span> <span class="fu">rd_get_top_news</span><span class="op">(</span>page <span class="op">=</span> <span class="st">"^Front Page$"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 3: Retrieve stories from the "Sports &amp; Lifestyle" group where the page is "Sport"</span></span></span>
+<span class="r-in"><span><span class="va">sports_news</span> <span class="op">&lt;-</span> <span class="fu">rd_get_top_news</span><span class="op">(</span>group <span class="op">=</span> <span class="st">"Sports &amp; Lifestyle"</span>, page <span class="op">=</span> <span class="st">"Sport"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 4: Filtering yields no results (empty data frame)</span></span></span>
+<span class="r-in"><span><span class="va">no_news</span> <span class="op">&lt;-</span> <span class="fu">rd_get_top_news</span><span class="op">(</span>group <span class="op">=</span> <span class="st">"NonExistent"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

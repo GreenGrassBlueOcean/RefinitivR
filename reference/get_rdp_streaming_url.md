@@ -5,7 +5,7 @@ Show all available custom instruments that have been created
 ## Usage
 
 ``` r
-get_rdp_streaming_url(RDObject = RefinitivJsonConnect(), debug = TRUE)
+get_rdp_streaming_url(RDObject = rd_connection(), debug = TRUE)
 ```
 
 ## Arguments

@@ -27,8 +27,10 @@ returns \`FALSE\` and issues a warning with the error message.
 ## Examples
 
 ``` r
-TestDataStreamCredentials(DatastreamUsername = "wrongusername"
-, DatastreamPassword = "wrongPassword")
+TestDataStreamCredentials(
+  DatastreamUsername = "wrongusername",
+  DatastreamPassword = "wrongPassword"
+)
 #> URL does not seem to exist: http://product.datastream.com/DSWSClient/V1/DSService.svc/rest/Token?username=wrongusername&password=wrongPassword Either the service is down or the credentials are invalid.
 #> Original error message:
 #> HTTP 403 Forbidden.

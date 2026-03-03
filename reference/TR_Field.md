@@ -43,11 +43,11 @@ a list of list which can be used as import for
 ## Examples
 
 ``` r
-TR_Field(Field_name = 'tr.revenue')
+TR_Field(Field_name = "tr.revenue")
 #> $tr.revenue
 #> list()
 #> 
-TR_Field(Field_name ='tr.open', sort_dir ='asc', sort_priority = 1)
+TR_Field(Field_name = "tr.open", sort_dir = "asc", sort_priority = 1)
 #> $tr.open
 #> $tr.open[[1]]
 #> [1] "asc"
@@ -56,8 +56,10 @@ TR_Field(Field_name ='tr.open', sort_dir ='asc', sort_priority = 1)
 #> [1] 1
 #> 
 #> 
-TR_Field(Field_name ='TR.GrossProfit', Parameters = list('Scale' = 6, 'Curn'= 'EUR')
-        , sort_dir = 'asc', sort_priority = 0)
+TR_Field(
+  Field_name = "TR.GrossProfit", Parameters = list("Scale" = 6, "Curn" = "EUR"),
+  sort_dir = "asc", sort_priority = 0
+)
 #> $TR.GrossProfit
 #> $TR.GrossProfit$params
 #> $TR.GrossProfit$params$Scale

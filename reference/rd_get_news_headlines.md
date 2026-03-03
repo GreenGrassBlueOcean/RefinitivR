@@ -10,7 +10,7 @@ and then sends the GET request via `send_json_request()`.
 
 ``` r
 rd_get_news_headlines(
-  RDObject = RefinitivJsonConnect(),
+  RDObject = rd_connection(),
   query = NULL,
   limit = 10L,
   sort = "NewToOld",
@@ -19,7 +19,8 @@ rd_get_news_headlines(
   dateFrom = NULL,
   dateTo = NULL,
   raw_output = FALSE,
-  debug = TRUE
+  debug = TRUE,
+  cache = NULL
 )
 ```
 
@@ -72,6 +73,14 @@ rd_get_news_headlines(
 
   If `TRUE`, prints debugging messages.
 
+- cache:
+
+  Controls caching. `NULL` (default) defers to
+  `getOption("refinitiv_cache", FALSE)`. `TRUE` uses the function
+  default TTL (60 s). `FALSE` disables caching. A positive numeric value
+  sets the cache TTL in seconds. See
+  [`rd_ClearCache`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md).
+
 ## Value
 
 A `data.frame` with flattened fields, or the raw JSON if
@@ -86,90 +95,67 @@ via a cursor.
 
 Examples of queries include:
 
-\- \*\*Explicit FreeText (use quotes):\*\* Obtains headlines for stories
-containing the text "electric car" or "electric vehicle"
+- Explicit FreeText (use quotes):
 
-        rd_get_news_headlines(query = "\"electric car\" or \"electric vehicle\"")
-      
+  `rd_get_news_headlines(query = "\"electric car\" or \"electric vehicle\"")`
 
-\- \*\*SearchIn token (HeadlineOnly):\*\* Obtains headlines for stories
-with "Reports" or "Announces" in their title, limiting the search to
-headlines only
+- SearchIn token (HeadlineOnly):
 
-        rd_get_news_headlines(query = "\"Reports\" or \"Announces\" and searchIn:HeadlineOnly")
-      
+  `rd_get_news_headlines(query = "\"Reports\" or \"Announces\" and searchIn:HeadlineOnly")`
 
-\- \*\*SearchIn token (FullStory):\*\* Obtains headlines for stories
-with "inflation" when searching in the full story text
+- SearchIn token (FullStory):
 
-        rd_get_news_headlines(query = "\"inflation\" and searchIn:FullStory")
-      
+  `rd_get_news_headlines(query = "\"inflation\" and searchIn:FullStory")`
 
-\- \*\*Language Filter:\*\* For French headlines:
+- Language Filter:
 
-        rd_get_news_headlines(query = "LFR")
-      
+  French: `rd_get_news_headlines(query = "LFR")`; English:
+  `rd_get_news_headlines(query = "L:EN")`
 
-For English headlines (disambiguated with the language prefix "L:"):
+- Reuters Instrument Code (RIC):
 
-        rd_get_news_headlines(query = "L:EN")
-      
+  `rd_get_news_headlines(query = "MSFT.O")`
 
-\- \*\*Reuters Instrument Code (RIC):\*\*
+- RIC + Relevancy:
 
-        rd_get_news_headlines(query = "MSFT.O")
-      
+  `rd_get_news_headlines(query = "MSFT.O", relevancy = "High")`
 
-\- \*\*Combination of RIC and Relevancy:\*\*
+- Company Name + RIC + Relevancy:
 
-        rd_get_news_headlines(query = "MSFT.O", relevancy = "High")
-      
+  `rd_get_news_headlines(query = "LEN and \"Microsoft\" and MSFT.O", relevancy = "High")`
 
-\- \*\*Combination of Company Name, RIC and Relevancy:\*\*
+- Most Read News (M:1RS):
 
-        rd_get_news_headlines(query = "LEN and \"Microsoft\" and MSFT.O", relevancy = "High")
-      
+  `rd_get_news_headlines(query = "M:1RS")`
 
-\- \*\*Most Read News (M:1RS):\*\*
+- Newswire Specific RCS Codes:
 
-        rd_get_news_headlines(query = "M:1RS")
-      
+  `rd_get_news_headlines(query = "MRG")`
 
-\- \*\*Newswire Specific RCS Codes (MRG):\*\*
+- Explicit Token News Source (NS):
 
-        rd_get_news_headlines(query = "MRG")
-      
+  `rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR")`
 
-\- \*\*Explicit Token News Source (NS):\*\*
+- Increasing the Limit:
 
-        rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR")
-      
+  `rd_get_news_headlines(query = "\"stock repurchase\"", limit = 50)`
 
-\- \*\*Increasing the Limit:\*\*
+- Pagination using Cursor:
 
-        rd_get_news_headlines(query = "\"stock repurchase\"", limit = 50)
-      
+  `rd_get_news_headlines(query = "MSFT.O", cursor = "H4sIAAAAAAAA...", limit = 10)`
 
-\- \*\*Pagination using Cursor:\*\*
+- Daterange using LAST syntax:
 
-        rd_get_news_headlines(query = "MSFT.O", cursor = "H4sIAAAAAAAA...", limit = 10)
-      
+  `rd_get_news_headlines(query = "MRG last 5 days")`
 
-\- \*\*Daterange using LAST syntax:\*\*
+- Daterange with BETWEEN syntax:
 
-        rd_get_news_headlines(query = "MRG last 5 days")
-      
+  `rd_get_news_headlines(query = "M:1RS BETWEEN 2024-03 AND 2024-04")`
 
-\- \*\*Daterange with BETWEEN syntax:\*\*
+- Daterange with explicit from/to:
 
-        rd_get_news_headlines(query = "M:1RS BETWEEN 2024-03 AND 2024-04")
-      
+  `rd_get_news_headlines(query = "Major breaking news", dateFrom = "2024-04-13T00:00:00Z", dateTo = "2024-04-14T00:00:00Z")`
 
-\- \*\*Daterange with explicit "from,to" syntax:\*\*
-
-        rd_get_news_headlines(query = "Major breaking news", dateFrom = "2024-04-13T00:00:00Z", dateTo = "2024-04-14T00:00:00Z")
-      
-
-\*\*Note:\*\* The parameter `limit` must not exceed 100. If a value
-greater than 100 is provided, the function will throw an error. When
+Note: The parameter `limit` must not exceed 100. If a value greater than
+100 is provided, the function will throw an error. When
 `raw_output = TRUE`, a list of raw JSON responses is returned.

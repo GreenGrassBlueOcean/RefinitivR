@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">RDPsearch</span><span class="op">(</span></span>
-<span>  RDP <span class="op">=</span> <span class="fu"><a href="RDConnect.html">RDConnect</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  RDP <span class="op">=</span> <span class="fu"><a href="rd_connection.html">rd_connection</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  query <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  view <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  select <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -51,7 +51,8 @@
 <span>  navigators <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  features <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  SpaceConvertor <span class="op">=</span> <span class="st">"."</span>,</span>
-<span>  Arglist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  Arglist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -114,6 +115,13 @@
 <dt id="arg-arglist">Arglist<a class="anchor" aria-label="anchor" href="#arg-arglist"></a></dt>
 <dd><p>optional named list pass the above parameters as a named list withouding needing to use to do.call.</p></dd>
 
+
+<dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
+<dd><p>Controls caching. <code>NULL</code> (default) defers to
+<code>getOption("refinitiv_cache", FALSE)</code>. <code>TRUE</code> uses the
+function default TTL (300 s). <code>FALSE</code> disables caching. A positive
+numeric value sets the cache TTL in seconds. See <code><a href="rd_ClearCache.html">rd_ClearCache</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -121,7 +129,7 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>For additional examples see  <a href="https://github.com/Refinitiv-API-Samples/Article.RDPLibrary.Python.Search" class="external-link">https://github.com/Refinitiv-API-Samples/Article.RDPLibrary.Python.Search</a></p>
+    <p>For additional examples see  <a href="https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/documentation" class="external-link">https://developers.lseg.com/en/api-catalog/refinitiv-data-platform/refinitiv-data-platform-apis/documentation</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -131,60 +139,76 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="RDConnect.html">RDConnect</a></span><span class="op">(</span><span class="st">'your api key'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span>query <span class="op">=</span>  <span class="st">"AAPL.O"</span>, select <span class="op">=</span> <span class="st">"ContractType,RIC"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="RDConnect.html">RDConnect</a></span><span class="op">(</span><span class="st">"your api key"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span>query <span class="op">=</span> <span class="st">"AAPL.O"</span>, select <span class="op">=</span> <span class="st">"ContractType,RIC"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">Presidents</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span> view <span class="op">=</span> <span class="st">"People"</span>, query <span class="op">=</span> <span class="st">'president'</span></span></span>
-<span class="r-in"><span>                       , filter <span class="op">=</span> <span class="st">"startswith(LastName,'H')"</span></span></span>
-<span class="r-in"><span>                       , select <span class="op">=</span> <span class="st">'DocumentTitle'</span></span></span>
-<span class="r-in"><span>                       , boost <span class="op">=</span> <span class="st">''</span></span></span>
-<span class="r-in"><span>                       , order_by <span class="op">=</span> <span class="st">'DocumentTitle asc'</span></span></span>
-<span class="r-in"><span>                       , group_by <span class="op">=</span> <span class="st">'FirstName'</span></span></span>
-<span class="r-in"><span>                       , group_count <span class="op">=</span> <span class="fl">2</span></span></span>
-<span class="r-in"><span>                       , top <span class="op">=</span> <span class="fl">20</span></span></span>
-<span class="r-in"><span>                       , navigators <span class="op">=</span> <span class="st">'HullType'</span></span></span>
-<span class="r-in"><span>                       , features <span class="op">=</span> <span class="st">'spell'</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Presidents</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  view <span class="op">=</span> <span class="st">"People"</span>, query <span class="op">=</span> <span class="st">"president"</span>,</span></span>
+<span class="r-in"><span>  filter <span class="op">=</span> <span class="st">"startswith(LastName,'H')"</span>,</span></span>
+<span class="r-in"><span>  select <span class="op">=</span> <span class="st">"DocumentTitle"</span>,</span></span>
+<span class="r-in"><span>  boost <span class="op">=</span> <span class="st">""</span>,</span></span>
+<span class="r-in"><span>  order_by <span class="op">=</span> <span class="st">"DocumentTitle asc"</span>,</span></span>
+<span class="r-in"><span>  group_by <span class="op">=</span> <span class="st">"FirstName"</span>,</span></span>
+<span class="r-in"><span>  group_count <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  top <span class="op">=</span> <span class="fl">20</span>,</span></span>
+<span class="r-in"><span>  navigators <span class="op">=</span> <span class="st">"HullType"</span>,</span></span>
+<span class="r-in"><span>  features <span class="op">=</span> <span class="st">"spell"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">reporates</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span> view <span class="op">=</span> <span class="st">"IndicatorQuotes"</span></span></span>
-<span class="r-in"><span>                      , query <span class="op">=</span> <span class="st">"repo rate"</span>, group_by <span class="op">=</span> <span class="st">"CentralBankName"</span></span></span>
-<span class="r-in"><span>                      , group_count <span class="op">=</span> <span class="fl">3</span></span></span>
-<span class="r-in"><span>                      , select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"CentralBankName,DocumentTitle,"</span></span></span>
-<span class="r-in"><span>                                       ,<span class="st">"RIC,ObservationValue"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                      , top <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">reporates</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  view <span class="op">=</span> <span class="st">"IndicatorQuotes"</span>,</span></span>
+<span class="r-in"><span>  query <span class="op">=</span> <span class="st">"repo rate"</span>, group_by <span class="op">=</span> <span class="st">"CentralBankName"</span>,</span></span>
+<span class="r-in"><span>  group_count <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"CentralBankName,DocumentTitle,"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"RIC,ObservationValue"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  top <span class="op">=</span> <span class="fl">1000</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">EquitiesSearch</span> <span class="op">&lt;-</span>  <span class="fu">RDPsearch</span><span class="op">(</span> view <span class="op">=</span> <span class="st">"EquityQuotes"</span></span></span>
-<span class="r-in"><span>                            , filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Eps gt 6.0 and "</span></span></span>
-<span class="r-in"><span>                                      , <span class="st">"RCSTRBC2012Name eq 'Personal &amp; "</span></span></span>
-<span class="r-in"><span>                                      , <span class="st">"Household Products &amp; Services' "</span></span></span>
-<span class="r-in"><span>                                      , <span class="st">"and MktCapTotalUsd gt 100000000 "</span></span></span>
-<span class="r-in"><span>                                      , <span class="st">"and IsPrimaryRIC eq true"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                            , top <span class="op">=</span>  <span class="fl">10000</span></span></span>
-<span class="r-in"><span>                            , select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"DocumentTitle , RIC, Eps,"</span></span></span>
-<span class="r-in"><span>                                             ,<span class="st">" MktCapTotalUsd"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">EquitiesSearch</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  view <span class="op">=</span> <span class="st">"EquityQuotes"</span>,</span></span>
+<span class="r-in"><span>  filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"Eps gt 6.0 and "</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"RCSTRBC2012Name eq 'Personal &amp; "</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"Household Products &amp; Services' "</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"and MktCapTotalUsd gt 100000000 "</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"and IsPrimaryRIC eq true"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  top <span class="op">=</span> <span class="fl">10000</span>,</span></span>
+<span class="r-in"><span>  select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"DocumentTitle , RIC, Eps,"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">" MktCapTotalUsd"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">Vessels</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span> view <span class="op">=</span> <span class="st">"VesselPhysicalAssets"</span></span></span>
-<span class="r-in"><span>                    , filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span> <span class="st">"RCSAssetTypeLeaf eq 'tanker'"</span></span></span>
-<span class="r-in"><span>                               , <span class="st">" and RCSRegionLeaf eq 'Gulf of Mexico'"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                    , top <span class="op">=</span>  <span class="fl">10000</span></span></span>
-<span class="r-in"><span>                    , navigators <span class="op">=</span> <span class="st">"OriginPort"</span></span></span>
-<span class="r-in"><span>                    , select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span> <span class="st">"DocumentTitle,RIC,OriginPort"</span></span></span>
-<span class="r-in"><span>                                     , <span class="st">" ,DestinationPort,RCSFlagLeaf"</span></span></span>
-<span class="r-in"><span>                                     , <span class="st">",AssetName,AISStatus,"</span></span></span>
-<span class="r-in"><span>                                     , <span class="st">"VesselCurrentPortRIC,IMO"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                    <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Vessels</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  view <span class="op">=</span> <span class="st">"VesselPhysicalAssets"</span>,</span></span>
+<span class="r-in"><span>  filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"RCSAssetTypeLeaf eq 'tanker'"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">" and RCSRegionLeaf eq 'Gulf of Mexico'"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  top <span class="op">=</span> <span class="fl">10000</span>,</span></span>
+<span class="r-in"><span>  navigators <span class="op">=</span> <span class="st">"OriginPort"</span>,</span></span>
+<span class="r-in"><span>  select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"DocumentTitle,RIC,OriginPort"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">" ,DestinationPort,RCSFlagLeaf"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">",AssetName,AISStatus,"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"VesselCurrentPortRIC,IMO"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">ListedSearch</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span>Arglist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"president"</span>, view <span class="op">=</span> <span class="st">"People"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">SearchQuery</span> <span class="op">=</span> <span class="st">"aapl.o"</span></span></span>
+<span class="r-in"><span><span class="va">SearchQuery</span> <span class="op">&lt;-</span> <span class="st">"aapl.o"</span></span></span>
 <span class="r-in"><span><span class="va">ListedSearch</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span>query <span class="op">=</span> <span class="va">SearchQuery</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span>  <span class="va">SearchQuery</span> <span class="op">=</span> <span class="st">"aapl.o"</span></span></span>
-<span class="r-in"><span>  <span class="va">ListedSearch</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span>RDP <span class="op">=</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span>, query <span class="op">=</span> <span class="va">SearchQuery</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">SearchQuery</span> <span class="op">&lt;-</span> <span class="st">"aapl.o"</span></span></span>
+<span class="r-in"><span><span class="va">ListedSearch</span> <span class="op">&lt;-</span> <span class="fu">RDPsearch</span><span class="op">(</span>RDP <span class="op">=</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span>, query <span class="op">=</span> <span class="va">SearchQuery</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

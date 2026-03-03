@@ -1,4 +1,4 @@
-# Function to obtain timeseries from Eikon. Based on the Eikon python function get_timeseries
+# Function to obtain timeseries from Eikon via the JSON API
 
 Automatically chunks the timeseries in seperate apicalls and binds them
 together again in order to comply with api regulations.
@@ -7,7 +7,7 @@ together again in order to comply with api regulations.
 
 ``` r
 EikonGetTimeseries(
-  EikonObject,
+  EikonObject = rd_connection(),
   rics,
   interval = "daily",
   calender = "tradingdays",
@@ -18,7 +18,8 @@ EikonGetTimeseries(
   cast = TRUE,
   time_out = 60,
   verbose = FALSE,
-  raw_output = FALSE
+  raw_output = FALSE,
+  cache = NULL
 )
 ```
 
@@ -26,7 +27,9 @@ EikonGetTimeseries(
 
 - EikonObject:
 
-  Python eikon module result from EikonConnect
+  Eikon connection object. Defaults to
+  [`rd_connection()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_connection.md),
+  which auto-creates a connection on first use.
 
 - rics:
 
@@ -72,11 +75,19 @@ EikonGetTimeseries(
 
 - verbose:
 
-  boolean if TRUE prints out the python call to the console
+  boolean if TRUE prints out the API call details to the console
 
 - raw_output:
 
   provide only the raw downloaded info from Eikon
+
+- cache:
+
+  Controls caching. `NULL` (default) defers to
+  `getOption("refinitiv_cache", FALSE)`. `TRUE` uses the function
+  default TTL (300 s). `FALSE` disables caching. A positive numeric
+  value sets the cache TTL in seconds. See
+  [`rd_ClearCache`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md).
 
 ## Value
 
@@ -91,19 +102,19 @@ A data.frame containing time series from Eikon
 ``` r
 if (FALSE) { # \dontrun{
 Eikon <- Refinitiv::EikonConnect()
-ex1 <- EikonGetTimeseries(EikonObject = Eikon, rics = c("MMM", "III.L"),
-                   start_date = "2020-01-01T01:00:00",
-                   end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE)
+ex1 <- EikonGetTimeseries(
+  EikonObject = Eikon, rics = c("MMM", "III.L"),
+  start_date = "2020-01-01T01:00:00",
+  end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE
+)
 } # }
 
 if (FALSE) { # \dontrun{
-  EikonJson <- RefinitivJsonConnect()
-  ex1 <- EikonGetTimeseries(EikonObject = EikonJson, rics = c("MMM", "III.L"),
-                   start_date = "2020-01-01T01:00:00",
-                   end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE)
+EikonJson <- RefinitivJsonConnect()
+ex1 <- EikonGetTimeseries(
+  EikonObject = EikonJson, rics = c("MMM", "III.L"),
+  start_date = "2020-01-01T01:00:00",
+  end_date = paste0(Sys.Date(), "T01:00:00"), verbose = TRUE
+)
 } # }
-
-
-
-
 ```

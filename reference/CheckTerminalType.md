@@ -1,9 +1,7 @@
-# Check Terminal Type and Connectivity for Eikon or Workspace
+# Check LSEG Workspace Connectivity
 
-This function checks the connectivity to Eikon or Workspace and sets the
-corresponding port in the global options. It first verifies if there is
-a terminal connection available and then checks if Eikon or Workspace
-Desktop is running by testing specific ports.
+Verifies that the LSEG Workspace Data API proxy is reachable on port
+9000 and sets the `eikon_port` option accordingly.
 
 ## Usage
 
@@ -15,34 +13,28 @@ CheckTerminalType(verbose = FALSE, force = FALSE)
 
 - verbose:
 
-  Logical; if \`TRUE\`, the function will print messages about the
-  detection process. Defaults to \`FALSE\`.
+  Logical; if `TRUE`, prints status messages. Defaults to `FALSE`.
 
 - force:
 
-  Logical; if \`TRUE\`, the function will recheck and reset the terminal
-  type even if the `eikon_port` option is already set. Defaults to
-  \`FALSE\`.
+  Logical; if `TRUE`, rechecks even when `eikon_port` is already set.
+  Defaults to `FALSE`.
 
 ## Value
 
-This function sets a global option `eikon_port` to either 9000
-(Workspace) or 9060 (Eikon), depending on the detected connection. If
-there is no connection, the function will stop with an error message.
+Invisibly `NULL`. Sets `options(eikon_port = 9000L)` on success; issues
+a warning if the proxy is not reachable.
 
 ## Details
 
-The function checks for the existence of a terminal connection by
-attempting to connect to the proxy on port 9000. If successful, it then
-checks for Eikon connectivity by attempting to connect to port 9060. If
-Eikon is running, the port is set to 9060, and if Workspace is detected,
-the port is set to 9000.
+Auto-detection is skipped when `eikon_port` is already set.
+Pre-configure via `options(eikon_port = 9000L)` or the `REFINITIV_PORT`
+environment variable (read at package load).
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
-# Check terminal connection and detect terminal type
 CheckTerminalType(verbose = TRUE, force = TRUE)
 } # }
 ```

@@ -27,9 +27,9 @@ boolean TRUE, FALSE or NA
 
 ``` r
 if (FALSE) { # \dontrun{
-CheckifCustomInstrument(symbol = "test" , UUID = "ABCDE-123456")
-CheckifCustomInstrument(symbol = c("test", 'test2') , UUID = "ABCDE-123456")
-CheckifCustomInstrument(symbol = "test.ABCDE-123456" , UUID = "ABCDE-123456")
-CheckifCustomInstrument(symbol = "test.ABCDE-123456" , UUID = NULL)
+CheckifCustomInstrument(symbol = "test", UUID = "ABCDE-123456")
+CheckifCustomInstrument(symbol = c("test", "test2"), UUID = "ABCDE-123456")
+CheckifCustomInstrument(symbol = "test.ABCDE-123456", UUID = "ABCDE-123456")
+CheckifCustomInstrument(symbol = "test.ABCDE-123456", UUID = NULL)
 } # }
 ```

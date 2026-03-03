@@ -11,7 +11,7 @@ with event-driven callbacks."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,8 @@ with event-driven callbacks.</p>
 <span>  on_refresh <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_update <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_error <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_reconnecting <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_reconnected <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  RDObject <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  stream_type <span class="op">=</span> <span class="st">"pricing"</span>,</span>
 <span>  domain <span class="op">=</span> <span class="st">"MarketPrice"</span>,</span>
@@ -83,6 +85,16 @@ Function signature: `function(stream, instrument, fields)`</p></dd>
 Function signature: `function(stream, error_message)`</p></dd>
 
 
+<dt id="arg-on-reconnecting">on_reconnecting<a class="anchor" aria-label="anchor" href="#arg-on-reconnecting"></a></dt>
+<dd><p>Optional function called when a reconnect attempt starts.
+Function signature: `function(stream, attempt_number)`</p></dd>
+
+
+<dt id="arg-on-reconnected">on_reconnected<a class="anchor" aria-label="anchor" href="#arg-on-reconnected"></a></dt>
+<dd><p>Optional function called after a successful reconnect.
+Function signature: `function(stream, attempt_number)`</p></dd>
+
+
 <dt id="arg-rdobject">RDObject<a class="anchor" aria-label="anchor" href="#arg-rdobject"></a></dt>
 <dd><p>Optional RD connection object (uses active session if not provided)</p></dd>
 
@@ -107,6 +119,8 @@ Function signature: `function(stream, error_message)`</p></dd>
   - `on_refresh(callback)` - Register refresh callback
   - `on_update(callback)` - Register update callback
   - `on_error(callback)` - Register error callback
+  - `on_reconnecting(callback)` - Register reconnecting callback
+  - `on_reconnected(callback)` - Register reconnected callback
   - `get_latest_data(instrument)` - Get current snapshot
   - `get_data_history()` - Get buffered historical data
   - `plot_live(field, instrument, ...)` - Create live Shiny plot
@@ -156,7 +170,7 @@ Function signature: `function(stream, error_message)`</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create and run live plot</span></span></span>
 <span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="va">stream</span><span class="op">$</span><span class="fu">plot_live</span><span class="op">(</span>field <span class="op">=</span> <span class="st">"BID"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span>  <span class="co"># Opens in browser</span></span></span>
+<span class="r-in"><span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span> <span class="co"># Opens in browser</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
@@ -166,7 +180,7 @@ Function signature: `function(stream, error_message)`</p></dd>
 <span class="r-in"><span>  fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BID"</span>, <span class="st">"ASK"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">stream</span><span class="op">$</span><span class="fu">open</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>  <span class="co"># Collect some data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="co"># Collect some data</span></span></span>
 <span class="r-in"><span><span class="va">summary</span> <span class="op">&lt;-</span> <span class="va">stream</span><span class="op">$</span><span class="fu">get_summary</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">summary</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>

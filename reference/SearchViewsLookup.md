@@ -15,11 +15,11 @@ A data.table containing:
 
 - SearchViews_RD:
 
-  SearchViews valid for RD python API
+  SearchViews valid for the RD API
 
 - SearchViews_JSON_RDP:
 
-  SearchViews valid for RDP python API and direct JSON calls
+  SearchViews valid for the RDP API and direct JSON calls
 
 ## Source
 

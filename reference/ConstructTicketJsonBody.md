@@ -28,3 +28,9 @@ ConstructTicketJsonBody(query, ticket, debug)
 revised json body with ticket hash
 
 ## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# See tests for examples
+} # }
+```

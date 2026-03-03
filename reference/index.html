@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,13 +40,6 @@
 
 
       <dl><dt>
-
-          <code><a href="CheckTerminalType.html">CheckTerminalType()</a></code>
-
-        </dt>
-        <dd>Check Terminal Type and Connectivity for Eikon or Workspace</dd>
-
-        <dt>
 
           <code><a href="CorrectCustomInstrument.html">CorrectCustomInstrument()</a></code>
 
@@ -86,14 +79,14 @@
           <code><a href="EikonConnect.html">EikonConnect()</a></code>
 
         </dt>
-        <dd>Initialize Eikon Python api</dd>
+        <dd>Connect to LSEG Workspace via JSON</dd>
 
         <dt>
 
           <code><a href="EikonGetData.html">EikonGetData()</a></code>
 
         </dt>
-        <dd>Function to obtain data from Eikon. Based on the Eikon python function get_data</dd>
+        <dd>Function to obtain data from Eikon via the JSON API</dd>
 
         <dt>
 
@@ -121,7 +114,7 @@
           <code><a href="EikonGetTimeseries.html">EikonGetTimeseries()</a></code>
 
         </dt>
-        <dd>Function to obtain timeseries from Eikon. Based on the Eikon python function get_timeseries</dd>
+        <dd>Function to obtain timeseries from Eikon via the JSON API</dd>
 
         <dt>
 
@@ -129,13 +122,6 @@
 
         </dt>
         <dd>Repair Market Identifier Codes (MIC) utilizing RDN Exchange Identifiers</dd>
-
-        <dt>
-
-          <code><a href="EikonShowAttributes.html">EikonShowAttributes()</a></code>
-
-        </dt>
-        <dd>Show the attributes of the Python Eikon</dd>
 
         <dt>
 
@@ -153,17 +139,10 @@
 
         <dt>
 
-          <code><a href="PropertiesActiveRefinitivObject.html">PropertiesActiveRefinitivObject()</a></code>
-
-        </dt>
-        <dd>Function to check through which Refinitiv Connection object requests are made</dd>
-
-        <dt>
-
           <code><a href="RDConnect.html">RDConnect()</a></code> <code><a href="RDConnect.html">RDPConnect()</a></code>
 
         </dt>
-        <dd>RD connection function to refinitiv Data libraries</dd>
+        <dd>Connect to LSEG / Refinitiv Data via JSON</dd>
 
         <dt>
 
@@ -177,7 +156,7 @@
           <code><a href="RDPShowAvailableSearchViews.html">RDPShowAvailableSearchViews()</a></code>
 
         </dt>
-        <dd>Show Available Search Views for seachview parameter in RDPget_search_metadata</dd>
+        <dd>Show Available Search Views for searchView parameter in RDPget_search_metadata</dd>
 
         <dt>
 
@@ -198,7 +177,7 @@
           <code><a href="RefinitivJsonConnect.html">RefinitivJsonConnect()</a></code>
 
         </dt>
-        <dd>Connect to Eikon directly with JSON requests</dd>
+        <dd>Create a JSON connection object for the LSEG Workspace proxy</dd>
 
         <dt>
 
@@ -223,38 +202,59 @@
 
         <dt>
 
-          <code><a href="build_get_query_string.html">build_get_query_string()</a></code>
-
-        </dt>
-        <dd>Build GET Query String</dd>
-
-        <dt>
-
-          <code><a href="get_rdp_streaming_url.html">get_rdp_streaming_url()</a></code>
-
-        </dt>
-        <dd>Show all available custom instruments that have been created</dd>
-
-        <dt>
-
           <code><a href="install_eikon.html">install_eikon()</a></code>
 
         </dt>
-        <dd>Check if Conda exists, if not instals miniconda, add the python eikon module to the python environment r-eikon</dd>
+        <dd>Install Eikon Python environment (Defunct)</dd>
 
         <dt>
 
-          <code><a href="mapEikonTimefieldsToRd.html">mapEikonTimefieldsToRd()</a></code>
+          <code><a href="names.RefinitivConnection.html">names(<i>&lt;RefinitivConnection&gt;</i>)</a></code>
 
         </dt>
-        <dd>Map Eikon Time Fields to Refinitiv Data (RD) Fields</dd>
+        <dd>List methods on a RefinitivConnection object</dd>
+
+        <dt>
+
+          <code><a href="print.RefinitivConnection.html">print(<i>&lt;RefinitivConnection&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Print a RefinitivConnection object</dd>
+
+        <dt>
+
+          <code><a href="rd_CacheInfo.html">rd_CacheInfo()</a></code>
+
+        </dt>
+        <dd>Show RefinitivR Cache Statistics</dd>
+
+        <dt>
+
+          <code><a href="rd_ClearCache.html">rd_ClearCache()</a></code>
+
+        </dt>
+        <dd>Clear the RefinitivR Session Cache</dd>
 
         <dt>
 
           <code><a href="rd_GetData.html">rd_GetData()</a></code>
 
         </dt>
-        <dd>Function to obtain data from Eikon. Based on the Eikon python function get_data</dd>
+        <dd>Function to obtain data from Eikon/LSEG via the JSON API</dd>
+
+        <dt>
+
+          <code><a href="rd_GetESG.html">rd_GetESG()</a></code>
+
+        </dt>
+        <dd>Retrieve ESG Data from LSEG</dd>
+
+        <dt>
+
+          <code><a href="rd_GetEstimates.html">rd_GetEstimates()</a></code>
+
+        </dt>
+        <dd>Retrieve Estimates Data from LSEG</dd>
 
         <dt>
 
@@ -272,6 +272,13 @@
 
         <dt>
 
+          <code><a href="rd_GetOwnership.html">rd_GetOwnership()</a></code>
+
+        </dt>
+        <dd>Retrieve Ownership Data from LSEG</dd>
+
+        <dt>
+
           <code><a href="rd_ManageCustomInstruments.html">rd_ManageCustomInstruments()</a></code>
 
         </dt>
@@ -286,17 +293,10 @@
 
         <dt>
 
-          <code><a href="rd_VerifyToken.html">rd_VerifyToken()</a></code>
+          <code><a href="rd_connection.html">rd_connection()</a></code>
 
         </dt>
-        <dd>Verify the Validity of a JWT Access Token</dd>
-
-        <dt>
-
-          <code><a href="rd_check_proxy_url.html">rd_check_proxy_url()</a></code>
-
-        </dt>
-        <dd>Check if refinitiv proxy url is alive</dd>
+        <dd>Get or create the default Refinitiv connection</dd>
 
         <dt>
 
@@ -349,17 +349,10 @@
 
         <dt>
 
-          <code><a href="retry.html">retry()</a></code>
+          <code><a href="refinitiv_vault.html">refinitiv_vault()</a></code>
 
         </dt>
-        <dd>Function to retry failed functions after a time out of 5 seconds. Especially useful for failed api calls.</dd>
-
-        <dt>
-
-          <code><a href="translate_to_iso8601_duration.html">translate_to_iso8601_duration()</a></code>
-
-        </dt>
-        <dd>Translate Frequency to ISO 8601 Duration</dd>
+        <dd>Inspect the credential vault safely</dd>
       </dl></div>
   </main></div>
 

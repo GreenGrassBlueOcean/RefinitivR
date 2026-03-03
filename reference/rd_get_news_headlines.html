@@ -11,7 +11,7 @@ build_get_query_string() and then sends the GET request via send_json_request().
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@ Refinitiv RDP service. It builds a query string from the provided parameters usi
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rd_get_news_headlines</span><span class="op">(</span></span>
-<span>  RDObject <span class="op">=</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  RDObject <span class="op">=</span> <span class="fu"><a href="rd_connection.html">rd_connection</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  query <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  limit <span class="op">=</span> <span class="fl">10L</span>,</span>
 <span>  sort <span class="op">=</span> <span class="st">"NewToOld"</span>,</span>
@@ -53,7 +53,8 @@ Refinitiv RDP service. It builds a query string from the provided parameters usi
 <span>  dateFrom <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dateTo <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  raw_output <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  debug <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  debug <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -100,6 +101,13 @@ Refinitiv RDP service. It builds a query string from the provided parameters usi
 <dt id="arg-debug">debug<a class="anchor" aria-label="anchor" href="#arg-debug"></a></dt>
 <dd><p>If <code>TRUE</code>, prints debugging messages.</p></dd>
 
+
+<dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
+<dd><p>Controls caching. <code>NULL</code> (default) defers to
+<code>getOption("refinitiv_cache", FALSE)</code>. <code>TRUE</code> uses the
+function default TTL (60 s). <code>FALSE</code> disables caching. A positive
+numeric value sets the cache TTL in seconds. See <code><a href="rd_ClearCache.html">rd_ClearCache</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -110,75 +118,58 @@ Refinitiv RDP service. It builds a query string from the provided parameters usi
     <p>The query parameters may include various tokens such as Reuters Instrument Codes (RIC),
 language codes, explicit free-text tokens (using quotes), and date ranges. In addition,
 the function supports pagination via a cursor.</p>
-<p>Examples of queries include:</p>
-<p>- **Explicit FreeText (use quotes):**
-  Obtains headlines for stories containing the text "electric car" or "electric vehicle"</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"\"electric car\" or \"electric vehicle\""</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
 
-<p>- **SearchIn token (HeadlineOnly):**
-  Obtains headlines for stories with "Reports" or "Announces" in their title, limiting the search to headlines only</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"\"Reports\" or \"Announces\" and searchIn:HeadlineOnly"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+<p>Examples of queries include:</p><dl><dt>Explicit FreeText (use quotes)</dt>
+<dd><p><code>rd_get_news_headlines(query = "\"electric car\" or \"electric vehicle\"")</code></p></dd>
 
-<p>- **SearchIn token (FullStory):**
-  Obtains headlines for stories with "inflation" when searching in the full story text</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"\"inflation\" and searchIn:FullStory"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>SearchIn token (HeadlineOnly)</dt>
+<dd><p><code>rd_get_news_headlines(query = "\"Reports\" or \"Announces\" and searchIn:HeadlineOnly")</code></p></dd>
 
-<p>- **Language Filter:**
-  For French headlines:</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"LFR"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div><p>For English headlines (disambiguated with the language prefix "L:"):</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"L:EN"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>SearchIn token (FullStory)</dt>
+<dd><p><code>rd_get_news_headlines(query = "\"inflation\" and searchIn:FullStory")</code></p></dd>
 
-<p>- **Reuters Instrument Code (RIC):**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"MSFT.O"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>Language Filter</dt>
+<dd><p>French: <code>rd_get_news_headlines(query = "LFR")</code>;
+    English: <code>rd_get_news_headlines(query = "L:EN")</code></p></dd>
 
-<p>- **Combination of RIC and Relevancy:**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"MSFT.O"</span>, relevancy <span class="op">=</span> <span class="st">"High"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>Reuters Instrument Code (RIC)</dt>
+<dd><p><code>rd_get_news_headlines(query = "MSFT.O")</code></p></dd>
 
-<p>- **Combination of Company Name, RIC and Relevancy:**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"LEN and \"Microsoft\" and MSFT.O"</span>, relevancy <span class="op">=</span> <span class="st">"High"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>RIC + Relevancy</dt>
+<dd><p><code>rd_get_news_headlines(query = "MSFT.O", relevancy = "High")</code></p></dd>
 
-<p>- **Most Read News (M:1RS):**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"M:1RS"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>Company Name + RIC + Relevancy</dt>
+<dd><p><code>rd_get_news_headlines(query = "LEN and \"Microsoft\" and MSFT.O", relevancy = "High")</code></p></dd>
 
-<p>- **Newswire Specific RCS Codes (MRG):**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"MRG"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>Most Read News (M:1RS)</dt>
+<dd><p><code>rd_get_news_headlines(query = "M:1RS")</code></p></dd>
 
-<p>- **Explicit Token News Source (NS):**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"NS:RTRS or NS:PRN or NS:TWTR"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>Newswire Specific RCS Codes</dt>
+<dd><p><code>rd_get_news_headlines(query = "MRG")</code></p></dd>
 
-<p>- **Increasing the Limit:**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"\"stock repurchase\""</span>, limit <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>Explicit Token News Source (NS)</dt>
+<dd><p><code>rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR")</code></p></dd>
 
-<p>- **Pagination using Cursor:**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"MSFT.O"</span>, cursor <span class="op">=</span> <span class="st">"H4sIAAAAAAAA..."</span>, limit <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>Increasing the Limit</dt>
+<dd><p><code>rd_get_news_headlines(query = "\"stock repurchase\"", limit = 50)</code></p></dd>
 
-<p>- **Daterange using LAST syntax:**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"MRG last 5 days"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>Pagination using Cursor</dt>
+<dd><p><code>rd_get_news_headlines(query = "MSFT.O", cursor = "H4sIAAAAAAAA...", limit = 10)</code></p></dd>
 
-<p>- **Daterange with BETWEEN syntax:**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"M:1RS BETWEEN 2024-03 AND 2024-04"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>Daterange using LAST syntax</dt>
+<dd><p><code>rd_get_news_headlines(query = "MRG last 5 days")</code></p></dd>
 
-<p>- **Daterange with explicit "from,to" syntax:**</p><div class="sourceCode"><pre><code><span></span>
-<span>    <span class="fu"><a href="../reference/rd_get_news_headlines.html">rd_get_news_headlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"Major breaking news"</span>, dateFrom <span class="op">=</span> <span class="st">"2024-04-13T00:00:00Z"</span>, dateTo <span class="op">=</span> <span class="st">"2024-04-14T00:00:00Z"</span><span class="op">)</span></span>
-<span>  </span></code></pre></div>
+  <dt>Daterange with BETWEEN syntax</dt>
+<dd><p><code>rd_get_news_headlines(query = "M:1RS BETWEEN 2024-03 AND 2024-04")</code></p></dd>
 
-<p>**Note:** The parameter <code>limit</code> must not exceed 100. If a value greater than 100
-is provided, the function will throw an error. When <code>raw_output = TRUE</code>, a list of raw JSON responses is returned.</p>
+  <dt>Daterange with explicit from/to</dt>
+<dd><p><code>rd_get_news_headlines(query = "Major breaking news",
+      dateFrom = "2024-04-13T00:00:00Z", dateTo = "2024-04-14T00:00:00Z")</code></p></dd>
+
+
+</dl><p>Note: The parameter <code>limit</code> must not exceed 100. If a value greater
+than 100 is provided, the function will throw an error. When
+<code>raw_output = TRUE</code>, a list of raw JSON responses is returned.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

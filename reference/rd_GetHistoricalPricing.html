@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span></span>
-<span>  RDObject <span class="op">=</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  RDObject <span class="op">=</span> <span class="fu"><a href="rd_connection.html">rd_connection</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  universe <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  interval <span class="op">=</span> <span class="st">"P1D"</span>,</span>
 <span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -48,7 +48,8 @@
 <span>  fields <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sessions <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  debug <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  SpaceConvertor <span class="op">=</span> <span class="st">"."</span></span>
+<span>  SpaceConvertor <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -99,6 +100,13 @@
 <dt id="arg-spaceconvertor">SpaceConvertor<a class="anchor" aria-label="anchor" href="#arg-spaceconvertor"></a></dt>
 <dd><p>converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is NULL</p></dd>
 
+
+<dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
+<dd><p>Controls caching. <code>NULL</code> (default) defers to
+<code>getOption("refinitiv_cache", FALSE)</code>. <code>TRUE</code> uses the
+function default TTL (300 s). <code>FALSE</code> disables caching. A positive
+numeric value sets the cache TTL in seconds. See <code><a href="rd_ClearCache.html">rd_ClearCache</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -108,14 +116,8 @@
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Additional details on parameters:</p>
 <p>## <strong>RDObject</strong>:
-The support connection objects are:</p><dl><dt>JSON:</dt>
-<dd><p>RefinitivJsonConnect</p></dd>
-
- <dt>refinitiv.data:</dt>
-<dd><p>RDConnect()</p></dd>
-
-
-</dl><p>## <strong>Interval</strong>:
+The supported connection object is RefinitivJsonConnect().</p>
+<p>## <strong>Interval</strong>:
 The support intervals are:</p><dl><dt>Intraday Summaries Intervals</dt>
 <dd><p>PT1M, PT5M, PT10M, PT30M, PT60M, and PT1H</p></dd>
 
@@ -224,43 +226,41 @@ together with the status block to indicate the unsupported fields. Currently, th
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># run with python refinitiv data</span></span></span>
-<span class="r-in"><span><span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span>universe <span class="op">=</span> <span class="st">"VOD.L"</span>, interval <span class="op">=</span> <span class="st">"P1D"</span></span></span>
-<span class="r-in"><span>, count <span class="op">=</span> <span class="fl">20L</span>, RDObject <span class="op">=</span> <span class="fu"><a href="RDConnect.html">RDConnect</a></span><span class="op">(</span>PythonModule <span class="op">=</span> <span class="st">"RD"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># run with r json</span></span></span>
-<span class="r-in"><span><span class="va">Vodafone2</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span>universe <span class="op">=</span> <span class="st">"VOD.L"</span>, interval <span class="op">=</span> <span class="st">"P1D"</span></span></span>
-<span class="r-in"><span>, count <span class="op">=</span> <span class="fl">20L</span>, RDObject <span class="op">=</span> <span class="fu"><a href="RDConnect.html">RDConnect</a></span><span class="op">(</span>PythonModule <span class="op">=</span> <span class="st">"JSON"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">Vodafone</span>, <span class="va">Vodafone2</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># run wit a subset of fields</span></span></span>
-<span class="r-in"><span><span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span>universe <span class="op">=</span> <span class="st">"VOD.L"</span>, interval <span class="op">=</span> <span class="st">"P1D"</span>, count <span class="op">=</span> <span class="fl">20L</span></span></span>
-<span class="r-in"><span>, fields <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BID"</span>,<span class="st">"ASK"</span>,<span class="st">"OPEN_PRC"</span>,<span class="st">"HIGH_1"</span>,<span class="st">"LOW_1"</span>,<span class="st">"TRDPRC_1"</span>,<span class="st">"NUM_MOVES"</span>,<span class="st">"TRNOVR_UNS"</span><span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># run with a subset of fields</span></span></span>
+<span class="r-in"><span><span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  universe <span class="op">=</span> <span class="st">"VOD.L"</span>, interval <span class="op">=</span> <span class="st">"P1D"</span>, count <span class="op">=</span> <span class="fl">20L</span>,</span></span>
+<span class="r-in"><span>  fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BID"</span>, <span class="st">"ASK"</span>, <span class="st">"OPEN_PRC"</span>, <span class="st">"HIGH_1"</span>, <span class="st">"LOW_1"</span>, <span class="st">"TRDPRC_1"</span>, <span class="st">"NUM_MOVES"</span>, <span class="st">"TRNOVR_UNS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># test for interday</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span>universe <span class="op">=</span> <span class="st">"VOD.L"</span>, interval <span class="op">=</span> <span class="st">"PT1M"</span>, count <span class="op">=</span> <span class="fl">20L</span></span></span>
-<span class="r-in"><span>, RDObject <span class="op">=</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  universe <span class="op">=</span> <span class="st">"VOD.L"</span>, interval <span class="op">=</span> <span class="st">"PT1M"</span>, count <span class="op">=</span> <span class="fl">20L</span>,</span></span>
+<span class="r-in"><span>  RDObject <span class="op">=</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="co"># 1 minute - Count - All Sessions</span></span></span>
-<span class="r-in"><span> <span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span> universe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"VOD.L"</span>, <span class="st">"AAPL.O"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                                    , interval <span class="op">=</span> <span class="st">"PT1M"</span>, count <span class="op">=</span> <span class="fl">500L</span></span></span>
-<span class="r-in"><span>                                    , sessions<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pre"</span>,<span class="st">"normal"</span>,<span class="st">"post"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                                    , RDObject <span class="op">=</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="co"># test with custom instrument you need to construct a custom instrument first</span></span></span>
-<span class="r-in"><span> <span class="co"># intraday</span></span></span>
-<span class="r-in"><span> <span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span> universe <span class="op">=</span> <span class="st">"S)lseg_epam4.ABCDE-123456"</span></span></span>
-<span class="r-in"><span> , interval <span class="op">=</span> <span class="st">"P1D"</span>, count <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="co"># interday</span></span></span>
-<span class="r-in"><span> <span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span> universe <span class="op">=</span> <span class="st">"S)lseg_epam4.ABCDE-123456"</span></span></span>
-<span class="r-in"><span> , interval <span class="op">=</span> <span class="st">"PT1M"</span>, count <span class="op">=</span> <span class="fl">500L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># 1 minute - Count - All Sessions</span></span></span>
+<span class="r-in"><span><span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  universe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"VOD.L"</span>, <span class="st">"AAPL.O"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  interval <span class="op">=</span> <span class="st">"PT1M"</span>, count <span class="op">=</span> <span class="fl">500L</span>,</span></span>
+<span class="r-in"><span>  sessions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pre"</span>, <span class="st">"normal"</span>, <span class="st">"post"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  RDObject <span class="op">=</span> <span class="fu"><a href="RefinitivJsonConnect.html">RefinitivJsonConnect</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># test with custom instrument you need to construct a custom instrument first</span></span></span>
+<span class="r-in"><span><span class="co"># intraday</span></span></span>
+<span class="r-in"><span><span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  universe <span class="op">=</span> <span class="st">"S)lseg_epam4.ABCDE-123456"</span>,</span></span>
+<span class="r-in"><span>  interval <span class="op">=</span> <span class="st">"P1D"</span>, count <span class="op">=</span> <span class="fl">20</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># interday</span></span></span>
+<span class="r-in"><span><span class="va">Vodafone</span> <span class="op">&lt;-</span> <span class="fu">rd_GetHistoricalPricing</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  universe <span class="op">=</span> <span class="st">"S)lseg_epam4.ABCDE-123456"</span>,</span></span>
+<span class="r-in"><span>  interval <span class="op">=</span> <span class="st">"PT1M"</span>, count <span class="op">=</span> <span class="fl">500L</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

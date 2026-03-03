@@ -5,7 +5,7 @@ Show all available custom instruments that have been created
 ## Usage
 
 ``` r
-rd_SearchCustomInstruments(RDObject = RefinitivJsonConnect(), debug = TRUE)
+rd_SearchCustomInstruments(RDObject = rd_connection(), debug = TRUE)
 ```
 
 ## Arguments

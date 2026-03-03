@@ -44,6 +44,6 @@ SpaceConvertor being set as "."
 ## Examples
 
 ``` r
-Refinitiv:::EikonNameCleaner(c("Instrument","Company Name","RDN_EXCHD2","Operating MIC"))
+Refinitiv:::EikonNameCleaner(c("Instrument", "Company Name", "RDN_EXCHD2", "Operating MIC"))
 #> [1] "Instrument"    "Company.Name"  "RDN_EXCHD2"    "Operating.MIC"
 ```

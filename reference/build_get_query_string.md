@@ -28,17 +28,17 @@ parameters remain, the string is prepended with a "?".
 
 ``` r
 if (FALSE) { # \dontrun{
-  query_list <- list(
-    query    = "R:TSLA.O AND Language:EN",
-    limit    = 5,
-    dateFrom = "2023-01-01T00:00:00Z",
-    extra    = NULL
-  )
-  qs <- build_get_query_string(query_list)
-  # qs will be:
-  # "?query=R%3ATSLA.O%20AND%20Language%3AEN&limit=5&dateFrom=2023-01-01T00%3A00%3A00Z"
+query_list <- list(
+  query    = "R:TSLA.O AND Language:EN",
+  limit    = 5,
+  dateFrom = "2023-01-01T00:00:00Z",
+  extra    = NULL
+)
+qs <- build_get_query_string(query_list)
+# qs will be:
+# "?query=R%3ATSLA.O%20AND%20Language%3AEN&limit=5&dateFrom=2023-01-01T00%3A00%3A00Z"
 
-  # Passing an empty list returns an empty string:
-  build_get_query_string(list())
+# Passing an empty list returns an empty string:
+build_get_query_string(list())
 } # }
 ```

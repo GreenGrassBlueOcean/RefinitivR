@@ -6,7 +6,7 @@ get historical timeseries from the Refinitiv API
 
 ``` r
 rd_GetHistoricalPricing(
-  RDObject = RefinitivJsonConnect(),
+  RDObject = rd_connection(),
   universe = NULL,
   interval = "P1D",
   start = NULL,
@@ -16,7 +16,8 @@ rd_GetHistoricalPricing(
   fields = NULL,
   sessions = NULL,
   debug = FALSE,
-  SpaceConvertor = "."
+  SpaceConvertor = ".",
+  cache = NULL
 )
 ```
 
@@ -74,6 +75,14 @@ rd_GetHistoricalPricing(
   converts spaces in variables name into one of the following characters
   ".", "," , "-", "\_", default is NULL
 
+- cache:
+
+  Controls caching. `NULL` (default) defers to
+  `getOption("refinitiv_cache", FALSE)`. `TRUE` uses the function
+  default TTL (300 s). `FALSE` disables caching. A positive numeric
+  value sets the cache TTL in seconds. See
+  [`rd_ClearCache`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md).
+
 ## Value
 
 data.frame with result
@@ -82,15 +91,8 @@ data.frame with result
 
 Additional details on parameters:
 
-\## **RDObject**: The support connection objects are:
-
-- JSON::
-
-  RefinitivJsonConnect
-
-- refinitiv.data::
-
-  RDConnect()
+\## **RDObject**: The supported connection object is
+RefinitivJsonConnect().
 
 \## **Interval**: The support intervals are:
 
@@ -219,42 +221,40 @@ names to RD field names.
 
 ``` r
 if (FALSE) { # \dontrun{
-# run with python refinitiv data
-Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
-, count = 20L, RDObject = RDConnect(PythonModule = "RD"))
-
-# run with r json
-Vodafone2 <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D"
-, count = 20L, RDObject = RDConnect(PythonModule = "JSON"))
-
-identical(Vodafone, Vodafone2)
-
-# run wit a subset of fields
-Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "P1D", count = 20L
-, fields =c("BID","ASK","OPEN_PRC","HIGH_1","LOW_1","TRDPRC_1","NUM_MOVES","TRNOVR_UNS") )
+# run with a subset of fields
+Vodafone <- rd_GetHistoricalPricing(
+  universe = "VOD.L", interval = "P1D", count = 20L,
+  fields = c("BID", "ASK", "OPEN_PRC", "HIGH_1", "LOW_1", "TRDPRC_1", "NUM_MOVES", "TRNOVR_UNS")
+)
 
 
 # test for interday
 
-Vodafone <- rd_GetHistoricalPricing(universe = "VOD.L", interval = "PT1M", count = 20L
-, RDObject = RefinitivJsonConnect())
+Vodafone <- rd_GetHistoricalPricing(
+  universe = "VOD.L", interval = "PT1M", count = 20L,
+  RDObject = RefinitivJsonConnect()
+)
 
- # 1 minute - Count - All Sessions
- Vodafone <- rd_GetHistoricalPricing( universe = c("VOD.L", "AAPL.O")
-                                    , interval = "PT1M", count = 500L
-                                    , sessions= c("pre","normal","post")
-                                    , RDObject = RefinitivJsonConnect())
-
-
- # test with custom instrument you need to construct a custom instrument first
- # intraday
- Vodafone <- rd_GetHistoricalPricing( universe = "S)lseg_epam4.ABCDE-123456"
- , interval = "P1D", count = 20)
-
- # interday
- Vodafone <- rd_GetHistoricalPricing( universe = "S)lseg_epam4.ABCDE-123456"
- , interval = "PT1M", count = 500L)
+# 1 minute - Count - All Sessions
+Vodafone <- rd_GetHistoricalPricing(
+  universe = c("VOD.L", "AAPL.O"),
+  interval = "PT1M", count = 500L,
+  sessions = c("pre", "normal", "post"),
+  RDObject = RefinitivJsonConnect()
+)
 
 
+# test with custom instrument you need to construct a custom instrument first
+# intraday
+Vodafone <- rd_GetHistoricalPricing(
+  universe = "S)lseg_epam4.ABCDE-123456",
+  interval = "P1D", count = 20
+)
+
+# interday
+Vodafone <- rd_GetHistoricalPricing(
+  universe = "S)lseg_epam4.ABCDE-123456",
+  interval = "PT1M", count = 500L
+)
 } # }
 ```
