@@ -22,8 +22,10 @@ list with chunked rics
 This is a subfunction of EikonGetTimeseries
 }
 \examples{
-test <- Refinitiv:::EikonTimeSeriesPreprocessor(interval = "daily"
-, rics = rep(letters, 1000), start_date = "2015-01-01", end_date = "2018-01-01")
+test <- Refinitiv:::EikonTimeSeriesPreprocessor(
+  interval = "daily",
+  rics = rep(letters, 1000), start_date = "2015-01-01", end_date = "2018-01-01"
+)
 }
 \seealso{
 EikonGetTimeseries

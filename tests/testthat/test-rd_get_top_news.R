@@ -38,8 +38,10 @@ test_that("rd_get_top_news returns a data.frame with expected fields for a singl
 
   result <- rd_get_top_news(raw_output = FALSE, debug = FALSE)
 
-  expected_cols <- c("group", "page_name", "po", "revisionId", "revisionDate",
-                     "topNewsId", "storyId", "title", "snippet")
+  expected_cols <- c(
+    "group", "page_name", "po", "revisionId", "revisionDate",
+    "topNewsId", "storyId", "title", "snippet"
+  )
   expect_s3_class(result, "data.frame")
   expect_true(all(expected_cols %in% names(result)))
   expect_equal(nrow(result), 1)
@@ -86,8 +88,10 @@ test_that("rd_get_top_news expands multiple stories into separate rows", {
   stub(rd_get_top_news, "send_json_request", dummy_send_json_request)
 
   result <- rd_get_top_news(raw_output = FALSE, debug = FALSE)
-  expected_cols <- c("group", "page_name", "po", "revisionId", "revisionDate",
-                     "topNewsId", "storyId", "title", "snippet")
+  expected_cols <- c(
+    "group", "page_name", "po", "revisionId", "revisionDate",
+    "topNewsId", "storyId", "title", "snippet"
+  )
   expect_s3_class(result, "data.frame")
   expect_true(all(expected_cols %in% names(result)))
   expect_equal(nrow(result), 2)
@@ -109,24 +113,30 @@ test_that("rd_get_top_news returns union of group and page filters", {
           list(
             name = "Main",
             pages = list(
-              list(name = "Central Banks & Global Economy", po = "PO1",
-                   revisionId = "R1", revisionDate = "2025-03-14T13:37:16.000Z", topNewsId = "TN1")
+              list(
+                name = "Central Banks & Global Economy", po = "PO1",
+                revisionId = "R1", revisionDate = "2025-03-14T13:37:16.000Z", topNewsId = "TN1"
+              )
             )
           ),
           # Group "Companies" with page "U.S. Companies"
           list(
             name = "Companies",
             pages = list(
-              list(name = "U.S. Companies", po = "PO2",
-                   revisionId = "R2", revisionDate = "2025-03-14T13:37:16.000Z", topNewsId = "TN2")
+              list(
+                name = "U.S. Companies", po = "PO2",
+                revisionId = "R2", revisionDate = "2025-03-14T13:37:16.000Z", topNewsId = "TN2"
+              )
             )
           ),
           # Group "Breakingviews" with page "Reuters Breakingviews"
           list(
             name = "Breakingviews",
             pages = list(
-              list(name = "Reuters Breakingviews", po = "PO3",
-                   revisionId = "R3", revisionDate = "2025-03-14T13:37:16.000Z", topNewsId = "TN3")
+              list(
+                name = "Reuters Breakingviews", po = "PO3",
+                revisionId = "R3", revisionDate = "2025-03-14T13:37:16.000Z", topNewsId = "TN3"
+              )
             )
           )
         )
@@ -145,11 +155,15 @@ test_that("rd_get_top_news returns union of group and page filters", {
   stub(rd_get_top_news, "send_json_request", dummy_send_json_request)
 
   # Use union filtering: group = c("Companies", "Breakingviews") OR page = c("Central Banks & Global Economy")
-  res <- rd_get_top_news(group = c("Companies", "Breakingviews"),
-                         page = c("Central Banks & Global Economy"),
-                         debug = FALSE)
-  expected_cols <- c("group", "page_name", "po", "revisionId", "revisionDate",
-                     "topNewsId", "storyId", "title", "snippet")
+  res <- rd_get_top_news(
+    group = c("Companies", "Breakingviews"),
+    page = c("Central Banks & Global Economy"),
+    debug = FALSE
+  )
+  expected_cols <- c(
+    "group", "page_name", "po", "revisionId", "revisionDate",
+    "topNewsId", "storyId", "title", "snippet"
+  )
   expect_s3_class(res, "data.frame")
   expect_true(all(expected_cols %in% names(res)))
   # Expect union: TN1 (from Main, matches page filter), TN2 (from Companies), and TN3 (from Breakingviews)
@@ -168,8 +182,10 @@ test_that("rd_get_top_news filters by group and page regex correctly with vector
           list(
             name = "Main",
             pages = list(
-              list(name = "Front Page", topNewsId = "TN1", po = "PO1",
-                   revisionId = "R1", revisionDate = "2025-03-14T13:37:16.000Z")
+              list(
+                name = "Front Page", topNewsId = "TN1", po = "PO1",
+                revisionId = "R1", revisionDate = "2025-03-14T13:37:16.000Z"
+              )
             )
           )
         )
@@ -199,10 +215,14 @@ test_that("rd_get_top_news does NOT re-download the same topNewsId multiple time
           list(
             name = "Main",
             pages = list(
-              list(name = "Front Page", topNewsId = "TN1", po = "PO1",
-                   revisionId = "R1", revisionDate = "2025-03-12T00:00:00Z"),
-              list(name = "Alternate Page", topNewsId = "TN1", po = "PO4",
-                   revisionId = "R4", revisionDate = "2025-03-12T00:00:00Z")
+              list(
+                name = "Front Page", topNewsId = "TN1", po = "PO1",
+                revisionId = "R1", revisionDate = "2025-03-12T00:00:00Z"
+              ),
+              list(
+                name = "Alternate Page", topNewsId = "TN1", po = "PO4",
+                revisionId = "R4", revisionDate = "2025-03-12T00:00:00Z"
+              )
             )
           )
         )
@@ -221,5 +241,8 @@ test_that("rd_get_top_news does NOT re-download the same topNewsId multiple time
   res <- rd_get_top_news(debug = FALSE)
   expect_equal(nrow(res), 2)
   expect_equal(call_counts$TN1, 1,
-               info = "Details for TN1 should only be downloaded once even if referenced by multiple pages.")
+    info = "Details for TN1 should only be downloaded once even if referenced by multiple pages."
+  )
 })
+
+dump_refinitiv_options("test-rd_get_top_news")

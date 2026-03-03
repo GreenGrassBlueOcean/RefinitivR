@@ -94,13 +94,17 @@ test_that("EikonGetNewsStory renders HTML using RStudio viewer when available", 
   # Stub rstudioapi::hasFun to return TRUE.
   stub(EikonGetNewsStory, "rstudioapi::hasFun", function(fun) TRUE)
   # Stub rstudioapi::viewer to capture its argument.
-  stub(EikonGetNewsStory, "rstudioapi::viewer", function(file) { captured_viewer <<- file })
+  stub(EikonGetNewsStory, "rstudioapi::viewer", function(file) {
+    captured_viewer <<- file
+  })
   # Stub utils::browseURL to do nothing.
   stub(EikonGetNewsStory, "utils::browseURL", function(url) NULL)
 
   # Call the function with renderHTML = TRUE.
-  result <- EikonGetNewsStory(EikonObject = dummy_Eikon, story_id = "story1",
-                              raw_output = FALSE, debug = TRUE, renderHTML = TRUE)
+  result <- EikonGetNewsStory(
+    EikonObject = dummy_Eikon, story_id = "story1",
+    raw_output = FALSE, debug = TRUE, renderHTML = TRUE
+  )
 
   # Since raw_output is FALSE and renderHTML = TRUE, the function returns the processed news content.
   # We expect result to be equal to the storyHtml extracted.
@@ -122,11 +126,15 @@ test_that("EikonGetNewsStory renders HTML using default browser when RStudio vie
   # Stub rstudioapi::hasFun to return FALSE.
   stub(EikonGetNewsStory, "rstudioapi::hasFun", function(fun) FALSE)
   # Stub utils::browseURL to capture its argument.
-  stub(EikonGetNewsStory, "utils::browseURL", function(url) { captured_url <<- url })
+  stub(EikonGetNewsStory, "utils::browseURL", function(url) {
+    captured_url <<- url
+  })
 
   # Call the function with renderHTML = TRUE.
-  result <- EikonGetNewsStory(EikonObject = dummy_Eikon, story_id = "story1",
-                              raw_output = FALSE, debug = TRUE, renderHTML = TRUE)
+  result <- EikonGetNewsStory(
+    EikonObject = dummy_Eikon, story_id = "story1",
+    raw_output = FALSE, debug = TRUE, renderHTML = TRUE
+  )
 
   expect_type(result, "character")
   expect_equal(result, "<div>Story content 1</div>")
@@ -136,3 +144,5 @@ test_that("EikonGetNewsStory renders HTML using default browser when RStudio vie
   expect_true(grepl("index\\.html$", captured_url))
 })
 
+
+dump_refinitiv_options("test-EikonGetNewsStory")

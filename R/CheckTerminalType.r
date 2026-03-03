@@ -1,62 +1,57 @@
-#' Check Terminal Type and Connectivity for Eikon or Workspace
+#' Check LSEG Workspace Connectivity
 #'
-#' This function checks the connectivity to Eikon or Workspace and sets the corresponding port
-#' in the global options. It first verifies if there is a terminal connection available and
-#' then checks if Eikon or Workspace Desktop is running by testing specific ports.
+#' Verifies that the LSEG Workspace Data API proxy is reachable on port 9000
+#' and sets the \code{eikon_port} option accordingly.
 #'
-#' @param verbose Logical; if `TRUE`, the function will print messages about the detection process. Defaults to `FALSE`.
-#' @param force Logical; if `TRUE`, the function will recheck and reset the terminal type even if the \code{eikon_port}
-#' option is already set. Defaults to `FALSE`.
+#' Auto-detection is skipped when \code{eikon_port} is already set.
+#' Pre-configure via \code{options(eikon_port = 9000L)} or the
+#' \code{REFINITIV_PORT} environment variable (read at package load).
 #'
-#' @return This function sets a global option \code{eikon_port} to either 9000 (Workspace) or 9060 (Eikon),
-#' depending on the detected connection. If there is no connection, the function will stop with an error message.
+#' @param verbose Logical; if \code{TRUE}, prints status messages. Defaults to \code{FALSE}.
+#' @param force Logical; if \code{TRUE}, rechecks even when \code{eikon_port} is
+#'   already set. Defaults to \code{FALSE}.
 #'
-#' @details
-#' The function checks for the existence of a terminal connection by attempting to connect to the proxy on port 9000.
-#' If successful, it then checks for Eikon connectivity by attempting to connect to port 9060. If Eikon is running,
-#' the port is set to 9060, and if Workspace is detected, the port is set to 9000.
+#' @return Invisibly \code{NULL}. Sets \code{options(eikon_port = 9000L)} on
+#'   success; issues a warning if the proxy is not reachable.
 #'
 #' @examples
 #' \dontrun{
-#' # Check terminal connection and detect terminal type
 #' CheckTerminalType(verbose = TRUE, force = TRUE)
 #' }
 #'
-#' @export
+#' @keywords internal
 CheckTerminalType <- function(verbose = FALSE, force = FALSE) {
-
-  #0. helper functions ----
-  check_connectivity <- function(port, verbose) {
-    tryCatch({
-      rd_check_proxy_url(port = port, debug = FALSE)
-      TRUE
-    }, error = function(e) {
-      if (verbose) message("No connectivity on port ", port)
-      FALSE
-    })
+  if (!force && !is.null(getOption("eikon_port"))) {
+    return(invisible(NULL))
   }
 
+  # Probe the configured port first, then fall back to known defaults.
+  # This allows env-var or option-based override for remote terminals.
+  configured_port <- getOption("eikon_port")
+  ports_to_try <- unique(c(
+    if (!is.null(configured_port)) configured_port,
+    9000L, 9060L
+  ))
 
-  #1. main function ----
-  if (force || is.null(getOption("eikon_port"))) {
-     if (check_connectivity(getOption("rdp_port", default = 9000L), verbose)) {
-      if(is.null(getOption("rdp_port"))){
-          options(eikon_port = 9000L)
-      } else {
-          options(eikon_port = getOption("rdp_port"))
+  for (port in ports_to_try) {
+    ok <- tryCatch(
+      {
+        rd_check_proxy_url(port = port, debug = FALSE)
+        TRUE
+      },
+      error = function(e) {
+        if (verbose) message("No connectivity on port ", port)
+        FALSE
       }
-      if (verbose) message(paste("Workspace detected, setting port",  getOption("eikon_port"), "for Eikon/UDF use."))
-     } else if (check_connectivity(getOption("eikon_port", default = 9060L), verbose)) {
-      if(is.null(getOption("eikon_port"))){
-        options(eikon_port = 9060L)
-      } else {
-        options(eikon_port = getOption("eikon_port"))
-      }
+    )
 
-      options(eikon_port = 9060L)
-      if (verbose) message("Eikon detected, setting port 9060 for Eikon/UDF use.")
-    } else {
-      warning("There is no terminal connection. Please make sure Eikon or Workspace Desktop is running.")
+    if (ok) {
+      options(eikon_port = port)
+      if (verbose) message("LSEG Workspace detected on port ", port)
+      return(invisible(NULL))
     }
   }
+
+  warning("No terminal connection. Please make sure LSEG Workspace is running.")
+  invisible(NULL)
 }

@@ -1,0 +1,1470 @@
+{
+    "_metadata": {
+        "outdated": false,
+        "cached": true
+    },
+    "data": [
+        {
+            "text": "美国贸易代表：没有计划在特朗普访华前提高中国商品关税",
+            "dateLine": "路透华盛顿2月25日",
+            "snippet": "美国贸易代表格里尔周三表示，特朗普总统计划于未来数周内访华，目前政府无意将针对中国商品的关税从当前水平上调。",
+            "image": {
+                "byLine": "Evelyn Hockstein",
+                "text": "U.S. President Donald Trump meets with Chinese President Xi Jinping on the sidelines of the APEC summit, in Busan",
+                "id": "2026-02-24T230943Z_1_IF3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-25T15:49:00.000Z",
+            "versionCreated": "2026-02-25T15:49:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL10Z",
+            "relatedHeadlines": [
+                {
+                    "text": "中国商务部：中美双方在各层级续保持沟通，经贸磋商的具体消息请持续关注",
+                    "versionCreated": "2026-02-26T07:33:00.000Z",
+                    "dateLine": "路透北京2月26日",
+                    "snippet": "就近期将举行第六轮中美经贸磋商，中国商务部周四表示，中美双方通过中美经贸磋商机制在各层级持续保持沟通，中方愿与美国一道，通过平等协商，妥善管控分歧，拓展务实合作，维护中美经贸关系健康、稳定、可持续发展。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nP8S3XW06J"
+                },
+                {
+                    "text": "中国商务部：希望美国客观看待中美第一阶段协议实施问题，不要借机“挑事”",
+                    "versionCreated": "2026-02-25T09:51:00.000Z",
+                    "dateLine": "路透北京2月25日",
+                    "snippet": "美国贸易代表称将继续推进对中国履行中美第一阶段经贸协议情况301调查，中国商务部周三回应称，希望美国客观、理性看待第一阶段协议的实施问题，不要“甩锅推责”，更不要借机“生事”“挑事”。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4S3ZL0SC"
+                },
+                {
+                    "text": "美国务卿鲁比奥：任何核军控协议都应包括中国和俄罗斯",
+                    "versionCreated": "2026-02-25T23:19:00.000Z",
+                    "dateLine": "路透华盛顿2月25日",
+                    "snippet": "美国国务卿鲁比奥（Marco Rubio）周三表示，任何核军控协议都应将俄罗斯和中国纳入其中。(完)",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1EZ"
+                },
+                {
+                    "text": "独家：特朗普拟用AI模型为关键矿产定价，排除中国影响--消息",
+                    "versionCreated": "2026-02-24T14:21:00.000Z",
+                    "snippet": "三位知情人士向路透透露，特朗普政府计划利用五角大楼开发的人工智能(AI)程序，为关键矿产设定参考价格，以推动建立一个全球金属贸易区。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK0ZL"
+                },
+                {
+                    "text": "美国希望与中国保持稳定关系，但不信任中国--美官员",
+                    "versionCreated": "2026-02-24T19:21:00.000Z",
+                    "dateLine": "路透华盛顿2月24日",
+                    "snippet": "美国国务院经济事务副国务卿Jacob Helberg周二在国会听证会上表示，特朗普政府希望与中国保持稳定关系，但并不信任这个国家。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK1D3"
+                },
+                {
+                    "text": "特朗普下月将访华，最高法院关税裁决后美国贸易政策受关注",
+                    "versionCreated": "2026-02-24T23:02:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6T3ZG0ZC"
+                },
+                {
+                    "text": "就美国近期关税调整举措，中国商务部：敦促美方取消并不再加征有关单边关税",
+                    "versionCreated": "2026-02-24T08:29:00.000Z",
+                    "dateLine": "路透北京2月24日",
+                    "snippet": "就美国近期关税调整举措，中国商务部周二表示，中国正密切关注并将全面评估美国相关举措，后续将视情适时决定调整针对美国原芬太尼关税和对等关税的反制措施。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nP8S3XW06I"
+                },
+                {
+                    "text": "中国无人机制造商大疆提起诉讼，质疑美国FCC新款机型进口禁令",
+                    "versionCreated": "2026-02-24T16:22:00.000Z",
+                    "dateLine": "路透华盛顿2月24日",
+                    "snippet": "中国无人机制造商大疆周二表示，已就美国联邦通信委员会（FCC）禁止进口其所有新型号无人机及关键零部件的决定提起诉讼。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK18R"
+                },
+                {
+                    "text": "中国裁军大使：美国指责中国开展核爆炸试验，是为自身重启核试验“编造借口”",
+                    "versionCreated": "2026-02-24T00:13:00.000Z",
+                    "dateLine": "路透上海2月24日",
+                    "snippet": "中国裁军事务大使沈健周一在日内瓦裁军谈判会议高级别周全会发言表示，美国指责中国开展核爆炸试验，毫无事实依据，是为自身重启核试验编造借口；中方敦促美国重申五核国“暂停核试验”承诺，维护全球禁止核试验共识。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL4S3ZJ1X2"
+                }
+            ]
+        },
+        {
+            "text": "要让欧洲投怀送抱，中国需松绑人民币汇率",
+            "dateLine": "路透伦敦2月26日",
+            "snippet": "随着华盛顿方面提高贸易壁垒，中国推动贸易转向欧洲的努力遇到了一个很大的阻力：让人民币对欧元升值，创造公平的竞争环境。",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "Euro and Yuan banknotes are seen in this picture illustration taken May 8, 2017. ",
+                "id": "2026-02-26T070134Z_1_NR4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T07:00:00.000Z",
+            "versionCreated": "2026-02-26T07:00:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM082",
+            "relatedHeadlines": [
+                {
+                    "text": "德国总理默茨首次访华呼吁深化伙伴关系，加强沟通对话",
+                    "versionCreated": "2026-02-25T18:49:00.000Z",
+                    "dateLine": "路透北京2月25日",
+                    "snippet": "德国总理默茨在北京访问期间呼吁深化与中国的伙伴关系并加强对话，此行旨在重置因对全球第二大经济体的巨额贸易逆差而蒙阴的双边关系。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL16H"
+                },
+                {
+                    "text": "习近平会见德国总理：中德要共同维护产业链供应链稳定畅通，支持欧洲自立自强",
+                    "versionCreated": "2026-02-25T10:46:00.000Z",
+                    "dateLine": "路透北京2月25日",
+                    "snippet": "中国国家主席习近平周三会见来华访问的德国总理默茨表示，中德双方应加强发展战略对接，支持两国人才知识技术双向互动，促进人工智能等前沿领域对话合作。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4S3ZL0U0"
+                },
+                {
+                    "text": "中德联合声明：双方愿深化互利共赢合作，通过坦诚开放对话妥善解决彼此关切",
+                    "versionCreated": "2026-02-26T00:16:00.000Z",
+                    "dateLine": "路透上海2月26日",
+                    "snippet": "中国和德国联合新闻声明表示，双方强调经贸合作是双边关系的重要组成部分，愿深化互利共赢合作；双方强调开放对话、公平竞争和相互开放市场至关重要，愿通过坦诚开放对话妥善解决彼此关切，以确保长期、平衡、可信赖、可持续的经贸关系。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4S3ZL2KV"
+                },
+                {
+                    "text": "中德总理在北京“面对面”会谈，李强：愿加强对话沟通，推动两国合作走深走实",
+                    "versionCreated": "2026-02-25T04:45:00.000Z",
+                    "dateLine": "路透北京2月25日",
+                    "snippet": "路透目击中国总理李强周三会见德国总理默茨时表示，当前中德关系与合作稳步推进，取得了不少新的成果，实实在在的惠及了两国人民；中国愿与德国加强对话沟通，增进政治互信，推动两国合作走深走实。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4S3ZL00H"
+                },
+                {
+                    "text": "李强会见德国总理：愿推动汽车等传统合作焕新增效，拓展人工智能等合作",
+                    "versionCreated": "2026-02-25T10:45:00.000Z",
+                    "dateLine": "路透北京2月25日",
+                    "snippet": "中国总理李强周三在北京会见德国总理默茨表示，中方愿同德方加强发展战略对接和政策沟通协调，做大做优两国贸易蛋糕，推动汽车、化工等传统合作焕新增效，拓展人工智能、生物医药等新兴领域合作。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4S3ZL0VY"
+                },
+                {
+                    "text": "德国总理默茨对中国总理李强表示，希望深化两国经济交流并确保公平合作",
+                    "versionCreated": "2026-02-25T04:48:00.000Z",
+                    "dateLine": "路透北京2月25日",
+                    "snippet": "德国总理默茨在与中国总理李强会晤时表示，德国希望深化与中国的经济交流，但对合作存在具体关切，并希望确保合作公平。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0BT"
+                },
+                {
+                    "text": "德国总理默茨：中国已向空客订购120架新飞机",
+                    "versionCreated": "2026-02-25T14:03:00.000Z",
+                    "dateLine": "路透柏林2月25日",
+                    "snippet": "德国总理默茨周三表示，中国已向欧洲飞机制造商空客订购了多达120架新飞机。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0X0"
+                },
+                {
+                    "text": "德国总理默茨：对华贸易逆差快速增长是\"不健康的\"",
+                    "versionCreated": "2026-02-25T13:11:00.000Z",
+                    "dateLine": "路透柏林2月25日",
+                    "snippet": "德国总理默茨周三表示，欢迎扩大中德经济合作的机会，但指出过去五年德国对华贸易逆差不断扩大是\"不健康的\"，有待解决。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0UV"
+                },
+                {
+                    "text": "德国大众汽车中国区负责人：德国与中国进行谈判时有理由保持自信",
+                    "versionCreated": "2026-02-25T09:05:00.000Z",
+                    "dateLine": "路透柏林2月25日",
+                    "snippet": "德国大众汽车集团(中国)首席执行官贝瑞德(Ralf Brandstaetter)周三表示，德国在与中国就贸易和经济关系进行谈判时完全有理由保持自信。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0LY"
+                },
+                {
+                    "text": "中国商务部：德国总理将访华，汽车、生物制药等约30家头部企业高管随访",
+                    "versionCreated": "2026-02-24T07:41:00.000Z",
+                    "dateLine": "路透北京2月24日",
+                    "snippet": "德国总理默茨将于2月25日（周三）至26日访华，中国商务部周二表示，德国总理默茨此次将率高规格经贸代表团访华，来自汽车、化工、生物制药、机械制造、循环经济等德优势领域的约30家头部企业高管随访。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nP8S3XW06G"
+                },
+                {
+                    "text": "面对美国关税，德国总理默茨将寻求与中国建立战略伙伴关系",
+                    "versionCreated": "2026-02-18T21:34:00.000Z",
+                    "dateLine": "路透柏林2月18日",
+                    "snippet": "德国总理默茨周三表示，他将在下周的访华行程中寻求与中国建立\"战略伙伴关系\"。美国加征关税之际，他希望就欧洲与全球第二大经济体之间的未来合作展开讨论。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260218:nL6S3ZE155"
+                }
+            ]
+        },
+        {
+            "text": "美国扩大对伊朗石油与武器项目制裁，涉及30多名个人实体和影子船队",
+            "dateLine": "路透华盛顿2月25日",
+            "snippet": "美国财政部周三对30多名个人、实体及\"影子船队\"船只实施制裁，称这些对象为伊朗非法石油销售、弹道导弹及武器生产提供便利。",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "FILE PHOTO: Illustration shows 3D printed miniature of U.S. president Donald Trump and Iranian flag",
+                "id": "2026-02-25T230939Z_1_RN5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-25T23:07:00.000Z",
+            "versionCreated": "2026-02-25T23:07:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1DU",
+            "relatedHeadlines": [
+                {
+                    "text": "伊朗将以\"严肃且灵活\"的态度参加第三轮核谈判--外交部发言人",
+                    "versionCreated": "2026-02-26T08:49:00.000Z",
+                    "dateLine": "路透迪拜2月26日",
+                    "snippet": "伊朗外交部发言人Esmaeil Baghaei周四对Press TV表示，伊朗将以\"严肃且灵活\"的态度参加与美国举行的第三轮间接核谈判，并强调谈判将仅聚焦核议题及制裁解除问题。（完）",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM0KP"
+                },
+                {
+                    "text": "伊朗总统重申伊朗反对制造核武器--国家电视台",
+                    "versionCreated": "2026-02-26T06:55:00.000Z",
+                    "dateLine": "路透迪拜2月26日",
+                    "snippet": "伊朗总统佩泽希齐扬(Masoud Pezeshkian)周四表示，伊朗最高领袖哈梅内伊(Ayatollah Ali Khamenei)已禁止大规模杀伤性武器，这\"明确意味着德黑兰不会研发核武器\"。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM0EN"
+                },
+                {
+                    "text": "美国务卿鲁比奥：伊朗正试图研发洲际弹道导弹",
+                    "versionCreated": "2026-02-25T23:09:00.000Z",
+                    "dateLine": "路透2月25日",
+                    "snippet": "美国国务卿鲁比奥（Marco Rubio）周三表示，伊朗正试图研发洲际弹道导弹，而周四与伊朗的会谈主要将聚焦于德黑兰的核计划。(完)",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1EF"
+                },
+                {
+                    "text": "美国发现证据显示伊朗正试图重启其核项目--副总统万斯",
+                    "versionCreated": "2026-02-25T23:36:00.000Z",
+                    "dateLine": "路透华盛顿2月25日",
+                    "snippet": "美国副总统万斯周三表示，在美国去年6月对伊朗核设施发动打击后，美国看到的证据显示伊朗正试图重启其核项目。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1FG"
+                },
+                {
+                    "text": "伊朗认为与美国谈判前景良好，代表团已启程前往日内瓦",
+                    "versionCreated": "2026-02-25T23:57:00.000Z",
+                    "dateLine": "路透迪拜2月25日",
+                    "snippet": "伊朗总统佩泽什基安(Masoud Pezeshkian)周三表示，伊朗认为与美国就伊朗核计划举行的第三轮谈判有望取得良好结果。与此同时，伊朗代表团已启程前往日内瓦展开磋商。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1GG"
+                },
+                {
+                    "text": "万斯称特朗普仍倾向于通过外交途径解决伊朗问题",
+                    "versionCreated": "2026-02-25T22:44:00.000Z",
+                    "dateLine": "路透2月25日",
+                    "snippet": "美国副总统万斯周三表示，特朗普总统仍倾向于通过外交途径解决伊朗问题，并希望伊朗方面在周四的谈判中认真对待这一立场。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1DJ"
+                },
+                {
+                    "text": "独家：沙特为应对美国对伊朗的攻击而在增加石油产量和出口--消息",
+                    "versionCreated": "2026-02-25T14:20:00.000Z",
+                    "dateLine": "路透伦敦2月25日",
+                    "snippet": "两名知情人士周三透露，沙特阿拉伯正增加石油产量和出口量，作为应急计划的一部分，以防美国对伊朗的任何打击导致中东地区石油供应中断。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0XO"
+                },
+                {
+                    "text": "独家：伊朗接近与中国达成协议，从中国购买超音速反舰导弹",
+                    "versionCreated": "2026-02-24T14:26:00.000Z",
+                    "snippet": "据六位知情人士透露，伊朗与中国接近就采购反舰巡航导弹达成协议。与此同时，美国正向伊朗海岸附近部署庞大海军力量，为可能对伊朗发动的打击行动做准备。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6T3ZK0RI"
+                },
+                {
+                    "text": "白宫称特朗普对伊朗的首选方案是外交手段，但必要时愿意动用致命武力",
+                    "versionCreated": "2026-02-24T14:33:00.000Z",
+                    "dateLine": "路透华盛顿2月24日",
+                    "snippet": "美国总统特朗普的发言人周二表示，特朗普对伊朗的首选方案始终是外交手段，但必要时他愿意动用致命武力。当天稍晚，特朗普的首席外交官将向国会高层领导人通报伊朗局势。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK12M"
+                },
+                {
+                    "text": "美伊谈判前伊朗外长最新表态，称唯有优先考虑外交途径才可能达成协议",
+                    "versionCreated": "2026-02-24T22:36:00.000Z",
+                    "dateLine": "路透迪拜2月24日",
+                    "snippet": "伊朗外长阿拉格齐周二表示，与美国达成协议“近在咫尺，但前提是必须把外交途径摆在首位”。此番表态距双方在日内瓦举行新一轮会谈仅剩数日。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK1IV"
+                },
+                {
+                    "text": "特朗普称若达不成协议，伊朗将面临非常糟糕的一天",
+                    "versionCreated": "2026-02-23T21:33:00.000Z",
+                    "dateLine": "路透华盛顿2月23日",
+                    "snippet": "美国总统特朗普周一在社交媒体发文称，如果美国未能与伊朗就其核野心达成协议，\"那将是伊朗及其人民非常糟糕的一天\"。(完)",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ0ZN"
+                },
+                {
+                    "text": "美伊关系紧张之际，美国撤离贝鲁特大使馆非必要人员",
+                    "versionCreated": "2026-02-23T23:05:00.000Z",
+                    "dateLine": "路透华盛顿2月23日",
+                    "snippet": "美国国务院一名高级官员周一表示，鉴于与伊朗爆发军事冲突的风险日益加剧，国务院正从美国驻贝鲁特大使馆撤离非必要政府人员及其符合条件的家庭成员。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ11K"
+                },
+                {
+                    "text": "伊朗与美国将于周四举行第三轮核会谈；特朗普好奇伊朗为何还不投降",
+                    "versionCreated": "2026-02-22T23:18:00.000Z",
+                    "dateLine": "路透2月22日",
+                    "snippet": "阿曼外交部长Badr Albusaidi周日表示，伊朗与美国将于周四在日内瓦举行第三轮核谈判。与此同时，人们对这两个长期敌对国家之间爆发军事冲突的风险日益担忧。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260222:nL6S3ZI090"
+                },
+                {
+                    "text": "伊朗拟提\"反提案\"；特朗普正考虑有限军事打击",
+                    "versionCreated": "2026-02-21T08:19:00.000Z",
+                    "dateLine": "路透华盛顿2月20日",
+                    "snippet": "伊朗外长阿拉格齐周五表示，在本周与美国进行核谈判后，他预计将在几天内准备好一份\"反提案\"草案。与此同时，美国总统特朗普表示正考虑实施有限军事打击。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260221:nL6S3ZH01K"
+                },
+                {
+                    "text": "独家：美军对伊朗的打击可能针对个别领导人--美国官员",
+                    "versionCreated": "2026-02-20T15:34:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6S3ZG0U9"
+                },
+                {
+                    "text": "特朗普对伊朗下最后通牒，不达成协议将有\"坏事发生\"",
+                    "versionCreated": "2026-02-19T21:11:00.000Z",
+                    "dateLine": "路透华盛顿2月19日",
+                    "snippet": "美国总统特朗普周四警告伊朗，必须就其核计划达成协议，否则将发生\"非常糟糕的事情\"，而且似乎设定了不超过10至15天的最后期限，之后美国可能采取行动。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260219:nL6S3ZF14Z"
+                },
+                {
+                    "text": "特朗普考虑对伊朗实施有限打击以迫使其重返核协议谈判桌--WSJ",
+                    "versionCreated": "2026-02-19T22:35:00.000Z",
+                    "dateLine": "路透2月19日",
+                    "snippet": "《华尔街日报》周四称，美国总统特朗普正在考虑对伊朗实施一次“初步有限军事打击”，以迫使德黑兰重返核协议谈判桌。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260219:nL4S3ZF212"
+                },
+                {
+                    "text": "特朗普称美国需要与伊朗达成有意义的协议，并称双方进行了良好会谈",
+                    "versionCreated": "2026-02-19T15:25:00.000Z",
+                    "dateLine": "路透华盛顿2月19日",
+                    "snippet": "美国总统特朗普周四表示，美国必须与伊朗达成有意义的协议，并称与伊朗进行了良好会谈。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260219:nL6S3ZF0VC"
+                },
+                {
+                    "text": "美伊举行核谈判之际，伊朗部分封锁霍尔木兹海峡",
+                    "versionCreated": "2026-02-17T12:19:00.000Z",
+                    "dateLine": "路透日内瓦2月17日",
+                    "snippet": "伊朗最高领袖周二警告称，美国推翻其政府的企图注定失败。与此同时，华盛顿与德黑兰正于日内瓦就长期核争端展开间接谈判，而美国正在中东地区持续增兵。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260217:nL6S3ZD0GC"
+                },
+                {
+                    "text": "特朗普与内塔尼亚胡达成共识，美国应施压伊朗削减对华石油出口--Axios",
+                    "versionCreated": "2026-02-15T12:07:00.000Z",
+                    "dateLine": "路透2月14日",
+                    "snippet": "Axios援引两名知情美国官员报道称，美国总统特朗普与以色列总理内塔尼亚胡周三在白宫会晤时达成共识，美国将致力于减少伊朗对中国石油出口。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260215:nL6S3ZB025"
+                },
+                {
+                    "text": "伊朗最高领袖哈梅内伊：美国无法成功推翻伊朗伊斯兰共和国--媒体",
+                    "versionCreated": "2026-02-17T10:23:00.000Z",
+                    "dateLine": "路透迪拜2月17日",
+                    "snippet": "根据伊朗国家媒体报导，伊朗最高领袖哈梅内伊(Ayatollah Ali Khamenei)周二表示，美国总统特朗普无法成功推翻伊朗伊斯兰共和国。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260217:nL6S3ZD0D0"
+                }
+            ]
+        },
+        {
+            "text": "中国军用无人机行踪诡秘，疑为台海冲突预案测试诱饵战术",
+            "dateLine": "路透香港2月26日",
+            "snippet": "近几个月来，一架大型中国军用无人机在南海上空定期飞行，同时发送虚假应答机信号，使其伪装成其他飞机，包括一架受制裁的白俄罗斯货机和一架英国“台风”战斗机。",
+            "image": {
+                "byLine": "VANTOR",
+                "text": "A satellite image shows large drones at Qionghai Boao International Airport on Hainan Island, China, July 18, 2025.    ",
+                "id": "2026-02-26T050505Z_1_NE4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T06:44:00.000Z",
+            "versionCreated": "2026-02-26T06:44:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM0A2",
+            "relatedHeadlines": [
+                {
+                    "text": "台湾立法院同意特别条例付委，但国防部希望先取得“M109A7自走炮”发价书授权",
+                    "versionCreated": "2026-02-25T03:01:00.000Z",
+                    "dateLine": "路透台北2月25日",
+                    "snippet": "虽然立法院已同意将1.25兆台币的国防特别条例付委，不过台湾国防部表示，向美国采购的“M109A7自走炮”等三项军售案，恐怕难在3月15日前获得预算，希望立法院外交国防委员会能够授权国防部与美国签署发价书。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4S3ZL06X"
+                },
+                {
+                    "text": "台湾外长：中国近期在周边进行军事挑衅威胁区域和平，驳斥王毅在慕尼黑的说法",
+                    "versionCreated": "2026-02-15T05:06:00.000Z",
+                    "dateLine": "路透台北2月15日",
+                    "snippet": "台湾外交部长林佳龙周日驳斥中国外交部长王毅在德国慕尼黑安全会议上的言论。他指出，中国近期在周边进行军事挑衅，公然违反联合国宪章，严重威胁区域和平稳定。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260215:nL4S3ZB013"
+                }
+            ]
+        },
+        {
+            "text": "全球汇市：日圆小幅回升，日本央行为近期加息留下余地",
+            "dateLine": "路透伦敦/台北2月26日",
+            "snippet": "周四日圆从低点反弹，投资者正评估日本央行最新信号以获取利率前景的线索，同时研判Nvidia(辉达/英伟达)财报以洞察人工智能需求。",
+            "image": {
+                "byLine": "Brendan McDermid",
+                "text": "FILE PHOTO: Traders work on the floor of the NYSE in New York",
+                "id": "2026-02-25T225755Z_1_TG6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T09:37:00.000Z",
+            "versionCreated": "2026-02-26T09:37:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM0MB",
+            "relatedHeadlines": [
+                {
+                    "text": "全球市场：亚股上涨因Nvidia亮眼财报缓解市场担忧，日圆承压",
+                    "versionCreated": "2026-02-26T02:21:00.000Z",
+                    "dateLine": "路透新加坡2月26日",
+                    "snippet": "亚洲股市周四上涨，Nvidia(辉达/英伟达)的强劲财报缓解了市场对人工智能(AI)引发的动荡和成本上升的担忧，而日圆走势低迷，因日本利率前景不明朗而承压。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM045"
+                },
+                {
+                    "text": "国际油市：油价小幅上涨，美伊紧张局势使供应风险持续成为焦点",
+                    "versionCreated": "2026-02-26T07:41:00.000Z",
+                    "dateLine": "路透东京2月26日",
+                    "snippet": "周四油价小幅上涨，投资者正评估美伊谈判能否避免可能导致供应中断的军事冲突，不过美国原油库存增加限制了涨幅。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM0GQ"
+                },
+                {
+                    "text": "全球金市：美元走软推动金价上涨；美伊谈判成为焦点",
+                    "versionCreated": "2026-02-26T05:44:00.000Z",
+                    "dateLine": "路透2月26日",
+                    "snippet": "周四金价小幅走高，美元走软及避险需求推升金价。美国关税政策及美伊谈判前景存在不确定性。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM0AQ"
+                },
+                {
+                    "text": "美国股市：AI担忧缓解推动科技股带动的涨势延续，关注Nvidia财报",
+                    "versionCreated": "2026-02-25T21:54:00.000Z",
+                    "dateLine": "路透纽约2月25日",
+                    "snippet": "美国华尔街股市周三收高，延续了科技股引领的涨势，并触及两周最高。此前市场对人工智能（AI）可能引发颠覆性影响及其成本的担忧有所缓解，对这项新兴技术潜在效益的乐观情绪再度升温。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1BP"
+                },
+                {
+                    "text": "美国债市：公债价格续降，股市上涨，五年期公债标售需求疲软",
+                    "versionCreated": "2026-02-25T21:21:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1AN"
+                }
+            ]
+        },
+        {
+            "text": "Nvidia第一季财测超市场预估，押注AI投资继续推动芯片需求",
+            "dateLine": "路透2月25日",
+            "snippet": "芯片制造商Nvidia(英伟达，辉达)周三公布了好于市场预期的第一季营收预测，押注科技巨头对其人工智能(AI)处理器产品的持续投入--尽管大规模AI投资正面临广泛审查。",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "FILE PHOTO: Illustration shows Nvidia logo and rising stock graph",
+                "id": "2026-02-25T233309Z_1_XS8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-25T22:40:00.000Z",
+            "versionCreated": "2026-02-25T22:40:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1DO",
+            "relatedHeadlines": [
+                {
+                    "text": "独家：DeepSeek未向Nvidia等美国芯片商提供最新AI模型--消息",
+                    "versionCreated": "2026-02-26T00:46:00.000Z",
+                    "dateLine": "路透旧金山/新加坡2月25日",
+                    "snippet": "据两位知情消息人士透露，去年以低成本模型震动全球市场的中国人工智能（AI）实验室 DeepSeek并未向美国芯片商提供其即将发布的旗舰模型的提前访问权限以进行性能优化，这打破了模型重大更新前的行业惯例。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6T3ZL19O"
+                },
+                {
+                    "text": "独家：美官员称DeepSeek采用Nvidia先进芯片训练最新AI模型",
+                    "versionCreated": "2026-02-24T00:38:00.000Z",
+                    "snippet": "路透华盛顿2月23日 - 特朗普政府一位高级官员周一透露，中国人工智能初创企业深度求索(DeepSeek)最早将于下周发布的最新人工智能(AI)模型使用了Nvidia(辉达/英伟达)最先进的AI芯片Blackwell进行训练。此举可能违反了美国出口管制规定。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK00W"
+                },
+                {
+                    "text": "美国官员称中国尚未收到任何Nvidia H200芯片",
+                    "versionCreated": "2026-02-25T00:32:00.000Z",
+                    "dateLine": "路透华盛顿2月24日",
+                    "snippet": "美国商务部一位官员周二表示，Nvidia(辉达/英伟达) 第二先进的人工智能(AI)芯片H200尚未出售给中国客户。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZK1MC"
+                },
+                {
+                    "text": "中国头部芯片制造商计划提升先进芯片产量--日经新闻",
+                    "versionCreated": "2026-02-24T21:29:00.000Z",
+                    "dateLine": "路透2月25日",
+                    "snippet": "《日经新闻》周三援引消息人士报道称，包括中芯国际 和华虹半导体 在内的中国头部芯片制造商正计划提升先进半导体产量，以满足蓬勃发展的人工智能需求。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK1H6"
+                },
+                {
+                    "text": "美国Anthropic称中国三家AI公司“蒸馏”其Claude以改进自家模型",
+                    "versionCreated": "2026-02-24T02:17:00.000Z",
+                    "dateLine": "路透2月23日",
+                    "snippet": "聊天机器人Claude的开发商Anthropic在周一的一篇博客文章中表示，三家中国人工智能(AI)公司利用Claude不当获取改进自身模型的能力，同时为实施芯片出口管制提供理据。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK06I"
+                },
+                {
+                    "text": "OpenAI称中国DeepSeek通过\"蒸馏\"美国AI模型获取竞争优势",
+                    "versionCreated": "2026-02-13T00:35:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL6S3Z901A"
+                },
+                {
+                    "text": "美国发布最新版涉军中国企业清单，但仅公示一小时就撤回",
+                    "versionCreated": "2026-02-13T21:51:00.000Z",
+                    "dateLine": "路透华盛顿2月13日",
+                    "snippet": "美国政府周五撤回了当日稍早发布的一份更新版涉嫌支持中国军方的企业清单，其中包括阿里巴巴 和百度等中国科技巨头。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL6S3Z917I"
+                },
+                {
+                    "text": "美商务部长卢特尼克称Nvidia须遵守对华销售H200芯片许可条款",
+                    "versionCreated": "2026-02-10T17:27:00.000Z",
+                    "dateLine": "路透华盛顿2月10日",
+                    "snippet": "美国商务部长卢特尼克周二在听证会上表示，Nvidia\"必须遵守\"向中国销售其第二先进人工智能芯片的许可条款。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260210:nL6S3Z614F"
+                },
+                {
+                    "text": "独家：Nvidia向字节跳动出售H200芯片的交易卡在美政府所设条件",
+                    "versionCreated": "2026-02-05T01:26:00.000Z",
+                    "dateLine": "路透2月4日",
+                    "snippet": "据知情人士透露，特朗普政府愿意允许中国字节跳动购买Nvidia(辉达/英伟达)的H200芯片，但Nvidia尚未同意其拟议的相关使用条件。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260205:nL6S3Z103J"
+                }
+            ]
+        },
+        {
+            "text": "美国与乌克兰将在日内瓦会谈中讨论战后重建事宜",
+            "dateLine": "路透日内瓦2月26日",
+            "snippet": "尽管与俄罗斯的和平谈判陷入僵局，乌克兰谈判代表周四仍将在日内瓦与美国官员会晤，商讨战后重建事宜，包括为重建乌克兰经济提供资金的\"繁荣计划\"。",
+            "image": {
+                "byLine": "Alina Smutko",
+                "text": "Ukraine's President Zelenskiy and Norway's PM Stoere meet in Kyiv",
+                "id": "2026-02-26T002001Z_1_TO6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T09:05:00.000Z",
+            "versionCreated": "2026-02-26T09:05:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM0KJ",
+            "relatedHeadlines": [
+                {
+                    "text": "乌克兰总统泽连斯基称3月将举行美俄乌三方会谈，希望为领导人会晤铺路",
+                    "versionCreated": "2026-02-26T00:03:00.000Z",
+                    "dateLine": "路透基辅2月25日",
+                    "snippet": "乌克兰总统泽连斯基周三表示，他与美国总统特朗普达成共识，认为3月举行的下一轮三方和谈应促成三国领导人的会晤。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM002"
+                },
+                {
+                    "text": "泽连斯基称乌克兰谈判代表将于周四与美方团队会晤",
+                    "versionCreated": "2026-02-25T09:27:00.000Z",
+                    "dateLine": "路透基辅2月25日",
+                    "snippet": "乌克兰总统泽连斯基周三表示，乌方谈判代表将于周四与美国官员会晤，讨论\"繁荣计划\"及战后重建事宜。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0MF"
+                },
+                {
+                    "text": "俄乌战争进入第五年，欧洲仍誓言支持乌克兰但难掩内部分歧",
+                    "versionCreated": "2026-02-25T01:35:00.000Z",
+                    "dateLine": "路透基辅2月24日",
+                    "snippet": "在俄罗斯入侵已进入第五年之际，欧洲各国领导人周二誓言不会抛弃乌克兰，但基辅盟友之间的分歧仍为这场欧洲数十年来最大规模战争的纪念活动蒙上阴影。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL04R"
+                },
+                {
+                    "text": "俄乌战争爆发四周年之际，泽连斯基表示乌克兰始终在捍卫其独立",
+                    "versionCreated": "2026-02-24T08:15:00.000Z",
+                    "dateLine": "路透基辅2月24日",
+                    "snippet": "乌克兰总统泽连斯基在纪念俄乌战争爆发四周年的讲话中表示，乌克兰自俄罗斯入侵以来一直在捍卫其独立，并在寻求和平的过程中不会辜负本国人民作出的牺牲。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK0IC"
+                },
+                {
+                    "text": "俄罗斯指责乌克兰试图在英法两国帮助下获取核武器，英法乌均予以否认",
+                    "versionCreated": "2026-02-24T23:58:00.000Z",
+                    "dateLine": "路透莫斯科2月24日",
+                    "snippet": "俄罗斯周二指控乌克兰在英国和法国的帮助下试图获取核武器，基辅方面称这一指控是荒谬的谎言。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK1MQ"
+                },
+                {
+                    "text": "美国警告乌克兰在打击俄罗斯能源基础设施时不得损害美国利益",
+                    "versionCreated": "2026-02-24T23:12:00.000Z",
+                    "dateLine": "路透华盛顿2月24日",
+                    "snippet": "乌克兰驻美大使斯特凡尼希娜周二表示，乌克兰政府近日收到美国国务院正式且官方的通知，原因是乌克兰对俄罗斯新罗西斯克港的攻击影响了美国在哈萨克斯坦的利益。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK1K1"
+                },
+                {
+                    "text": "文件显示欧盟执委会拟永久禁止进口俄罗斯石油",
+                    "versionCreated": "2026-02-25T01:11:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL020"
+                },
+                {
+                    "text": "英国在俄乌战争爆发四周年之际对俄罗斯实施新的制裁",
+                    "versionCreated": "2026-02-24T08:46:00.000Z",
+                    "dateLine": "路透伦敦2月24日",
+                    "snippet": "英国周二对俄罗斯近300个目标实施制裁，其中包括俄罗斯石油管道运输公司(Transneft)。英国称这是自俄乌战争以来规模最大的制裁措施。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK0JS"
+                },
+                {
+                    "text": "泽连斯基幕僚长：新一轮乌克兰和平会谈可能于本周末举行",
+                    "versionCreated": "2026-02-23T23:01:00.000Z",
+                    "dateLine": "路透2月23日",
+                    "snippet": "乌克兰总统泽连斯基的幕僚长Kyrylo Budanov周一告诉乌克兰媒体，旨在结束乌克兰战争的另一轮会谈可能在本周末举行。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ120"
+                },
+                {
+                    "text": "乌克兰军队总司令称，已重新控制南部战线400平方公里领土",
+                    "versionCreated": "2026-02-23T11:36:00.000Z",
+                    "dateLine": "路透基辅2月23日",
+                    "snippet": "乌克兰武装部队总司令Oleksandr Syrskyi周一表示，自1月底以来，乌军已在南部前线一段区域\"重新控制\"逾400平方公里领土，包括八个定居点。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ0H7"
+                },
+                {
+                    "text": "欧盟卡拉斯：周一不太可能就对俄制裁新方案达成一致",
+                    "versionCreated": "2026-02-23T07:26:00.000Z",
+                    "dateLine": "路透布鲁塞尔2月23日",
+                    "snippet": "欧盟外交及安全政策高级代表卡拉斯(Kaja Kallas)表示，欧盟各国周一可能无法就针对俄罗斯的拟议新制裁方案达成一致。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ09F"
+                },
+                {
+                    "text": "教皇称实现乌克兰和平\"刻不容缓\"",
+                    "versionCreated": "2026-02-22T23:33:00.000Z",
+                    "dateLine": "路透梵蒂冈城2月22日",
+                    "snippet": "教皇利奥十四世周日就乌克兰和平发出恳切呼吁，称结束这场持续四年的冲突\"刻不容缓\"。美国正试图在莫斯科与基辅之间斡旋促成一项协议。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260222:nL6S3ZI094"
+                }
+            ]
+        },
+        {
+            "text": "独家：美国航天与芯片业稀土短缺加剧，部分供应商停接订单--消息",
+            "dateLine": "路透墨尔本/北京/华盛顿2月26日",
+            "snippet": "美国航空航天和半导体企业的供应商正面临日益严重的稀土短缺问题，据行业人士透露，距离特朗普总统访华举行中美峰会剩下数周之际，已有两家供应商开始拒绝部分客户订单。",
+            "image": {
+                "byLine": "FLORENCE LO",
+                "text": "Illustration picture of semiconductor chips and Chinese flag",
+                "id": "2026-02-25T232433Z_1_SJ6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T05:39:00.000Z",
+            "versionCreated": "2026-02-26T05:39:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM0A1",
+            "relatedHeadlines": [
+                {
+                    "text": "中国国投白银LOF启动差异化兜底赔付，“买者自负”是否应向舆情让步？",
+                    "versionCreated": "2026-02-26T02:37:00.000Z",
+                    "dateLine": "路透上海2月26日",
+                    "snippet": "中国唯一一只主要投资于白银期货合约的基金--国投白银LOF（上市开放式基金）此前因调整净值计算方式而引发舆情危机，周四开始补偿受影响的散户投资者。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4S3ZL0FO"
+                },
+                {
+                    "text": "两会临近，中国部分钢厂因空气质量管控被要求减产",
+                    "versionCreated": "2026-02-25T06:33:00.000Z",
+                    "dateLine": "路透北京2月25日",
+                    "snippet": "分析师和咨询机构表示，为确保两会期间空气质量达标，中国北方部分钢铁企业需从3月4日起减产至少30%。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0EB"
+                },
+                {
+                    "text": "中国国常会：推动中央各项决策部署落地见效，支持地方和企业打造新增长点",
+                    "versionCreated": "2026-02-24T11:25:00.000Z",
+                    "dateLine": "路透北京2月24日",
+                    "snippet": "中国国务院总理李强周二主持召开国务院常务会议，各部门要进一步增强责任感紧迫感，瞄准全年目标任务，迅速进入工作状态，推动党中央各项决策部署落地见效。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL4S3ZK0XN"
+                },
+                {
+                    "text": "中国金融：政策利率稳定与息差压力制约下2月LPR续稳，但仍存下调空间",
+                    "versionCreated": "2026-02-24T02:24:00.000Z",
+                    "dateLine": "路透北京2月24日",
+                    "snippet": "中国央行2月贷款市场报价利率（LPR）连续九个月持稳，符合预期。分析人士认为，2月LPR维持不变主要源于政策利率始终稳定、银行净息差处在历史低位以及贷款利率整体已偏低，报价行缺乏继续下调加点的动机，同时短期内政策操作也进入观察期。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL4S3ZK05O"
+                },
+                {
+                    "text": "专题：中国2月LPR连九月持稳，但仍存下调空间",
+                    "versionCreated": "2026-02-24T01:56:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL4S3ZK049"
+                },
+                {
+                    "text": "瑞银：预计中国两会期间宏观政策表述将延续去年中央经济工作会议基调",
+                    "versionCreated": "2026-02-24T09:01:00.000Z",
+                    "dateLine": "路透北京2月24日",
+                    "snippet": "瑞银证券首席中国经济学家宋宇预计，中国两会期间发布的政府工作报告对于宏观政策的表述将延续2025年中央经济工作会议设定的政策基调，经济增长（GDP）目标更可能设定在“4.5%-5%”区间，而非“5%左右”。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL4S3ZK0Q9"
+                },
+                {
+                    "text": "IMF维持对中国2026年GDP增长4.5%的预测，但警告增长面临风险",
+                    "versionCreated": "2026-02-19T05:54:00.000Z",
+                    "dateLine": "路透西安，中国2月19日",
+                    "snippet": "国际货币基金组织(IMF)周三发布2025年中国经济年度评估报告，维持对中国今年经济增长4.5%的预测，但警告称内需疲软和全球经济放缓对增长构成风险。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260219:nL6S3ZF08W"
+                }
+            ]
+        },
+        {
+            "text": "路透/益普索民调：多数美国人支持特朗普驱逐非法移民，但不认同他的手段",
+            "dateLine": "路透华盛顿2月26日",
+            "snippet": "路透/益普索最新民调显示，大多数美国人赞同美国总统特朗普的观点，即应该将居住在美国的非法移民驱逐出境，但普遍不赞成他的强硬措施，包括使用蒙面、身穿战术装备的特工与美国公民发生冲突。",
+            "image": {
+                "byLine": "Kenny Holston/The New York Times",
+                "text": "President Donald J. Trump delivers the first State of the Union address of his second term to a joint session of Congress in the House Chamber of the United States Capitol in Washington, D.C., on Tuesday, February 24, 2026.  ",
+                "id": "2026-02-25T025100Z_1_WB7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T11:01:00.000Z",
+            "versionCreated": "2026-02-26T11:02:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM05D",
+            "relatedHeadlines": [
+                {
+                    "text": "特朗普在国情咨文中宣扬经济政绩，力图在中期选举前重塑局面",
+                    "versionCreated": "2026-02-25T04:25:00.000Z",
+                    "dateLine": "路透华盛顿2月24日",
+                    "snippet": "美国总统特朗普在周二的国情咨文演讲中大力宣扬其经济政绩，自诩已开启\"黄金时代\"，试图在其总统任期面临严峻挑战之际营造成功氛围。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL09P"
+                },
+                {
+                    "text": "特朗普国情咨文演讲聚焦经济，但民调显示选民存疑",
+                    "versionCreated": "2026-02-25T03:33:00.000Z",
+                    "dateLine": "路透华盛顿2月24日",
+                    "snippet": "美国总统特朗普周二在国会参众两院联席会议上发表了国情咨文演讲。在白宫寻求巩固共和党选民支持以迎接11月中期选举之际，此次演讲可能成为关键转折点。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL098"
+                },
+                {
+                    "text": "白宫下周将与科技巨头开会，共商控制电力成本大计",
+                    "versionCreated": "2026-02-26T00:51:00.000Z",
+                    "dateLine": "路透2月25日",
+                    "snippet": "白宫周三表示，下周将邀请领先的数据中心和人工智能(AI)企业赴华盛顿开会，旨在正式达成协议保护消费者抵御电力成本上涨的影响。参会企业预计包括微软、亚马逊、Anthropic和Meta Platforms。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM01W"
+                },
+                {
+                    "text": "特朗普国情咨文演讲在即，投资者心情七上八下",
+                    "versionCreated": "2026-02-24T23:50:00.000Z",
+                    "dateLine": "路透罗德岛州普罗维登斯市/纽约2月24日",
+                    "snippet": "美国总统特朗普将于周二晚间发表国情咨文演说，正值投资人被近月的市场震荡打得措手不及、渴望稳定之际，时机格外关键。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK1KQ"
+                },
+                {
+                    "text": "特朗普新关税聚焦国际收支；经济学家称不存在危机",
+                    "versionCreated": "2026-02-24T06:35:00.000Z",
+                    "dateLine": "路透2月24日",
+                    "snippet": "特朗普总统为取代被美国最高法院推翻的关税而临时征收的15%新关税，旨在解决许多经济学家认为并不存在的问题：美国国际收支危机，这也使其可能面临新的法律挑战。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK09V"
+                },
+                {
+                    "text": "特朗普紧急关税遭推翻、物价就会降？企业：别想得太美",
+                    "versionCreated": "2026-02-24T11:01:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK0EQ"
+                },
+                {
+                    "text": "特朗普警告：若在贸易协议上“玩花样”，将面临更高关税",
+                    "versionCreated": "2026-02-23T20:07:00.000Z",
+                    "dateLine": "路透华盛顿2月23日",
+                    "snippet": "在最高法院推翻其紧急关税后，美国总统特朗普周一警告各国不要背离最近与美国达成的贸易协议，并称若如此，他将依据其他贸易法对这些国家征收更高的关税。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ0X7"
+                },
+                {
+                    "text": "美国关税政策变数又起，经济前景再度陷入迷雾",
+                    "versionCreated": "2026-02-23T07:41:00.000Z",
+                    "dateLine": "路透华盛顿2月23日",
+                    "snippet": "美国及外国官员、企业高管、分析师和投资者曾开始期待，去年动荡的美国贸易政策反复已告一段落。如今他们却面临新一轮不确定性——上周美国最高法院裁定推翻了特朗普总统关税计划的关键部分，而特朗普随后又表示将通过变通方案实施大幅加征关税。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ081"
+                },
+                {
+                    "text": "美国参议院民主党人提出法案，要求退还被裁定为非法的特朗普关税",
+                    "versionCreated": "2026-02-23T22:48:00.000Z",
+                    "dateLine": "路透华盛顿2月23日",
+                    "snippet": "美国参议院22名民主党议员周一提出法案，要求特朗普政府在180天内全额退还被美国最高法院裁定为无效的关税收入，并支付利息。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ10P"
+                },
+                {
+                    "text": "最高法院裁定后，特朗普考虑对六个行业征收新的国家安全关税--WSJ",
+                    "versionCreated": "2026-02-23T23:47:00.000Z",
+                    "dateLine": "路透2月23日",
+                    "snippet": "据《华尔街日报》周一报导称，在美国最高法院上周裁定美国总统特朗普第二任期内实施的多项关税无效之后，其政府正考虑对六个行业征收新的国家安全关税。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ13L"
+                },
+                {
+                    "text": "《即时观点》对美国最高法院裁决及特朗普新关税威胁的反应",
+                    "versionCreated": "2026-02-23T05:31:00.000Z",
+                    "dateLine": "路透2月23日",
+                    "snippet": "美国最高法院周五作出裁决，推翻特朗普总统依据国家紧急状态法实施的全面关税后，特朗普当天旋即援引《1974贸易法案》第122条，对所有国家进口商品加征10%全球关税，随后在周六加码将税率调高至15%，达到法律允许的最高水平。[nL6S3ZJ00Y]",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ06L"
+                },
+                {
+                    "text": "美国海关将从周二起停止征收最高法院裁定为非法的关税",
+                    "versionCreated": "2026-02-23T05:14:00.000Z",
+                    "dateLine": "路透华盛顿2月23日",
+                    "snippet": "美国海关和边境保护局(CBP)表示，将于周二美国东部时间凌晨12点01分(0501GMT)起停止征收依据国际紧急经济权力法(IEEPA)实施的关税，此时距美国最高法院裁定该关税非法已逾三日。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ05S"
+                },
+                {
+                    "text": "联邦快递起诉美国政府，寻求退还特朗普紧急关税",
+                    "versionCreated": "2026-02-24T00:20:00.000Z",
+                    "dateLine": "路透洛杉矶2月23日",
+                    "snippet": "全球快递公司联邦快递 周一在美国国际贸易法院提起诉讼，寻求退还特朗普总统征收的紧急关税。美国最高法院上周已裁定该关税非法。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK01H"
+                },
+                {
+                    "text": "时间线：特朗普贸易战发展进程",
+                    "versionCreated": "2026-02-23T10:04:00.000Z",
+                    "dateLine": "路透2月23日",
+                    "snippet": "自2025年1月就任以来，美国总统特朗普的关税决策震惊了金融市场，并给全球经济带来了一波不确定性。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ0CX"
+                },
+                {
+                    "text": "专题：美最高法院裁定后特朗普推15%新关税应对，中国评估裁决影响台港初判冲击有限",
+                    "versionCreated": "2026-02-23T03:13:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ00Y"
+                },
+                {
+                    "text": "美国最高法院推翻特朗普关税后，企业如何取回退税款？",
+                    "versionCreated": "2026-02-23T01:54:00.000Z",
+                    "dateLine": "路透特拉华州2月20日",
+                    "snippet": "美国最高法院周五作出具有里程碑意义的裁决，推翻了特朗普总统依据国家紧急状态法实施的全面关税。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ010"
+                },
+                {
+                    "text": "特朗普怒呛最高法院推翻其全球关税，随即宣布10%新关税",
+                    "versionCreated": "2026-02-20T21:24:00.000Z",
+                    "dateLine": "路透2月20日",
+                    "snippet": "美国总统特朗普因最高法院周五作出的裁决勃然大怒。该裁决认定他无权单方面为进口商品设定关税。特朗普誓言将援引其他法律以继续其全球贸易战，同时抨击个别大法官。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6S3ZG147"
+                },
+                {
+                    "text": "亚洲权衡特朗普新关税影响，担心混乱加剧",
+                    "versionCreated": "2026-02-21T13:40:00.000Z",
+                    "snippet": "美国总统特朗普誓言对进口商品加征新关税后，美国在亚洲的贸易伙伴周六开始权衡新的不确定性。此前美国最高法院周五推翻了特朗普发动全球贸易战所实施的全面关税措施。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260221:nL6T3ZH023"
+                },
+                {
+                    "text": "最高法院裁决特朗普全面关税无效，对全球贸易产生重大影响",
+                    "versionCreated": "2026-02-20T20:35:00.000Z",
+                    "snippet": "美国最高法院周五作出具有里程碑意义的裁决，推翻了特朗普总统依据国家紧急状态法实施的全面关税，对这位共和党总统造成沉重打击，该裁决对全球经济产生重大影响。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6S3ZG12Y"
+                },
+                {
+                    "text": "美国贸易代表办公室：启动新一轮301条款调查将涵盖多数主要贸易伙伴",
+                    "versionCreated": "2026-02-21T01:35:00.000Z",
+                    "dateLine": "路透华盛顿2月20日",
+                    "snippet": "美国贸易代表格里尔周五表示，美国贸易代表办公室(USTR)将根据1974年《贸易法》第301条款启动几项新的调查，涵盖多数主要贸易伙伴及药品定价等领域。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260221:nL6S3ZH00E"
+                },
+                {
+                    "text": "特朗普：已签署对所有国家进口商品征收10%关税，几乎\"立即生效\"",
+                    "versionCreated": "2026-02-20T23:56:00.000Z",
+                    "dateLine": "路透2月20日",
+                    "snippet": "美国总统特朗普周五表示，他已签署文件对所有国家的进口商品征收10%关税，该措施将\"几乎立即生效\"。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6S3ZG165"
+                },
+                {
+                    "text": "美财政部估算改用其他授权后2026年关税收入“基本不变”",
+                    "versionCreated": "2026-02-20T20:45:00.000Z",
+                    "dateLine": "路透华盛顿2月20日",
+                    "snippet": "美国财长贝森特周五表示，财政部的估算显示，在最高法院推翻一项用于国家紧急状况的关税依据之后，通过其他法律授权征收关税将使2026年的关税收入\"基本保持不变\"。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6S3ZG137"
+                },
+                {
+                    "text": "宾大模型估算，最高法院裁决使美国逾1,750亿美元税收面临退税",
+                    "versionCreated": "2026-02-21T03:32:00.000Z",
+                    "snippet": "美国宾州大学华顿商学院预算模型经济学家表示，美国最高法院周五推翻特朗普总统的广泛紧急关税后，超过1,750亿美元的关税收入可能面临退税。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260221:nL6S3ZH00N"
+                },
+                {
+                    "text": "企业庆祝推翻特朗普关税，但退还恐需时日",
+                    "versionCreated": "2026-02-20T16:57:00.000Z",
+                    "dateLine": "路透纽约2月20日",
+                    "snippet": "美国最高法院裁定白宫紧急关税无效，数千家企业赢得了一场艰苦卓绝的胜利。而关税退还流程才刚刚启动。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6S3ZG0X5"
+                }
+            ]
+        },
+        {
+            "text": "美联储穆萨莱姆：货币政策正恰当地平衡着经济风险",
+            "snippet": "路透2月25日 - 圣路易斯联邦储备银行总裁穆萨莱姆周三表示，他认为当前美国政策利率设定正恰当地平衡着经济风险，尽管其基线预测认为通胀将在今年晚些时候回落至2%左右，劳动力市场也将趋于稳定。",
+            "image": {
+                "byLine": "JOSHUA ROBERTS",
+                "text": "The Federal Reserve Building in Washington",
+                "id": "2026-02-25T233803Z_1_MM4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-25T20:33:00.000Z",
+            "versionCreated": "2026-02-25T20:33:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL191",
+            "relatedHeadlines": [
+                {
+                    "text": "美联储博斯蒂克：围绕美联储的政治斗争正在削弱公众信任",
+                    "versionCreated": "2026-02-25T20:09:00.000Z",
+                    "dateLine": "路透华盛顿2月25日",
+                    "snippet": "即将卸任的亚特兰大联邦储备银行总裁博斯蒂克周三表示，围绕美联储的政治斗争正在削弱公众对美联储独立性的信心，这是一个“重大关切”，直接关乎美国经济表现及其在全球经济中的地位的核心问题。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL18L"
+                },
+                {
+                    "text": "美联储巴尔金：不能立即断言人工智能将取代工人",
+                    "versionCreated": "2026-02-25T18:29:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL15R"
+                },
+                {
+                    "text": "美联储施密德称高通胀仍是联储面临的最大问题",
+                    "versionCreated": "2026-02-25T18:03:00.000Z",
+                    "dateLine": "路透纽约2月25日",
+                    "snippet": "堪萨斯城联邦储备银行总裁施密德周三表示，过高的通胀仍是美联储亟待解决的关键问题，但他未明确说明货币政策应如何应对。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL157"
+                },
+                {
+                    "text": "独家：博斯蒂克表示，美联储未必能够抵消结构性失业率上升的影响",
+                    "versionCreated": "2026-02-24T11:02:00.000Z",
+                    "dateLine": "路透华盛顿2月24日",
+                    "snippet": "即将卸任的亚特兰大联邦储备银行总裁博斯蒂克在接受路透采访时表示，随着企业部署人工智能工具来节省劳动力，美国可能正在进入一个结构性失业率上升的时期，这可能是一个充满挑战的时刻，美联储未必能够通过降低利率来抵消这一影响。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK08J"
+                },
+                {
+                    "text": "两位美联储官员认为目前没有调整货币政策的迫切需要",
+                    "versionCreated": "2026-02-24T21:24:00.000Z",
+                    "dateLine": "路透2月24日",
+                    "snippet": "两位美联储官员周二暗示短期内无意调整货币政策立场。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK1H3"
+                },
+                {
+                    "text": "两位美联储官员认为AI不会引发经济领域大动荡",
+                    "versionCreated": "2026-02-24T21:19:00.000Z",
+                    "dateLine": "路透2月24日",
+                    "snippet": "两位美联储官员周二表示，他们不认为人工智能技术会引发经济领域的大动荡。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK1GS"
+                },
+                {
+                    "text": "美联储下一步会是加息吗？博斯蒂克临别赠言发出警讯",
+                    "versionCreated": "2026-02-24T07:00:00.000Z",
+                    "dateLine": "路透伦敦2月24日",
+                    "snippet": "在围绕美国最高法院推翻特朗普总统的紧急关税措施所引发的震惊情绪中，市场可能忽略了对美联储政策的一种意外解读，即下次利率调整可能是上调，这并非不可想象。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK09M"
+                },
+                {
+                    "text": "美联储沃勒：高生产率与更高速增长的经济模式可能意味着加息",
+                    "versionCreated": "2026-02-23T15:55:00.000Z",
+                    "dateLine": "路透华盛顿2月23日",
+                    "snippet": "美联储理事沃勒周一表示，若美国正迈向更高生产率、更高速增长的经济模式，则意味着利率也将走高。此言反驳了当前美国生产能力转变可促使美联储降息的观点。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ0QS"
+                },
+                {
+                    "text": "美联储沃勒：若2月就业数据依然强劲，则对暂停政策调整持开放态度",
+                    "versionCreated": "2026-02-23T15:18:00.000Z",
+                    "dateLine": "路透华盛顿2月23日",
+                    "snippet": "美联储理事沃勒表示，若即将公布的2月就业数据表明美国劳动力市场在2025年疲软后已\"转向更稳固的基础\"，他对在美联储3月会议上维持利率不变持开放态度。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ0PI"
+                },
+                {
+                    "text": "最高法院关税裁决令美联储利率抉择更形复杂",
+                    "versionCreated": "2026-02-21T04:44:00.000Z",
+                    "dateLine": "路透2月20日",
+                    "snippet": "美国最高法院推翻特朗普政府的大范围关税，让美国联邦储备理事会(美联储/FED)决策者面临新的问题。过去一年，美联储官员一直试图理解总统大幅提高进口关税将如何影响通胀和经济走势。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260221:nL6S3ZH00S"
+                },
+                {
+                    "text": "美联储巴尔：通胀前景仍存风险，一段时间内恐不会降息",
+                    "versionCreated": "2026-02-17T18:04:00.000Z",
+                    "dateLine": "路透纽约2月17日",
+                    "snippet": "美联储理事巴尔周二表示，美国通胀前景仍存风险，下次降息可能要等到相当长一段时间之后。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260217:nL6S3ZD0RW"
+                },
+                {
+                    "text": "沃什或盼美联储缩表，但现实掣肘恐难如愿",
+                    "versionCreated": "2026-02-17T14:43:00.000Z",
+                    "dateLine": "路透2月17日",
+                    "snippet": "被提名出任美联储主席的沃什（Kevin Warsh，瓦尔许）或许希望缩减资产负债表，但在不对金融体系进行重大改造的情况下，他很难如愿；即便进行了调整，这一目标也未必能实现。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260217:nL6S3ZD0LB"
+                },
+                {
+                    "text": "美联储戴利：企业持“谨慎乐观”态度",
+                    "versionCreated": "2026-02-17T21:36:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260217:nL6S3ZD0XM"
+                },
+                {
+                    "text": "旧金山联储总裁戴利：美联储仍需降低通胀",
+                    "versionCreated": "2026-02-17T20:43:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260217:nL6S3ZD0VZ"
+                }
+            ]
+        },
+        {
+            "text": "高市早苗借日本央行人事任命扩大政府的鸽派影响力",
+            "dateLine": "路透东京2月26日",
+            "snippet": "日本首相高市早苗任命两名与其理念相近的货币政策鸽派人士进入央行政策委员会，此举被视为她反对加息立场的明确信号，也引发外界对日本货币政策进一步收紧空间的疑问。",
+            "image": {
+                "byLine": "KIM KYUNG-HOON",
+                "text": "People walk in front of the Bank of Japan building in Tokyo, Japan, January 23, 2024. ",
+                "id": "2026-02-26T090054Z_1_AG0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T09:15:00.000Z",
+            "versionCreated": "2026-02-26T09:15:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM0IM",
+            "relatedHeadlines": [
+                {
+                    "text": "日本央行总裁在读卖新闻专访中暗示，可能在3月或4月加息",
+                    "versionCreated": "2026-02-26T00:17:00.000Z",
+                    "dateLine": "路透东京2月26日",
+                    "snippet": "读卖新闻周四报道称，日本央行总裁植田和男表示，央行将在3月和4月的会议上仔细研究数据，以决定是否加息，这为近期加息留下了可能性。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZL1GB"
+                },
+                {
+                    "text": "日本央行审议委员高田创呼吁关注通胀超标风险",
+                    "versionCreated": "2026-02-26T02:54:00.000Z",
+                    "dateLine": "路透日本京都2月26日",
+                    "snippet": "日本央行鹰派审议委员高田创周四表示，央行在制定货币政策时必须关注通胀超标风险，并呼吁逐步加息。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM062"
+                },
+                {
+                    "text": "日本政府提名通货再膨胀论学者出任央行审议委员，市场随之波动",
+                    "versionCreated": "2026-02-25T05:41:00.000Z",
+                    "dateLine": "路透东京2月25日",
+                    "snippet": "日本政府周三提名两名被市场视为通货再膨胀派的学者加入日本央行九人政策委员会，这项提名被视为衡量高市早苗政府货币政策立场的风向标。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0C5"
+                },
+                {
+                    "text": "日经称美国主导1月日圆汇率询价，并考虑与日本联手干预市场",
+                    "versionCreated": "2026-02-24T03:35:00.000Z",
+                    "dateLine": "路透东京2月24日",
+                    "snippet": "日经周二援引匿名美国政府消息人士报道称，美国当局在1月主动进行“汇率询价”以支撑日圆汇率，并准备在日本提出要求时进行联合干预。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK09I"
+                },
+                {
+                    "text": "日本1月服务业PPI涨幅保持在2.6%，薪资增长继续带来通胀压力",
+                    "versionCreated": "2026-02-25T00:38:00.000Z",
+                    "dateLine": "路透东京2月25日",
+                    "snippet": "日本央行周三公布的数据显示，日本1月服务业物价领先指标同比上涨2.6%，表明劳动力市场紧张导致的工资上涨继续给经济带来通胀压力。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL022"
+                },
+                {
+                    "text": "日本首相高市就进一步加息问题向央行总裁植田表达关切--每日新闻",
+                    "versionCreated": "2026-02-24T08:26:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK0JH"
+                },
+                {
+                    "text": "日本官员称，寻求将美国新关税的影响降至最低",
+                    "versionCreated": "2026-02-24T05:26:00.000Z",
+                    "dateLine": "路透东京2月24日",
+                    "snippet": "日本官员周二表示，若美国推行新的进口关税制度，日本可能面临更高关税，但东京要求其待遇应与去年两国达成的协议同样优惠。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK0BC"
+                },
+                {
+                    "text": "前日本央行审议委员樱井真：若日圆再度走弱，日本央行3月或加息",
+                    "versionCreated": "2026-02-23T03:09:00.000Z",
+                    "snippet": "前日本央行审议委员樱井真对路透表示，若日圆在预计于3月举行的美日首脑会晤前再度走弱，日本央行最早可能在3月加息。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ04B"
+                },
+                {
+                    "text": "高市与植田举行大选后首次会谈，市场聚焦未来加息节奏",
+                    "versionCreated": "2026-02-16T11:37:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260216:nL6S3ZC0EU"
+                },
+                {
+                    "text": "日本首相高市早苗誓言打破\"财政撙节\"政策以重振经济",
+                    "versionCreated": "2026-02-20T06:01:00.000Z",
+                    "dateLine": "路透东京2月20日",
+                    "snippet": "日本首相高市早苗周五承诺将打破\"过度财政撙节\"，通过多年预算框架促进长期投资，彰显其政府振兴经济的决心。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6S3ZG096"
+                },
+                {
+                    "text": "日本1月核心CPI涨幅降至两年低点，日本央行加息时机更难把握",
+                    "versionCreated": "2026-02-20T00:45:00.000Z",
+                    "dateLine": "路透东京2月20日",
+                    "snippet": "周五公布的数据显示，日本1月核心消费者物价指数(CPI)同比上涨2.0%，创下两年来的最低增速，表明成本推动型通胀压力正在减弱，这可能使日本央行关于何时加息的决策变得复杂。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6S3ZG01A"
+                },
+                {
+                    "text": "IMF敦促日本继续加息，避免进一步放松财政政策",
+                    "versionCreated": "2026-02-18T00:41:00.000Z",
+                    "dateLine": "路透东京2月18日",
+                    "snippet": "国际货币基金组织(IMF)敦促日本继续提高利率，避免进一步放松财政政策，并警告称削减消费税将削弱其应对未来经济冲击的能力。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260218:nL6S3ZE00I"
+                },
+                {
+                    "text": "日本央行审议委员田村认为今春实现物价目标的可能性很大",
+                    "versionCreated": "2026-02-13T05:12:00.000Z",
+                    "dateLine": "路透东京2月13日",
+                    "snippet": "日本央行审议委员田村直树周五表示，他认为日本在今年春季前后实现2%通胀目标的可能性很大。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL6S3Z90A0"
+                },
+                {
+                    "text": "日本政府将于下周提交日本央行审议委员候选人名单",
+                    "versionCreated": "2026-02-20T06:19:00.000Z",
+                    "dateLine": "路透东京2月20日",
+                    "snippet": "日本政府可能于下周公布央行审议委员两个空缺人选的提名，这将透露出首相高市早苗对进一步加息的容忍程度。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6S3ZG09Z"
+                },
+                {
+                    "text": "日本1月出口同比增长16.8%且连增五月，受亚洲需求强劲推动",
+                    "versionCreated": "2026-02-18T00:54:00.000Z",
+                    "dateLine": "路透东京2月18日",
+                    "snippet": "日本周三公布数据显示，日本1月出口连续第五个月增长，表明强劲的全球需求正在支撑脆弱的经济复苏。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260218:nZUS00E0MS"
+                },
+                {
+                    "text": "日本2月制造业信心指数回升，但非制造业信心下降--路透短观",
+                    "versionCreated": "2026-02-18T01:46:00.000Z",
+                    "dateLine": "路透东京2月18日",
+                    "snippet": "路透短观调查显示，2月日本制造业者信心指数三个月来首次上升，主要得益于机械订单增长和日圆疲软，这对日本疲软的经济而言是个积极信号。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260218:nL6S3ZE02O"
+                },
+                {
+                    "text": "日本经济在去年第四季勉强实现增长，对高市政府构成重大考验",
+                    "versionCreated": "2026-02-16T03:22:00.000Z",
+                    "dateLine": "路透东京2月16日",
+                    "snippet": "日本经济在去年第四季度勉强实现增长，但远低于市场预期。在生活成本压力拖累信心和国内需求之际，这一数据对高市早苗政府而言是一次重大考验。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260216:nL6S3ZC02J"
+                },
+                {
+                    "text": "日本维新会代表：勿干预央行政策，应强化经济以承受加息冲击",
+                    "versionCreated": "2026-02-16T02:36:00.000Z",
+                    "dateLine": "路透东京2月16日",
+                    "snippet": "日本维新会代表吉村洋文对路透表示，日本政府必须避免干预货币政策，而应着重采取措施，打造一个能够承受进一步加息所带来潜在阵痛的强劲经济。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260216:nL6S3ZC01B"
+                },
+                {
+                    "text": "路透调查：日本1月核心通胀率可能连续第二个月放缓",
+                    "versionCreated": "2026-02-13T05:21:00.000Z",
+                    "snippet": "路透周五公布的调查显示，由于汽油成本下降和食品价格涨幅放缓，日本1月核心消费者通胀率可能连续第二个月放缓。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL6S3Z90A9"
+                },
+                {
+                    "text": "日本政府未必非挑再通胀派人士填补央行审议委员空缺--首相经济顾问",
+                    "versionCreated": "2026-02-13T01:20:00.000Z",
+                    "dateLine": "路透东京2月13日",
+                    "snippet": "日本首相高市早苗的经济顾问本田悦朗对路透表示，由于日本经济已经摆脱通缩，政府在物色新任日本央行政策委员会委员时，不一定非要挑选\"再通胀派\"人士。\n",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL6S3Z902T"
+                },
+                {
+                    "text": "日本称将加速推进对美投资方案首批项目的讨论，仍有问题待解决",
+                    "versionCreated": "2026-02-13T02:08:00.000Z",
+                    "dateLine": "路透2月12日",
+                    "snippet": "日本经济产业大臣赤泽亮正周四表示，日美双方已同意加快推进日本5,500亿美元投资方案首批项目的讨论，仍有一些问题有待解决。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL6S3Z9048"
+                },
+                {
+                    "text": "有新民意撑腰的日本首相高市早苗为何不敢放任日圆走弱？",
+                    "versionCreated": "2026-02-12T06:00:00.000Z",
+                    "dateLine": "路透东京2月12日",
+                    "snippet": "日本首相高市早苗在大选中获得压倒性胜利，为其刺激经济的议程注入了新动力，但日圆贬值可能引发动荡的风险仍是制约其推行低利率政策的重要因素。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260212:nL6S3Z80AP"
+                }
+            ]
+        },
+        {
+            "text": "前美国财长萨默斯因与爱泼斯坦有牵连将辞去哈佛大学教职",
+            "dateLine": "路透2月25日",
+            "snippet": "前美国财政部长萨默斯周三表示，将在本学年结束时辞去哈佛大学教职。此举正值他与已故性犯罪者爱泼斯坦的关系持续引发外界质疑。",
+            "image": {
+                "byLine": "House Oversight Committee Democr",
+                "text": "New Epstein images released by House Oversight Committee Democrats",
+                "id": "2026-02-26T020518Z_1_XE8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T01:45:00.000Z",
+            "versionCreated": "2026-02-26T01:45:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM037",
+            "relatedHeadlines": [
+                {
+                    "text": "特朗普曾对警方说爱泼斯坦的事\"大家都知道\"；商务部长也有牵连",
+                    "versionCreated": "2026-02-11T02:39:00.000Z",
+                    "dateLine": "路透2月10日",
+                    "snippet": "最新曝光的一份联邦调查局(FBI)问讯记录，对美国总统特朗普声称对已故性犯罪者爱泼斯坦罪行一无所知的说法提出新的质疑。与此同时，商务部长卢特尼克周二也因为自己与这位金融家的关联而面临国会议员的连番质询。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260211:nL6S3Z700W"
+                },
+                {
+                    "text": "检察官邮件显示，特朗普在90年代曾八次乘坐爱泼斯坦的飞机",
+                    "versionCreated": "2025-12-24T00:06:00.000Z",
+                    "dateLine": "路透华盛顿12月23日",
+                    "snippet": "美国司法部周二又公布一批有关已故性犯罪者爱泼斯坦的新文件，其中纽约检察官的一封电子邮件显示，特朗普乘坐爱泼斯坦私人飞机的次数 \"比以前报道的要多得多\"。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20251224:nL6S3XT0YI"
+                },
+                {
+                    "text": "美司法部公布爱泼斯坦档案克林顿等名人曝光，独不见特朗普",
+                    "versionCreated": "2025-12-22T00:39:00.000Z",
+                    "dateLine": "路透华盛顿12月20日",
+                    "snippet": "美国司法部公布已故性犯罪者爱泼斯坦（Jeffrey Epstein）相关的数千份文件，档案中包含了前总统克林顿（Bill Clinton）、已故流行音乐巨星麦克杰克森等全球知名人物，不过明显不见特朗普。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20251222:nL6S3XR06X"
+                }
+            ]
+        },
+        {
+            "text": "金正恩称将专注于增加核武器，朝美关系取决于美国态度",
+            "dateLine": "路透首尔2月26日",
+            "snippet": "朝鲜官媒朝中社周四报道，朝鲜领导人金正恩表示将专注于扩大本国核武库，并称改善朝美关系的前景完全取决于华盛顿的态度。",
+            "image": {
+                "byLine": "KCNA",
+                "text": "North Korean leader Kim Jong Un speaks during the expanded meeting of the first plenary meeting of the Ninth Central Committee of the Workers' Party of Korea (WPK), in Pyongyang",
+                "id": "2026-02-25T230941Z_1_FS1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-25T23:23:00.000Z",
+            "versionCreated": "2026-02-26T00:29:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1FM",
+            "relatedHeadlines": [
+                {
+                    "text": "金正恩之女亮相阅兵式，或升高对其接班人地位的猜测",
+                    "versionCreated": "2026-02-26T01:31:00.000Z",
+                    "dateLine": "路透首尔2月26日",
+                    "snippet": "朝鲜官媒朝中社周四发布的画面显示，朝鲜领导人金正恩的女儿金主爱周三晚间出席了在平壤举行的阅兵仪式。外界猜测她正被培养为接班人。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM03I"
+                },
+                {
+                    "text": "韩美将于3月举行\"自由护盾\"联合军演",
+                    "versionCreated": "2026-02-25T06:58:00.000Z",
+                    "dateLine": "路透首尔2月25日",
+                    "snippet": "韩国和美国军方官员周三表示，韩美将于3月9至19日举行代号\"自由护盾\"的大型联合军事演习。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0EP"
+                },
+                {
+                    "text": "朝鲜领导人金正恩：未来五年将巩固和提升经济质量",
+                    "versionCreated": "2026-02-23T23:25:00.000Z",
+                    "dateLine": "路透首尔2月24日",
+                    "snippet": "朝鲜官媒朝中社周二报道，朝鲜领导人金正恩表示，未来五年该国将巩固和提升经济质量。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ13F"
+                },
+                {
+                    "text": "习近平致电祝贺金正恩连任朝鲜劳动党总书记，称中朝是“守望相助”友好邻邦",
+                    "versionCreated": "2026-02-23T04:18:00.000Z",
+                    "dateLine": "路透北京2月23日",
+                    "snippet": "中国国家主席习近平周一致电祝贺金正恩被推举为朝鲜劳动党总书记，称中朝是“守望相助”的社会主义友好邻邦；维护好、巩固好、发展好中朝关系，始终是中国政府坚定不移的方针。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL4S3ZJ07L"
+                }
+            ]
+        },
+        {
+            "text": "韩国央行一如预期维持政策利率不变，并上调今年经济预测",
+            "dateLine": "路透首尔2月26日",
+            "snippet": "韩国央行周四一如外界普遍预期维持政策利率不变，芯片出口荣景以及通胀稳定使得决策者有更多时间评估金融稳定及关税相关的风险。",
+            "image": {
+                "byLine": "THOMAS WHITE",
+                "text": "Illustration photo of a South Korean Won note",
+                "id": "2026-02-26T011100Z_1_TW6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T01:24:00.000Z",
+            "versionCreated": "2026-02-26T01:24:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM03A",
+            "relatedHeadlines": [
+                {
+                    "text": "韩国政府及公共机构将减少发债规模，以稳定债市",
+                    "versionCreated": "2026-02-25T07:47:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0J0"
+                },
+                {
+                    "text": "韩国国会通过旨在提振股票估值的商法修正案",
+                    "versionCreated": "2026-02-25T07:41:00.000Z",
+                    "dateLine": "路透首尔2月25日",
+                    "snippet": "韩国国会周三通过对《商法》的修订，要求上市公司注销新购回的库存股，旨在堵住部分企业用于巩固管理层控制权的漏洞。(完)",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0IS"
+                }
+            ]
+        },
+        {
+            "text": "婴儿奶粉污染风波延烧，欧盟加强对中国产ARA油进口管控",
+            "snippet": "路透伦敦2月25日 - 欧盟执委会周三宣布，已对来自中国的花生四烯酸（ARA）油进口实施新的管控措施。此前，受污染的ARA油成分混入部分批次的婴儿配方奶粉，导致欧洲数十名婴儿患病。",
+            "image": {
+                "byLine": "Pascal Rossignol",
+                "text": "FILE PHOTO: The logo of French food group Danone is pictured during the company's 2017 annual results in Paris",
+                "id": "2026-02-26T011419Z_1_FD1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T00:54:00.000Z",
+            "versionCreated": "2026-02-26T00:54:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6S3ZM01Z",
+            "relatedHeadlines": [
+                {
+                    "text": "欧洲央行批准任命武伊契奇为新任副总裁",
+                    "versionCreated": "2026-02-25T22:12:00.000Z",
+                    "dateLine": "路透法兰克福2月25日",
+                    "snippet": "欧洲央行周三批准任命克罗地亚央行总裁武伊契奇(Boris Vujcic)为新任副总裁，任期八年，将于6月起任职。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL1CC"
+                },
+                {
+                    "text": "特朗普宣布新关税后，欧盟与美国的关系面临\"过渡期\"--欧盟贸易执委",
+                    "versionCreated": "2026-02-25T00:59:00.000Z",
+                    "dateLine": "路透布鲁塞尔2月24日",
+                    "snippet": "欧盟贸易执委谢夫乔维奇(Maros Sefcovic)周二表示，欧盟与美国的关系将面临为期数月的\"过渡期\"，此前美国总统特朗普宣布新的\"进口附加关税\"后，这可能危及双方去年达成的贸易协议。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL03A"
+                },
+                {
+                    "text": "尽管关税问题造成干扰，美国仍希望坚持美欧贸易协议--欧盟贸易执委",
+                    "versionCreated": "2026-02-24T15:55:00.000Z",
+                    "dateLine": "路透布鲁塞尔2月24日",
+                    "snippet": "欧盟贸易执委谢夫乔维奇周二表示，尽管新征收10%的\"进口附加费\"，但特朗普政府已向欧盟保证，仍希望遵守去年达成的欧盟-美国贸易协议。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK17W"
+                },
+                {
+                    "text": "英国央行总裁贝利：3月会议降息与否“真的尚无定论”",
+                    "versionCreated": "2026-02-24T15:56:00.000Z",
+                    "snippet": "路透伦敦2月24日 - 英国央行总裁贝利周二表示，3月有可能降息，不过央行高度关注的服务价格通胀在最新数据中未如预期那样回落。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK17X"
+                },
+                {
+                    "text": "欧盟推迟公布\"欧洲制造\"新规，因成员国对地域范围存争议",
+                    "versionCreated": "2026-02-24T01:21:00.000Z",
+                    "snippet": "路透布鲁塞尔2月23日 - 欧盟执委会周一表示，已将优先采购欧洲制造的工业零部件和产品的政策推迟一周发布，因成员国就该政策所涉地域范围问题存在分歧。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6S3ZK044"
+                },
+                {
+                    "text": "ECB总裁拉加德从BIS收受14万欧元，尽管ECB明令禁止--FT",
+                    "versionCreated": "2026-02-23T05:57:00.000Z",
+                    "dateLine": "路透2月23日",
+                    "snippet": "英国金融时报（FT）周一报道称，尽管欧洲央行禁止第三方向其员工支付款项，但欧洲央行总裁拉加德作为国际清算银行（BIS）董事会成员，每年仍可获得约14万欧元（合16.5466万美元）的收入。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6S3ZJ078"
+                },
+                {
+                    "text": "欧洲央行总裁拉加德淡化提前卸任传闻，称将完成任期",
+                    "versionCreated": "2026-02-20T11:35:00.000Z",
+                    "dateLine": "路透法兰克福2月20日",
+                    "snippet": "欧洲央行总裁拉加德试图平息关于她提前卸任的猜测--这些猜测引发了人们对该央行能否与政治分离的质疑。她告诉《华尔街日报》，她预计会完成自己的任期。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6S3ZG0L9"
+                },
+                {
+                    "text": "欧洲央行管委帕内塔：欧元区通胀双向风险显著，需关注中国进口影响",
+                    "versionCreated": "2026-02-22T23:33:00.000Z",
+                    "dateLine": "路透意大利威尼斯2月21日",
+                    "snippet": "欧洲央行管委帕内塔(Fabio Panetta)周六警告称，欧元区通胀面临\"显著\"的双向风险，并补充称，廉价中国进口商品对物价的影响值得密切关注。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260222:nL6S3ZI093"
+                }
+            ]
+        },
+        {
+            "text": "澳洲央行总裁称当前政策判断难度加大，呼吁保持耐心",
+            "snippet": "路透悉尼2月25日 - 澳洲央行总裁布洛克(Michele Bullock)周三表示，鉴于经济已接近平衡状态，且通胀率虽高但尚未再度攀升，当前政策判断更为困难。",
+            "image": {
+                "byLine": "JEREMY PIPER",
+                "text": "Tourists visit Circular Quay on Sydney Harbour, in Sydney, Australia, January 20, 2026. ",
+                "id": "2026-02-25T015030Z_1_AW0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-25T09:30:00.000Z",
+            "versionCreated": "2026-02-25T09:50:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0MX",
+            "relatedHeadlines": [
+                {
+                    "text": "澳洲1月核心通胀率创16个月新高，提振5月升息押注",
+                    "versionCreated": "2026-02-25T02:21:00.000Z",
+                    "snippet": "澳洲1月份消费者价格涨幅超出预期，核心通胀率创逾一年新高，这对政策制定者而言是个令人不安的结果，增加了再次加息的可能性。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL07D"
+                },
+                {
+                    "text": "澳洲总理遭炸弹威胁，与被禁中国艺术团体赴澳演出有关",
+                    "versionCreated": "2026-02-25T08:54:00.000Z",
+                    "dateLine": "路透悉尼2月25日",
+                    "snippet": "澳洲总理阿尔巴尼斯周三表示，他不会对自身安全掉以轻心。此前他从官邸撤离数小时，原因是与中国神韵艺术团在澳洲演出有关的炸弹威胁。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6S3ZL0K4"
+                },
+                {
+                    "text": "澳洲1月就业人数增加失业率维持低位，增加央行加息的可能性",
+                    "versionCreated": "2026-02-19T03:49:00.000Z",
+                    "dateLine": "路透悉尼2月19日",
+                    "snippet": "周四公布的澳洲就业数据显示，随着企业增加全职员工的招聘，澳洲1月就业人数稳健增长，同时失业率维持在数月低位，进一步印证了劳动力市场的韧性。",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260219:nL6S3ZF06C"
+                },
+                {
+                    "text": "澳洲央行会议纪录：未有预设利率路径，尚未确定是否需进一步收紧政策",
+                    "versionCreated": "2026-02-17T00:56:00.000Z",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260217:nL6S3ZD00J"
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "revisionId": 83215,
+        "revisionDate": "2026-02-26T11:16:02.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

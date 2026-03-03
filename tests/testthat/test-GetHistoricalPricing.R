@@ -2,190 +2,202 @@ library(testthat)
 library(mockery)
 library(data.table)
 
-test_that("stops when it has the wrong eikonobject", {
+# Snapshot + auto-restore all Refinitiv options and vault at end of file
+.saved_state <- save_refinitiv_state()
 
-  OldModuleName <- getOption(".RefinitivPyModuleName")
-  options(.RefinitivPyModuleName = "wrong object")
+test_that("warns when it has the wrong eikonobject", {
+  # With Python support removed, passing NULL as RDObject no longer triggers
 
-    expect_error( rd_GetHistoricalPricing(RDObject = NULL, universe = "AAPL.O")
-                , "historical pricing is only available when JSON --> RefinitivJsonConnect() or Python Refinitiv data --> RDConnect() is used as RDObject"
-                , fixed = TRUE)
-
-  options(.RefinitivPyModuleName = OldModuleName)
+  # the old module-type error.  Instead the retry loop exhausts itself and
+  # the function returns with a warning about download failures.
+  expect_warning(
+    rd_GetHistoricalPricing(RDObject = NULL, universe = "AAPL.O"),
+    "downloading data failed"
+  )
 })
 
 
 test_that("stops when it receives the wrong interval", {
-
-  expect_error( rd_GetHistoricalPricing(universe = "AAPL.O", interval = "daily")
-                , "Interval is daily but can only be one of 'PT1M', 'PT5M', 'PT10M', 'PT30M', 'PT60M', 'PT1H', 'P1D', 'P7D', 'P1W', 'P1M', 'P3M', 'P12M', 'P1Y'"
-               , fixed = TRUE)
+  expect_error(rd_GetHistoricalPricing(universe = "AAPL.O", interval = "daily"),
+    "Interval is daily but can only be one of 'PT1M', 'PT5M', 'PT10M', 'PT30M', 'PT60M', 'PT1H', 'P1D', 'P7D', 'P1W', 'P1M', 'P3M', 'P12M', 'P1Y'",
+    fixed = TRUE
+  )
 })
 
 
-
 test_that("historical pricing delivers identical results", {
+  skip_if(!has_live_api(), "No live API available")
 
-  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+  Vodafone <- rd_GetHistoricalPricing(
+    universe = "VOD.L", interval = "P1D",
+    count = 500L, RDObject = RDConnect(),
+    fields = c(
+      "universe", "DATE", "TRDPRC_1", "MKT_HIGH", "MKT_LOW", "ACVOL_UNS",
+      "MKT_OPEN", "BID", "ASK", "TRNOVR_UNS", "VWAP", "MID_PRICE",
+      "PERATIO", "ORDBK_VOL", "NUM_MOVES", "IND_AUCVOL", "OFFBK_VOL",
+      "HIGH_1", "ORDBK_VWAP", "IND_AUC", "OPEN_PRC", "LOW_1", "OFF_CLOSE",
+      "CLS_AUCVOL", "OPN_AUCVOL", "OPN_AUC", "CLS_AUC", "TRD_STATUS",
+      "INT_AUC", "INT_AUCVOL", "EX_VOL_UNS", "ALL_C_MOVE", "ELG_NUMMOV",
+      "NAVALUE"
+    )
+  )
 
-  Vodafone <- rd_GetHistoricalPricing( universe = "VOD.L", interval = "P1D"
-                                      , count = 500L, RDObject = RDConnect(PythonModule = "RD")
-                                      , fields = c("universe", "DATE", "TRDPRC_1", "MKT_HIGH", "MKT_LOW", "ACVOL_UNS",
-                                          "MKT_OPEN", "BID", "ASK", "TRNOVR_UNS", "VWAP", "MID_PRICE",
-                                          "PERATIO", "ORDBK_VOL", "NUM_MOVES", "IND_AUCVOL", "OFFBK_VOL",
-                                          "HIGH_1", "ORDBK_VWAP", "IND_AUC", "OPEN_PRC", "LOW_1", "OFF_CLOSE",
-                                          "CLS_AUCVOL", "OPN_AUCVOL", "OPN_AUC", "CLS_AUC", "TRD_STATUS",
-                                          "INT_AUC", "INT_AUCVOL", "EX_VOL_UNS", "ALL_C_MOVE", "ELG_NUMMOV",
-                                          "NAVALUE")
-                                      )
-
-  expect_is(Vodafone, 'data.frame')
+  expect_is(Vodafone, "data.frame")
   expect_equal(nrow(Vodafone), 500)
 
 
-  expected <- list(ACVOL_UNS = "integer", ALL_C_MOVE = "integer", ASK = "numeric",
-                   BID = "numeric", CLS_AUC = "numeric", CLS_AUCVOL = "integer",
-                   Date = "Date", ELG_NUMMOV = "integer", EX_VOL_UNS = "integer",
-                   HIGH_1 = "numeric", IND_AUC = "numeric", IND_AUCVOL = "integer",
-                   INT_AUC = "numeric", INT_AUCVOL = "integer", LOW_1 = "numeric",
-                   MID_PRICE = "numeric", MKT_HIGH = "numeric", MKT_LOW = "numeric",
-                   MKT_OPEN = "numeric", NAVALUE = "logical", NUM_MOVES = "integer",
-                   OFF_CLOSE = "numeric", OFFBK_VOL = "integer", OPEN_PRC = "numeric",
-                   OPN_AUC = "numeric", OPN_AUCVOL = "integer", ORDBK_VOL = "integer",
-                   ORDBK_VWAP = "numeric", PERATIO = "numeric", TRD_STATUS = "integer",
-                   TRDPRC_1 = "numeric", TRNOVR_UNS = "numeric", Universe = "character",
-                   VWAP = "numeric")
-  expected <- expected[order(names(expected))]
-
-  actual <- lapply(Vodafone,class)
-  actual <- actual[order(names(actual))]
-
-  expect_equal(actual, expected)
+  # The proxy may return integer-valued fields as either "integer" or "numeric"
+  # depending on the Workspace/Eikon version — accept both.
+  numeric_cols <- c(
+    "ACVOL_UNS", "ALL_C_MOVE", "ASK", "BID", "CLS_AUC", "CLS_AUCVOL",
+    "ELG_NUMMOV", "EX_VOL_UNS", "HIGH_1", "IND_AUC", "IND_AUCVOL",
+    "INT_AUC", "INT_AUCVOL", "LOW_1", "MID_PRICE", "MKT_HIGH", "MKT_LOW",
+    "MKT_OPEN", "NUM_MOVES", "OFF_CLOSE", "OFFBK_VOL", "OPEN_PRC",
+    "OPN_AUC", "OPN_AUCVOL", "ORDBK_VOL", "ORDBK_VWAP", "PERATIO",
+    "TRD_STATUS", "TRDPRC_1", "TRNOVR_UNS", "VWAP"
+  )
+  for (col in numeric_cols) {
+    expect_true(class(Vodafone[[col]]) %in% c("integer", "numeric"),
+      info = paste("column", col, "should be integer or numeric, got:", class(Vodafone[[col]]))
+    )
+  }
+  expect_s3_class(Vodafone$Date, "Date")
+  expect_type(Vodafone$Universe, "character")
+  expect_type(Vodafone$NAVALUE, "logical")
 
   expect_equal(unique(Vodafone$Universe), "VOD.L")
 
-  Vodafone_json <- rd_GetHistoricalPricing( universe = "VOD.L", interval = "P1D"
-                                       , count = 500L, RDObject = RefinitivJsonConnect()
-                                       , fields = c("universe", "DATE", "TRDPRC_1", "MKT_HIGH", "MKT_LOW", "ACVOL_UNS",
-                                                    "MKT_OPEN", "BID", "ASK", "TRNOVR_UNS", "VWAP", "MID_PRICE",
-                                                    "PERATIO", "ORDBK_VOL", "NUM_MOVES", "IND_AUCVOL", "OFFBK_VOL",
-                                                    "HIGH_1", "ORDBK_VWAP", "IND_AUC", "OPEN_PRC", "LOW_1", "OFF_CLOSE",
-                                                    "CLS_AUCVOL", "OPN_AUCVOL", "OPN_AUC", "CLS_AUC", "TRD_STATUS",
-                                                    "INT_AUC", "INT_AUCVOL", "EX_VOL_UNS", "ALL_C_MOVE", "ELG_NUMMOV",
-                                                    "NAVALUE")
+  Vodafone_json <- rd_GetHistoricalPricing(
+    universe = "VOD.L", interval = "P1D",
+    count = 500L, RDObject = RefinitivJsonConnect(),
+    fields = c(
+      "universe", "DATE", "TRDPRC_1", "MKT_HIGH", "MKT_LOW", "ACVOL_UNS",
+      "MKT_OPEN", "BID", "ASK", "TRNOVR_UNS", "VWAP", "MID_PRICE",
+      "PERATIO", "ORDBK_VOL", "NUM_MOVES", "IND_AUCVOL", "OFFBK_VOL",
+      "HIGH_1", "ORDBK_VWAP", "IND_AUC", "OPEN_PRC", "LOW_1", "OFF_CLOSE",
+      "CLS_AUCVOL", "OPN_AUCVOL", "OPN_AUC", "CLS_AUC", "TRD_STATUS",
+      "INT_AUC", "INT_AUCVOL", "EX_VOL_UNS", "ALL_C_MOVE", "ELG_NUMMOV",
+      "NAVALUE"
+    )
   )
 
   expect_equal(Vodafone, Vodafone_json)
-
 })
 
 
 test_that("historical pricing delivers identical intraday results", {
+  skip_if(!has_live_api(), "No live API available")
 
-  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+  intraday <- rd_GetHistoricalPricing(
+    universe = c("VOD.L", "AAPL.O"),
+    interval = "PT1M", count = 20L,
+    sessions = c("pre", "normal", "post"),
+    fields = c(
+      "HIGH_1", "LOW_1", "OPEN_PRC", "TRDPRC_1", "NUM_MOVES", "ACVOL_UNS",
+      "HIGH_YLD", "LOW_YLD", "OPEN_YLD", "YIELD", "BID_HIGH_1", "BID_LOW_1",
+      "OPEN_BID", "BID", "BID_NUMMOV", "ASK_HIGH_1", "ASK_LOW_1", "OPEN_ASK",
+      "ASK", "ASK_NUMMOV", "MID_HIGH", "MID_LOW", "MID_OPEN", "MID_PRICE"
+    ),
+    RDObject = RDConnect()
+  )
 
-  intraday <- rd_GetHistoricalPricing( universe = c("VOD.L", "AAPL.O")
-                                     , interval = "PT1M", count = 20L
-                                     , sessions= c("pre","normal","post")
-                                     , fields = c("HIGH_1", "LOW_1", "OPEN_PRC", "TRDPRC_1", "NUM_MOVES", "ACVOL_UNS",
-                                                    "HIGH_YLD", "LOW_YLD", "OPEN_YLD", "YIELD", "BID_HIGH_1", "BID_LOW_1",
-                                                    "OPEN_BID", "BID", "BID_NUMMOV", "ASK_HIGH_1", "ASK_LOW_1", "OPEN_ASK",
-                                                    "ASK", "ASK_NUMMOV", "MID_HIGH", "MID_LOW", "MID_OPEN", "MID_PRICE")
-                                     , RDObject = RDConnect(PythonModule = "RD"))
+  intraday_json <- rd_GetHistoricalPricing(
+    universe = c("VOD.L", "AAPL.O"),
+    interval = "PT1M", count = 20L,
+    sessions = c("pre", "normal", "post"),
+    RDObject = RefinitivJsonConnect(),
+    fields = c(
+      "HIGH_1", "LOW_1", "OPEN_PRC", "TRDPRC_1", "NUM_MOVES", "ACVOL_UNS",
+      "HIGH_YLD", "LOW_YLD", "OPEN_YLD", "YIELD", "BID_HIGH_1", "BID_LOW_1",
+      "OPEN_BID", "BID", "BID_NUMMOV", "ASK_HIGH_1", "ASK_LOW_1", "OPEN_ASK",
+      "ASK", "ASK_NUMMOV", "MID_HIGH", "MID_LOW", "MID_OPEN", "MID_PRICE"
+    )
+  )
 
-  intraday_json <- rd_GetHistoricalPricing( universe = c("VOD.L", "AAPL.O")
-                                       , interval = "PT1M", count = 20L
-                                       , sessions= c("pre","normal","post")
-                                       , RDObject = RefinitivJsonConnect()
-                                       , fields = c("HIGH_1", "LOW_1", "OPEN_PRC", "TRDPRC_1", "NUM_MOVES", "ACVOL_UNS",
-                                                    "HIGH_YLD", "LOW_YLD", "OPEN_YLD", "YIELD", "BID_HIGH_1", "BID_LOW_1",
-                                                    "OPEN_BID", "BID", "BID_NUMMOV", "ASK_HIGH_1", "ASK_LOW_1", "OPEN_ASK",
-                                                    "ASK", "ASK_NUMMOV", "MID_HIGH", "MID_LOW", "MID_OPEN", "MID_PRICE")
-                                       )
-
-  #expect_equal(intraday, intraday_json) # can never be the same so not tested
-  expected <- list(Universe = "character", DATE_TIME = "character", HIGH_1 = "numeric",
-                 LOW_1 = "numeric", OPEN_PRC = "numeric", TRDPRC_1 = "numeric",
-                 NUM_MOVES = "integer", ACVOL_UNS = "integer", HIGH_YLD = "logical",
-                 LOW_YLD = "logical", OPEN_YLD = "logical", YIELD = "logical",
-                 BID_HIGH_1 = "numeric", BID_LOW_1 = "numeric", OPEN_BID = "numeric",
-                 BID = "numeric", BID_NUMMOV = "integer", ASK_HIGH_1 = "numeric",
-                 ASK_LOW_1 = "numeric", OPEN_ASK = "numeric", ASK = "numeric",
-                 ASK_NUMMOV = "integer", MID_HIGH = "numeric", MID_LOW = "numeric",
-                 MID_OPEN = "numeric", MID_PRICE = "numeric")
+  # expect_equal(intraday, intraday_json) # can never be the same so not tested
+  expected <- list(
+    Universe = "character", DATE_TIME = "character", HIGH_1 = "numeric",
+    LOW_1 = "numeric", OPEN_PRC = "numeric", TRDPRC_1 = "numeric",
+    NUM_MOVES = "integer", ACVOL_UNS = "integer", HIGH_YLD = "logical",
+    LOW_YLD = "logical", OPEN_YLD = "logical", YIELD = "logical",
+    BID_HIGH_1 = "numeric", BID_LOW_1 = "numeric", OPEN_BID = "numeric",
+    BID = "numeric", BID_NUMMOV = "integer", ASK_HIGH_1 = "numeric",
+    ASK_LOW_1 = "numeric", OPEN_ASK = "numeric", ASK = "numeric",
+    ASK_NUMMOV = "integer", MID_HIGH = "numeric", MID_LOW = "numeric",
+    MID_OPEN = "numeric", MID_PRICE = "numeric"
+  )
   expected <- expected[order(names(expected))]
 
 
-  for(i in list(intraday, intraday_json)){
-
-    expect_is(i, 'data.frame')
+  for (i in list(intraday, intraday_json)) {
+    expect_is(i, "data.frame")
     expect_equal(nrow(i), 40L)
 
-    actual <- lapply(i,class)
+    actual <- lapply(i, class)
     actual <- actual[order(names(actual))]
 
-    expect_equal(names(actual),names(expected))
+    expect_equal(names(actual), names(expected))
     expect_equal(sort(unique(i$Universe)), c("AAPL.O", "VOD.L"))
   }
-
 })
 
 
 test_that("historical pricing delivers identical interday results", {
+  skip_if(!has_live_api(), "No live API available")
 
-  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+  fields <- c("BID", "ASK", "OPEN_PRC", "HIGH_1", "LOW_1", "TRDPRC_1", "NUM_MOVES", "TRNOVR_UNS")
 
-  fields <- c("BID","ASK","OPEN_PRC","HIGH_1","LOW_1","TRDPRC_1","NUM_MOVES","TRNOVR_UNS")
+  interday <- rd_GetHistoricalPricing(
+    universe = c("VOD.L", "AAPL.O"), interval = "P1D", count = 20L, RDObject = RDConnect(),
+    fields = fields
+  )
 
-  interday <- rd_GetHistoricalPricing(universe = c("VOD.L", "AAPL.O"), interval = "P1D", count = 20L, RDObject = RDConnect(PythonModule = "RD")
-                                     , fields = fields )
+  interday_json <- rd_GetHistoricalPricing(
+    universe = c("VOD.L", "AAPL.O"), interval = "P1D", count = 20L,
+    fields = fields,
+    RDObject = RefinitivJsonConnect()
+  )
 
-  interday_json <- rd_GetHistoricalPricing(universe = c("VOD.L", "AAPL.O"), interval = "P1D", count = 20L
-                                           , fields = fields
-                                           , RDObject = RefinitivJsonConnect())
 
-
-  interday_reorder <- interday[,match(c("Universe", "Date", fields), colnames(interday))]
+  interday_reorder <- interday[, match(c("Universe", "Date", fields), colnames(interday))]
 
   expect_equal(interday_reorder, interday_json)
 
-  expected <- c("Universe", "Date",  fields)
+  expected <- c("Universe", "Date", fields)
   expected <- expected[order(expected)]
 
-  for(i in list(interday, interday_json)){
+  for (i in list(interday, interday_json)) {
+    expect_is(i, "data.frame")
+    expect_equal(nrow(i), 40L)
 
-  expect_is(i, 'data.frame')
-  expect_equal(nrow(i), 40L)
+    actual <- names(i)
+    actual <- actual[order(actual)]
 
-  actual <- names(i)
-  actual <- actual[order(actual)]
-
-  expect_equal(expected, actual)
-  expect_equal(sort(unique(i$Universe)), c("AAPL.O", "VOD.L"))
-}
-
+    expect_equal(expected, actual)
+    expect_equal(sort(unique(i$Universe)), c("AAPL.O", "VOD.L"))
+  }
 })
 
 test_that("historical pricing delivers identical results for non exisiting ric", {
+  skip_if(!has_live_api(), "No live API available")
 
-  testthat::skip_if(is.null(getOption(".EikonApiKey")))
+  fields <- c("BID", "ASK")
 
-  fields <- c("BID","ASK")
+  NotExistingOption_python <- rd_GetHistoricalPricing(
+    universe = c("AAPLA212216000.U^22"),
+    interval = "P1D", count = 20L, RDObject = RDConnect(),
+    fields = fields
+  ) |> suppressWarnings()
 
-  NotExistingOption_python <- rd_GetHistoricalPricing(universe = c("AAPLA212216000.U^22")
-                                     , interval = "P1D", count = 20L, RDObject = RDConnect(PythonModule = "RD")
-                                     , fields = fields ) |> suppressWarnings()
 
-
-
-  NotExistingOption_json <- rd_GetHistoricalPricing(universe = c("AAPLA212216000.U^22")
-                                               , interval = "P1D", count = 20L, RDObject = RDConnect(PythonModule = "JSON")
-                                               , fields = fields ) |> suppressWarnings()
+  NotExistingOption_json <- rd_GetHistoricalPricing(
+    universe = c("AAPLA212216000.U^22"),
+    interval = "P1D", count = 20L, RDObject = RDConnect(),
+    fields = fields
+  ) |> suppressWarnings()
 
   expect_equal(NotExistingOption_python, NotExistingOption_json)
-
 })
-
 
 
 #####
@@ -193,7 +205,7 @@ test_that("historical pricing delivers identical results for non exisiting ric",
 #####
 test_that("rd_GetHistoricalPricing (JSON branch) processes stubbed response correctly", {
   # Force JSON branch.
-  options(.RefinitivPyModuleName = "JSON")
+  withr::local_options(.RefinitivPyModuleName = "JSON")
 
   # Stub CheckifCustomInstrument to always return FALSE.
   stub(rd_GetHistoricalPricing, "CheckifCustomInstrument", function(x, ...) FALSE)
@@ -211,7 +223,7 @@ test_that("rd_GetHistoricalPricing (JSON branch) processes stubbed response corr
   }
 
   # Stub rd_OutputProcesser to convert our dummy response into a fixed data frame.
-  stub(rd_GetHistoricalPricing, "rd_OutputProcesser", function(x, use_field_names_in_headers, NA_cleaning) {
+  stub(rd_GetHistoricalPricing, "rd_OutputProcesser", function(x, use_field_names_in_headers) {
     data.frame(
       Date = as.Date(c("2020-01-01", "2020-01-02")),
       Universe = rep("AAPL.O", 2),
@@ -235,58 +247,13 @@ test_that("rd_GetHistoricalPricing (JSON branch) processes stubbed response corr
   expect_equal(unique(res$Universe), "AAPL.O")
   expect_equal(res$BID, c(100, 101))
 
-  # Reset the option to avoid side effects.
-  options(.RefinitivPyModuleName = NULL)
+  # withr::local_options() auto-restores .RefinitivPyModuleName at end of test.
 })
 
-#####
-# Stub test for rd_GetHistoricalPricing (refinitiv.data branch)
-#####
-test_that("rd_GetHistoricalPricing (refinitiv.data branch) processes stubbed response correctly", {
-  # Force refinitiv.data branch.
-  options(.RefinitivPyModuleName = "refinitiv.data")
+# NOTE: The "refinitiv.data branch" stub test was removed in 0.2.0.
+# It tested a Python/reticulate code path (setting .RefinitivPyModuleName = "refinitiv.data"
+# and using $content$historical_pricing) that no longer exists. The JSON path is now the
+# only path — the option is ignored and the dummy Python-style object is never traversed.
 
-  # Create a dummy RD object with a nested content element simulating the Python object.
-  dummy_RD <- list()
-  dummy_request <- list(
-    get_data = function() {
-      list(data = list(raw = '{"Date":["2020-01-01","2020-01-02"], "Universe":["AAPL.O","AAPL.O"], "BID":[200,201]}'))
-    }
-  )
-  dummy_RD$content <- list(
-    historical_pricing = list(
-      summaries = list(
-        Definition = function(universe, interval, start, end, adjustments, count, fields, sessions) {
-          dummy_request
-        }
-      )
-    )
-  )
 
-  # Stub rd_OutputProcesser so that it returns a fixed data frame.
-  stub(rd_GetHistoricalPricing, "rd_OutputProcesser", function(x, use_field_names_in_headers, NA_cleaning) {
-    data.frame(
-      Date = as.Date(c("2020-01-01", "2020-01-02")),
-      Universe = rep("AAPL.O", 2),
-      BID = c(200, 201),
-      stringsAsFactors = FALSE
-    )
-  })
-
-  # Call rd_GetHistoricalPricing with the dummy RD object.
-  res <- rd_GetHistoricalPricing(
-    RDObject = dummy_RD,
-    universe = "AAPL.O",
-    interval = "P1D",
-    count = 2L,
-    fields = "BID",
-    debug = TRUE
-  )
-
-  expect_true(is.data.frame(res))
-  expect_equal(nrow(res), 2)
-  expect_equal(unique(res$Universe), "AAPL.O")
-  expect_equal(res$BID, c(200, 201))
-
-  options(.RefinitivPyModuleName = NULL)
-})
+restore_refinitiv_state(.saved_state, "test-GetHistoricalPricing")

@@ -1,0 +1,313 @@
+{
+    "_metadata": {
+        "outdated": false,
+        "cached": true
+    },
+    "data": [
+        {
+            "snippet": "Japanese Prime Minister Sanae Takaichi's choice of two like-minded monetary doves to the central bank's board sends a not-so-subtle message about her distaste for higher interest rates, casting doubt on how much further policy can be tightened.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZL2D4",
+            "image": {
+                "byLine": "Manami Yamada",
+                "text": "A security guard stands in front of the Bank of Japan headquarters in Tokyo, Japan  December19, 2025. ",
+                "id": "2026-02-26T075852Z_1_XQ8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Japan's government on Wednesday nominated two academics seen by markets as strong advocates of economic stimulus to join the central bank's board, in moves seen reflecting the Takaichi administration's monetary policy preferences.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZL08H",
+                    "dateLine": "TOKYO, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T03:32:00.000Z",
+                    "text": "In surprise move, Japan's government taps two reflationists for BOJ board"
+                },
+                {
+                    "snippet": "Japanese Prime Minister Sanae Takaichi expressed reservations about additional interest rate hikes during her meeting with Bank of Japan Governor Kazuo Ueda last week, The Mainichi daily reported on Tuesday, citing multiple unnamed sources.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6N3ZK0GH",
+                    "dateLine": "TOKYO, Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T07:38:00.000Z",
+                    "text": "Japan PM voiced concerns about further rate hikes to BOJ, Mainichi reports"
+                }
+            ],
+            "dateLine": "TOKYO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T07:52:00.000Z",
+            "text": "ANALYSIS-Japan's Takaichi gets her doves in a row with BOJ board appointees",
+            "firstCreated": "2026-02-26T07:52:00.000Z"
+        },
+        {
+            "snippet": "Bank of Japan Governor Kazuo Ueda said the central bank will scrutinise data at its March and April meetings in deciding whether to raise interest rates, the Yomiuri newspaper reported on Thursday, leaving open the chance of a near-term rate hike.",
+            "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL1H7",
+            "image": {
+                "byLine": "Kim Kyung-Hoon",
+                "text": "Bank of Japan Governor Kazuo Ueda attends a press conference after a BOJ policy meeting in Tokyo, Japan, January 23, 2026. ",
+                "id": "2026-02-25T235424Z_1_SB6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The Bank of Japan must focus on the risk of an inflation overshoot in guiding monetary policy, hawkish board member Hajime Takata said on Thursday, calling for gradual interest rate hikes.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM021",
+                    "dateLine": "KYOTO, Japan, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T02:31:00.000Z",
+                    "text": "Hawkish BOJ board member calls for focus on inflation overshoot risk"
+                },
+                {
+                    "snippet": "Japan must keep raising interest rates and tighten fiscal policy as the economy is already in \"great shape,\" former central bank chief Haruhiko Kuroda said, warning that Premier Sanae Takaichi's big spending plan could stoke an inflationary upswing.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZK1UA",
+                    "dateLine": "TOKYO, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T06:00:00.000Z",
+                    "text": "EXCLUSIVE-Ex-BOJ chief Kuroda calls for rate hikes, tighter fiscal policy"
+                }
+            ],
+            "dateLine": "TOKYO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-25T23:28:00.000Z",
+            "text": "BOJ chief flags March, April rate-hike chance in Yomiuri interview",
+            "firstCreated": "2026-02-25T21:54:00.000Z"
+        },
+        {
+            "snippet": "Toyota plans a large-scale unwinding of strategic shareholdings that would involve banks and insurance firms selling around $19 billion of its shares, two sources said, in what would mark a watershed moment in Japan's corporate governance reform.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0BC",
+            "image": {
+                "byLine": "Francis Mascarenhas",
+                "text": " A man walks past the Toyota logo during a launch event in Mumbai, India, January 20, 2026.",
+                "id": "2026-02-26T030520Z_1_SC6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Toyota Motor on Thursday said global sales rose for a second successive month in January, supported by strong demand in the United States and Europe.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM01A",
+                    "dateLine": "TOKYO, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T04:30:00.000Z",
+                    "text": "Toyota's global sales rise for second month in January on solid US, European demand"
+                },
+                {
+                    "snippet": "Elliott Management has offered to pay around market price to buy Toyota Industries shares from holders who have agreed to a tender offer that the U.S. activist said undervalues the forklift truck maker, two people familiar with the matter said.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL1N3ZK01Q",
+                    "dateLine": "TOKYO, Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T01:15:00.000Z",
+                    "text": "EXCLUSIVE-Elliott woos shareholders backing Toyota Industries buyout, sources say"
+                },
+                {
+                    "snippet": "When Koji Sato was named Toyota CEO in 2023, he appeared to be the man for the moment: a veteran engineer who could give the world’s best-selling automaker a badly needed boost in electric vehicles. But after just three years in the top job, he is being replaced by Chief Financial Officer Kenta Kon, a close ally and former secretary of Chairman Akio Toyoda.",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6N3ZE0CS",
+                    "dateLine": "TOKYO, Feb 20 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-20T02:29:00.000Z",
+                    "text": "ANALYSIS-Toyota's Sato was the man for the moment - then the moment changed"
+                }
+            ],
+            "dateLine": "TOKYO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T04:14:00.000Z",
+            "text": "EXCLUSIVE-Toyota plans around $19 billion share sale by financial institutions, sources say",
+            "firstCreated": "2026-02-26T03:01:00.000Z"
+        },
+        {
+            "snippet": "South Korea's central bank stood pat on interest rates on Thursday and signalled policy would stay unchanged for the next six months as a chip boom in exports and steady inflation allow policymakers more time to assess financial stability risks.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZL00Z",
+            "image": {
+                "byLine": "Kim Hong-Ji",
+                "text": "The buliding of Bank of Korea is seen in Seoul, South Korea, July 14, 2016. ",
+                "id": "2026-02-26T010243Z_1_FW1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Following are revised key economic forecasts for 2026 and 2027 by the Bank of Korea on Thursday (percentage change from a year earlier, unless stated):",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM006",
+                    "dateLine": "SEOUL, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T04:30:00.000Z",
+                    "text": "TABLE-Bank of Korea's revised economic forecasts for 2026, 2027"
+                },
+                {
+                    "snippet": "South Korea's central bank has decided to expand its forward guidance on monetary policy by providing the views of its seven board members on a quarterly basis with 21 dots in the six-month term, mirroring the U.S. Federal Reserve's so-called \"dot plot\".",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZL0IX",
+                    "dateLine": "SEOUL, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T00:50:00.000Z",
+                    "text": "Bank of Korea introduces new forward guidance mirroring Fed's dot plot"
+                },
+                {
+                    "snippet": "Lee Seung-heon, one of the leading candidates to become the next Bank of Korea governor, backs raising taxes on property ownership to stop surging home prices from stoking inflation but a policy pivot to more monetary tightening would be premature.",
+                    "storyId": "urn:newsml:reuters.com:20260209:nL4N3Z302Q",
+                    "dateLine": "SEOUL, Feb 9 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-09T03:50:00.000Z",
+                    "text": "Contender for Bank of Korea governor backs higher property taxes to contain inflation"
+                }
+            ],
+            "dateLine": "SEOUL, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T04:24:00.000Z",
+            "text": "S.Korea central bank holds rates, adopts dot-plot path signalling extended pause",
+            "firstCreated": "2026-02-26T01:05:00.000Z"
+        },
+        {
+            "snippet": "North Korean leader Kim Jong Un said he would focus on expanding his country's nuclear arsenal and that prospects for improving relations with the U.S. rested entirely on Washington's attitude, state media KCNA reported on Thursday.",
+            "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL1I9",
+            "image": {
+                "byLine": "KCNA",
+                "text": "North Korean leader Kim Jong Un speaks during the expanded meeting of the first plenary meeting of the Ninth Central Committee of the Workers' Party of Korea (WPK), in Pyongyang, North Korea, February 23, 2026, in this picture released February 24, 2026, by North Korea's official Korean Central News Agency. ",
+                "id": "2026-02-25T225718Z_1_RS6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The daughter of North Korean leader Kim Jong Un attended a military parade held in Pyongyang on Wednesday night, state media footage showed on Thursday, amid speculation that she is being groomed as a potential successor.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM00J",
+                    "dateLine": "SEOUL, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T01:00:00.000Z",
+                    "text": "North Korea leader Kim's daughter appears at military parade, state media footage shows"
+                }
+            ],
+            "dateLine": "SEOUL, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T05:45:00.000Z",
+            "text": "North Korea's Kim promises more nuclear weapons as Congress closes with military parade",
+            "firstCreated": "2026-02-25T22:08:00.000Z"
+        },
+        {
+            "snippet": "Japan's Nikkei share average surpassed the 59,000 mark for the first time on Thursday, led by software-related shares as investor fears over disruption from artificial intelligence eased.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM01S",
+            "image": {
+                "byLine": "ISSEI KATO",
+                "text": "The Tokyo Stock Exchange (TSE) logo is seen next to a traffic light in Tokyo, Japan October 1, 2020.",
+                "id": "2026-02-26T001611Z_1_CV0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "versionCreated": "2026-02-26T05:10:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM08Z",
+                    "text": "FOREX-Yen recovers against dollar with BOJ policy in view",
+                    "dateLine": "TAIPEI, Feb 26 (Reuters)",
+                    "documentType": "Story"
+                },
+                {
+                    "snippet": "South Korean shares rose more than 3% on Thursday, hitting a fresh record high, as chipmakers jumped after Nvidia's earnings and automakers also extended a rally.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM08I",
+                    "dateLine": "SEOUL, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T07:03:00.000Z",
+                    "text": "S.Korean shares hit record on chip, auto surge; president says market 'normalising'"
+                },
+                {
+                    "snippet": "Japan's Nikkei share average will probably gain only marginally through June before it pushes past the key psychological 60,000 mark by the middle of next year, a Reuters poll of equity strategists showed.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL4N3ZE0JZ",
+                    "dateLine": "TOKYO, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T23:05:00.000Z",
+                    "text": "POLL-Nikkei set to breach 60,000 milestone by mid-2027 on earnings growth, foreign inflows"
+                }
+            ],
+            "dateLine": "TOKYO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T07:33:00.000Z",
+            "text": "Nikkei crosses 59,000 for first time on software rally; gains shrink on profit taking",
+            "firstCreated": "2026-02-26T00:11:00.000Z"
+        },
+        {
+            "snippet": "Japan's shorter-dated bond yields rose on Thursday, reversing the previous session's declines, as hawkish comments from the Bank of Japan officials stoked bets of early interest rate hikes.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM03S",
+            "image": {
+                "byLine": "Florence Lo",
+                "text": "Banknotes of Japanese yen are seen in this illustration picture taken September 22, 2022. ",
+                "id": "2026-02-24T003834Z_1_ZM8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Japan's Ministry of Finance is considering revising the framework of its liquidity-enhancement auctions for government bonds, two sources told Reuters on Tuesday, a move that would help ease supply pressures in the super-long end of the market.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nP8N3Z20E3",
+                    "dateLine": "TOKYO, Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T03:46:00.000Z",
+                    "text": "Japan plans revisions to liquidity-support JGB auctions as volatility persists, sources say"
+                }
+            ],
+            "dateLine": "TOKYO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T07:27:00.000Z",
+            "text": "Japan's shorter-end yields rise as hawkish BOJ comments fan early rate hike bets",
+            "firstCreated": "2026-02-26T01:26:00.000Z"
+        },
+        {
+            "snippet": "Investors in South Korea's e-commerce giant Coupang will be scrutinising the company's financial results on Thursday for fallout from a massive data breach, as rivals lure shoppers away from its platform.",
+            "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZI00X",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "Coupang logo is seen in this illustration taken February 11, 2025. ",
+                "id": "2026-02-26T032156Z_1_QI5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "South Korea's antitrust regulator said on Thursday it has fined Coupang 2.2 billion won ($1.55 million) for pressuring suppliers to cut prices and shoulder additional costs to meet profit margins, as well as for delaying payments to vendors.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM03F",
+                    "dateLine": "SEOUL, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T03:00:00.000Z",
+                    "text": "South Korea watchdog fines Coupang $1.6 million for pressuring suppliers, delaying payments"
+                }
+            ],
+            "dateLine": "SEOUL, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-25T22:59:00.000Z",
+            "text": "PREVIEW-Coupang braces for increased competition amid fallout from South Korea data breach",
+            "firstCreated": "2026-02-25T23:00:00.000Z"
+        },
+        {
+            "snippet": "Japanese electric motor maker Nidec on Thursday said its founder, Shigenobu Nagamori, has resigned as chairman emeritus, amid an investigation into accounting improprieties involving a Chinese subsidiary.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM08K",
+            "image": {
+                "byLine": "Kim Kyung-Hoon",
+                "text": "Nidec Corp's logo is pictured at an earnings results news conference in Tokyo, Japan, July 25, 2018. ",
+                "id": "2026-02-26T075852Z_1_EJ1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "TOKYO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T07:30:00.000Z",
+            "text": "Founder of scandal-hit Nidec resigns as chairman emeritus",
+            "firstCreated": "2026-02-26T06:49:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "More than 30 Japanese men clad in loincloths braved cold and heavy rain in a harvest festival more than two centuries old, held in a small, muddy field in a residential pocket outside Tokyo, the capital.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM06G",
+            "image": {
+                "byLine": "Kim Kyung-Hoon",
+                "text": "Participants in loincloths toss and scatter mud in a mud field during Warabi Hadaka Matsuri (Warabi Naked Festival) in Yotsukaido, Chiba Prefecture, Japan, February 25, 2026. ",
+                "id": "2026-02-26T034705Z_1_PQ5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "YOTSUKAIDO, Japan, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T03:41:00.000Z",
+            "text": "'Blessed rain': Japanese men in loincloths  wrestle in harvest rite",
+            "firstCreated": "2026-02-26T03:41:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "South Korea's birthrate rose for a second straight year in 2025, government data showed on Wednesday, in a further sign that a country facing a demographic crisis for nearly a decade may be starting to turn a corner.",
+            "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZE092",
+            "image": {
+                "byLine": "KIM HONG-JI",
+                "text": "A woman holding up her baby is silhouetted against the backdrop of N Seoul Tower, commonly known as Namsan Tower, in Seoul, South Korea, October 2, 2018.   ",
+                "id": "2026-02-25T033605Z_1_WL7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "SEOUL, Feb 25 (Reuters)",
+            "versionCreated": "2026-02-25T05:48:00.000Z",
+            "text": "South Korea's birthrate, the world's lowest, rises again amid signs of easing demographic crisis",
+            "firstCreated": "2026-02-25T03:06:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        }
+    ],
+    "meta": {
+        "revisionId": 30834,
+        "revisionDate": "2026-02-26T16:51:07.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

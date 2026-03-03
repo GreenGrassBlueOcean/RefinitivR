@@ -10,11 +10,11 @@
 #'   returns `FALSE` and issues a warning with the error message.
 #' @export
 #' @examples
-#' TestDataStreamCredentials(DatastreamUsername = "wrongusername"
-#' , DatastreamPassword = "wrongPassword")
+#' TestDataStreamCredentials(
+#'   DatastreamUsername = "wrongusername",
+#'   DatastreamPassword = "wrongPassword"
+#' )
 TestDataStreamCredentials <- function(DatastreamUsername = NULL, DatastreamPassword = NULL) {
-
-
   # 1. Check input ----
   if (is.null(DatastreamUsername) || is.na(DatastreamUsername)) {
     stop("Please supply the DataStream username.")
@@ -94,13 +94,12 @@ TestDataStreamCredentials <- function(DatastreamUsername = NULL, DatastreamPassw
 #' DatastreamPassword <- "Your datastream password"
 #' DataStream <- DataStreamConnect(DatastreamUserName, DatastreamPassword)
 #' }
-DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA){
-
+DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA) {
   # 1. check input ----
   if (is.na(DatastreamUserName) || (is.character(DatastreamUserName) && trimws(DatastreamUserName) == "")) {
     DatastreamUserName <- getOption("Datastream.Username")
     if (is.na(DatastreamUserName) || is.null(DatastreamUserName) ||
-        (is.character(DatastreamUserName) && trimws(DatastreamUserName) == "")) {
+      (is.character(DatastreamUserName) && trimws(DatastreamUserName) == "")) {
       stop("Please supply the DataStream username.")
     }
   }
@@ -108,7 +107,7 @@ DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA){
   if (is.na(DatastreamPassword) || (is.character(DatastreamPassword) && trimws(DatastreamPassword) == "")) {
     DatastreamPassword <- getOption("Datastream.Password")
     if (is.na(DatastreamPassword) || is.null(DatastreamPassword) ||
-        (is.character(DatastreamPassword) && trimws(DatastreamPassword) == "")) {
+      (is.character(DatastreamPassword) && trimws(DatastreamPassword) == "")) {
       stop("Please supply the DataStream password.")
     }
   }
@@ -119,4 +118,3 @@ DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA){
   mydsws <- DatastreamDSWS2R::dsws$new()
   return(mydsws)
 }
-

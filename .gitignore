@@ -17,3 +17,7 @@ coverage_summary.txt
 COMMIT_MESSAGE.txt
 COMMIT_MESSAGE.txt
 COMMIT_MESSAGE.txt
+.venv/
+.Renviron
+*.md
+nul

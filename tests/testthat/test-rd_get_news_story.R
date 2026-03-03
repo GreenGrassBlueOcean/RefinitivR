@@ -5,17 +5,17 @@ library(mockery)
 # This allows us to exercise all the branches in rd_get_news_story.
 fake_rd_get_news_story <- function(story_id, raw_output, debug) {
   switch(story_id,
-         "legacy_story" = list(story = list(storyHtml = "<p>Legacy HTML content</p>")),
-         "web_url"      = list(webURL = "https://example.com/story"),
-         "inline_xml"   = list(newsItem = list(contentSet = list(
-           inlineXML = list(`$` = "<p>Inline XML</p>")
-         ))),
-         "inline_data"  = list(newsItem = list(contentSet = list(
-           inlineData = list(`$` = "<p>Inline Data</p>")
-         ))),
-         "empty_newsItem" = list(newsItem = list(contentSet = list())),
-         # Return a minimal list that doesn't contain expected keys
-         "not_a_list" = list(unrecognizedField = TRUE)
+    "legacy_story" = list(story = list(storyHtml = "<p>Legacy HTML content</p>")),
+    "web_url" = list(webURL = "https://example.com/story"),
+    "inline_xml" = list(newsItem = list(contentSet = list(
+      inlineXML = list(`$` = "<p>Inline XML</p>")
+    ))),
+    "inline_data" = list(newsItem = list(contentSet = list(
+      inlineData = list(`$` = "<p>Inline Data</p>")
+    ))),
+    "empty_newsItem" = list(newsItem = list(contentSet = list())),
+    # Return a minimal list that doesn't contain expected keys
+    "not_a_list" = list(unrecognizedField = TRUE)
   )
 }
 
@@ -42,15 +42,18 @@ test_that("rd_get_news_story errors after multiple retries when retrieval fails"
   max_retries <- 5
 
   # Override retry() to simulate multiple failures
-  with_mocked_bindings({
-    expect_error(
-      rd_get_news_story(RDObject = RDObj_fail, story_id = "any_story", debug = FALSE),
-      "rd_get_news_story: retrieval failed after maximum retries for ID: any_story"
-    )
-  }, retry = function(expr, max) {
-    retry_count <<- retry_count + 1
-    if (retry_count <= max) try(expr, silent = TRUE) else stop("Max retries exceeded")
-  })
+  with_mocked_bindings(
+    {
+      expect_error(
+        rd_get_news_story(RDObject = RDObj_fail, story_id = "any_story", debug = FALSE),
+        "rd_get_news_story: retrieval failed after maximum retries for ID: any_story"
+      )
+    },
+    retry = function(expr, max) {
+      retry_count <<- retry_count + 1
+      if (retry_count <= max) try(expr, silent = TRUE) else stop("Max retries exceeded")
+    }
+  )
 })
 
 ###############################################################################
@@ -63,10 +66,12 @@ dummy_raw_rd_get_news_story <- function(story_id, raw_output, debug) {
 
 test_that("rd_get_news_story returns raw output when raw_output is TRUE", {
   RDObj_raw <- list(rd_get_news_story = dummy_raw_rd_get_news_story)
-  raw_out <- rd_get_news_story(RDObject = RDObj_raw,
-                               story_id = "test_story",
-                               raw_output = TRUE,
-                               debug = FALSE)
+  raw_out <- rd_get_news_story(
+    RDObject = RDObj_raw,
+    story_id = "test_story",
+    raw_output = TRUE,
+    debug = FALSE
+  )
   expect_true(is.list(raw_out))
   expect_named(raw_out, "test_story")
   expect_equal(raw_out[["test_story"]]$raw, "raw test_story")
@@ -82,11 +87,13 @@ dummy_legacy_rd_get_news_story <- function(story_id, raw_output, debug) {
 
 test_that("rd_get_news_story returns legacy story HTML correctly", {
   RDObj_legacy <- list(rd_get_news_story = dummy_legacy_rd_get_news_story)
-  result <- rd_get_news_story(RDObject = RDObj_legacy,
-                              story_id = "dummy_story",
-                              raw_output = FALSE,
-                              debug = FALSE,
-                              renderHTML = FALSE)
+  result <- rd_get_news_story(
+    RDObject = RDObj_legacy,
+    story_id = "dummy_story",
+    raw_output = FALSE,
+    debug = FALSE,
+    renderHTML = FALSE
+  )
   expect_type(result, "list")
   expect_named(result, "dummy_story")
   expect_equal(result[["dummy_story"]]$html, "HTML for dummy_story")
@@ -146,10 +153,12 @@ test_that("rd_get_news_story returns empty sub-list when no recognized fields", 
 ###############################################################################
 test_that("rd_get_news_story handles multiple story IDs at once", {
   RDObj <- list(rd_get_news_story = fake_rd_get_news_story)
-  stories <- rd_get_news_story(RDObject = RDObj,
-                               story_id = c("web_url", "inline_data"),
-                               debug = FALSE,
-                               renderHTML = FALSE)
+  stories <- rd_get_news_story(
+    RDObject = RDObj,
+    story_id = c("web_url", "inline_data"),
+    debug = FALSE,
+    renderHTML = FALSE
+  )
   expect_type(stories, "list")
   expect_length(stories, 2)
   expect_named(stories, c("web_url", "inline_data"))
@@ -163,10 +172,12 @@ test_that("rd_get_news_story handles multiple story IDs at once", {
 test_that("rd_get_news_story prints debug messages when debug = TRUE", {
   RDObj <- list(rd_get_news_story = fake_rd_get_news_story)
   expect_message(
-    rd_get_news_story(RDObject = RDObj,
-                      story_id = "inline_xml",
-                      debug = TRUE,
-                      renderHTML = FALSE),
+    rd_get_news_story(
+      RDObject = RDObj,
+      story_id = "inline_xml",
+      debug = TRUE,
+      renderHTML = FALSE
+    ),
     "Successfully fetched story for ID: inline_xml"
   )
 })
@@ -217,3 +228,5 @@ test_that("rd_get_news_story falls back to headline when no content", {
   expect_equal(result[["fallback_story"]]$html, "<h3>Fallback Headline</h3><p>(No full story available)</p>")
   expect_equal(result[["fallback_story"]]$inline, "")
 })
+
+dump_refinitiv_options("test-rd_get_news_story")

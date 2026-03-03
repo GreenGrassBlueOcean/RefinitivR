@@ -5,14 +5,15 @@
 \title{Returns a list of news headlines}
 \usage{
 EikonGetNewsHeadlines(
-  EikonObject = EikonConnect(),
+  EikonObject = rd_connection(),
   query = NULL,
   count = 10L,
   repository = c("NewsWire", "NewsRoom", "WebNews"),
   date_from = NULL,
   date_to = NULL,
   raw_output = FALSE,
-  debug = FALSE
+  debug = FALSE,
+  cache = NULL
 )
 }
 \arguments{
@@ -30,7 +31,12 @@ EikonGetNewsHeadlines(
 
 \item{raw_output}{boolean if TRUE provide only the raw downloaded info from Eikon}
 
-\item{debug}{boolean if TRUE prints out the python call to the console}
+\item{debug}{boolean if TRUE prints out API call details to the console}
+
+\item{cache}{Controls caching. \code{NULL} (default) defers to
+\code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
+function default TTL (60 s). \code{FALSE} disables caching. A positive
+numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.}
 }
 \value{
 Returns a data frame of news headlines with the following columns:
@@ -47,14 +53,18 @@ Returns a list of news headlines
 }
 \examples{
 \dontrun{
- Eikon <- Refinitiv::EikonConnect()
- headlines <- EikonGetNewsHeadlines( EikonObject = Eikon
-                                   , query = c("R:MSFT.O", "R:AAPL.O") , count = 2, debug = TRUE)
+Eikon <- Refinitiv::EikonConnect()
+headlines <- EikonGetNewsHeadlines(
+  EikonObject = Eikon,
+  query = c("R:MSFT.O", "R:AAPL.O"), count = 2, debug = TRUE
+)
 }
 
 \dontrun{
-  EikonJson <- RefinitivJsonConnect()
-  headlines <- EikonGetNewsHeadlines( EikonObject = EikonJson, debug = TRUE
-                                    , query = "R:MSFT.O", count = 2)
+EikonJson <- RefinitivJsonConnect()
+headlines <- EikonGetNewsHeadlines(
+  EikonObject = EikonJson, debug = TRUE,
+  query = "R:MSFT.O", count = 2
+)
 }
 }

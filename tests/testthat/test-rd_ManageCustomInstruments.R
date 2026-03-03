@@ -61,33 +61,40 @@ test_that("errors when UUID is missing", {
 
 test_that("errors if more than one type is supplied", {
   expect_error(
-    rd_ManageCustomInstruments(RDObject = list(), operation = "CREATE", symbol = "SYM",
-                               formula = "AAPL.O", basket = dummy_basket_valid, UUID = "dummy-uuid"),
+    rd_ManageCustomInstruments(
+      RDObject = list(), operation = "CREATE", symbol = "SYM",
+      formula = "AAPL.O", basket = dummy_basket_valid, UUID = "dummy-uuid"
+    ),
     regexp = "Only ONE single type of formula, basket, or user defin.*continuation \\(udc\\) has to be supplied"
   )
-
 })
 
 test_that("errors when basket is provided but not valid", {
   expect_error(
-    rd_ManageCustomInstruments(RDObject = list(), operation = "CREATE", symbol = "SYM",
-                               basket = list(basket = "notvalid"), currency = "USD", UUID = "dummy-uuid"),
+    rd_ManageCustomInstruments(
+      RDObject = list(), operation = "CREATE", symbol = "SYM",
+      basket = list(basket = "notvalid"), currency = "USD", UUID = "dummy-uuid"
+    ),
     "Parameter basket is not defined correctly"
   )
 })
 
 test_that("errors when holidays is provided but not valid", {
   expect_error(
-    rd_ManageCustomInstruments(RDObject = list(), operation = "CREATE", symbol = "SYM",
-                               formula = "AAPL.O", holidays = list(holidays = "notvalid"), UUID = "dummy-uuid"),
+    rd_ManageCustomInstruments(
+      RDObject = list(), operation = "CREATE", symbol = "SYM",
+      formula = "AAPL.O", holidays = list(holidays = "notvalid"), UUID = "dummy-uuid"
+    ),
     "Parameter holidays is not defined correctly"
   )
 })
 
 test_that("errors when udc is provided but not valid", {
   expect_error(
-    rd_ManageCustomInstruments(RDObject = list(), operation = "CREATE", symbol = "SYM",
-                               formula = "AAPL.O", udc = list(udc = "notvalid"), UUID = "dummy-uuid"),
+    rd_ManageCustomInstruments(
+      RDObject = list(), operation = "CREATE", symbol = "SYM",
+      formula = "AAPL.O", udc = list(udc = "notvalid"), UUID = "dummy-uuid"
+    ),
     "Parameter udc is not defined correctly"
   )
 })
@@ -102,8 +109,10 @@ test_that("CREATE branch calls create_custom_instrument when instrument does not
   # Stub CorrectCustomInstrument.
   stub(rd_ManageCustomInstruments, "CorrectCustomInstrument", dummy_CorrectCustomInstrument)
 
-  res <- rd_ManageCustomInstruments(RDObject = dummy_RD, operation = "CREATE",
-                                    symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid")
+  res <- rd_ManageCustomInstruments(
+    RDObject = dummy_RD, operation = "CREATE",
+    symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"
+  )
   expect_equal(res$result, "Created")
 })
 
@@ -114,8 +123,10 @@ test_that("CREATE branch errors if instrument already exists", {
   stub(rd_ManageCustomInstruments, "CorrectCustomInstrument", dummy_CorrectCustomInstrument)
 
   expect_error(
-    rd_ManageCustomInstruments(RDObject = dummy_RD, operation = "CREATE",
-                               symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"),
+    rd_ManageCustomInstruments(
+      RDObject = dummy_RD, operation = "CREATE",
+      symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"
+    ),
     "Instrument is already be created and should be deleted or updated first if you want to make changes"
   )
 })
@@ -127,8 +138,10 @@ test_that("GET branch returns instrument details if exists", {
   get_exists <- list(state = list(code = NULL), details = "existing details")
   dummy_RD <- create_dummy_RD(get_exists)
 
-  res <- rd_ManageCustomInstruments(RDObject = dummy_RD, operation = "GET",
-                                    symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid")
+  res <- rd_ManageCustomInstruments(
+    RDObject = dummy_RD, operation = "GET",
+    symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"
+  )
   expect_equal(res, get_exists)
 })
 
@@ -138,8 +151,10 @@ test_that("GET branch errors if instrument does not exist", {
   dummy_RD <- create_dummy_RD(get_exists)
 
   expect_error(
-    rd_ManageCustomInstruments(RDObject = dummy_RD, operation = "GET",
-                               symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"),
+    rd_ManageCustomInstruments(
+      RDObject = dummy_RD, operation = "GET",
+      symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"
+    ),
     "Instrument did not exist and can therefore not be obtained"
   )
 })
@@ -151,8 +166,10 @@ test_that("UPDATE branch calls update when instrument exists", {
   get_exists <- list(state = list(code = NULL))
   dummy_RD <- create_dummy_RD(get_exists, update_result = list(result = "Updated"))
 
-  res <- rd_ManageCustomInstruments(RDObject = dummy_RD, operation = "UPDATE",
-                                    symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid")
+  res <- rd_ManageCustomInstruments(
+    RDObject = dummy_RD, operation = "UPDATE",
+    symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"
+  )
   # We use regex matching to allow for variation in the corrected symbol.
   expect_match(res$result, "^Operation UPDATE executed on .*")
 })
@@ -163,8 +180,10 @@ test_that("UPDATE branch errors if instrument does not exist", {
   dummy_RD <- create_dummy_RD(get_exists)
 
   expect_error(
-    rd_ManageCustomInstruments(RDObject = dummy_RD, operation = "UPDATE",
-                               symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"),
+    rd_ManageCustomInstruments(
+      RDObject = dummy_RD, operation = "UPDATE",
+      symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"
+    ),
     "Instrument did not exist and can therefore not be updated"
   )
 })
@@ -176,9 +195,11 @@ test_that("DELETE branch calls delete when instrument exists", {
   get_exists <- list(state = list(code = NULL))
   dummy_RD <- create_dummy_RD(get_exists, delete_result = list(result = "Deleted"))
 
-  res <- rd_ManageCustomInstruments(RDObject = dummy_RD, operation = "DELETE",
-                                    symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid")
-  expect_equal(res, NULL)  # DELETE branch returns NULL after deletion.
+  res <- rd_ManageCustomInstruments(
+    RDObject = dummy_RD, operation = "DELETE",
+    symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"
+  )
+  expect_equal(res, NULL) # DELETE branch returns NULL after deletion.
 })
 
 test_that("DELETE branch errors if instrument does not exist", {
@@ -187,8 +208,12 @@ test_that("DELETE branch errors if instrument does not exist", {
   dummy_RD <- create_dummy_RD(get_exists)
 
   expect_error(
-    rd_ManageCustomInstruments(RDObject = dummy_RD, operation = "DELETE",
-                               symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"),
+    rd_ManageCustomInstruments(
+      RDObject = dummy_RD, operation = "DELETE",
+      symbol = "SYM", formula = "AAPL.O", UUID = "dummy-uuid"
+    ),
     "Instrument did not exist and can therefore not be deleteted"
   )
 })
+
+dump_refinitiv_options("test-rd_ManageCustomInstruments")

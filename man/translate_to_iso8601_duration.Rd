@@ -26,9 +26,10 @@ to get rd_GetHistoricalPricing() when using this function one do not need to wor
 about the correct interval
 }
 \examples{
-translate_to_iso8601_duration('minute')   # Returns "PT1M"
-translate_to_iso8601_duration('hour')     # Returns "PT1H"
-translate_to_iso8601_duration('weekly')   # Returns "P1W"
-translate_to_iso8601_duration('unknown')  # Returns "P1D" (default)
+Refinitiv:::translate_to_iso8601_duration("minute") # Returns "PT1M"
+Refinitiv:::translate_to_iso8601_duration("hour") # Returns "PT1H"
+Refinitiv:::translate_to_iso8601_duration("weekly") # Returns "P1W"
+Refinitiv:::translate_to_iso8601_duration("unknown") # Returns "P1D" (default)
 
 }
+\keyword{internal}

@@ -1,70 +1,73 @@
 library(testthat)
-library(mockery)
 
-# Test 1: application_id missing and no option ".EikonApiKey" is set.
-test_that("RDConnect errors when application_id is not supplied", {
-  oldEikon <- getOption(".EikonApiKey")
-  options(.EikonApiKey = NULL)
-  expect_error(
-    RDConnect(application_id = NA, PythonModule = "JSON"),
-    "Please supply application_id"
-  )
-  options(.EikonApiKey = oldEikon)
+.saved_state <- save_refinitiv_state()
+
+test_that("RDConnect uses DEFAULT_WORKSPACE_APP_KEY when no key supplied", {
+  withr::local_options(list(
+    refinitiv_base_url = "http://lh",
+    eikon_port = 9000L,
+    .RefinitivAPI = "JSON",
+    .RefinitivPyModuleName = "JSON"
+  ))
+  refinitiv_vault_clear(keys = "api_key")
+
+  result <- RDConnect()
+  expect_s3_class(result, "RefinitivConnection")
+  expect_equal(refinitiv_vault_get("api_key"), "DEFAULT_WORKSPACE_APP_KEY")
 })
 
-# Test 2: Invalid PythonModule value.
-test_that("RDConnect errors with invalid PythonModule", {
-  oldEikon <- getOption(".EikonApiKey")
-  expect_error(
-    RDConnect(application_id = "dummy_key", PythonModule = "FOO"),
-    "RDConnect parameter PythonModule can only be RD \\(python\\) or JSON \\(direct JSON message\\) but is FOO"
-  )
-  options(.EikonApiKey = oldEikon)
+test_that("RDConnect stores explicit key in vault", {
+  withr::local_options(list(
+    refinitiv_base_url = "http://lh",
+    eikon_port = 9000L,
+    .RefinitivAPI = "JSON",
+    .RefinitivPyModuleName = "JSON"
+  ))
+
+  result <- RDConnect(application_id = "custom_key_123")
+  expect_s3_class(result, "RefinitivConnection")
+  expect_equal(refinitiv_vault_get("api_key"), "custom_key_123")
 })
 
-# Test 3: When PythonModule is "JSON", it should call RefinitivJsonConnect().
-test_that("RDConnect returns RefinitivJsonConnect output when PythonModule is JSON", {
-  oldEikon <- getOption(".EikonApiKey")
-  dummy_obj <- list(dummy = "json")
-  stub(RDConnect, "RefinitivJsonConnect", function(Eikonapplication_id ) dummy_obj)
-  result <- RDConnect(application_id = "dummy_key", PythonModule = "JSON")
-  expect_equal(result, dummy_obj)
-  options(.EikonApiKey = oldEikon)
-})
+test_that("RDConnect warns when PythonModule is not JSON", {
+  withr::local_options(list(
+    refinitiv_base_url = "http://lh",
+    eikon_port = 9000L,
+    .RefinitivAPI = "JSON",
+    .RefinitivPyModuleName = "JSON"
+  ))
 
-# Test 4: When PythonModule is "RD" and CondaExists() returns FALSE, it errors.
-test_that("RDConnect errors when PythonModule is RD and CondaExists returns FALSE", {
-  oldEikon <- getOption(".EikonApiKey")
-  stub(RDConnect, "CondaExists", function() FALSE)
-  expect_error(
+  expect_warning(
     RDConnect(application_id = "dummy_key", PythonModule = "RD"),
-    "Conda/reticulate does not seem to be available please run install_eikon or change parameter PythonModule to 'JSON'"
+    "PythonModule parameter is deprecated"
   )
-  options(.EikonApiKey = oldEikon)
 })
 
-# Test 5: When PythonModule is "RD" and CondaExists() returns TRUE, it should import and return the RD object.
-test_that("RDConnect returns RD object when PythonModule is RD and CondaExists returns TRUE", {
+test_that("RDConnect still returns valid connection when PythonModule is RD", {
+  withr::local_options(list(
+    refinitiv_base_url = "http://lh",
+    eikon_port = 9000L,
+    .RefinitivAPI = "JSON",
+    .RefinitivPyModuleName = "JSON"
+  ))
 
-  oldEikon <- getOption(".EikonApiKey")
-
-  # Stub CondaExists to return TRUE.
-  stub(RDConnect, "CondaExists", function() TRUE)
-  # Stub reticulate::use_miniconda to do nothing.
-  stub(RDConnect, "reticulate::use_miniconda", function(condaenv) TRUE)
-
-  # Create a dummy RD object simulating the imported module.
-  dummy_rd <- list(
-    open_session = function() { },
-    dummy_property = "rd_object"
+  result <- suppressWarnings(
+    RDConnect(application_id = "dummy_key", PythonModule = "RD")
   )
-  # Stub reticulate::import to return dummy_rd.
-  stub(RDConnect, "reticulate::import", function(module, convert, delay_load) dummy_rd)
-  # Stub GetandSetPyModuleNameandVersion to do nothing.
-  stub(RDConnect, "GetandSetPyModuleNameandVersion", function(rd) NULL)
-
-  result <- RDConnect(application_id = "dummy_key", PythonModule = "RD")
-  expect_equal(result, dummy_rd)
-
-  options(.EikonApiKey = oldEikon)
+  expect_s3_class(result, "RefinitivConnection")
 })
+
+test_that("RDConnect updates the connection singleton", {
+  withr::local_options(list(
+    refinitiv_base_url = "http://lh",
+    eikon_port = 9000L,
+    .RefinitivAPI = "JSON",
+    .RefinitivPyModuleName = "JSON"
+  ))
+
+  rd_conn <- RDConnect()
+  expect_identical(rd_connection(), rd_conn)
+})
+
+
+restore_refinitiv_state(.saved_state, "test-RDConnect")

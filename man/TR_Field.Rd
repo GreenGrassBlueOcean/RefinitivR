@@ -27,8 +27,10 @@ a list of list which can be used as import for
 Helper function to build the Eikonformulas parameter for the EikonGetData function.
 }
 \examples{
-TR_Field(Field_name = 'tr.revenue')
-TR_Field(Field_name ='tr.open', sort_dir ='asc', sort_priority = 1)
-TR_Field(Field_name ='TR.GrossProfit', Parameters = list('Scale' = 6, 'Curn'= 'EUR')
-        , sort_dir = 'asc', sort_priority = 0)
+TR_Field(Field_name = "tr.revenue")
+TR_Field(Field_name = "tr.open", sort_dir = "asc", sort_priority = 1)
+TR_Field(
+  Field_name = "TR.GrossProfit", Parameters = list("Scale" = 6, "Curn" = "EUR"),
+  sort_dir = "asc", sort_priority = 0
+)
 }

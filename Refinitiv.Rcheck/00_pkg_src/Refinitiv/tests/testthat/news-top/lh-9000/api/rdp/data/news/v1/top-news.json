@@ -1,0 +1,365 @@
+{
+    "data": [
+        {
+            "name": "Main",
+            "pages": [
+                {
+                    "name": "Front Page",
+                    "revisionId": 962855,
+                    "revisionDate": "2026-02-26T20:17:08.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20020923:SPDOC_119827232002"
+                },
+                {
+                    "name": "Central Banks & Global Economy",
+                    "revisionId": 274643,
+                    "revisionDate": "2026-02-26T20:01:15.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20080317:SPDOC_1727041720081"
+                },
+                {
+                    "name": "Sustainable Finance",
+                    "revisionId": 57228,
+                    "revisionDate": "2026-02-26T19:16:37.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20201006:SPDOC_1174320062020"
+                },
+                {
+                    "name": "World News",
+                    "revisionId": 390847,
+                    "revisionDate": "2026-02-26T20:16:44.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20020924:SPDOC_56045242002"
+                },
+                {
+                    "name": "Regulation & Compliance News",
+                    "revisionId": 23084,
+                    "revisionDate": "2026-02-26T16:38:51.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20220405:SPDOC_1562710052022"
+                }
+            ]
+        },
+        {
+            "name": "Commentary",
+            "pages": [
+                {
+                    "name": "Reuters Breakingviews",
+                    "revisionId": 66478,
+                    "revisionDate": "2026-02-26T18:08:46.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20090126:SPDOC_1343432620091"
+                },
+                {
+                    "name": "Reuters Open Interest",
+                    "revisionId": 1799,
+                    "revisionDate": "2026-02-26T14:34:00.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20250327:SPDOC_1828250272025"
+                },
+                {
+                    "name": "FX Buzz Comment",
+                    "revisionId": 2491,
+                    "revisionDate": "2026-02-26T19:50:12.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20250327:SPDOC_1830500272025"
+                }
+            ]
+        },
+        {
+            "name": "Banking & Finance",
+            "pages": [
+                {
+                    "name": "Financial Services",
+                    "revisionId": 231171,
+                    "revisionDate": "2026-02-26T20:03:40.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20030212:SPDOC_88894122003"
+                },
+                {
+                    "name": "Investment Banking",
+                    "revisionId": 209840,
+                    "revisionDate": "2026-02-26T20:03:10.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20030324:SPDOC_46640242003"
+                },
+                {
+                    "name": "IFR",
+                    "revisionId": 103224,
+                    "revisionDate": "2026-02-26T20:08:30.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20090214:SPDOC_714091420091"
+                },
+                {
+                    "name": "Digital Finance & Crypto",
+                    "revisionId": 12027,
+                    "revisionDate": "2026-02-26T16:47:05.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20220405:SPDOC_1617850052022"
+                }
+            ]
+        },
+        {
+            "name": "Companies",
+            "pages": [
+                {
+                    "name": "U.S. Companies",
+                    "revisionId": 451862,
+                    "revisionDate": "2026-02-26T20:11:54.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20020924:SPDOC_55977242002"
+                },
+                {
+                    "name": "European Companies",
+                    "revisionId": 278514,
+                    "revisionDate": "2026-02-26T19:55:58.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20020924:SPDOC_55994242002"
+                },
+                {
+                    "name": "Asian Companies",
+                    "revisionId": 250022,
+                    "revisionDate": "2026-02-26T19:22:31.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20020924:SPDOC_56007242002"
+                }
+            ]
+        },
+        {
+            "name": "Markets",
+            "pages": [
+                {
+                    "name": "Global Markets",
+                    "revisionId": 181170,
+                    "revisionDate": "2026-02-26T19:57:04.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20171024:SPDOC_1420030242017"
+                },
+                {
+                    "name": "Foreign Exchange",
+                    "revisionId": 195763,
+                    "revisionDate": "2026-02-26T19:42:54.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20030127:SPDOC_101094272003"
+                },
+                {
+                    "name": "Fixed Income",
+                    "revisionId": 157187,
+                    "revisionDate": "2026-02-26T19:52:54.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20030127:SPDOC_99618272003"
+                },
+                {
+                    "name": "Emerging Markets",
+                    "revisionId": 178507,
+                    "revisionDate": "2026-02-26T16:47:04.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20030915:SPDOC_39030152003"
+                },
+                {
+                    "name": "IFR",
+                    "revisionId": 103224,
+                    "revisionDate": "2026-02-26T20:08:30.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20090214:SPDOC_714091420091"
+                }
+            ]
+        },
+        {
+            "name": "Commodities",
+            "pages": [
+                {
+                    "name": "Commodities",
+                    "revisionId": 208345,
+                    "revisionDate": "2026-02-26T19:50:38.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20060119:SPDOC_28769192006"
+                },
+                {
+                    "name": "Energy",
+                    "revisionId": 208874,
+                    "revisionDate": "2026-02-26T19:50:41.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20110214:SPDOC_1568591420111"
+                },
+                {
+                    "name": "Metals",
+                    "revisionId": 145347,
+                    "revisionDate": "2026-02-26T19:47:06.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20110214:SPDOC_1568781420111"
+                },
+                {
+                    "name": "Agricultural Commodities",
+                    "revisionId": 157870,
+                    "revisionDate": "2026-02-26T19:47:04.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20110214:SPDOC_1568921420111"
+                },
+                {
+                    "name": "Global Gas, Power & LNG",
+                    "revisionId": 119828,
+                    "revisionDate": "2026-02-26T20:04:49.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20110214:SPDOC_1569211420111"
+                }
+            ]
+        },
+        {
+            "name": "Industries",
+            "pages": [
+                {
+                    "name": "Technology, Media & Telecoms",
+                    "revisionId": 207526,
+                    "revisionDate": "2026-02-26T20:05:12.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20060725:SPDOC_304469252006"
+                },
+                {
+                    "name": "Heavy Industry & Transport",
+                    "revisionId": 40124,
+                    "revisionDate": "2026-02-26T19:45:53.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20220405:SPDOC_1661500052022"
+                },
+                {
+                    "name": "Consumer & Retail",
+                    "revisionId": 247455,
+                    "revisionDate": "2026-02-26T19:55:35.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20030314:SPDOC_75442142003"
+                },
+                {
+                    "name": "Healthcare & Pharma",
+                    "revisionId": 164178,
+                    "revisionDate": "2026-02-26T19:54:30.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20030314:SPDOC_75426142003"
+                }
+            ]
+        },
+        {
+            "name": "Regional",
+            "pages": [
+                {
+                    "name": "Australia & New Zealand",
+                    "revisionId": 83460,
+                    "revisionDate": "2026-02-26T18:30:05.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20150107:SPDOC_2847160072015"
+                },
+                {
+                    "name": "Japan & the Koreas",
+                    "revisionId": 30834,
+                    "revisionDate": "2026-02-26T16:51:07.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20220405:SPDOC_1629240052022"
+                },
+                {
+                    "name": "Greater China",
+                    "revisionId": 39425,
+                    "revisionDate": "2026-02-26T19:46:35.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20220405:SPDOC_1623890052022"
+                },
+                {
+                    "name": "Southeast Asia",
+                    "revisionId": 21706,
+                    "revisionDate": "2026-02-26T16:51:18.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20220405:SPDOC_1641950052022"
+                },
+                {
+                    "name": "India & South Asia",
+                    "revisionId": 36449,
+                    "revisionDate": "2026-02-26T19:29:33.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20220405:SPDOC_1636380052022"
+                },
+                {
+                    "name": "Middle East & Africa",
+                    "revisionId": 69434,
+                    "revisionDate": "2026-02-26T20:17:13.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20201006:SPDOC_1158250062020"
+                },
+                {
+                    "name": "Europe & Russia",
+                    "revisionId": 65893,
+                    "revisionDate": "2026-02-26T19:25:57.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20220405:SPDOC_1655540052022"
+                },
+                {
+                    "name": "United Kingdom",
+                    "revisionId": 33921,
+                    "revisionDate": "2026-02-26T19:53:52.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20220405:SPDOC_1648750052022"
+                },
+                {
+                    "name": "Latin America",
+                    "revisionId": 118749,
+                    "revisionDate": "2026-02-26T20:15:13.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20080903:SPDOC_1319880320081"
+                },
+                {
+                    "name": "United States",
+                    "revisionId": 126898,
+                    "revisionDate": "2026-02-26T20:15:59.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20201006:SPDOC_1164560062020"
+                },
+                {
+                    "name": "Canada",
+                    "revisionId": 118074,
+                    "revisionDate": "2026-02-26T20:08:33.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20081001:SPDOC_1321850120081"
+                }
+            ]
+        },
+        {
+            "name": "National Languages",
+            "pages": [
+                {
+                    "name": "日本語トップニュース",
+                    "revisionId": 37141,
+                    "revisionDate": "2026-02-26T19:27:24.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20090527:SPDOC_1323242720091"
+                },
+                {
+                    "name": "路透中文新闻",
+                    "revisionId": 83215,
+                    "revisionDate": "2026-02-26T11:16:02.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20100623:SPDOC_1331612320101"
+                },
+                {
+                    "name": "Deutschland",
+                    "revisionId": 120473,
+                    "revisionDate": "2026-02-26T17:03:34.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20081209:SPDOC_995840920081"
+                },
+                {
+                    "name": "L’essentiel de l'actualité",
+                    "revisionId": 65644,
+                    "revisionDate": "2026-02-26T17:42:01.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20110405:SPDOC_1577840520111"
+                },
+                {
+                    "name": "Brasil",
+                    "revisionId": 9222,
+                    "revisionDate": "2026-02-26T19:21:22.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20110719:SPDOC_1248091920111"
+                },
+                {
+                    "name": "Россия",
+                    "revisionId": 33677,
+                    "revisionDate": "2026-02-26T15:56:23.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20140414:SPDOC_1437490142014"
+                }
+            ]
+        },
+        {
+            "name": "Sports & Lifestyle",
+            "pages": [
+                {
+                    "name": "Sports",
+                    "revisionId": 141983,
+                    "revisionDate": "2026-02-26T19:54:41.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20020927:SPDOC_66767272002"
+                },
+                {
+                    "name": "Lifestyle & Entertainment",
+                    "revisionId": 99694,
+                    "revisionDate": "2026-02-26T19:28:17.000Z",
+                    "topNewsId": "urn:newsml:reuters.com:20070301:SPDOC_1688530120071"
+                }
+            ]
+        },
+        {
+            "name": "AWP Top News",
+            "pages": [
+                {
+                    "name": "AWP German Top News",
+                    "revisionId": 87608,
+                    "revisionDate": "2026-02-26T20:12:15.000Z",
+                    "topNewsId": "urn:newsml:refinitiv.com:20200301:AWP_TN_DOC_2020030101"
+                },
+                {
+                    "name": "AWP French Top News",
+                    "revisionId": 87608,
+                    "revisionDate": "2026-02-26T20:12:15.000Z",
+                    "topNewsId": "urn:newsml:refinitiv.com:20200301:AWP_TN_DOC_2020030102"
+                }
+            ]
+        }
+    ],
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

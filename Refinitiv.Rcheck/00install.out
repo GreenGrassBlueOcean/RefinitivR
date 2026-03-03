@@ -1,0 +1,20 @@
+Custom temp directory for this session: C:\Users\LAUREN~1\AppData\Local\Temp\Rtmp8KCl9H\sessiontemp_1f7c737dbde
+* installing *source* package 'Refinitiv' ...
+** this is package 'Refinitiv' version '0.2.0'
+** using staged installation
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Custom temp directory for this session: C:\Users\LAUREN~1\AppData\Local\Temp\RtmpUBW6BZ\sessiontemp_5b787b1f245e
+** help
+*** installing help indices
+** building package indices
+Custom temp directory for this session: C:\Users\LAUREN~1\AppData\Local\Temp\Rtmp2jFTBJ\sessiontemp_bac82c9c7aa5
+** testing if installed package can be loaded from temporary location
+Custom temp directory for this session: C:\Users\LAUREN~1\AppData\Local\Temp\Rtmp0C2Q2m\sessiontemp_b5e4159e56f6
+** testing if installed package can be loaded from final location
+Custom temp directory for this session: C:\Users\LAUREN~1\AppData\Local\Temp\RtmpYTIiUF\sessiontemp_6a205ccd7d69
+** testing if installed package keeps a record of temporary installation path
+* DONE (Refinitiv)

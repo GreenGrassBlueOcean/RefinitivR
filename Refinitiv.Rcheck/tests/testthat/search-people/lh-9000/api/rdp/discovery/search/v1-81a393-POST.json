@@ -1,0 +1,35 @@
+{
+    "Total": 499003,
+    "Hits": [
+        {
+            "BusinessEntity": "PERSON",
+            "DocumentTitle": "Brad Lee Smith - Microsoft Corp - President and Vice Chair",
+            "PermID": "34413265314",
+            "PI": "34413265314"
+        },
+        {
+            "BusinessEntity": "PERSON",
+            "DocumentTitle": "Amy E. Hood - Microsoft Corp - Chief Financial Officer, Executive Vice President",
+            "PermID": "34415553383",
+            "PI": "34415553383"
+        },
+        {
+            "BusinessEntity": "PERSON",
+            "DocumentTitle": "Christopher C. Capossela - Microsoft Corp - Chief Marketing Officer, Executive Vice President - Marketing and Consumer Business",
+            "PermID": "34417829628",
+            "PI": "34417829628"
+        },
+        {
+            "BusinessEntity": "PERSON",
+            "DocumentTitle": "Kathleen T. Hogan - Microsoft Corp - Executive Vice President - Human Resources",
+            "PermID": "34418294103",
+            "PI": "34418294103"
+        },
+        {
+            "BusinessEntity": "PERSON",
+            "DocumentTitle": "Judson Althoff - Microsoft Corp - Executive Vice President, Chief Commercial Officer",
+            "PermID": "34425586783",
+            "PI": "34425586783"
+        }
+    ]
+}

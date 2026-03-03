@@ -1,0 +1,16 @@
+{
+    "mappedSymbols": [
+        {
+            "bestMatch": {
+                "ISIN": "US0378331005"
+            },
+            "symbol": "AAPL.O"
+        },
+        {
+            "bestMatch": {
+                "error": "No best match available"
+            },
+            "symbol": "MSFT"
+        }
+    ]
+}

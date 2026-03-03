@@ -4,50 +4,37 @@
 .pkgglobalenv <- new.env(parent = emptyenv())
 
 .onLoad <- function(libname, pkgname) {
-  # reticulate::configure_environment(pkgname) # Uncomment if needed
-
-  # Set reticulate options
-  if (is.null(getOption("reticulate.long_as_bit64"))) {
-    options(reticulate.long_as_bit64 = TRUE)
-  }
-
-  if (is.null(getOption("reticulate.ulong_as_bit64"))) {
-    options(reticulate.ulong_as_bit64 = TRUE)
-  }
-
-  # Set Refinitiv-related options with a unique prefix to avoid conflicts
+  # Default options — resolution order: existing option > env var > default.
+  # Setting REFINITIV_PORT / REFINITIV_BASE_URL in .Renviron skips
+  # terminal auto-detection entirely (CheckTerminalType short-circuits
+  # when eikon_port is non-NULL).
   if (is.null(getOption("refinitiv_base_url"))) {
-    options(refinitiv_base_url = 'http://localhost')
+    env_url <- Sys.getenv("REFINITIV_BASE_URL", "http://localhost")
+    options(refinitiv_base_url = env_url)
   }
 
-  if (is.null(getOption("eikon_port"))) { # Renamed for clarity
-    options(eikon_port  = NULL) # 9060L for Eikon, 9000L for Workstation
-  }
-
-  if (is.null(getOption("eikon_api"))) { # Renamed for clarity
-    options(eikon_api = '/api/udf/') # Old: '/api/v1/data'
-  }
-
-  if (is.null(getOption("rdp_api"))) { # Renamed for clarity
-    options(rdp_api = '/api/rdp/')
-  }
-
-  if (is.null(getOption("rdp_port"))) { # Renamed for clarity
-    options(rdp_port = 9000L)
-  }
-
-  if (is.null(getOption("streaming_port"))) { # Port for streaming WebSocket connections
-    # Default to eikon_port if available, otherwise rdp_port, otherwise 9060
-    eikon_port <- getOption("eikon_port")
-    if (!is.null(eikon_port)) {
-      options(streaming_port = eikon_port)
-    } else {
-      options(streaming_port = getOption("rdp_port", 9060L))
+  if (is.null(getOption("eikon_port"))) {
+    env_port <- Sys.getenv("REFINITIV_PORT", "")
+    if (nzchar(env_port)) {
+      options(eikon_port = as.integer(env_port))
     }
   }
 
+  if (is.null(getOption("eikon_api"))) {
+    options(eikon_api = "/api/udf/")
+  }
+
+  if (is.null(getOption("rdp_api"))) {
+    options(rdp_api = "/api/rdp/")
+  }
+
+  if (is.null(getOption("streaming_port"))) {
+    eikon_port <- getOption("eikon_port")
+    options(streaming_port = if (!is.null(eikon_port)) eikon_port else 9000L)
+  }
+
   if (is.null(getOption("HistoricalPricingFields"))) {
-    options(HistoricalPricingFields  = c(
+    options(HistoricalPricingFields = c(
       "HIGH_1", "LOW_1", "OPEN_PRC", "TRDPRC_1",
       "NUM_MOVES", "ACVOL_UNS", "HIGH_YLD", "LOW_YLD",
       "OPEN_YLD", "YIELD", "BID_HIGH_1", "BID_LOW_1",
@@ -58,5 +45,29 @@
       "TRD_STATUS", "SALTIM", "NAVALUE"
     ))
   }
-}
 
+  # === C3 Secure Credential Vault — backward-compatibility migration ===
+  # Resolution order: existing option (.EikonApiKey) > env var > nothing.
+  # If the user has .EikonApiKey in .Rprofile / options(), migrate it into
+  # the vault so internal code finds it there.  The write-through in
+  # refinitiv_vault_set() keeps the option in sync for external callers.
+  legacy_key <- getOption(".EikonApiKey")
+  if (!is.null(legacy_key) && !refinitiv_vault_has("api_key")) {
+    refinitiv_vault_set("api_key", legacy_key)
+  }
+  # Also check REFINITIV_APP_KEY env var (e.g., in .Renviron)
+  if (!refinitiv_vault_has("api_key")) {
+    env_key <- Sys.getenv("REFINITIV_APP_KEY", "")
+    if (nzchar(env_key)) {
+      refinitiv_vault_set("api_key", env_key)
+    }
+  }
+
+  # Clear any stale token options from previous sessions / older package
+  # versions.  Tokens now live exclusively in the vault.
+  options(
+    refinitiv_access_token = NULL,
+    refinitiv_token_expiration = NULL,
+    refinitiv_token_type = NULL
+  )
+}

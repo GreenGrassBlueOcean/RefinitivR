@@ -1,0 +1,38 @@
+{
+    "Total": 4375,
+    "Hits": [
+        {
+            "BusinessEntity": "ORGANISATION",
+            "DocumentTitle": "Apple Inc, Public Company",
+            "PI": "41815"
+        },
+        {
+            "BusinessEntity": "QUOTExEQUITY",
+            "DocumentTitle": "Apple Inc, Ordinary Share, NASDAQ Global Select Consolidated",
+            "PermID": "55838974642",
+            "PI": "732611",
+            "RIC": "AAPL.O"
+        },
+        {
+            "BusinessEntity": "QUOTExEQUITY",
+            "DocumentTitle": "OPRA Apple Equity Option 260 Put Mar 2026 , Equity Cash Option, Put 260 USD 06-Mar-2026, OPRA",
+            "PermID": "22154409446",
+            "PI": "985768408",
+            "RIC": "AAPLO062626000.U"
+        },
+        {
+            "BusinessEntity": "QUOTExEQUITY",
+            "DocumentTitle": "OPRA Apple Equity Option 260 Call Mar 2026 , Equity Cash Option, Call 260 USD 06-Mar-2026, OPRA",
+            "PermID": "22154409900",
+            "PI": "985769152",
+            "RIC": "AAPLC062626000.U"
+        },
+        {
+            "BusinessEntity": "QUOTExEQUITY",
+            "DocumentTitle": "OPRA Apple Equity Option 270 Call Mar 2026 , Equity Cash Option, Call 270 USD 06-Mar-2026, OPRA",
+            "PermID": "22154402643",
+            "PI": "985760700",
+            "RIC": "AAPLC062627000.U"
+        }
+    ]
+}

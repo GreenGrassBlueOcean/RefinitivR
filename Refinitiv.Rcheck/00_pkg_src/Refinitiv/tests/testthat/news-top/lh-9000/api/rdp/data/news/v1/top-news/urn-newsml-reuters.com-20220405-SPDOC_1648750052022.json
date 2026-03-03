@@ -1,0 +1,381 @@
+{
+    "_metadata": {
+        "outdated": false
+    },
+    "data": [
+        {
+            "text": "UK government agrees framework on publishing Mandelson vetting documents",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "Britain's government has agreed a framework with the police on which documents relating to the late 2024 appointment of former ambassador to the United States Peter Mandelson can be released, the committee in charge of the disclosures said on Thursday.",
+            "image": {
+                "byLine": "Toby Melville",
+                "text": "Former British ambassador to the U.S. Peter Mandelson leaves his residence after he was released following his arrest by London police on Monday on suspicion of misconduct in public office, following the release of U.S. Justice Department files linked to the late financier and convicted sex offender Jeffrey Epstein, in London, Britain, February 26, 2026. ",
+                "id": "2026-02-26T182404Z_1_JC3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T17:50:00.000Z",
+            "versionCreated": "2026-02-26T19:11:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM175",
+            "relatedHeadlines": [
+                {
+                    "text": "UK government to disclose former Prince Andrew's vetting files for trade role",
+                    "versionCreated": "2026-02-24T16:46:00.000Z",
+                    "dateLine": "LONDON, Feb 24 (Reuters)",
+                    "snippet": "British Prime Minister Keir Starmer's government agreed on Tuesday to release documents relating to the appointment of Andrew Mountbatten-Windsor as a trade envoy amid widening scrutiny over his ties to U.S. sex offender Jeffrey Epstein.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL4N3ZK0T9"
+                },
+                {
+                    "text": "Former UK ambassador Mandelson released after arrest over Epstein revelations",
+                    "versionCreated": "2026-02-23T17:05:00.000Z",
+                    "dateLine": "LONDON, Feb 23 (Reuters)",
+                    "snippet": "Former British ambassador to the U.S. Peter Mandelson was released from police custody on Tuesday after being arrested in London on suspicion of misconduct in public office, following revelations over his ties to Jeffrey Epstein.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL8N3ZJ1UJ"
+                }
+            ]
+        },
+        {
+            "text": "LSEG investors welcome $4.1 billion buyback, eye more share-boosting moves",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "London Stock Exchange Group investors are eyeing the potential for more share-boosting moves from the company after welcoming its plan to launch a 3 billion pound ($4.1 billion) share buyback, amid pressure from activist investor Elliott Management.",
+            "image": {
+                "byLine": "Toby Melville",
+                "text": "Branding is seen inside the LSEG (London Stock Exchange Group) headquarters in Paternoster Square, London, Britain, April 25, 2025. ",
+                "id": "2026-02-25T202646Z_1_HI2_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T07:02:00.000Z",
+            "versionCreated": "2026-02-26T19:35:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0F1",
+            "relatedHeadlines": [
+                {
+                    "text": "BREAKINGVIEWS-LSEG's Elliott-lite playbook may just be enough",
+                    "versionCreated": "2026-02-26T13:20:00.000Z",
+                    "dateLine": "LONDON, Feb 26 (Reuters Breakingviews)",
+                    "snippet": "London Stock Exchange Group is borrowing from the activist investor playbook, but only to a limited extent. The $57 billion data-to-exchange group on Thursday announced a share buyback alongside new revenue growth and EBITDA margin targets. The moves reinforce the case that artificial intelligence won’t kill the group, and should also go some way to pleasing pushy investor Elliott Management. But LSEG boss David Schwimmer will need to show he can keep reviving the depressed stock. Schwimmer is doubly under pressure. Before Thursday, LSEG's shares had fallen nearly 30% in a year, amid fears that AI groups like Anthropic could replace or undercut financial data companies. And Elliott, known for sometimes hostile activist campaigns, popped up with a shareholding, raising expectations of a large share buyback, cost cuts and asset sales. LSEG is the largest customer of Breakingviews' owner Reuters, which provides news for the Workspace terminal and other products. While Elliott has not publicly articulated its demands, Schwimmer’s moves only go some way to meeting those that have been reported. LSEG's new 3-billion-pound share buyback is twice analysts' expectations, but trails the 5 billion pounds possible target that Elliott might have wanted, as suggested by a Reuters report. And Schwimmer seems opposed to radically changing the LSEG structure, which includes business from clearing, indexes, post-trade services as well as bourses.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0TV"
+                },
+                {
+                    "text": "London Stock Exchange to host first transaction under new private share platform",
+                    "versionCreated": "2026-02-20T15:10:00.000Z",
+                    "dateLine": "Feb 20 (Reuters)",
+                    "snippet": "The London Stock Exchange's new Private Securities Market is set to host its first deal in the coming weeks, its CEO said on Friday, in what will be the first transaction to take place under the UK financial regulator's new PISCES framework.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL4N3ZG0TK"
+                },
+                {
+                    "text": "LSEG to build blockchain-friendly digital settlement platform",
+                    "versionCreated": "2026-02-12T12:57:00.000Z",
+                    "dateLine": "Feb 12 (Reuters)",
+                    "snippet": "LSEG said on Thursday it plans to build an on-chain settlement service for institutional investors called the LSEG Digital Securities Depository, which will connect traditional and digital securities markets.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260212:nL6N3Z80V0"
+                }
+            ]
+        },
+        {
+            "text": "UK business and professional services sentiment highest since August 2024, CBI says",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "Sentiment in Britain's business and professional services sector became markedly less negative in the current quarter, ending more than a year of declines, but consumer-facing businesses remain downbeat, a survey showed on Thursday.",
+            "image": {
+                "byLine": "Toby Melville",
+                "text": "People look out from a rooftop garden in the City of London business district with skyscrapers of Canary Wharf commercial district seen behind, in London, Britain, November 21, 2025. ",
+                "id": "2026-02-26T075422Z_1_TV6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T07:45:00.000Z",
+            "versionCreated": "2026-02-26T07:45:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZL18K",
+            "relatedHeadlines": [
+                {
+                    "text": "Number of UK young people not in work or education nears 1 million",
+                    "versionCreated": "2026-02-26T10:45:00.000Z",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "snippet": "Nearly 1 million Britons aged 16-24 were not in employment, education or training at the end of last year, the second-highest level in more than a decade, according to official data released on Thursday.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM13H"
+                },
+                {
+                    "text": "Wet weather keeps UK shoppers at home, CBI survey says",
+                    "versionCreated": "2026-02-24T11:00:00.000Z",
+                    "dateLine": "LONDON, Feb 24 (Reuters)",
+                    "snippet": "British retail sales fell sharply in February, which stores partly blamed on unusually persistent wet weather that encouraged shoppers to spend online instead, the Confederation of British Industry said on Tuesday.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nS8N39R03N"
+                }
+            ]
+        },
+        {
+            "text": "Shell reviewing some of its Ventures portfolio with option to sell, sources say",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "Shell has put under review with the option to sell investments it holds in some of the companies under its Shell Ventures portfolio, two sources familiar with the matter said.",
+            "image": {
+                "byLine": "May James",
+                "text": "A view shows a logo of Shell petrol station in South East London, Britain, February 2, 2023. ",
+                "id": "2026-02-26T125950Z_1_IH3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T12:03:00.000Z",
+            "versionCreated": "2026-02-26T16:38:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0SW",
+            "relatedHeadlines": [
+                {
+                    "text": "UK's Drax shares hit 20-year high as power firm beats profit estimates",
+                    "versionCreated": "2026-02-26T07:48:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "British power company Drax beat annual profit expectations and raised its dividend on Thursday, driven by strong pellet output in North America and record renewable generation, lifting shares to a near two-decade high.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0KE"
+                },
+                {
+                    "text": "Britain secures record amount of solar in renewable power auction",
+                    "versionCreated": "2026-02-10T07:40:00.000Z",
+                    "dateLine": "LONDON, Feb 10 (Reuters)",
+                    "snippet": "Britain secured a record amount of solar power in an auction offering guaranteed electricity price contracts to renewable projects, the government said on Tuesday, as it seeks to meet its clean energy targets and drive down costs.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260210:nL1N3Z606U"
+                }
+            ]
+        },
+        {
+            "text": "UK's Rolls-Royce soars on aero-engines and data centres",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "Rolls-Royce promised further strong growth after its profit jumped 40% last year driven by a robust performance in airline engines and new data centre business, enabling it to lift returns and send its stock to record highs.",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": " Rolls Royce logo is seen in this illustration taken July 26, 2025. ",
+                "id": "2026-02-26T070715Z_1_WL7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T07:55:00.000Z",
+            "versionCreated": "2026-02-26T09:52:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0HZ",
+            "relatedHeadlines": [
+                {
+                    "text": "Rolls-Royce talking to multiple parties over narrow body partnership, CEO says",
+                    "versionCreated": "2026-02-26T08:16:00.000Z",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "snippet": "Rolls-Royce is talking to multiple parties with the aim of forming a partnership to enable it to re-enter the market supplying engines to narrow-body airplanes, its chief executive said on Thursday.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nS8N3X103M"
+                },
+                {
+                    "text": "Rolls-Royce to return as much as $2 billion to shareholders in buyback, Sky News reports",
+                    "versionCreated": "2026-02-22T18:36:00.000Z",
+                    "dateLine": "Feb 22 (Reuters)",
+                    "snippet": "Rolls-Royce Holdings is expected to announce alongside its annual results this week that it will launch a fresh share buyback worth as much as 1.5 billion pounds ($2 billion), Sky News reported on Sunday.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260222:nL1N3ZI04A"
+                }
+            ]
+        },
+        {
+            "text": "UK's FTSE 100 finishes at record high on Rolls-Royce, LSEG boost",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Britain's FTSE 100 hit a record high on Thursday, supported by a rally in shares in Rolls-Royce after its forecast upgrade and in LSEG after its share buyback.",
+            "image": {
+                "byLine": "Suzanne Plunkett",
+                "text": "A man walks through the lobby of the London Stock Exchange in London, Britain August 25, 2015.",
+                "id": "2026-02-26T120640Z_1_HG2_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T11:05:00.000Z",
+            "versionCreated": "2026-02-26T17:11:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM113",
+            "relatedHeadlines": [
+                {
+                    "text": "Sterling slips before key Manchester vote; rate outlook under scrutiny",
+                    "versionCreated": "2026-02-26T11:48:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "The British pound edged lower on Thursday ahead of a local election in Manchester that could offer an early read on Prime Minister Keir Starmer's political standing.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0JU"
+                },
+                {
+                    "text": "UK 5-year gilt yields fall to lowest since September 2024",
+                    "versionCreated": "2026-02-26T14:40:00.000Z",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "snippet": "British medium- and long-dated government bond yields fell on Thursday, outperforming U.S. and euro zone government debt ahead of the release next week of 2026/27 debt issuance plans.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nS8N3YL05N"
+                }
+            ]
+        },
+        {
+            "text": "WPP's new CEO simplifies ad group to save 500 million pounds by 2028",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "WPP will combine its agencies into a single integrated company under new CEO Cindy Rose's turnaround plan, targeting a return to growth in 2027 and 500 million pounds ($676 million) of annual cost savings by the following year.",
+            "image": {
+                "byLine": "Toby Melville",
+                "text": "Branding signage for WPP, the largest global advertising and public relations agency at their offices in London, Britain, July 17, 2019. ",
+                "id": "2026-02-26T074242Z_1_UA6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T07:00:00.000Z",
+            "versionCreated": "2026-02-26T10:40:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0IC",
+            "relatedHeadlines": [
+                {
+                    "text": "WPP to revamp creative structure under new CEO, FT reports",
+                    "versionCreated": "2026-02-09T05:33:00.000Z",
+                    "dateLine": "LONDON, Feb 9 (Reuters)",
+                    "snippet": "Britain's WPP is preparing to bring its three main creative advertising agencies under one banner, the Financial Times reported on Monday, as its new chief executive battles to turn around the business at a time of huge AI disruption. The advertising group will set up a new holding structure called \"WPP Creative\", the report said, citing three people familiar with the plans. The restructure would be one of the first major moves by Cindy Rose, who became CEO in September. A former Microsoft executive, Rose promised to \"dramatically\" simplify the group, aiming to win back business from clients like Mars and Coca-Cola North America, after it lost contracts last year, sending its shares to 28-year lows.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260209:nL4N3Z50DU"
+                }
+            ]
+        },
+        {
+            "text": "UK's Ocado targets cash flow positive milestone this year",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "Ocado, the British technology and online grocery group, said on Thursday it would hit the key milestone of becoming cash flow positive in the second half of 2026, helped by a focus on cutting costs.",
+            "image": {
+                "byLine": "PAUL CHILDS",
+                "text": "A robotic picking machine is seen inside the Ocado warehouse in Erith, London, Britain, October 13, 2021.",
+                "id": "2026-02-26T153527Z_1_HG2_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T07:09:00.000Z",
+            "versionCreated": "2026-02-26T09:19:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0I5",
+            "relatedHeadlines": [
+                {
+                    "text": "UK's Ocado to cut 1,000 jobs in cost saving drive",
+                    "versionCreated": "2026-02-26T07:56:00.000Z",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "snippet": "Ocado, the British technology and online grocery group, plans to cut about 1,000 jobs as it targets savings of 150 million pounds ($203 million) in technology and support costs, its boss said on Thursday.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nS8N3Y6031"
+                }
+            ]
+        },
+        {
+            "text": "HSBC kicks off Singapore insurance business sale, eyes over $1 billion value, sources say",
+            "dateLine": "HONG KONG, Feb 26 (Reuters)",
+            "snippet": "HSBC has started the sale process for its Singapore life insurance product manufacturing business with the hiring of an adviser, and is hoping for the deal to be valued at more than $1 billion, said three sources with knowledge of the matter.",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "HSBC Bank logo is seen in this illustration taken March 12, 2023. ",
+                "id": "2026-02-26T041609Z_1_NE4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T04:00:00.000Z",
+            "versionCreated": "2026-02-26T08:07:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM04H",
+            "relatedHeadlines": [
+                {
+                    "text": "UK space investment company Seraphim raises more than $100 mln for new fund",
+                    "versionCreated": "2026-02-26T00:01:00.000Z",
+                    "dateLine": "BRUSSELS, Feb 26 (Reuters)",
+                    "snippet": "British space technology investment company Seraphim has raised more than $100 million for its latest venture fund, it said on Thursday, highlighting the sector's growth which has been driven by increasing defence spending around the world.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nP6N3W4026"
+                },
+                {
+                    "text": "UK's Jupiter Fund launches buyback, special dividend after $1.8 billion inflows",
+                    "versionCreated": "2026-02-26T07:30:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "Britain's Jupiter Fund Management posted 1.3 billion pounds ($1.76 billion) in net inflows for 2025 on Thursday, citing growing demand for risk assets, as it launched a 30 million pounds ($40.7 million) share buyback and a special dividend.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZK0F7"
+                }
+            ]
+        },
+        {
+            "text": "Hikma Pharma shares plunge to over three-year low on weak outlook",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "British generic drugmaker Hikma Pharmaceuticals forecast slower annual revenue growth and profit on Thursday, falling short of expectations because of challenges in its injectables business, sending shares down 15% to more than three-year lows.",
+            "image": {
+                "byLine": "Ali Jarekji",
+                "text": "Pharmacists in Jordan-based Hikma Pharmaceuticals package generic versions of Ciprofloxacin hydrochloride 750 mg which will be exported to the U.S. and Western markets in Amman February 8, 2011. ",
+                "id": "2026-02-26T094035Z_1_AW0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T07:18:00.000Z",
+            "versionCreated": "2026-02-26T13:58:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0G5",
+            "relatedHeadlines": [
+                {
+                    "text": "GSK to buy 35Pharma for $950 million in CEO Miel's second major deal",
+                    "versionCreated": "2026-02-25T07:27:00.000Z",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "snippet": "GSK has agreed to pay $950 million in cash for Canadian biotech 35Pharma, it said on Wednesday, marking the second major deal new CEO Luke Miels has struck to accelerate development of new medicines at the British drugmaker.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZL0H0"
+                }
+            ]
+        },
+        {
+            "text": "Instagram to alert parents on teen suicide searches as UK weighs social media ban",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "Instagram said it would notify parents if their teenager repeatedly searches for terms related to suicide or self-harm within a short period, as pressure grows for governments to follow Australia's ban on the use of social media for under 16s.",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "Instagram app icon is seen on a smartphone in this illustration taken October 27, 2025. ",
+                "id": "2026-02-26T120641Z_1_KE3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T12:00:00.000Z",
+            "versionCreated": "2026-02-26T11:59:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM15N",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "text": "UK's Serious Fraud Office appoints interim boss",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "Britain's Serious Fraud Office said on Thursday that Graham McNulty would take over in early April as interim director to lead the investigator and prosecutor.",
+            "firstCreated": "2026-02-26T16:22:00.000Z",
+            "versionCreated": "2026-02-26T19:26:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM1AA",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "text": "UK visa issuance continues to fall, down 19% in 2025, government data shows",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "The number of work visas issued by Britain in the year to December 2025 fell by 19% from the previous year, government data showed on Thursday, reflecting the ongoing impact of tighter visa rules.",
+            "firstCreated": "2026-02-26T10:36:00.000Z",
+            "versionCreated": "2026-02-26T10:36:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0ZI",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "text": "Prince Harry trial judge says key witness can give evidence by videolink",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "A witness whose testimony could decide the outcome of a privacy lawsuit brought by Prince Harry and other high-profile figures against the Daily Mail's publisher will be allowed to give evidence remotely, the judge hearing the case ruled on Thursday.",
+            "image": {
+                "byLine": "Toby Melville",
+                "text": "Britain's Prince Harry arrives during the first week of a nine-week trial lawsuit against Associated Newspapers, publisher of the Daily Mail, which Britain's Prince Harry and others are suing over allegations of privacy breaches dating back 30 years, at the High Court in London, Britain, January 20, 2026.",
+                "id": "2026-02-26T153527Z_1_DN1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T13:50:00.000Z",
+            "versionCreated": "2026-02-26T13:50:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM1MC",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "text": "English Premier League to debut streaming service in Singapore, FT reports",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "The world’s most popular club football competition, the English Premier League, is set to launch its own direct-to-consumer streaming service in Singapore this year, with plans for potential expansion to other countries, the Financial Times reported on Thursday. ",
+            "image": {
+                "byLine": "DAVID KLEIN",
+                "text": "Microphone showing an image of the premier league logo during the Premier League match between Watford and Tottenham Hotspur, Vicarage Road, Watford, Britain, January 1, 2022. ",
+                "id": "2026-02-26T191632Z_1_DH1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T18:33:00.000Z",
+            "versionCreated": "2026-02-26T19:52:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM16U",
+            "relatedHeadlines": [
+
+            ]
+        }
+    ],
+    "meta": {
+        "revisionId": 33921,
+        "revisionDate": "2026-02-26T19:53:52.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

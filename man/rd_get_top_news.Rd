@@ -5,11 +5,12 @@
 \title{Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection, Then Fetch Stories}
 \usage{
 rd_get_top_news(
-  RDObject = RefinitivJsonConnect(),
+  RDObject = rd_connection(),
   group = NULL,
   page = NULL,
   raw_output = FALSE,
-  debug = FALSE
+  debug = FALSE,
+  cache = NULL
 )
 }
 \arguments{
@@ -23,6 +24,11 @@ defaults to \code{RefinitivJsonConnect()}.}
 \item{raw_output}{If \code{TRUE}, returns the raw JSON response (list) for each page in a named list keyed by \code{topNewsId}.}
 
 \item{debug}{If \code{TRUE}, prints debugging messages.}
+
+\item{cache}{Controls caching. \code{NULL} (default) defers to
+\code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
+function default TTL (60 s). \code{FALSE} disables caching. A positive
+numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.}
 }
 \value{
 A data frame (by default) with one row per story and the following columns:
@@ -46,51 +52,41 @@ top news groups. Each group contains one or more pages, where each page represen
 news category.
 }
 \details{
-**Overview of Top News Groups and Pages:**
+Overview of Top News Groups and Pages:
+\describe{
+  \item{Main}{Pages such as "Front Page", "Central Banks & Global Economy",
+    "Sustainable Finance", "World News", and "Regulation & Compliance".}
+  \item{Breakingviews}{Generally contains the page "Reuters Breakingviews".}
+  \item{Banking & Finance}{Pages like "Financial Services", "Investment Banking",
+    "IFR", and "Digital Finance & Crypto".}
+  \item{Markets}{Pages such as "Global Markets", "Foreign Exchange",
+    "Fixed Income", "Emerging Markets", and "IFR".}
+  \item{Commodities}{Pages like "Commodities", "Energy", "Metals",
+    "Agricultural Commodities", and "Global Gas, Power & LNG".}
+  \item{Industries}{Pages such as "Technology, Media & Telecoms",
+    "Heavy Industry & Transport", "Consumer & Retail", and "Healthcare & Pharma".}
+  \item{Companies}{Sub-groups such as "U.S. Companies", "European Companies",
+    and "Asian Companies".}
+  \item{Regional}{Pages such as "Australia & New Zealand", "Japan & the Koreas",
+    "Greater China", "Southeast Asia", "India & South Asia", "Middle East & Africa",
+    "Europe & Russia", "United Kingdom", "Latin America", "United States", and "Canada".}
+  \item{National Languages}{News in various languages including Japanese, Chinese,
+    German, French, Portuguese, and Russian top news.}
+  \item{Sports & Lifestyle}{Pages like "Sport" and "Lifestyle & Entertainment".}
+  \item{AWP Top News}{Pages such as "AWP German Top News" and "AWP French Top News".}
+}
 
-- **Main**: Typically includes pages such as "Front Page", "Central Banks & Global Economy",
-  "Sustainable Finance", "World News", and "Regulation & Compliance".
-
-- **Breakingviews**: Generally contains the page "Reuters Breakingviews".
-
-- **Banking & Finance**: Often includes pages like "Financial Services", "Investment Banking",
-  "IFR", and "Digital Finance & Crypto".
-
-- **Markets**: Usually features pages such as "Global Markets", "Foreign Exchange",
-  "Fixed Income", "Emerging Markets", and "IFR".
-
-- **Commodities**: Contains pages like "Commodities", "Energy", "Metals",
-  "Agricultural Commodities", and "Global Gas, Power & LNG".
-
-- **Industries**: Contains pages such as "Technology, Media & Telecoms",
-  "Heavy Industry & Transport", "Consumer & Retail", and "Healthcare & Pharma".
-
-- **Companies**: Typically includes sub-groups such as "U.S. Companies", "European Companies",
-  and "Asian Companies".
-
-- **Regional**: Groups news by region with pages such as "Australia & New Zealand",
-  "Japan & the Koreas", "Greater China", "Southeast Asia", "India & South Asia",
-  "Middle East & Africa", "Europe & Russia", "United Kingdom", "Latin America",
-  "United States", and "Canada".
-
-- **National Languages**: Offers news in various languages with pages such as
-  "日本語トップニュース", "路透中文新闻", "Deutschland", "L’essentiel de l'actualité",
-  "Brasil", and "Россия".
-
-- **Sports & Lifestyle**: Contains pages like "Sport" and "Lifestyle & Entertainment".
-
-- **AWP Top News**: Includes pages such as "AWP German Top News" and "AWP French Top News".
-
-In addition to returning key fields from the top news packages (group, page name, revision information,
-and the **topNewsId**), this function makes an additional GET call for each page by calling
-`/data/news/v1/top-news/<topNewsId>`. This call retrieves the actual story details including the
-story identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
-be used with \code{rd_get_news_story}.
+In addition to returning key fields from the top news packages (group, page name, revision
+information, and the \code{topNewsId}), this function makes an additional GET call for each
+page by calling \code{/data/news/v1/top-news/<topNewsId>}. This call retrieves the actual
+story details including the story identifier (in \code{storyId}), the title (in \code{text}),
+and a summary (in \code{snippet}) that can subsequently be used with
+\code{rd_get_news_story}.
 }
 \examples{
 \dontrun{
 
-**Examples for Filtering:**
+# Examples for Filtering:
 # Example 1: Retrieve all top news from the "Main" group
 main_news <- rd_get_top_news(group = "^Main$")
 
@@ -103,8 +99,5 @@ sports_news <- rd_get_top_news(group = "Sports & Lifestyle", page = "Sport")
 # Example 4: Filtering yields no results (empty data frame)
 no_news <- rd_get_top_news(group = "NonExistent")
 }
-
-
-
 
 }

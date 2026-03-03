@@ -4,26 +4,25 @@
 #' @param debug show api calls defaults to FALSE
 #'
 #' @return a list of custom Instruments created with all parameters
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{
 #' test <- get_rdp_streaming_url()
 #' }
-get_rdp_streaming_url <- function(RDObject = RefinitivJsonConnect(), debug = TRUE){
-
+get_rdp_streaming_url <- function(RDObject = rd_connection(), debug = TRUE) {
   handshake <- rd_handshake()
-  Request <- RDObject$get_rdp_streaming_url( debug = debug)
+  Request <- RDObject$get_rdp_streaming_url(debug = debug)
   EndPoint <- "streaming/pricing/v1/"
   payload <- NULL
-  response <- send_json_request(payload, service = "rdp"
-                                , EndPoint = EndPoint
-                                , request_type = "GET"
-                                , debug = debug
+  response <- send_json_request(payload,
+    service = "rdp",
+    EndPoint = EndPoint,
+    request_type = "GET",
+    debug = debug
   )
 
   return(Request)
-
 }
 
 #' Get Bearer Key from Terminal
@@ -56,15 +55,14 @@ get_rdp_streaming_url <- function(RDObject = RefinitivJsonConnect(), debug = TRU
 #' }
 #'
 #' @export
-rd_handshake <- function(debug = FALSE, force = TRUE){
-
+rd_handshake <- function(debug = FALSE, force = TRUE) {
   # Check the terminal type (function assumed to be defined elsewhere)
   CheckTerminalType(verbose = debug, force = force)
 
-  # Retrieve existing token from options
-  existing_token <- getOption("refinitiv_access_token")
-  token_exp <- getOption("refinitiv_token_expiration")
-  token_type <- getOption("refinitiv_token_type")
+  # Retrieve existing token from vault
+  existing_token <- refinitiv_vault_get("access_token")
+  token_exp <- refinitiv_vault_get("token_expiration")
+  token_type <- refinitiv_vault_get("token_type")
 
   # Determine whether to use existing token
   use_existing <- FALSE
@@ -100,17 +98,25 @@ rd_handshake <- function(debug = FALSE, force = TRUE){
   }
 
   # Prepare the payload for handshake
+  pkg_version <- tryCatch(
+    as.character(utils::packageVersion("Refinitiv")),
+    error = function(e) "0.2.0"
+  )
+  app_key <- refinitiv_vault_get("api_key")
+  if (is.null(app_key)) app_key <- Sys.getenv("REFINITIV_APP_KEY", "DEFAULT_WORKSPACE_APP_KEY")
   payload <- list(
-    'AppKey' = 'DEFAULT_WORKSPACE_APP_KEY',
-    'AppScope' = 'trapi',
-    'ApiVersion'= '1',
-    'LibraryName' = 'RDP Python Library',
-    'LibraryVersion'= '1.3.1'
+    "AppKey" = app_key,
+    "AppScope" = "trapi",
+    "ApiVersion" = "1",
+    "LibraryName" = "RefinitivR",
+    "LibraryVersion" = pkg_version
   )
 
   # Construct the handshake URL
-  handshake_url <-  paste0(getOption("refinitiv_base_url"), ":",
-                           getOption("rdp_port"), "/api/handshake")
+  handshake_url <- paste0(
+    getOption("refinitiv_base_url"), ":",
+    getOption("eikon_port"), "/api/handshake"
+  )
 
   if (debug) {
     message("Sending handshake request to URL: ", handshake_url)
@@ -121,7 +127,7 @@ rd_handshake <- function(debug = FALSE, force = TRUE){
     json = payload,
     request_type = "POST",
     debug = debug,
-    apikey = 'DEFAULT_WORKSPACE_APP_KEY',
+    apikey = "DEFAULT_WORKSPACE_APP_KEY",
     url = handshake_url
   )
 
@@ -132,10 +138,10 @@ rd_handshake <- function(debug = FALSE, force = TRUE){
     return(NULL)
   }
 
-  # Store the new token and its expiration time
-  options(refinitiv_access_token = response$access_token)
-  options(refinitiv_token_expiration = as.numeric(Sys.time()) + response$expires_in)
-  options(refinitiv_token_type = response$token_type)
+  # Store the new token and its expiration time in the secure vault
+  refinitiv_vault_set("access_token", response$access_token)
+  refinitiv_vault_set("token_expiration", as.numeric(Sys.time()) + response$expires_in)
+  refinitiv_vault_set("token_type", response$token_type)
 
   if (debug) {
     message("New token acquired and stored successfully.")
@@ -143,8 +149,6 @@ rd_handshake <- function(debug = FALSE, force = TRUE){
 
   return(response)
 }
-
-
 
 
 #' Verify the Validity of a JWT Access Token
@@ -169,7 +173,7 @@ rd_handshake <- function(debug = FALSE, force = TRUE){
 #' print(is_valid)
 #' }
 #'
-#' @export
+#' @keywords internal
 rd_VerifyToken <- function(token) {
   # Ensure the token is a non-empty string
   if (!is.character(token) || length(token) != 1 || nchar(token) == 0) {
@@ -196,12 +200,15 @@ rd_VerifyToken <- function(token) {
       input <- paste0(input, strrep("=", padding_needed))
     }
     # Decode using base64enc::base64decode
-    raw <- tryCatch({
-      base64enc::base64decode(input)
-    }, error = function(e) {
-      warning("Base64 decoding failed: ", e$message)
-      return(NULL)
-    })
+    raw <- tryCatch(
+      {
+        base64enc::base64decode(input)
+      },
+      error = function(e) {
+        warning("Base64 decoding failed: ", e$message)
+        return(NULL)
+      }
+    )
     return(raw)
   }
 
@@ -213,24 +220,30 @@ rd_VerifyToken <- function(token) {
   }
 
   # Convert raw bytes to character string
-  payload_json <- tryCatch({
-    rawToChar(payload_raw)
-  }, error = function(e) {
-    warning("Failed to convert payload to character string: ", e$message)
-    return(NULL)
-  })
+  payload_json <- tryCatch(
+    {
+      rawToChar(payload_raw)
+    },
+    error = function(e) {
+      warning("Failed to convert payload to character string: ", e$message)
+      return(NULL)
+    }
+  )
 
   if (is.null(payload_json)) {
     return(FALSE)
   }
 
   # Parse JSON using jsonlite::fromJSON
-  payload <- tryCatch({
-    jsonlite::fromJSON(payload_json)
-  }, error = function(e) {
-    warning("JSON parsing failed: ", e$message)
-    return(NULL)
-  })
+  payload <- tryCatch(
+    {
+      jsonlite::fromJSON(payload_json)
+    },
+    error = function(e) {
+      warning("JSON parsing failed: ", e$message)
+      return(NULL)
+    }
+  )
 
   if (is.null(payload)) {
     return(FALSE)
@@ -251,14 +264,17 @@ rd_VerifyToken <- function(token) {
   # Current time in Unix epoch
   current_time <- as.numeric(Sys.time())
 
-  # Compare current time with expiration time
-  if (current_time < payload$exp) {
+  # Compare current time with expiration time, with a safety buffer to prevent
+
+  # mid-flight expiration. Configurable via options("refinitiv_token_buffer_seconds").
+  buffer <- getOption("refinitiv_token_buffer_seconds", 60)
+  if (current_time < (payload$exp - buffer)) {
     return(TRUE)
   } else {
-    warning("Token has expired.")
+    warning(
+      "Token has expired or will expire within the safety buffer (",
+      buffer, "s)."
+    )
     return(FALSE)
   }
 }
-
-
-

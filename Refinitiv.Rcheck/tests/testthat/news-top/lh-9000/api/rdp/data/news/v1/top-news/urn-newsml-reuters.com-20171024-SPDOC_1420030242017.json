@@ -1,0 +1,480 @@
+{
+    "_metadata": {
+        "outdated": false,
+        "cached": true
+    },
+    "data": [
+        {
+            "snippet": "U.S. stock indexes turned sharply lower on Thursday, the day after a less-than-stellar earnings report from artificial intelligence vanguard Nvidia dragged technology shares which have provided muscle to the recent rally. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM173",
+            "image": {
+                "byLine": "Brendan McDermid",
+                "text": "Traders work on the floor at the New York Stock Exchange (NYSE) in New York City, U.S., October 29, 2025. ",
+                "id": "2026-02-26T112533Z_1_NV4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "An index of global equity markets eased after hitting a fresh record high on Thursday as concerns about lofty valuations of leading technology companies weighed on markets after artificial intelligence chipmaker Nvidia reported strong quarterly results.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM13Q",
+                    "dateLine": "NEW YORK, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:59:00.000Z",
+                    "text": "GLOBAL MARKETS-World shares ease on concerns about tech valuations"
+                },
+                {
+                    "snippet": "Canada's resources-heavy index fell on Thursday as weakness in commodity-linked stocks outweighed gains in tech stocks driven by upbeat earnings from Salesforce.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0YC",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:47:00.000Z",
+                    "text": "CANADA STOCKS-TSX falls as weakness in commodities offsets gains in tech stocks"
+                },
+                {
+                    "versionCreated": "2026-02-26T19:02:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM177",
+                    "text": "LIVE MARKETS-US AI hyperscaler capex growth views up since start of Q4 earnings",
+                    "documentType": "Story"
+                },
+                {
+                    "versionCreated": "2026-02-26T18:45:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0PC",
+                    "text": "BUZZ-U.S. STOCKS ON THE MOVE-Enovis, Cheniere, Packaging Corp of America",
+                    "documentType": "Story"
+                }
+            ],
+            "dateLine": "NEW YORK, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:25:00.000Z",
+            "text": "US STOCKS-Wall St slides as tech rally stalls, AI enthusiasm wanes after Nvidia results",
+            "firstCreated": "2026-02-26T11:09:00.000Z"
+        },
+        {
+            "snippet": "Europe's benchmark index retreated from a record high on Thursday, as healthcare and technology shares weighed, while upbeat corporate earnings from the likes of Schneider and Indra limited the overall declines.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0Q8",
+            "image": {
+                "byLine": "Staff",
+                "text": "The German share price index DAX graph is pictured at the stock exchange in Frankfurt, Germany, January 21, 2026.  ",
+                "id": "2026-02-25T084123Z_1_AC0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Britain's FTSE 100 hit a record high on Thursday, supported by a rally in shares in Rolls-Royce after its forecast upgrade and in LSEG after its share buyback.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM113",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:11:00.000Z",
+                    "text": "UK's FTSE 100 finishes at record high on Rolls-Royce, LSEG boost"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T17:27:00.000Z",
+            "text": "European shares retreat from record high, upbeat corporate earnings offset tech declines",
+            "firstCreated": "2026-02-26T08:29:00.000Z"
+        },
+        {
+            "snippet": "With Washington raising barriers, China's push to shift trade toward Europe is running into one big demand: let the yuan rise against the euro and level the playing field.\n\n",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZK2HS",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "U.S. dollar, Euro, Chinese Yuan and Pound banknotes are seen in this illustration taken May 4, 2025. ",
+                "id": "2026-02-26T070630Z_1_OT5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The dollar is sliding again against the euro and yuan, just as European and Chinese leaders are seeking to boost the global role of their currencies, taking advantage of the rising dollar doubts. The latest exchange rate shifts seem to be playing out as desired for all parties, especially Washington.",
+                    "storyId": "urn:newsml:reuters.com:20260211:nL8N3Z522A",
+                    "dateLine": "LONDON, Feb 11  (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-11T07:00:00.000Z",
+                    "text": "ROI-Euro and yuan global ambitions hasten the dollar drop: Mike Dolan"
+                }
+            ],
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T06:59:00.000Z",
+            "text": "ROI-To win Europe's embrace, China needs to uncap the yuan: Mike Dolan",
+            "firstCreated": "2026-02-26T06:59:00.000Z"
+        },
+        {
+            "snippet": "Nearly 90% of medium-sized North American and European companies are now hedging their currency exposure and about two out of three plan to keep those hedges for longer as market volatility and geopolitical uncertainty raise financial risks, a survey by software provider MillTech showed.\n\n",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0HT",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "U.S. dollar, Euro and Pound banknotes are seen in this illustration taken May 4, 2025. ",
+                "id": "2026-02-26T105424Z_1_NX4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Goldman Sachs prime brokerage said in a note that the recent bounce in software and IT services stocks may continue, even though this week, hedge funds were as short as they have ever been on the sector.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0Y2",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:42:00.000Z",
+                    "text": "HEDGE FLOW-US software stocks to keep rebounding, says Goldman Sachs prime brokerage note"
+                },
+                {
+                    "snippet": "Investors rushing to protect their U.S. assets against dollar depreciation could test banks' ability to meet demand for hedging, said a senior trader at UBS, one of the world's top currency dealers.",
+                    "storyId": "urn:newsml:reuters.com:20260128:nL4N3YS21G",
+                    "dateLine": "LONDON, Jan 28  (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-01-28T15:06:00.000Z",
+                    "text": "Big hedging of dollars for clients could test banks' capacity, senior UBS trader says"
+                }
+            ],
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T11:43:00.000Z",
+            "text": "Nearly 90% of North American, European firms hedge FX exposure as uncertainty rises, survey says",
+            "firstCreated": "2026-02-26T10:50:00.000Z"
+        },
+        {
+            "snippet": "The 50% surge in South Korean stocks in the first two months of 2026 is grabbing headlines, but other emerging markets are also boasting double-digit gains. Even the most ardent EM bull must be wondering if this blistering rally can continue.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM1LA",
+            "image": {
+                "byLine": "Soo-hyeon Kim",
+                "text": "Currency dealers work in front of electronic board showing the Korea Composite Stock Price Index (KOSPI) and the exchange rate between the U.S. dollar and South Korean won in the dealing room of a bank, in Seoul, South Korea, April 10, 2025. ",
+                "id": "2026-02-26T143533Z_1_UL7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Investors ploughed a record $22.3 billion of private credit into emerging markets last year, according to data released on Wednesday, amid banks tightening their lending and wobbles in traditionally safe markets.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL154",
+                    "dateLine": "LONDON, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T21:17:00.000Z",
+                    "text": "Private credit in emerging markets surges to record, industry group says"
+                },
+                {
+                    "snippet": "Global investors poured money into emerging market stocks at the fastest clip in years in January, as a weaker dollar and diversification away from the U.S. point to an extension of the rally the asset class staged last year. Emerging market equity funds last week posted one of their biggest weekly inflows on record, lifting year-to-date inflows above $39 billion, according to J.P. Morgan. That marks one of the strongest starts to the year for EM equities in more than 20 years, the investment bank said, and has historically been associated with sustained rallies rather than brief bursts of optimism.",
+                    "storyId": "urn:newsml:reuters.com:20260202:nL6N3YU1CR",
+                    "dateLine": "NEW YORK, Feb 2 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-02T08:00:00.000Z",
+                    "text": "ANALYSIS-Emerging market stocks rally appears intact after buoyant January inflows"
+                }
+            ],
+            "dateLine": "ORLANDO, Florida, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T13:59:00.000Z",
+            "text": "ROI-Blistering EM equity rally can't keep this pace up. Can it?: McGeever",
+            "firstCreated": "2026-02-26T13:59:00.000Z"
+        },
+        {
+            "snippet": "Oil prices were little changed in choppy trade on Thursday as investors tracked developments in talks between the U.S. and Iran over the OPEC member's nuclear program, weighing potential supply concerns if hostilities escalate.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM045",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "Iranian flag overlayed with a rising stock graph and 3D printed gas pump miniature are seen in this illustration taken June 23, 2025. ",
+                "id": "2026-02-25T041008Z_1_FE1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "OPEC+ meets on Sunday to set its next production move amid heightened geopolitical friction affecting nearly a third of its output. That volatility may give the group cover to stick to its balanced-market narrative, even if the facts on the ground suggest otherwise.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZL1FV",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "text": "ROI-Geopolitical turmoil gives OPEC+ cover for cautious output hike: Bousso"
+                },
+                {
+                    "snippet": "One of the least talked about dynamics of the global crude oil market is the role China plays in setting a floor and a ceiling for prices.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM05E",
+                    "dateLine": "LAUNCESTON, Australia, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T05:38:00.000Z",
+                    "text": "ROI-China is shifting crude oil buying in response to price rally: Russell"
+                },
+                {
+                    "versionCreated": "2026-02-24T19:12:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6N3ZK1BV",
+                    "text": "Oil industry needs $70/barrel to grow production, executives say",
+                    "dateLine": "WASHINGTON, Feb 24 (Reuters)",
+                    "documentType": "Story"
+                }
+            ],
+            "dateLine": "HOUSTON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:45:00.000Z",
+            "text": "Oil prices little changed in choppy trade as traders follow US, Iran talks",
+            "firstCreated": "2026-02-26T01:55:00.000Z"
+        },
+        {
+            "snippet": "U.S. Treasury prices edged higher on Thursday on the back of some safe-haven bids as investors grew nervous about tensions involving Iran, also pricing in expectations that the Federal Reserve will hold interest rates steady at least for the first half of the year.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0YO",
+            "image": {
+                "byLine": "Kevin Lamarque",
+                "text": "A bronze seal for the Department of the Treasury is shown at the U.S. Treasury building in Washington, U.S., January 20, 2023.",
+                "id": "2026-02-17T150919Z_1_CM0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The average rate on the popular U.S. 30-year fixed-rate mortgage fell below 6% this week for the first time in 3-1/2 years, but economists said the improvement was likely temporary and on its own insufficient to boost housing demand unless supply increased.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM15B",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T18:50:00.000Z",
+                    "text": "US mortgage rates dip below 6%, but supply remains key"
+                },
+                {
+                    "snippet": "Euro zone government bond yields steadied near multi-month lows after Nvidia’s results beat expectations, supporting risk appetite, with investors now awaiting inflation data from Germany, France and Spain on Friday. Stocks bounced in Asia and were about to open broadly unchanged in Europe, but concerns over AI-driven disruption and rising costs remained.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0I7",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T08:09:00.000Z",
+                    "text": "Euro zone yields steady at multi-month lows as investors await inflation data"
+                },
+                {
+                    "snippet": "British medium- and long-dated government bond yields fell on Thursday, outperforming U.S. and euro zone government debt ahead of the release next week of 2026/27 debt issuance plans.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nS8N3YL05N",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T14:40:00.000Z",
+                    "text": "UK 5-year gilt yields fall to lowest since September 2024"
+                },
+                {
+                    "snippet": "Euro zone government bond yields fell to multi-month lows on Thursday as risk appetite soured, impacted by heightened U.S.-Iran tensions, wavering sentiment towards the tech sector and jitters around U.S. import tariffs.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0OS",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:16:00.000Z",
+                    "text": "German 10-year yield falls to lowest since November as stocks dip"
+                },
+                {
+                    "snippet": "Japan's shorter-dated bond yields rose on Thursday, reversing the previous session's declines, as hawkish comments from the Bank of Japan officials stoked bets of early interest rate hikes.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM03S",
+                    "dateLine": "TOKYO, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T07:27:00.000Z",
+                    "text": "Japan's shorter-end yields rise as hawkish BOJ comments fan early rate hike bets"
+                },
+                {
+                    "snippet": "Indian government bonds moved higher in early deals on Thursday, as continued buying from long-term investors had a positive spillover effect across the yield curve.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0C3",
+                    "dateLine": "MUMBAI, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T05:22:00.000Z",
+                    "text": "INDIA BONDS-Indian bonds edge higher, supported by positive sentiment for longer debt"
+                }
+            ],
+            "dateLine": "NEW YORK, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T16:29:00.000Z",
+            "text": "TREASURIES-US bonds moderately higher on safe-haven buying fueled by Iran fears",
+            "firstCreated": "2026-02-26T16:29:00.000Z"
+        },
+        {
+            "snippet": "The Japanese yen rebounded on Thursday after the head of the Bank of Japan said the decision on whether to increase interest rates will be based on economic data, while overall movements in the market were subdued as traders waited for fresh catalysts.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0SV",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "U.S. dollar, Euro, Yen and Pound banknotes are seen in this illustration taken May 4, 2025.",
+                "id": "2026-02-24T051250Z_1_FV1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The British pound edged lower on Thursday ahead of a local election in Manchester that could offer an early read on Prime Minister Keir Starmer's political standing.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0JU",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:48:00.000Z",
+                    "text": "Sterling slips before key Manchester vote; rate outlook under scrutiny"
+                },
+                {
+                    "snippet": "China's yuan firmed to a fresh 34-month high against the U.S. dollar on Thursday despite the central bank signalling it wanted to curb the currency's rapid gains, as seasonal settlement demand underpinned a sustained rally.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM05Y",
+                    "dateLine": "HONG KONG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T03:31:00.000Z",
+                    "text": "Yuan strengthens past 6.85 level against dollar despite PBOC's caution"
+                },
+                {
+                    "snippet": "The Canadian dollar edged lower against its U.S. counterpart on Thursday, as safe-haven demand for the greenback offset domestic data that showed a sharp narrowing in Canada's current account deficit.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM17J",
+                    "dateLine": "TORONTO, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:10:00.000Z",
+                    "text": "CANADA FX DEBT-Canadian dollar edges lower on flight to safety"
+                },
+                {
+                    "snippet": "The Australian and New Zealand dollars held firm on Thursday amid a general lift in global risk sentiment, while the Aussie got an extra boost as mounting bets for another rate hike fattened yield spreads. Markets imply around an 80% chance the Reserve Bank of Australia will raise its 3.85% cash rate in May, following an uncomfortably hot reading on January inflation. <0#AUDIRPR>",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZL2GO",
+                    "dateLine": "SYDNEY, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T01:33:00.000Z",
+                    "text": "Australia, NZ dollars firm, A$ at fresh tops on yen and euro"
+                },
+                {
+                    "snippet": "The Indian rupee closed marginally stronger on Thursday, comforted by strength in regional currencies while elevated demand to buy dollars at the daily reference rate kept gains in check.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0PX",
+                    "dateLine": "MUMBAI, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T10:13:00.000Z",
+                    "text": "INDIA RUPEE-Rupee ends a tad higher, interbank paying interest boosts forward premiums"
+                },
+                {
+                    "snippet": "The South African rand was steady in early trade on Thursday as investors digested the annual budget, which analysts said underscored the government's commitment to restoring fiscal sustainability.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM092",
+                    "dateLine": "JOHANNESBURG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T07:22:00.000Z",
+                    "text": "South African rand steady as investors digest budget, await producer inflation"
+                }
+            ],
+            "dateLine": "NEW YORK, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T15:27:00.000Z",
+            "text": "FOREX-Yen strengthens after Bank of Japan signals data-driven rate hikes",
+            "firstCreated": "2026-02-26T00:59:00.000Z"
+        },
+        {
+            "snippet": "The European Central Bank sold some of its dollar assets early last year and reduced the weight of the dollar in its foreign exchange reserves in what it said was a standard rebalancing of its portfolio.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0FP",
+            "image": {
+                "byLine": "Wolfgang Rattay",
+                "text": "Dark clouds are seen over the building of the European Central Bank (ECB) before the ECB's monetary policy meeting in Frankfurt, Germany, June 6, 2024. ",
+                "id": "2026-02-26T110547Z_1_OQ5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "FRANKFURT, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T10:59:00.000Z",
+            "text": "ECB sells some dollar assets, cuts weight of dollar in reserves",
+            "firstCreated": "2026-02-26T11:00:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "Most Latin American currencies and stocks drifted lower on Thursday, with investors turning cautious about the AI trade.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM1F6",
+            "image": {
+                "byLine": "Luisa Gonzalez",
+                "text": "Traders work on the floor of the Colombian Stock Exchange in Bogota",
+                "id": "2026-02-26T160810Z_1_ZP8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The forint steadied near a more than 2-1/2 year high on Thursday, unshaken by the first Hungarian interest rate cut since late 2024 this week as the outlook for further easing remained limited.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0DQ",
+                    "dateLine": "PRAGUE, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T09:40:00.000Z",
+                    "text": "CEE MARKETS-Forint settles around 2-1/2 year high after rate outlook relief"
+                },
+                {
+                    "snippet": "Major Gulf stock markets fell on Thursday as investors maintained a risk-averse approach amid heightened geopolitical tensions and uncertainty surrounding a third round of U.S.-Iran nuclear talks set to take place in Geneva later in the day.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0QZ",
+                    "dateLine": "BANGALORE, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T13:10:00.000Z",
+                    "text": "MIDEAST STOCKS-Major Gulf markets ease as investors await US-Iran developments"
+                },
+                {
+                    "versionCreated": "2026-02-26T10:25:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0SZ",
+                    "text": "INDIA STOCKS-Indian benchmarks end flat; HDFC Bank counters PSU banks, pharma gains",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story"
+                },
+                {
+                    "snippet": " South Korean shares rose more than 3% on Thursday, hitting a fresh record high, as chipmakers jumped after Nvidia's earnings and automakers also extended a rally.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM08I",
+                    "dateLine": "SEOUL, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T07:03:00.000Z",
+                    "text": "S.Korean shares hit record on chip, auto surge; president says market 'normalising'"
+                },
+                {
+                    "snippet": "China stocks closed lower on Thursday, snapping a two-session post-Lunar New Year rally, as investors held off on major moves ahead of an annual parliamentary meeting next week.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0C3",
+                    "dateLine": "HONG KONG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T08:35:00.000Z",
+                    "text": "China stocks end lower as traders hold off before key policy meeting"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T15:48:00.000Z",
+            "text": "EMERGING MARKETS-Colombian stocks lead Latin America shares lower; investors cautious about AI risk",
+            "firstCreated": "2026-02-26T15:48:00.000Z"
+        },
+        {
+            "snippet": "Gold prices were little changed on Thursday as investors stayed on the sidelines ahead of the third round of indirect U.S.-Iran nuclear talks in Geneva, hoping for signals on whether the negotiations could ease geopolitical tensions.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM11J",
+            "image": {
+                "byLine": "Leonhard Foeger",
+                "text": "An illustration photo shows gold coins commenly known as \"gold ducats\" in Vienna",
+                "id": "2026-02-26T013730Z_1_EQ1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "JP Morgan sees demand from central banks and investors this year ultimately pushing gold prices to $6,300 an ounce by end-2026, JP Morgan said in a note on Wednesday.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nFWN3ZK1GO",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T07:26:00.000Z",
+                    "text": "JP Morgan sees year-end 2026 gold price at $6,300 per ounce"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T16:32:00.000Z",
+            "text": "PRECIOUS-Gold steady as markets await US-Iran nuclear talks outcome",
+            "firstCreated": "2026-02-26T01:36:00.000Z"
+        },
+        {
+            "snippet": "Japan's Nikkei share average surpassed the 59,000 mark for the first time on Thursday, led by software-related shares as investor fears over disruption from artificial intelligence eased.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM01S",
+            "image": {
+                "byLine": "Issei Kato",
+                "text": "A visitor stands next to an electronic screen displaying Japan's Nikkei stock prices quotation board in Tokyo, Japan February 22, 2024.  ",
+                "id": "2026-02-23T221828Z_1_MB4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Australian shares scaled an all-time high for a second straight session on Thursday, powered by heavyweight miners, healthcare majors and tech stocks on a buoyant earnings season and firmer commodity prices.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM09T",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T06:24:00.000Z",
+                    "text": "Australian shares hit record high for second day; miners, health, tech fuel rally"
+                }
+            ],
+            "dateLine": "TOKYO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T07:33:00.000Z",
+            "text": "Nikkei crosses 59,000 for first time on software rally; gains shrink on profit taking",
+            "firstCreated": "2026-02-26T00:11:00.000Z"
+        },
+        {
+            "snippet": "Investors ploughed a record $22.3 billion of private credit into emerging markets last year, according to data released on Wednesday, amid banks tightening their lending and wobbles in traditionally safe markets.",
+            "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL154",
+            "image": {
+                "byLine": "Ajeng Dinar Ulfiana",
+                "text": "A worker wipes a handrail near the reflection of an electronic board displaying stock movement at the Indonesia Stock Exchange (IDX) in Jakarta, Indonesia, January 30, 2026. ",
+                "id": "2026-02-25T211948Z_1_IO3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Global investors poured money into emerging market stocks at the fastest clip in years in January, as a weaker dollar and diversification away from the U.S. point to an extension of the rally the asset class staged last year. Emerging market equity funds last week posted one of their biggest weekly inflows on record, lifting year-to-date inflows above $39 billion, according to J.P. Morgan. That marks one of the strongest starts to the year for EM equities in more than 20 years, the investment bank said, and has historically been associated with sustained rallies rather than brief bursts of optimism.",
+                    "storyId": "urn:newsml:reuters.com:20260202:nL6N3YU1CR",
+                    "dateLine": "NEW YORK, Feb 2 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-02T08:00:00.000Z",
+                    "text": "ANALYSIS-Emerging market stocks rally appears intact after buoyant January inflows"
+                },
+                {
+                    "snippet": "Emerging market equity exchange-traded funds have attracted substantial inflows since the start of the year for their cheaper valuations and growth prospects, despite markets grappling with geopolitical tensions and a decline in global bond markets.",
+                    "storyId": "urn:newsml:reuters.com:20260122:nL4N3YM0SU",
+                    "dateLine": "Jan 22 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-01-22T06:59:00.000Z",
+                    "text": "GRAPHIC-Emerging market ETFs draw strong inflows on cheaper valuations amid market turmoil"
+                }
+            ],
+            "dateLine": "LONDON, Feb 25 (Reuters)",
+            "versionCreated": "2026-02-25T21:17:00.000Z",
+            "text": "Private credit in emerging markets surges to record, industry group says",
+            "firstCreated": "2026-02-25T12:53:00.000Z"
+        }
+    ],
+    "meta": {
+        "revisionId": 181170,
+        "revisionDate": "2026-02-26T19:57:04.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

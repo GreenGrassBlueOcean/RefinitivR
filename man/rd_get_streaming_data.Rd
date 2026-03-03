@@ -10,6 +10,8 @@ rd_get_streaming_data(
   on_refresh = NULL,
   on_update = NULL,
   on_error = NULL,
+  on_reconnecting = NULL,
+  on_reconnected = NULL,
   RDObject = NULL,
   stream_type = "pricing",
   domain = "MarketPrice",
@@ -21,7 +23,7 @@ rd_get_streaming_data(
 
 \item{fields}{Character vector of field names to retrieve}
 
-\item{on_refresh}{Optional function to call on refresh events. 
+\item{on_refresh}{Optional function to call on refresh events.
 Function signature: `function(stream, instrument, fields)`}
 
 \item{on_update}{Optional function to call on update events.
@@ -29,6 +31,12 @@ Function signature: `function(stream, instrument, fields)`}
 
 \item{on_error}{Optional function to call on error events.
 Function signature: `function(stream, error_message)`}
+
+\item{on_reconnecting}{Optional function called when a reconnect attempt starts.
+Function signature: `function(stream, attempt_number)`}
+
+\item{on_reconnected}{Optional function called after a successful reconnect.
+Function signature: `function(stream, attempt_number)`}
 
 \item{RDObject}{Optional RD connection object (uses active session if not provided)}
 
@@ -45,6 +53,8 @@ Stream object with methods:
   - `on_refresh(callback)` - Register refresh callback
   - `on_update(callback)` - Register update callback
   - `on_error(callback)` - Register error callback
+  - `on_reconnecting(callback)` - Register reconnecting callback
+  - `on_reconnected(callback)` - Register reconnected callback
   - `get_latest_data(instrument)` - Get current snapshot
   - `get_data_history()` - Get buffered historical data
   - `plot_live(field, instrument, ...)` - Create live Shiny plot
@@ -97,7 +107,7 @@ stream$open()
 
 # Create and run live plot
 app <- stream$plot_live(field = "BID")
-shiny::runApp(app)  # Opens in browser
+shiny::runApp(app) # Opens in browser
 }
 
 \dontrun{
@@ -107,7 +117,7 @@ stream <- rd_get_streaming_data(
   fields = c("BID", "ASK")
 )
 stream$open()
-Sys.sleep(10)  # Collect some data
+Sys.sleep(10) # Collect some data
 summary <- stream$get_summary()
 print(summary)
 }

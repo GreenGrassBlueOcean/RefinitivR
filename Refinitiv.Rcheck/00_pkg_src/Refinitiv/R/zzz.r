@@ -1,0 +1,59 @@
+# zzz.R
+
+# Hidden package environment
+.pkgglobalenv <- new.env(parent = emptyenv())
+
+.onLoad <- function(libname, pkgname) {
+
+  # Default options — only set when not already configured by the user
+  if (is.null(getOption("refinitiv_base_url"))) {
+    options(refinitiv_base_url = "http://localhost")
+  }
+
+  if (is.null(getOption("eikon_port"))) {
+    options(eikon_port = NULL)
+  }
+
+  if (is.null(getOption("eikon_api"))) {
+    options(eikon_api = "/api/udf/")
+  }
+
+  if (is.null(getOption("rdp_api"))) {
+    options(rdp_api = "/api/rdp/")
+  }
+
+  if (is.null(getOption("streaming_port"))) {
+    eikon_port <- getOption("eikon_port")
+    options(streaming_port = if (!is.null(eikon_port)) eikon_port else 9000L)
+  }
+
+  if (is.null(getOption("HistoricalPricingFields"))) {
+    options(HistoricalPricingFields = c(
+      "HIGH_1", "LOW_1", "OPEN_PRC", "TRDPRC_1",
+      "NUM_MOVES", "ACVOL_UNS", "HIGH_YLD", "LOW_YLD",
+      "OPEN_YLD", "YIELD", "BID_HIGH_1", "BID_LOW_1",
+      "OPEN_BID", "BID", "BID_NUMMOV", "ASK_HIGH_1",
+      "ASK_LOW_1", "OPEN_ASK", "ASK", "ASK_NUMMOV",
+      "MID_HIGH", "MID_LOW", "MID_OPEN", "MID_PRICE",
+      "TRNOVR_UNS", "VWAP", "BLKCOUNT", "BLKVOLUM",
+      "TRD_STATUS", "SALTIM", "NAVALUE"
+    ))
+  }
+
+  # === C3 Secure Credential Vault — backward-compatibility migration ===
+  # If the user has .EikonApiKey in .Rprofile / options(), migrate it into
+  # the vault so internal code finds it there.  The write-through in
+  # refinitiv_vault_set() keeps the option in sync for external callers.
+  legacy_key <- getOption(".EikonApiKey")
+  if (!is.null(legacy_key) && !refinitiv_vault_has("api_key")) {
+    refinitiv_vault_set("api_key", legacy_key)
+  }
+
+  # Clear any stale token options from previous sessions / older package
+  # versions.  Tokens now live exclusively in the vault.
+  options(
+    refinitiv_access_token  = NULL,
+    refinitiv_token_expiration = NULL,
+    refinitiv_token_type    = NULL
+  )
+}

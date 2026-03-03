@@ -2,21 +2,23 @@
 % Please edit documentation in R/refinitiv.r
 \name{EikonGetData}
 \alias{EikonGetData}
-\title{Function to obtain data from Eikon. Based on the Eikon python function get_data}
+\title{Function to obtain data from Eikon via the JSON API}
 \usage{
 EikonGetData(
-  EikonObject,
+  EikonObject = rd_connection(),
   rics,
   Eikonformulas,
   Parameters = NULL,
   raw_output = FALSE,
   time_out = 60,
   verbose = FALSE,
-  SpaceConvertor = "."
+  SpaceConvertor = ".",
+  cache = NULL
 )
 }
 \arguments{
-\item{EikonObject}{Eikon object created using EikonConnect function}
+\item{EikonObject}{Eikon connection object. Defaults to \code{rd_connection()},
+which auto-creates a connection on first use.}
 
 \item{rics}{a vector containing the instrument RICS}
 
@@ -28,56 +30,63 @@ EikonGetData(
 
 \item{time_out}{set the maximum timeout to the Eikon server, default = 60}
 
-\item{verbose}{boolean, set to true to print out the actual python call with time stamp for debugging.}
+\item{verbose}{boolean, set to TRUE to print out the API call details with time stamp for debugging.}
 
 \item{SpaceConvertor}{converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is "."}
+
+\item{cache}{Controls caching. \code{NULL} (default) defers to
+\code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
+function default TTL (300 s). \code{FALSE} disables caching. A positive
+numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.}
 }
 \value{
-a data.frame containing data.from Eikon
+a data.frame containing data from Eikon
 }
 \description{
 The function automatically chunks the list of rics into chunks that comply with the api limitations and in the end rebuilds the chunks again into a single data.frame.
 }
-\details{
-Currently there is a known bug in the reticulate package with large integers.
-If a request is made that returns large integers the reticulate package will return -1 for these integers.
-See also this issue \url{https://github.com/rstudio/reticulate/issues/323}
-or try for yourself as indicated here \url{https://community.rstudio.com/t/large-integer-conversion-from-python-to-r/82568}
-}
 \examples{
 \dontrun{
 Eikon <- Refinitiv::EikonConnect()
-ex1 <- EikonGetData(EikonObject = Eikon, rics = c("MMM", "III.L"),
-             Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
-             , "TR.CompanyName"), verbose = TRUE)
+ex1 <- EikonGetData(
+  EikonObject = Eikon, rics = c("MMM", "III.L"),
+  Eikonformulas = c(
+    "TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/",
+    "TR.CompanyName"
+  ), verbose = TRUE
+)
 
-ex2 <- EikonGetData( EikonObject = Eikon, rics = "AAPL.O"
-                   , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
-                   )
+ex2 <- EikonGetData(
+  EikonObject = Eikon, rics = "AAPL.O",
+  Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
+)
 
 # ex2 will return -1 which is most likely not the current market cap of apple")
 # a workaround is to scale back the output to millions
 
-ex2a <- EikonGetData( EikonObject = Eikon, rics = "AAPL.O"
-                   , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
-                   , Parameters = list("scale" = 6)
-                   )
+ex2a <- EikonGetData(
+  EikonObject = Eikon, rics = "AAPL.O",
+  Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/",
+  Parameters = list("scale" = 6)
+)
 # or for more complex formula's
 # scale back in the formula itself
-ex2b <- EikonGetData( EikonObject = Eikon, rics = "AAPL.O"
-                   , Eikonformulas = "TR.CompanyMarketCap(Sdate=0D, scale=6)/*Market Cap*/"
-                   )
+ex2b <- EikonGetData(
+  EikonObject = Eikon, rics = "AAPL.O",
+  Eikonformulas = "TR.CompanyMarketCap(Sdate=0D, scale=6)/*Market Cap*/"
+)
 }
-
 
 \dontrun{
 EikonJson <- RefinitivJsonConnect()
-ex1 <- EikonGetData(EikonObject = EikonJson, rics = c("MMM", "III.L"),
-             Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"
-             , "TR.CompanyName"), verbose = TRUE)
-
+ex1 <- EikonGetData(
+  EikonObject = EikonJson, rics = c("MMM", "III.L"),
+  Eikonformulas = c(
+    "TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/",
+    "TR.CompanyName"
+  ), verbose = TRUE
+)
 }
-
 
 }
 \references{

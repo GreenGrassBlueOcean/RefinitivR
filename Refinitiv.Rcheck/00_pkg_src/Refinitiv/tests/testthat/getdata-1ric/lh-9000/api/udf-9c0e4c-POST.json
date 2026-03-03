@@ -1,0 +1,43 @@
+{
+    "responses": [
+        {
+            "columnHeadersCount": 1,
+            "data": [
+                [
+                    "AAPL.O",
+                    "Apple Inc",
+                    "Ordinary Shares",
+                    "Consolidated Issue Listed on Nasdaq Global Select Market",
+                    true
+                ]
+            ],
+            "headerOrientation": "horizontal",
+            "headers": [
+                [
+                    {
+                        "displayName": "Instrument"
+                    },
+                    {
+                        "displayName": "Company Name",
+                        "field": "TR.COMPANYNAME"
+                    },
+                    {
+                        "displayName": "Instrument Type",
+                        "field": "TR.INSTRUMENTTYPE"
+                    },
+                    {
+                        "displayName": "Exchange Name",
+                        "field": "TR.EXCHANGENAME"
+                    },
+                    {
+                        "displayName": "Instrument Is Active Flag",
+                        "field": "TR.INSTRUMENTISACTIVE"
+                    }
+                ]
+            ],
+            "rowHeadersCount": 1,
+            "totalColumnsCount": 5,
+            "totalRowsCount": 2
+        }
+    ]
+}

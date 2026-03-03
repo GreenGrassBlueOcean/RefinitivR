@@ -1,0 +1,43 @@
+{
+    "responses": [
+        {
+            "columnHeadersCount": 1,
+            "data": [
+                [
+                    "MMM",
+                    "3M Co",
+                    "NYQ",
+                    "NYQ",
+                    "USD"
+                ]
+            ],
+            "headerOrientation": "horizontal",
+            "headers": [
+                [
+                    {
+                        "displayName": "Instrument"
+                    },
+                    {
+                        "displayName": "Company Name",
+                        "field": "TR.COMPANYNAME"
+                    },
+                    {
+                        "displayName": "CF_EXCHNG",
+                        "field": "CF_EXCHNG"
+                    },
+                    {
+                        "displayName": "RDN_EXCHD2",
+                        "field": "RDN_EXCHD2"
+                    },
+                    {
+                        "displayName": "CURRENCY",
+                        "field": "CURRENCY"
+                    }
+                ]
+            ],
+            "rowHeadersCount": 1,
+            "totalColumnsCount": 5,
+            "totalRowsCount": 2
+        }
+    ]
+}

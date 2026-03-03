@@ -1,16 +1,20 @@
 Package: Refinitiv
 Type: Package
-Title: Connect to Datastream and python Eikon api in r
-Version: 0.1.0.9004
+Title: Connect to LSEG/Refinitiv Eikon and DataStream from R
+Version: 0.2.0
 Author: Laurens van der Burg
 Maintainer: Laurens van der Burg <laurens@ggbo.eu>
-Description: R interface to the Eikon Python api using reticulate and to DataStream using the DatastreamDSWS2R package. This package is in no way affiliated with Thomson Reuters,Refinitv, Eikon or Datastream. Use at own risk.
-             This package makes use of the DatastreamDSWS2R package from CharlesCara on Github for DataStream Connections.
+Description: Zero-config R interface to LSEG Workspace (formerly Refinitiv Eikon)
+    and DataStream. Auto-detects the running terminal, connects via direct JSON
+    API calls, and provides opt-in session-scoped request caching. Includes
+    historical and snapshot data retrieval, real-time WebSocket streaming, ESG,
+    consensus estimates, ownership data, custom instruments, and news. DataStream
+    access is provided via the 'DatastreamDSWS2R' package. This package is in no
+    way affiliated with LSEG, Refinitiv, Eikon or Datastream. Use at own risk.
 License: LGPL (>= 2.0, < 3) | Mozilla Public License
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    reticulate,
     zoo,
     methods,
     DatastreamDSWS2R,
@@ -18,20 +22,12 @@ Imports:
     data.table,
     jsonlite,
     rlang,
-    here,
     rstudioapi,
     httr2,
     R6,
     base64enc
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
-Config/reticulate:
-  list(
-    packages = list(
-      list(package = "eikon", pip = TRUE),
-      list(package = "refinitiv.dataplatform", pip = TRUE)
-    )
-  )
 RoxygenNote: 7.3.3
 Depends: 
     R (>= 4.1.0)
@@ -42,10 +38,10 @@ Suggests:
     devtools,
     countrycode,
     dplyr,
-    archivist,
-    digest,
     shiny,
     websocket,
     later,
-    mockery
+    mockery,
+    httptest2,
+    withr
 URL: https://greengrassblueocean.github.io/RefinitivR/

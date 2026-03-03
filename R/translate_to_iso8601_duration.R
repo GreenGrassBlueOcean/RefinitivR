@@ -16,25 +16,29 @@
 #'
 #' @return A character string representing the ISO 8601 duration equivalent of the input frequency.
 #' @examples
-#' translate_to_iso8601_duration('minute')   # Returns "PT1M"
-#' translate_to_iso8601_duration('hour')     # Returns "PT1H"
-#' translate_to_iso8601_duration('weekly')   # Returns "P1W"
-#' translate_to_iso8601_duration('unknown')  # Returns "P1D" (default)
+#' Refinitiv:::translate_to_iso8601_duration("minute") # Returns "PT1M"
+#' Refinitiv:::translate_to_iso8601_duration("hour") # Returns "PT1H"
+#' Refinitiv:::translate_to_iso8601_duration("weekly") # Returns "P1W"
+#' Refinitiv:::translate_to_iso8601_duration("unknown") # Returns "P1D" (default)
 #'
-#' @export
-translate_to_iso8601_duration <- function(frequency = 'daily') {
+#' @keywords internal
+translate_to_iso8601_duration <- function(frequency = "daily") {
   # Handle NULL and NA input
   if (is.null(frequency) || is.na(frequency)) {
-    return('P1D')
+    return("P1D")
   }
   InputFrequency <- frequency
 
   # Define a data.table with the mapping
   frequency_map <- data.table::data.table(
-    frequency = c('minute', '5 minutes', '10 minutes', '30 minutes', 'hour',
-                  'daily', 'weekly', '7 days', 'monthly', 'quarterly', 'yearly'),
-    iso8601 = c('PT1M', 'PT5M', 'PT10M', 'PT30M', 'PT1H',
-                'P1D', 'P1W', 'P7D', 'P1M', 'P3M', 'P1Y')
+    frequency = c(
+      "minute", "5 minutes", "10 minutes", "30 minutes", "hour",
+      "daily", "weekly", "7 days", "monthly", "quarterly", "yearly"
+    ),
+    iso8601 = c(
+      "PT1M", "PT5M", "PT10M", "PT30M", "PT1H",
+      "P1D", "P1W", "P7D", "P1M", "P3M", "P1Y"
+    )
   )
 
   # Attempt to find the corresponding ISO 8601 duration
@@ -43,7 +47,7 @@ translate_to_iso8601_duration <- function(frequency = 'daily') {
 
   # Default to 'P1D' (daily) if the input is not found
   if (length(result) == 0) {
-    result <- 'P1D'
+    result <- "P1D"
   }
 
   return(result)

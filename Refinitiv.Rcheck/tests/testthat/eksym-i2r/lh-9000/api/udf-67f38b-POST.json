@@ -1,0 +1,16 @@
+{
+    "mappedSymbols": [
+        {
+            "bestMatch": {
+                "RIC": "AAPL.O"
+            },
+            "symbol": "US0378331005"
+        },
+        {
+            "bestMatch": {
+                "error": "No best match available"
+            },
+            "symbol": "GB00B03MLX29"
+        }
+    ]
+}

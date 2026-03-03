@@ -4,12 +4,18 @@
 \alias{RDPget_search_metadata}
 \title{Get search metadata from RDP}
 \usage{
-RDPget_search_metadata(RDP = RDConnect(), searchView = NULL)
+RDPget_search_metadata(RDP = rd_connection(), searchView = NULL, cache = NULL)
 }
 \arguments{
-\item{RDP}{Refinitiv DataPlatform Connection object}
+\item{RDP}{Refinitiv JSON connection object}
 
 \item{searchView}{character choose from @seealso RDPShowAvailableSearchViews}
+
+\item{cache}{Controls caching. \code{NULL} (default) defers to
+\code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
+function default TTL (3600 s / 1 hour). \code{FALSE} disables caching.
+A positive numeric value sets the cache TTL in seconds.
+See \code{\link{rd_ClearCache}}.}
 }
 \value{
 data.table with metadata search results
@@ -19,10 +25,10 @@ Get search metadata from RDP
 }
 \examples{
 \dontrun{
-test_json <- RDPget_search_metadata(RDP =  RefinitivJsonConnect()
-                              , searchView = "EquityQuotes")
-test_rd <- RDPget_search_metadata(RDP = RDConnect()
-                              , searchView = "EQUITY_QUOTES")
+test_json <- RDPget_search_metadata(
+  RDP = RefinitivJsonConnect(),
+  searchView = "EquityQuotes"
+)
 }
 }
 \seealso{

@@ -7,12 +7,16 @@
 #'
 #' @param universe Character vector of instrument RICs to stream
 #' @param fields Character vector of field names to retrieve
-#' @param on_refresh Optional function to call on refresh events. 
+#' @param on_refresh Optional function to call on refresh events.
 #'   Function signature: `function(stream, instrument, fields)`
 #' @param on_update Optional function to call on update events.
 #'   Function signature: `function(stream, instrument, fields)`
 #' @param on_error Optional function to call on error events.
 #'   Function signature: `function(stream, error_message)`
+#' @param on_reconnecting Optional function called when a reconnect attempt starts.
+#'   Function signature: `function(stream, attempt_number)`
+#' @param on_reconnected Optional function called after a successful reconnect.
+#'   Function signature: `function(stream, attempt_number)`
 #' @param RDObject Optional RD connection object (uses active session if not provided)
 #' @param stream_type Type of stream ("pricing" or "analytics", default: "pricing")
 #' @param domain Domain for OMM streams (default: "MarketPrice")
@@ -24,6 +28,8 @@
 #'   - `on_refresh(callback)` - Register refresh callback
 #'   - `on_update(callback)` - Register update callback
 #'   - `on_error(callback)` - Register error callback
+#'   - `on_reconnecting(callback)` - Register reconnecting callback
+#'   - `on_reconnected(callback)` - Register reconnected callback
 #'   - `get_latest_data(instrument)` - Get current snapshot
 #'   - `get_data_history()` - Get buffered historical data
 #'   - `plot_live(field, instrument, ...)` - Create live Shiny plot
@@ -44,10 +50,10 @@
 #'     print(fields)
 #'   }
 #' )
-#' 
+#'
 #' # Start streaming
 #' stream$open()
-#' 
+#'
 #' # Later: stop streaming
 #' stream$close()
 #' }
@@ -70,10 +76,10 @@
 #'   fields = c("BID", "ASK")
 #' )
 #' stream$open()
-#' 
+#'
 #' # Create and run live plot
 #' app <- stream$plot_live(field = "BID")
-#' shiny::runApp(app)  # Opens in browser
+#' shiny::runApp(app) # Opens in browser
 #' }
 #'
 #' \dontrun{
@@ -83,7 +89,7 @@
 #'   fields = c("BID", "ASK")
 #' )
 #' stream$open()
-#' Sys.sleep(10)  # Collect some data
+#' Sys.sleep(10) # Collect some data
 #' summary <- stream$get_summary()
 #' print(summary)
 #' }
@@ -93,6 +99,8 @@ rd_get_streaming_data <- function(
   on_refresh = NULL,
   on_update = NULL,
   on_error = NULL,
+  on_reconnecting = NULL,
+  on_reconnected = NULL,
   RDObject = NULL,
   stream_type = "pricing",
   domain = "MarketPrice",
@@ -100,16 +108,16 @@ rd_get_streaming_data <- function(
 ) {
   # Validate inputs
   validate_streaming_params(universe, fields)
-  
+
   # Check dependencies
   if (!requireNamespace("websocket", quietly = TRUE)) {
     stop("Please install 'websocket' package: install.packages('websocket')")
   }
-  
+
   if (!requireNamespace("later", quietly = TRUE)) {
     stop("Please install 'later' package: install.packages('later')")
   }
-  
+
   # Create stream definition
   if (stream_type == "pricing") {
     stream_def <- rd_streaming_pricing$Definition$new(
@@ -121,26 +129,33 @@ rd_get_streaming_data <- function(
   } else {
     stop(paste("Stream type", stream_type, "not yet implemented"))
   }
-  
+
   # Create stream
   stream <- stream_def$get_stream()
-  
+
   # Register callbacks if provided
   if (!is.null(on_refresh)) {
     stream$on_refresh(on_refresh)
   }
-  
+
   if (!is.null(on_update)) {
     stream$on_update(on_update)
   }
-  
+
   if (!is.null(on_error)) {
     stream$on_error(on_error)
   }
-  
+
+  if (!is.null(on_reconnecting)) {
+    stream$on_reconnecting(on_reconnecting)
+  }
+
+  if (!is.null(on_reconnected)) {
+    stream$on_reconnected(on_reconnected)
+  }
+
   return(stream)
 }
 
 # rd_streaming_pricing is defined in rd_streaming_definition.R
 # This file provides the high-level API function
-

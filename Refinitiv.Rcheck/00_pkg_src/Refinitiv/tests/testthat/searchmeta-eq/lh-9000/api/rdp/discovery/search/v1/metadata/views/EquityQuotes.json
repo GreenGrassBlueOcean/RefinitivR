@@ -1,0 +1,4512 @@
+{
+    "Properties": {
+        "AAACurrencyBondBenchmarkChain": {
+            "Type": "String"
+        },
+        "AACurrencyBondBenchmarkChain": {
+            "Type": "String"
+        },
+        "ABSMBSBondsRIC": {
+            "Type": "String"
+        },
+        "ActiveEstimatesExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "ActivityDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ACurrencyBondBenchmarkChain": {
+            "Type": "String"
+        },
+        "AdmissionToTrading": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ADRType": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ADRTypeName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "Adxr14D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Adxr30D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Adxr9D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "AliasRIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "Alpha": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "AlternateISIN": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "ApplicableInventory": {
+            "Type": "String"
+        },
+        "AssetCategory": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Exact": true
+        },
+        "AssetCategoryName": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Exact": true
+        },
+        "AssetCategoryRoot": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "AssetCategoryRootName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "AssetState": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "AssetStateName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "AssetType": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "AverageSharesOutstanding": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "AvgVol30D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "AvgVol5D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "AvgVol90D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "AvgVolPctChg5DRel30D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "BackgroundInformation": {
+            "Type": "String"
+        },
+        "BaseAsset": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "BaseAssetIssueMainEstID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "BaseAssetIssueMainRepno": {
+            "Type": "String"
+        },
+        "BaseAssetIssueRepEstID": {
+            "Type": "String"
+        },
+        "BaseAssetIssueRepRepno": {
+            "Type": "String"
+        },
+        "BaseAssetPilc": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "BasketDescriptionLongName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "BasketDescriptionShortName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "BBBCurrencyBondBenchmarkChain": {
+            "Type": "String"
+        },
+        "Beta": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "BondFixingsRIC": {
+            "Type": "String"
+        },
+        "BondOverviewRIC": {
+            "Type": "String"
+        },
+        "BridgeExchange": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "BridgeVehicle": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "BuildDateTime": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "BusinessEntity": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "BusinessIntelligenceExists": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "Bvps": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "CallPutOption": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "CapitalRatioTier1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "CashAndEquivalents": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Ccvt120D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Ccvt20D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Ccvt60D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Ccvt90D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "CEDEL": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "CGRType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "CinCUSIP": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "ClaimsRatio": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "CodeResolutionBase": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "CommoditiesDerivativeIndicator": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "CommoditiesDerivativeIndicatorName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "CommonCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "CommonName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Exact": true
+        },
+        "CommonNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "CommonNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "CommonNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "CommonNameLoc": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "CommonNameLocJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "CommonNameLocZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "CommonNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "CommonNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ComplexRIC": {
+            "Type": "String"
+        },
+        "CompositePI": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "CompositeRIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "ContextID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "ContractType": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Exact": true
+        },
+        "ContractTypeCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "ContributorCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "ContributorCommonName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "ContributorCommonNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ContributorCommonNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ContributorCommonNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ContributorCommonNames": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Exact": true
+        },
+        "ContributorCommonNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ContributorCommonNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ContributorLocation": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ContributorLocationName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ConvertibleBondsRIC": {
+            "Type": "String"
+        },
+        "CorporateBondsRIC": {
+            "Type": "String"
+        },
+        "CostIncomeRatio": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "CostOfSales": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "CountryBondMarketRIC": {
+            "Type": "String"
+        },
+        "CountryBondSpeedguideRIC": {
+            "Type": "String"
+        },
+        "CountryBradyBondChain": {
+            "Type": "String"
+        },
+        "CountryDomesticBondMarketFRIC": {
+            "Type": "String"
+        },
+        "CountryDomesticBondMarketMFRIC": {
+            "Type": "String"
+        },
+        "CountryDomesticBondMarketSRIC": {
+            "Type": "String"
+        },
+        "CPERMIDs": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "Currency": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "CurrencyName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "CurrentAssets": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "CurrentLiabilities": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "CurrentRatio": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "CurYld": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "CUSIP": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "CUSIPEight": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "CUSIPHistory": {
+            "Type": "String"
+        },
+        "CUSIPSix": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "DateofRequestforAdmission": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DebtToAssets": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DebtToEquity": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DelayedQuotePO": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "DelayedQuoteRIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "DepositoryBankCommonName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "DepositoryBankPI": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "DerivedCategory": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "DisplayName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "DisplayType": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Exact": true
+        },
+        "DisplayTypeName": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Exact": true
+        },
+        "DivCoverLast12M": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DivCoverProjected": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DivYld": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DivYldHigh": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DivYldLow": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DivYldRelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DivYldRelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DjStoxx": {
+            "Type": "String"
+        },
+        "DocumentsExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "DocumentTitle": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "DocumentTitleJaHani": {
+            "Type": "String"
+        },
+        "DocumentTitleJaHira": {
+            "Type": "String"
+        },
+        "DocumentTitleJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "DocumentTitleZhHans": {
+            "Type": "String"
+        },
+        "DocumentTitleZhHant": {
+            "Type": "String"
+        },
+        "DPAID": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "Dps": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DpsGrowth5Y": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DpsGrowthInterim": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DpsInterim": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "DsQuotationMnemonic": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "DsQuotationNumber": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "DTCCVolumeRIC": {
+            "Type": "String"
+        },
+        "DTCharacteristics": {
+            "Type": "String"
+        },
+        "DTSimpleType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "DTSource": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "DTSourceJaHani": {
+            "Type": "String",
+            "Sortable": true
+        },
+        "DTSourceJaHira": {
+            "Type": "String",
+            "Sortable": true
+        },
+        "DTSourceJaKana": {
+            "Type": "String",
+            "Sortable": true
+        },
+        "DTSourceZhHans": {
+            "Type": "String",
+            "Sortable": true
+        },
+        "DTSourceZhHant": {
+            "Type": "String",
+            "Sortable": true
+        },
+        "DTSubjectName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "DTSubjectNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "DTSubjectNameJaHira": {
+            "Type": "String"
+        },
+        "DTSubjectNameJaKana": {
+            "Type": "String"
+        },
+        "DTSubjectNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "DTSubjectNameZhHant": {
+            "Type": "String"
+        },
+        "EarningsYld": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Ebit": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Ebitda": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EJVAssetID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "EmissionsAllowancesSubType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "EmissionsAllowancesSubTypeName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "Eps": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EpsGrowth5Y": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EpsGrowthInterim": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EpsInterim": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EquitiesCount": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EquityDividends": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EquityIssued": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGAlcohol": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGAnalyticEstimatesCO2EquivalentsEmissionTotal": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGArmaments": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGAuditCommitteeIndependence": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGAverageBoardTenure": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGBoardGenderDiversityPercent": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGBoardStructureType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "ESGCombinedScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGCommunityScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGCompensationCommitteeIndependence": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGContraceptives": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGControversiesScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGCSRStrategyScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGEmissionsScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGEnvironmentPillarScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGFinancialPeriodEndDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGGambling": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGGovernancePillarScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGHumanRightsScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGIndependentBoardMembers": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGInnovationScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGManagementDepartures": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGManagementScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGNetEmploymentCreation": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGOAPermID": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "ESGObjectID": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "ESGPornography": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGProductResponsibilityScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGResourceReductionPolicy": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGResourceUseScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGSalaryGap": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGShareholdersScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGSocialPillarScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGTargetsDiversityAndOpportunity": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGTobacco": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGTotalEnergyUseToRevenuesUSD": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGTotalInjuryRateTotal": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGTotalWasteToRevenuesUSD": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGWasteRecycledToTotalWaste": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGWaterUseToRevenuesUSD": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGWomenManagers": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESGWorkforceScore": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAAssetClassOfTheUnderlying": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMABaseProduct": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAContractTerm": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAContractType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMADeliveryCashSettlementLocation": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "ESMADeliveryType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "ESMAFinalPriceType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAFixedRate": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAFixedRateLeg1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAFixedRateLeg2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAFloatingRateLeg2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAFreightSubTypeSize": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAFurtherSubProduct": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAInflationIndexISIN": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "ESMAInflationIndexName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAIRTermContrLeg2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAMaturity": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMANotionalCurrency": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAOptionExerciseStyle": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAOptionType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAParameter": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAPercentofTUWin12M": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAPriceMultiplier": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAReferenceRate": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMARouteTimeCharterAverage": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMASeriesCDS": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAStrikePrice": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAStrikePriceCurrency": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMASubProduct": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMATermofTheUnderlyingIndex": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMATransactionType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAUnderlyingBondMaturityDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAUnderlyingIndexCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "ESMAUnderlyingIndexName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ESMAUnderlyingInstrumentCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "ESMAUnderlyingSwapMaturityDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ESMAUnderlyingType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "EstDivYldFy1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstDivYldFy2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstDpsFy1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstDpsFy2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstEpsChg1MFy1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstEpsChg1MFy2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstEpsChg3MFy1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstEpsChg3MFy2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstEpsFy1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstEpsFy2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstEpsGrowthFy0Fy1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstEpsGrowthFy0Fy2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstEpsGrowthFy1Fy2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstimateData": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "EstimateList": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "EstimatesExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "EstNumPctDFy1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstNumPctDFy2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstNumPctUFy1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstNumPctUFy2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstPeFy1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstPeFy1RelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstPeFy1RelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstPeFy2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstPeFy2RelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "EstPeFy2RelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Ev": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ExchangeCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "ExchangeCountry": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ExchangeMarketSize": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ExchangeName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "ExchangeType": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ExDividendDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ExerciseEndDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ExerciseStyle": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "ExerciseStyleName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "ExpenseRatio": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ExpiryDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ExpiryDateMonth": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "ExpiryDateString": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "ExpiryDateYear": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "FID259": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "FilingsExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "FIRICTimeSeries": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "FirstCurrencyISO": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "FirstTradeDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "FitchIssuerRating": {
+            "Type": "String"
+        },
+        "FixedRateLeg1": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "FixedRateLeg2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "FloatingRateLeg2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "FreshnessDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "FtseScheme": {
+            "Type": "String"
+        },
+        "FundamentalsExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "FundClassLipperID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "FundClassStatus": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "FundClassStatusName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "FundServCodes": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "FurtherSubProduct": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "FurtherSubProductName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "FutOptSeriesDescription": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "FuturesChainRIC": {
+            "Type": "String"
+        },
+        "FuturesContinuationSeriesRICs": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "FuturesCount": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "FXType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "GEMInstrumentID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "GEMQuotationID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "GeneralAliasName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "GeneralAliasNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "GeneralAliasNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "GeneralAliasNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "GeneralAliasNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "GeneralAliasNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "Gics": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "GicsCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "GicsLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "GicsName": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "HasTimeSeries": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "High52W": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "High52Wcf": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "HKAlias": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "HKVersion": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "Iad": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ICBScheme": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ICBSchemeName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ILXCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "ILXCodeRoot": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "ILXTickerRoot": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "ImpVoltCpc": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "IndexMembership": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "InsertDateTime": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "InstrumentPermID": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "InterestCover": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "InterimNetIncome": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "IPODate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "IRTermContrLeg2": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "IsBasket": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IsChain": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IsConsolidated": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IsDPA": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IsEEAVenueEligible": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "IsExchangeTradable": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "ISIN": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "ISINHistory": {
+            "Type": "String"
+        },
+        "IsMainCompanyFiling": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "IsMainIssueFiling": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "IsMainParallelTradeQuote": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IsMainRIC": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "ISMANumber": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "IsMemberOfIndex": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IsMiFID": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "IsMiFID2": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "IsMiFID2OTCDeriv": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "IsPreIPO": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IsPrimaryIssueRIC": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IsPrimaryRIC": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IsRTEXTradable": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IsShariahCompliant": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IssueAdtLocalCurrencyValue": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueAverageDailyTurnoverEuro": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "IssueCFI": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "IssueCommonName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "IssueCommonNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueCommonNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueCommonNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueCommonNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueCommonNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueData": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueFISN": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueISIN": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "IssueList": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueMiFID": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "IssueMiFIDName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "IssuerBondsExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IssuerCikNumber": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "IssuerCommonName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "IssuerCommonNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerCommonNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerCommonNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerCommonNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerCommonNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerCountry": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "IssuerCountryName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "IssuerEquityOptionsExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IssuerEquityPrimaryRIC": {
+            "Type": "String"
+        },
+        "IssuerEquityWarrantsExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IssuerFDS": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "IssuerHasCds": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IssuerHasRatings": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IssuerID": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerLegalName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerLegalNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerLegalNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerLegalNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerLegalNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerLegalNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerLoansExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IssuerMortgagesExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IssuerMXID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "IssuerOAPermID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "IssuerOrgid": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "IssuerPI": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerRepnoData": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerRepnoList": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerShortName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "IssuerShortNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerShortNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerShortNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerShortNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuerShortNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssuersUltimateParentHasCDS": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "IssuersUltimateParentREC": {
+            "Type": "String"
+        },
+        "IssuerTicker": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "IssuerTradingVenueLEI": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueShortName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "IssueShortNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueShortNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueShortNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueShortNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueShortNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "IssueValuationQuoteRic": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "LastTradeDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "LiquidityRIC": {
+            "Type": "String"
+        },
+        "LISPostTradeThresholdFloor": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "LISPostTradeThresholdValue": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "LISPostTradeTradePercentile": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "LISPostTradeVolumePercentile": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "LISPreTradeThresholdFloor": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "LISPreTradeThresholdValue": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "LISPreTradeTradePercentile": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ListingStatus": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ListingStatusName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "LocalCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "LocalScheme": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "LongTermDebt": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "LotSize": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Low52W": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Low52Wcf": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "MainFilingCommonName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "MainFilingType": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "MainIndexCommonName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "MainIndexPI": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "MainIndexRIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "MainMarketIndices": {
+            "Type": "String"
+        },
+        "MainSuperRIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "MdfChainInstrumentRecid": {
+            "Type": "String"
+        },
+        "MdfPageInstrumentRecid": {
+            "Type": "String"
+        },
+        "Mic": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "MicName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "MiFID2RICType": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "MiFID2RICTypeName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "MiFIDAssetClass": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "MiFIDContractSubType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "MiFIDContractType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "MiFIDInstrumentVersion": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "MiFIDOptionTypeCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "MiFIDSubAssetClass": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "MIFIDUnderlyingType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "MIFIDUnderlyingTypeName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "MiFIRIdentifier": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "MktCapCompanyUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "MktCapIssueUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "MktCapTotal": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "MktCapTotalUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "MoodyIssuerRating": {
+            "Type": "String"
+        },
+        "MsciGicsLocalScheme": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "NameLength": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Nd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "NDAID": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "NetInterestMargin": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "NetProfit": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "NetProfitUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "NewsCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "NextRollDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "NumberOfEmployees": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "OfficersExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "OldQuoteCUSIPs": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "OldQuoteISINs": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "OldQuoteRICs": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "OldQuoteSEDOLs": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "OldQuoteTickers": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "OpMargin": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Opol": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "OpolName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "OpProfit": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "OpProfitInterim": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "OpProfitUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "OpRatio": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "OptionRIC": {
+            "Type": "String"
+        },
+        "OptionsChainRIC": {
+            "Type": "String"
+        },
+        "OptionsCount": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "OptionStub": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "OrganisationStatus": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "OrgMainRepno": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "OriginalAccountsCurrency": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "OwnershipExists": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PageType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "PageTypeSearchable": {
+            "Type": "String"
+        },
+        "ParallelQuoteRic": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "Pe": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PEBackedStatus": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "PeHigh52W": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PeInterim": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PeLow52W": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PercentageIndexRIC": {
+            "Type": "String"
+        },
+        "PeRelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PeRelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Periodicity": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "PeriodicityCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "PermID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "PEType": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "PI": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "Pma50D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PO": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PreferredRIC": {
+            "Type": "String"
+        },
+        "PreferredStockDividends": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PretaxProfit": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PretaxProfitInterim": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PretaxProfitMargin": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PretaxProfitUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PriceClose": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PriceCloseUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg1D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg1M": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg1MRelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg1MRelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg1Y": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg1YRelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg1YRelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg3M": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg3MRelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg3MRelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg5D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg5DRelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg5DRelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg5YRelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg5YRelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChg6M": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChgMtd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChgRel52WHigh": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChgRel52WLow": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChgRelSma200D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChgRelSma30D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChgRelSma60D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChgYtd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChgYtdRelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PricePctChgYtdRelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PriceSource": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "PriceToBook": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PriceToBookRelIndex": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PriceToBookRelSector": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PriceToSales": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "PrimaryIssueEstimatesExist": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "PrimaryIssueFinancialsExist": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "PrimaryIssueRepno": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "PrimaryIssueRepnoData": {
+            "Type": "String"
+        },
+        "PrimaryIssueReportingCountry": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "PrimaryIssueReportingCountryName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "PrimaryListingEstimatesExist": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "PrimaryListingFinancialsExist": {
+            "Type": "Boolean",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "PrimaryListingRepno": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "PrimaryListingRepnoData": {
+            "Type": "String"
+        },
+        "PrimaryListingRepnoTest": {
+            "Type": "String"
+        },
+        "PrimaryListingReportingCountry": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "PrimaryListingReportingCountryName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "PrimaryParentPageRIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "PrimaryRIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "PublicPage": {
+            "Type": "String"
+        },
+        "QuickRatio": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "QuoteEstimateID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "QuotePermId": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "QuoteRepno": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "Quotron": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "RankDateTime": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "RbssScheme": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RbssSchemeName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSAssetCategory": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSAssetCategoryGenealogy": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Exact": true
+        },
+        "RCSAssetCategoryLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSAssetCategoryLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSAssetCategoryName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSAssetCategoryNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSAssetClass": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSCurrency": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSCurrencyGenealogy": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSCurrencyLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSCurrencyLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSCurrencyName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSCurrencyNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSExchangeCountry": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSExchangeCountryGenealogy": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSExchangeCountryLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSExchangeCountryLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSExchangeCountryName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSExchangeCountryNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSFilingCountryLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSFilingCurrencyName": {
+            "Type": "String"
+        },
+        "RCSInterbankOfferedRateType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSInterbankOfferedRateTypeGenealogy": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "RCSInterbankOfferedRateTypeLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSInterbankOfferedRateTypeLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSInterbankOfferedRateTypeName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "RCSInterbankOfferedRateTypeNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSIssuerCountry": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSIssuerCountryGenealogy": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSIssuerCountryLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSIssuerCountryLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSIssuerCountryName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSIssuerCountryNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSOriginalAccountsCurrency": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSOriginalAccountsCurrencyGenealogy": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSOriginalAccountsCurrencyLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSOriginalAccountsCurrencyLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSOriginalAccountsCurrencyName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSOriginalAccountsCurrencyNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSPrimaryIssueReportingCountry": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSPrimaryIssueReportingCountryGenealogy": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSPrimaryIssueReportingCountryLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSPrimaryIssueReportingCountryLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSPrimaryIssueReportingCountryName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSPrimaryIssueReportingCountryNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSPrimaryListingReportingCountry": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSPrimaryListingReportingCountryGenealogy": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSPrimaryListingReportingCountryLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSPrimaryListingReportingCountryLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSPrimaryListingReportingCountryName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSPrimaryListingReportingCountryNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSTRBC": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSTRBC2012": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "RCSTRBC2012Genealogy": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSTRBC2012Leaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSTRBC2012LeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSTRBC2012Name": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSTRBC2012NameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSTRBCGenealogy": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSTRBCLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSTRBCLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RCSTRBCName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "RCSTRBCNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "RECType": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ReponoEstimatesIDs": {
+            "Type": "String"
+        },
+        "RequestforAdmission": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "RetireDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ReutersIndustryClassification": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "Revenue": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "RevenueGrowth5Y": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "RevenueGrowthInterim": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "RevenueInterim": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "RevenueUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "RIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "RICHistory": {
+            "Type": "String"
+        },
+        "RICLength": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "RicRoot": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "RICStripped": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "RICUsageCount": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Roe": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Rofa": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "RollMonths": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Rota": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Rsi14D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Rsi30D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Rsi3D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Rsi9D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SalesToAssets": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SalesToInventory": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SalesToReceivables": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SalesToWorkingCap": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SDCCUSIP": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "SearchAllCategory": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "SearchAllCategoryv2": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "SearchAllCategoryv3": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "SearchWarrantType": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SearchWarrantTypeName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "SecondCurrencyISO": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "SecondUnderlyingRCSAssetClass": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SEditAudit": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SEDOL": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "SEDOLHistory": {
+            "Type": "String"
+        },
+        "SedolSecondaryQuote": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "SedolSecondaryQuoteOpol": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "SedolSecondaryQuoteOpolName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SedolSecondaryQuoteValue": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "SeriesCDS": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Service": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ShareClass": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ShareClassName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ShareholdersEquity": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ShareholdersEquityUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "ShortName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "ShortNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ShortNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ShortNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ShortNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ShortNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "ShortTermDebt": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SICC": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SiccScheme": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SiccSchemeCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "SiccSchemeJa": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "Sicovam": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "SicScheme": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SigDevExist": {
+            "Type": "Boolean",
+            "Searchable": true
+        },
+        "SnSISIN": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "SolvencyMargin": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Source": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SPIssuerRating": {
+            "Type": "String"
+        },
+        "SpotCurrencyRIC": {
+            "Type": "String"
+        },
+        "SpotRIC": {
+            "Type": "String"
+        },
+        "SSTIPostTradeThresholdFloor": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SSTIPostTradeThresholdValue": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SSTIPostTradeTradePercentile": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SSTIPostTradeVolumePercentile": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SSTIPreTradeThresholdFloor": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SSTIPreTradeThresholdValue": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "SSTIPreTradeTradePercentile": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "StaffCosts": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "StrikeMultiplier": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "StrikePrice": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "StrikePriceString": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "SubjectBoost": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "SucceededCompanyNDAPI": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SucceededCompanyOAPermID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "SucceededCompanyPrimaryRIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "SucceededOrganisationName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SucceededOrganisationOrgid": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "SwapConstituentRCSAssetClass": {
+            "Type": "String"
+        },
+        "SymbolHistoryScope": {
+            "Type": "Nested",
+            "Properties": {
+                "StartDate": {
+                    "Type": "Date",
+                    "Searchable": true,
+                    "Sortable": true
+                },
+                "SymbolValue": {
+                    "Type": "String",
+                    "Searchable": true
+                },
+                "SymbolType": {
+                    "Type": "String",
+                    "Searchable": true
+                },
+                "EndDate": {
+                    "Type": "Date",
+                    "Searchable": true,
+                    "Sortable": true
+                }
+            }
+        },
+        "TerminationDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "TickerSymbol": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "TickerSymbolChars": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "TickerSymbolHistory": {
+            "Type": "String"
+        },
+        "TickerSymbolNonDerivatives": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "TMTQuoteID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "TotalAssets": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "TotalAssetsToEquity": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "TotalAssetsUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "TotalCapitalRatio": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "TotalLiabilities": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "TotalLiabilitiesUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "TotalOperatingIncome": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "TradingAdmissionApprovalDate": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "TradingValue": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "TRCSAssetCategory": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "TRCSAssetCategoryGenealogy": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Exact": true
+        },
+        "TRCSAssetCategoryLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "TRCSAssetCategoryLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "TRCSAssetCategoryName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "TRCSAssetCategoryNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "TRCSAssetCategoryPermID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "TRPercentofTUWin12M": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "UltimatelyCompanyPrimaryRIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "UltimateSucceededCompanyNDAPI": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UltimateSucceededCompanyOAPermID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "UltimateSucceededOrganisationName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UltimateSucceededOrganisationOrgid": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingAssetQuote": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingAssetType": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "UnderlyingCompanyCountryRCSCode": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "UnderlyingCompanyPrimaryRICCode": {
+            "Type": "String"
+        },
+        "UnderlyingCompanyRepNo": {
+            "Type": "String"
+        },
+        "UnderlyingGics": {
+            "Type": "String"
+        },
+        "UnderlyingInstrumentPI": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingISIN": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "UnderlyingIssuerLEI": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "UnderlyingIssuerMktCapCompanyUsd": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "UnderlyingIssuerName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "UnderlyingIssuerNameChain": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingIssuerNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingIssuerNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingIssuerNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingIssuerNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingIssuerNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingIssuerOAPermID": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "UnderlyingIssuerOrgid": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingIssuerPI": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingMiFIRIdentifier": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "UnderlyingNDAQuoteRIC": {
+            "Type": "String"
+        },
+        "UnderlyingQuoteCommonNameJaHira": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingQuoteName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "UnderlyingQuoteNameJaHani": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingQuoteNameJaKana": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingQuoteNameZhHans": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingQuoteNameZhHant": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingQuoteOptionWatchRICs": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "UnderlyingQuotePI": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "UnderlyingQuoteRIC": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "UnderlyingQuoteRICs": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "UnderlyingRCSAssetCategory": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "UnderlyingRCSAssetCategoryGenealogy": {
+            "Type": "String",
+            "Searchable": true,
+            "Navigable": true,
+            "Exact": true
+        },
+        "UnderlyingRCSAssetCategoryLeaf": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "UnderlyingRCSAssetCategoryLeafML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "UnderlyingRCSAssetCategoryName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderlyingRCSAssetCategoryNameML": {
+            "Type": "String",
+            "Searchable": true,
+            "Exact": true
+        },
+        "UnderlyingRCSAssetClass": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "UnderwritingRatio": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "USStockTicker": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "Valoren": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "VEFirmID": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "VehAddTime": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "VehicleCommonName": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "VehicleLifecycleStatus": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true
+        },
+        "VehiclePermID": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "VehModTime": {
+            "Type": "Date",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "VenueLEI": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true,
+            "Groupable": true,
+            "Exact": true
+        },
+        "VenuePermID": {
+            "Type": "String",
+            "Searchable": true,
+            "Sortable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "Vma10D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Vma25D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Vma50D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Volatility10D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Volatility200D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Volatility30D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "Volatility90D": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "WarrantPipedRICs": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Exact": true,
+            "Symbol": true
+        },
+        "WarrantsCount": {
+            "Type": "Double",
+            "Searchable": true,
+            "Sortable": true,
+            "Navigable": true
+        },
+        "WarrantType": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "WarrantTypeName": {
+            "Type": "String",
+            "Searchable": true
+        },
+        "Wert": {
+            "Type": "String",
+            "Searchable": true,
+            "Groupable": true,
+            "Symbol": true
+        },
+        "YearHighToday2RIC": {
+            "Type": "String"
+        },
+        "YearLowToday2RIC": {
+            "Type": "String"
+        }
+    }
+}

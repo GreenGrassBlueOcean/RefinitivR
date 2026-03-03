@@ -6,7 +6,7 @@
 For example: convert SEDOL instrument names to RIC names}
 \usage{
 EikonGetSymbology(
-  EikonObject,
+  EikonObject = rd_connection(),
   symbol,
   from_symbol_type = "RIC",
   to_symbol_type = c("CUSIP", "ISIN", "SEDOL", "RIC", "ticker", "lipperID", "IMO",
@@ -14,11 +14,13 @@ EikonGetSymbology(
   bestMatch = TRUE,
   time_out = 60,
   verbose = FALSE,
-  raw_output = FALSE
+  raw_output = FALSE,
+  cache = NULL
 )
 }
 \arguments{
-\item{EikonObject}{Eikon object created using EikonConnect function}
+\item{EikonObject}{Eikon connection object. Defaults to \code{rd_connection()},
+which auto-creates a connection on first use.}
 
 \item{symbol}{character or list of characters     Single instrument or list of instruments to convert.}
 
@@ -30,46 +32,66 @@ EikonGetSymbology(
 
 \item{time_out}{numeric set the maximum timeout to the Eikon server, default = 60}
 
-\item{verbose}{boolean, set to true to print out the actual python call with time stamp for debugging.}
+\item{verbose}{boolean, set to TRUE to print out the API call details with time stamp for debugging.}
 
 \item{raw_output}{boolean     Set this parameter to True to get the data in json format if set to FALSE, the function will return a data frame Default: FALSE}
+
+\item{cache}{Controls caching. \code{NULL} (default) defers to
+\code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
+function default TTL (3600 s / 1 hour). \code{FALSE} disables caching.
+A positive numeric value sets the cache TTL in seconds.
+See \code{\link{rd_ClearCache}}.}
 }
 \value{
 data.frame
 }
 \description{
-original python parameters raw_output and debug cannot be used due to int64 python to R conversion problem.
-\url{https://github.com/rstudio/reticulate/issues/729}
+Returns a list of instrument names converted into another instrument code.
+For example: convert SEDOL instrument names to RIC names
 }
 \examples{
 \dontrun{
 Eikon <- Refinitiv::EikonConnect()
-ex1 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "AAPL.O"
- , to_symbol_type = "ISIN" )
-ex2 <- EikonGetSymbology(EikonObject = Eikon
-, symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
-,  to_symbol_type = "RIC" , verbose = TRUE)
-ex3 <- EikonGetSymbology(EikonObject = Eikon
-, symbol =  "GB00B03MLX29", from_symbol_type = "ISIN"
-,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
-ex4 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.AS"
-, to_symbol_type = "ISIN"  , verbose = TRUE)
-ex5 <- EikonGetSymbology(EikonObject = Eikon, symbol =  "RDSa.L"
-, to_symbol_type = "ISIN"  , verbose = TRUE)
-ex6 <- EikonGetSymbology(EikonObject = Eikon
-, symbol =  c("GB00B03MLX29", "NL0015476987"), from_symbol_type = "ISIN"
-,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
-ex7 <- EikonGetSymbology(EikonObject = Eikon
-, symbol =  c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN"
-,  to_symbol_type = "RIC" , verbose = TRUE, bestMatch = FALSE)
+ex1 <- EikonGetSymbology(
+  EikonObject = Eikon, symbol = "AAPL.O",
+  to_symbol_type = "ISIN"
+)
+ex2 <- EikonGetSymbology(
+  EikonObject = Eikon,
+  symbol = "GB00B03MLX29", from_symbol_type = "ISIN",
+  to_symbol_type = "RIC", verbose = TRUE
+)
+ex3 <- EikonGetSymbology(
+  EikonObject = Eikon,
+  symbol = "GB00B03MLX29", from_symbol_type = "ISIN",
+  to_symbol_type = "RIC", verbose = TRUE, bestMatch = FALSE
+)
+ex4 <- EikonGetSymbology(
+  EikonObject = Eikon, symbol = "RDSa.AS",
+  to_symbol_type = "ISIN", verbose = TRUE
+)
+ex5 <- EikonGetSymbology(
+  EikonObject = Eikon, symbol = "RDSa.L",
+  to_symbol_type = "ISIN", verbose = TRUE
+)
+ex6 <- EikonGetSymbology(
+  EikonObject = Eikon,
+  symbol = c("GB00B03MLX29", "NL0015476987"), from_symbol_type = "ISIN",
+  to_symbol_type = "RIC", verbose = TRUE, bestMatch = FALSE
+)
+ex7 <- EikonGetSymbology(
+  EikonObject = Eikon,
+  symbol = c("GB00B03MLX29", "US0378331005"), from_symbol_type = "ISIN",
+  to_symbol_type = "RIC", verbose = TRUE, bestMatch = FALSE
+)
 }
 
 \dontrun{
- EikonJson <- RefinitivJsonConnect()
- ex1 <- EikonGetSymbology(EikonObject = EikonJson, symbol =  "AAPL.O"
- , to_symbol_type = "ISIN" )
+EikonJson <- RefinitivJsonConnect()
+ex1 <- EikonGetSymbology(
+  EikonObject = EikonJson, symbol = "AAPL.O",
+  to_symbol_type = "ISIN"
+)
 }
-
-
 
 }

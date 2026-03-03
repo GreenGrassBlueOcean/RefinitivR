@@ -67,15 +67,30 @@ test_that("ConvertNestedlisttoDT handles empty list", {
 })
 
 test_that("ConvertNestedlisttoDT handles real test case", {
-nested_list_6 <- list(list(CentralBankName = "Bank Indonesia", DocumentTitle = "Indonesia, Policy Rates, 7-Day Reverse Repo, Reuters Polls, Monthly, Bank Indonesia",
-                                RIC = "IDCBRR=ECI", ObservationValue = 6.25)
-                           , list(CentralBankName = "Bank Indonesia", DocumentTitle = "Indonesia, ID 7-DAY REVERSE REPO RATE - LONG-TERM OUTLOOK - OCBC, Long-Term Outlook, Quarterly, Reuters",
-                                  RIC = "pIDREVREQP=4295887834", ObservationValue = 5))
-result_6 <- ConvertNestedlisttoDT(nested_list_6)
-expected_6 <-structure(list(CentralBankName = c("Bank Indonesia", "Bank Indonesia")
-                            , DocumentTitle = c("Indonesia, Policy Rates, 7-Day Reverse Repo, Reuters Polls, Monthly, Bank Indonesia",
-                                                "Indonesia, ID 7-DAY REVERSE REPO RATE - LONG-TERM OUTLOOK - OCBC, Long-Term Outlook, Quarterly, Reuters")
-                            , RIC = c("IDCBRR=ECI", "pIDREVREQP=4295887834"), ObservationValue = c(6.25, 5)), row.names = c(NA, -2L)
-, class = c("data.table", "data.frame"))
- expect_equal(result_6, expected_6)
- })
+  nested_list_6 <- list(
+    list(
+      CentralBankName = "Bank Indonesia", DocumentTitle = "Indonesia, Policy Rates, 7-Day Reverse Repo, Reuters Polls, Monthly, Bank Indonesia",
+      RIC = "IDCBRR=ECI", ObservationValue = 6.25
+    ),
+    list(
+      CentralBankName = "Bank Indonesia", DocumentTitle = "Indonesia, ID 7-DAY REVERSE REPO RATE - LONG-TERM OUTLOOK - OCBC, Long-Term Outlook, Quarterly, Reuters",
+      RIC = "pIDREVREQP=4295887834", ObservationValue = 5
+    )
+  )
+  result_6 <- ConvertNestedlisttoDT(nested_list_6)
+  expected_6 <- structure(
+    list(
+      CentralBankName = c("Bank Indonesia", "Bank Indonesia"),
+      DocumentTitle = c(
+        "Indonesia, Policy Rates, 7-Day Reverse Repo, Reuters Polls, Monthly, Bank Indonesia",
+        "Indonesia, ID 7-DAY REVERSE REPO RATE - LONG-TERM OUTLOOK - OCBC, Long-Term Outlook, Quarterly, Reuters"
+      ),
+      RIC = c("IDCBRR=ECI", "pIDREVREQP=4295887834"), ObservationValue = c(6.25, 5)
+    ),
+    row.names = c(NA, -2L),
+    class = c("data.table", "data.frame")
+  )
+  expect_equal(result_6, expected_6)
+})
+
+dump_refinitiv_options("test-ConvertNestedlisttoDT")

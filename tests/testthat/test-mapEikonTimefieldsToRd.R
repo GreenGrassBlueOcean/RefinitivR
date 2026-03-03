@@ -2,8 +2,10 @@ library(testthat)
 
 test_that("mapEikonTimefieldsToRd translates known columns correctly and retains names", {
   original_cols <- c("TIMESTAMP", "VOLUME", "HIGH", "LOW", "OPEN", "CLOSE")
-  expected_cols <- c(TIMESTAMP = "TIMESTAMP", VOLUME = "ACVOL_UNS", HIGH = "MKT_HIGH",
-                     LOW = "MKT_LOW", OPEN = "MKT_OPEN", CLOSE = "CLS_AUC")
+  expected_cols <- c(
+    TIMESTAMP = "TIMESTAMP", VOLUME = "ACVOL_UNS", HIGH = "MKT_HIGH",
+    LOW = "MKT_LOW", OPEN = "MKT_OPEN", CLOSE = "CLS_AUC"
+  )
 
   translated_cols <- mapEikonTimefieldsToRd(original_cols)
 
@@ -21,7 +23,7 @@ test_that("mapEikonTimefieldsToRd keeps unmapped columns unchanged and retains n
 
 test_that("mapEikonTimefieldsToRd handles empty input gracefully and returns empty named vector", {
   original_cols <- character(0)
-  expected_cols <- setNames(character(0), character(0))  # Empty named vector
+  expected_cols <- setNames(character(0), character(0)) # Empty named vector
 
   translated_cols <- mapEikonTimefieldsToRd(original_cols)
 
@@ -45,3 +47,5 @@ test_that("mapEikonTimefieldsToRd handles input with only mapped columns and ret
 
   expect_equal(translated_cols, expected_cols)
 })
+
+dump_refinitiv_options("test-mapEikonTimefieldsToRd")

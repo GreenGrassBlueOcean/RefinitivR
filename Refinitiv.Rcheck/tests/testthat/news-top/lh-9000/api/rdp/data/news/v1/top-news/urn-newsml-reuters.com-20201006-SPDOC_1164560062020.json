@@ -1,0 +1,660 @@
+{
+    "_metadata": {
+        "outdated": false,
+        "cached": true
+    },
+    "data": [
+        {
+            "text": "US and Iran make significant progress in talks, will meet again soon, mediator says",
+            "dateLine": "GENEVA, Feb 26 (Reuters)",
+            "snippet": "The United States and Iran made significant progress in\ntalks on Thursday aimed at resolving a longstanding nuclear\ndispute and averting new U.S. strikes, mediator Oman said, amid\nWashington's large-scale military buildup in the Middle East.",
+            "image": {
+                "byLine": "Oman News Agency",
+                "text": "Omani Foreign Minister Badr Albusaidi meets with U.S. Special Envoy Steve Witkoff and U.S. President Donald Trump's son-in-law Jared Kushner, in Geneva, Switzerland, February 26, 2026. ",
+                "id": "2026-02-26T133459Z_1_DI1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T00:59:00.000Z",
+            "versionCreated": "2026-02-26T20:12:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0WX",
+            "relatedHeadlines": [
+                {
+                    "text": "US officials warn of Iranian threat to the US ahead of nuclear talks",
+                    "versionCreated": "2026-02-25T22:44:00.000Z",
+                    "dateLine": "(Reuters)",
+                    "snippet": "BASSETERRE, Saint Kitts and Nevis/WASHINGTON, Feb 25 S enior Trump administration officials on Wednesday made the case that Iran poses a major threat to the United States ahead of Thursday negotiations over Tehran's nuclear program.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL1I2"
+                },
+                {
+                    "text": "EXPLAINER-After Trump remarks, what is status of Iran's weapons programs?",
+                    "versionCreated": "2026-02-25T21:25:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 25 (Reuters)",
+                    "snippet": "U.S. President Donald Trump briefly laid out a case for a possible attack on Iran in his State of the Union speech to Congress, saying he would not allow what he called the world's biggest sponsor of terrorism to obtain a nuclear weapon.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL8N3ZL267"
+                },
+                {
+                    "text": "US expands sanctions on Iran over oil sales, weapons programs",
+                    "versionCreated": "2026-02-25T16:05:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 25 (Reuters)",
+                    "snippet": "The U.S. Treasury Department on Wednesday imposed sanctions on more than 30 individuals, entities and \"shadow fleet\" vessels it said enabled Iran's illicit petroleum sales, ballistic missiles and weapons production.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0TC"
+                },
+                {
+                    "text": "NEWSMAKER-Surviving strike, Shamkhani resumes central role in Iran's war room",
+                    "versionCreated": "2026-02-25T11:26:00.000Z",
+                    "dateLine": "DUBAI, Feb 25 (Reuters)",
+                    "snippet": "Ali Shamkhani, who taunted Israel after being pulled alive from the rubble of his Tehran home following a strike in June 2025, has survived at the centre of Iranian policy-making during its most testing military confrontations and diplomatic endeavours.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL8N3ZK1QN"
+                }
+            ]
+        },
+        {
+            "text": "Nvidia shares fall as investors fret over returns, look past strong results",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Nvidia's shares fell on Thursday as investors looked past\nstrong earnings, wary that the chip designer continues to\nchannel capital into expanding the AI ecosystem, the payoffs for\nwhich are still unclear, rather than boosting shareholder\nreturns.",
+            "image": {
+                "byLine": "Abdul Saboor",
+                "text": "The logo of Nvidia is seen during the Adopt AI International Summit at the Grand Palais in Paris, France, November 26, 2025. ",
+                "id": "2026-02-25T213729Z_1_UV7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T07:13:00.000Z",
+            "versionCreated": "2026-02-26T17:25:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0BJ",
+            "relatedHeadlines": [
+                {
+                    "text": "ANALYSIS-Nvidia's CEO prepares investors for a renewed battle with Intel, AMD",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "dateLine": "SAN FRANCISCO, Feb 25 (Reuters)",
+                    "snippet": "Nvidia may have made its immense fortune on the back of specialized graphics processing units (GPUs) used to power artificial intelligence servers, but CEO Jensen Huang is increasingly professing his love for the more generalist CPU.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM059"
+                },
+                {
+                    "text": "Nvidia expects gaming chips shortage to last until year-end",
+                    "versionCreated": "2026-02-26T19:38:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "A global shortage of gaming chips could last until the end of this year, an Nvidia executive has said, signaling more pain for the video game industry that is already buckling under weak sales due to slowing consumer demand.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM250"
+                },
+                {
+                    "text": "Nvidia's results beat estimates, but Wall Street wants more cash return",
+                    "versionCreated": "2026-02-25T21:36:00.000Z",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "snippet": "Chipmaker Nvidia posted better-than-expected results for the January quarter on Wednesday and forecast current-quarter revenue above market estimates, betting on Big Tech's unabated spending on its artificial-intelligence processors.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZL28E"
+                },
+                {
+                    "text": "EXCLUSIVE-Broadcom expects to sell 1 million 3D stacked chips by 2027",
+                    "versionCreated": "2026-02-26T14:00:00.000Z",
+                    "dateLine": "SAN JOSE, California, Feb 26 (Reuters)",
+                    "snippet": "Artificial intelligence chip designer Broadcom said that it expects to sell at least 1 million chips by 2027 based on its stacked design tech, an executive told Reuters on Wednesday.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL18U"
+                },
+                {
+                    "text": "BREAKINGVIEWS-Nvidia is dogged by memories of cycles past",
+                    "versionCreated": "2026-02-25T22:02:00.000Z",
+                    "dateLine": "NEW YORK, Feb 25 (Reuters Breakingviews)",
+                    "snippet": "Nvidia’s chips are essential for artificial intelligence. It's unsurprising, then, that on Wednesday it reported selling a lot of them. In the quarter ending January 25, revenue expanded 73% year-over-year to $68 billion, as demand grows at a seemingly insatiable rate. The problem for the $4.8 trillion technology titan is that investors seem skeptical that the good times will last. For now, it's hard to fault boss Jensen Huang’s results. Nvidia’s gross margin came in at an astonishing 75%. The mad rush among the biggest tech firms in the world to stuff data centers with its gear – Meta Platforms, for example, increased investment spending by some 50% last quarter – means the company has incredible pricing power. And the boom isn’t ending soon, with Alphabet pledging to double capital expenditures this year, up to as much as $185 billion.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL1B5"
+                }
+            ]
+        },
+        {
+            "text": "US STOCKS-Wall St slides as tech rally stalls, AI enthusiasm wanes after Nvidia results",
+            "dateLine": "NEW YORK, Feb 26 (Reuters)",
+            "snippet": "U.S. stock indexes turned sharply lower on Thursday, the day after a less-than-stellar earnings report from artificial intelligence vanguard Nvidia dragged technology shares which have provided muscle to the recent rally. A pivot back to cyclical sectors helped limit the Dow's losses, while a 3.6% drop in the Philadelphia SE Semiconductor index helped drag the tech-laden Nasdaq down 1.5%.",
+            "image": {
+                "byLine": "Brendan McDermid",
+                "text": "A trader watches his chart while working on the floor of the New York Stock Exchange July 8, 2014. ",
+                "id": "2026-02-25T112722Z_1_EF1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T11:09:00.000Z",
+            "versionCreated": "2026-02-26T19:25:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM173",
+            "relatedHeadlines": [
+                {
+                    "text": "HEDGE FLOW-US software stocks to keep rebounding, says Goldman Sachs prime brokerage note",
+                    "versionCreated": "2026-02-26T11:42:00.000Z",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "snippet": "Goldman Sachs prime brokerage said in a note that the recent bounce in software and IT services stocks may continue, even though this week, hedge funds were as short as they have ever been on the sector.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0Y2"
+                },
+                {
+                    "text": "TREASURIES-US bonds moderately higher on safe-haven buying fueled by Iran fears",
+                    "versionCreated": "2026-02-26T16:29:00.000Z",
+                    "dateLine": "NEW YORK, Feb 26 (Reuters)",
+                    "snippet": "U.S. Treasury prices edged higher on Thursday on the back of some safe-haven bids as investors grew nervous about tensions involving Iran, also pricing in expectations that the Federal Reserve will hold interest rates steady at least for the first half of the year. Iran and the United States are holding indirect talks in Geneva over their long-running nuclear dispute to avert a conflict after U.S. President Donald Trump ordered a huge military build-up in the region.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0YO"
+                },
+                {
+                    "text": "GRAPHIC-Teetering US tech trade puts anchor on market as Nvidia test looms",
+                    "versionCreated": "2026-02-25T11:00:00.000Z",
+                    "dateLine": "NEW YORK, Feb 25 (Reuters)",
+                    "snippet": "The technology stock trade has stumbled out of the starting block in 2026, stemming from pressure from artificial intelligence disruption fears and the allure of groups that have lagged, but the broader market may struggle to make substantial gains without the heavyweight sector's help.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZF15U"
+                },
+                {
+                    "text": "FOREX-Yen strengthens after Bank of Japan signals data-driven rate hikes",
+                    "versionCreated": "2026-02-26T15:27:00.000Z",
+                    "dateLine": "NEW YORK, Feb 26 (Reuters)",
+                    "snippet": "The Japanese yen rebounded on Thursday after the head of the Bank of Japan said the decision on whether to increase interest rates will be based on economic data, while overall movements in the market were subdued as traders waited for fresh catalysts.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0SV"
+                }
+            ]
+        },
+        {
+            "text": "Federal agents detain Columbia University student in campus housing",
+            "dateLine": "NEW YORK, Feb 26 (Reuters)",
+            "snippet": "Agents from the U.S. Department of Homeland Security said they were searching for a missing person when they entered a Columbia University residential building on Thursday and detained a student, Columbia acting President Claire Shipman said.",
+            "image": {
+                "byLine": "Ryan Murphy",
+                "text": "Students walk on campus at Columbia University during the first day of the fall semester in New York City, U.S., September 2, 2025. ",
+                "id": "2026-02-26T181601Z_1_PA5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T17:40:00.000Z",
+            "versionCreated": "2026-02-26T19:16:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM158",
+            "relatedHeadlines": [
+                {
+                    "text": "EXCLUSIVE-ICE struggles to vet recruits amid US immigration enforcement push, internal email shows",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "snippet": "U.S. Immigration and Customs Enforcement is struggling to keep pace with vetting new hires during its historic recruitment push and is laying out a process to deal with allegations of past misconduct among recruits, the agency said in an internal email on Monday, underscoring concerns about ICE’s rapid expansion.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL112"
+                },
+                {
+                    "text": "Trump asks US Supreme Court to end protections for Syrian immigrants",
+                    "versionCreated": "2026-02-26T16:33:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "President Donald Trump's administration asked the U.S. Supreme Court on Thursday to intervene in its effort to strip deportation protections from about 6,000 Syrians living in the United States. The Justice Department in an emergency request asked the Supreme Court to lift a judge's November decision that blocked the administration's move to end Temporary Protected Status, or TPS, for Syrians while litigation challenging the move continues. It is the third time the administration has turned to the Supreme Court related to its efforts to terminate these protections for migrants. The court sided with the administration on both previous occasions, involving the revocation of TPS for hundreds of thousands of Venezuelans.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0Y7"
+                },
+                {
+                    "text": "Most Americans back Trump's deportation goals but not his tactics, Reuters/Ipsos poll finds",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "snippet": "Most Americans share President Donald Trump's view that immigrants living illegally in the U.S. should be deported, but generally disapprove of his hard-line tactics, including masked agents in tactical gear who have clashed with U.S. citizens, a new Reuters/Ipsos poll found. ",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL12Q"
+                },
+                {
+                    "text": "Trump policy allowing swift deportations to alternate countries rejected by US judge",
+                    "versionCreated": "2026-02-25T19:34:00.000Z",
+                    "dateLine": "BOSTON, Feb 25 (Reuters)",
+                    "snippet": "A federal judge on Wednesday ruled that the Trump administration had adopted an unlawful policy that allows for the rapid deportation of migrants to countries other than their own without providing them a chance to object and raise concerns for their safety.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0ZF"
+                },
+                {
+                    "text": "Near-blind refugee found dead in Buffalo after release by US Border Patrol",
+                    "versionCreated": "2026-02-26T02:58:00.000Z",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "snippet": "A nearly blind refugee from Myanmar missing since his release from a Buffalo jail into the custody of U.S. Border Patrol has been found dead on a downtown street, city authorities said on Wednesday.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM01T"
+                }
+            ]
+        },
+        {
+            "text": "Hillary Clinton tells congressional panel she has no information on Epstein",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Former U.S. Secretary of State Hillary Clinton told a congressional committee on Thursday that she did not remember ever meeting the late sex offender Jeffrey Epstein and had no information to share about his criminal activities. ",
+            "image": {
+                "byLine": "Francis Mascarenhas",
+                "text": "Former U.S. Secretary of State Hillary Clinton speaks at the Mumbai Climate Week in Mumbai, India, February 18, 2026. ",
+                "id": "2026-02-26T112850Z_1_BD0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T16:33:00.000Z",
+            "versionCreated": "2026-02-26T18:56:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM10J",
+            "relatedHeadlines": [
+                {
+                    "text": "Trump told police chief 'everyone' knew about Epstein, FBI document says",
+                    "versionCreated": "2026-02-10T20:29:00.000Z",
+                    "dateLine": "Feb 10 (Reuters)",
+                    "snippet": "A newly uncovered FBI interview raised new questions about U.S. President Donald Trump's assertion he knew nothing about convicted sex offender Jeffrey Epstein's crimes, while Trump's commerce secretary, Howard Lutnick, faced a barrage of questions from lawmakers on Tuesday about his own ties to the financier.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260210:nL1N3Z6130"
+                },
+                {
+                    "text": "FACTBOX-Jeffrey Epstein's ties to politicians, business titans and other figures",
+                    "versionCreated": "2026-02-03T00:07:00.000Z",
+                    "dateLine": "Feb 2 (Reuters)",
+                    "snippet": "The U.S. Justice Department's release of millions of internal documents related to Jeffrey Epstein has revealed the late financier and sex offender's ties to many prominent people in politics, finance, academia and business - both before and after he pleaded guilty in 2008 to prostitution charges, including soliciting an underage girl. Evidence in multiple legal and criminal cases has also shed light on these connections. Epstein was arrested again in 2019 on federal charges of sex trafficking of minors. His 2019 death in a Manhattan jail cell was ruled a suicide.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260203:nL6N3YY0XX"
+                }
+            ]
+        },
+        {
+            "text": "Vance pushes Trump's economic strategy in competitive Wisconsin congressional district",
+            "dateLine": "PLOVER, Wisconsin, Feb 26 (Reuters)",
+            "snippet": "U.S. Vice President JD Vance took aim at Democrats in a partisan speech on Thursday in a competitive Wisconsin district, as the White House tries to protect a narrow Republican majority in the House of Representatives ahead of the November 3midterm elections.",
+            "image": {
+                "byLine": "Rebecca Cook",
+                "text": "Republican vice presidential nominee JD Vance speaks to supporters during a campaign stop in Flint, Michigan, U.S. November 4, 2024.  ",
+                "id": "2026-02-26T175528Z_1_WW7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T09:59:00.000Z",
+            "versionCreated": "2026-02-26T19:10:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM11G",
+            "relatedHeadlines": [
+                {
+                    "text": "Melania Trump to chair a meeting of the UN Security Council, White House says",
+                    "versionCreated": "2026-02-26T19:44:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "snippet": "First lady Melania Trump will chair a meeting of the United Nations Security Council on Monday as the U.S. takes over the monthly rotating presidency, the White House said.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM15Z"
+                },
+                {
+                    "text": "Trump's White House ballroom can move ahead for now, judge rules",
+                    "versionCreated": "2026-02-26T17:55:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "snippet": "A U.S. judge on Thursday declined to block President Donald Trump from proceeding with construction of a $400 million White House ballroom to replace the demolished East Wing, finding that a challenge from preservationists did not meet the high bar for a preliminary injunction that would halt the project for now. U.S. District Judge Richard Leon's ruling came in a lawsuit by the National Trust for Historic Preservation aiming to stop construction until the White House complies with federal law and rules including congressional authorization. The National Trust had sought a preliminary injunction to freeze the work on the ballroom, planned to be 90,000 square feet (8,360 square meters), while the private nonprofit group's lawsuit proceeds.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM14H"
+                }
+            ]
+        },
+        {
+            "text": "EXCLUSIVE-Rare earth shortages worsen in US aerospace, chips despite trade truce, sources say",
+            "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+            "snippet": "Suppliers to U.S. aerospace and semiconductor firms face worsening rare earth shortages, with two turning away some clients, industry insiders said, weeks before U.S. President Donald Trump is expected to meet his Chinese counterpart Xi Jinping for a summit in Beijing.",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "A block with the symbol, atomic number and mass number of Yttrium (Y) element is seen in this illustration taken on January 21, 2026.",
+                "id": "2026-02-26T044003Z_1_GQ2_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T04:29:00.000Z",
+            "versionCreated": "2026-02-26T04:29:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3Z3003",
+            "relatedHeadlines": [
+                {
+                    "text": "ROI-West needs its own pricing to escape China's rare earths grip: Andy Home",
+                    "versionCreated": "2026-02-23T06:00:00.000Z",
+                    "dateLine": "LONDON, Feb 20 (Reuters)",
+                    "snippet": "A sharp rally in the price of rare earths has propelled the market above the floor price guaranteed by the U.S. government in its ground-breaking deal with domestic producer MP Materials.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL1N3ZG0KR"
+                },
+                {
+                    "text": "China's Li inspects rare earth facilities, hints at leverage in US rivalry",
+                    "versionCreated": "2026-02-11T00:40:00.000Z",
+                    "dateLine": "BEIJING, Feb 11 (Reuters)",
+                    "snippet": "China's second-ranking official, Premier Li Qiang,inspected rare earth facilities in the southern province of Jiangxi on Tuesday, state news agency Xinhua reported, using the visit to hint at intensifying competition with the U.S. over strategic minerals.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260211:nL1N3Z61I4"
+                }
+            ]
+        },
+        {
+            "text": "US mortgage rates dip below 6%, but supply remains key",
+            "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+            "snippet": "The average rate on the popular U.S. 30-year fixed-rate mortgage fell below 6% this week for the first time in 3-1/2 years, but economists said the improvement was likely temporary and on its own insufficient to boost housing demand unless supply increased.",
+            "image": {
+                "byLine": "Robert Galbraith",
+                "text": "A pedestrian walks past a sign advertising new condominium homes for sale in South San Francisco, California December 22, 2009. ",
+                "id": "2026-02-26T182255Z_1_BK0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T17:00:00.000Z",
+            "versionCreated": "2026-02-26T18:50:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM15B",
+            "relatedHeadlines": [
+                {
+                    "text": "Odds of early Warsh-led Fed rate cuts slide with bullish outlook",
+                    "versionCreated": "2026-02-26T19:55:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "snippet": "Federal Reserve chair nominee Kevin Warsh's path to out-of-the-gate interest rate cuts in alignment with President Donald Trump's expectations could be narrowing amid emerging bullishness about the U.S. economy, growing CEO confidence in the outlook, and investors keying off a hawkish shift among the central bank's policymakers. ",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0VA"
+                },
+                {
+                    "text": "US weekly jobless claims rise slightly; unemployment rate likely unchanged in February",
+                    "versionCreated": "2026-02-26T15:11:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "snippet": "The number of Americans filing new applications for jobless benefits increased slightly last week and the unemployment rate appeared to hold steady in February amid a stable labor market.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0RA"
+                },
+                {
+                    "text": "Fed's Schmid says high inflation still bigger issue facing central bank",
+                    "versionCreated": "2026-02-25T17:58:00.000Z",
+                    "dateLine": "NEW YORK, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL13U"
+                },
+                {
+                    "text": "US consumer confidence improves in February; cloud over labor market remains",
+                    "versionCreated": "2026-02-24T18:42:00.000Z",
+                    "dateLine": "WASHINGTON,  Feb 24 (Reuters)",
+                    "snippet": "U.S. consumer confidence rebounded more than expected in February, but the share of consumers viewing jobs as \"hard to get\" increased to a five-year high, raising the risk of the unemployment rate increasing this month. The improvement in confidence reported by the Conference Board on Tuesday was mostly among consumers aged 54 years or less, and respondents identifying as Republican and Independent. The mood remained downbeat among those 55 and older, as well as among Democrats. President Donald Trump was due to give his State of the Union address later on Tuesday amid growing voter disapproval of his handling of the economy, mostly related to his sweeping import tariffs that have raised prices.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL1N3ZK0T6"
+                },
+                {
+                    "text": "US trade deficit swells in December as imports surge; labor market holding steady",
+                    "versionCreated": "2026-02-19T16:18:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 19 (Reuters)",
+                    "snippet": "The U.S. trade deficit widened sharply in December amid a surge in imports, and the goods shortfall in 2025 was the highest on record despite President Donald Trump's tariffs on foreign manufactured merchandise.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260219:nL1N3ZF0PH"
+                }
+            ]
+        },
+        {
+            "text": "EXCLUSIVE-Washington presses Syria to shift from Chinese telecom systems",
+            "dateLine": "DAMASCUS, Feb 26 (Reuters)",
+            "snippet": "The United States has warned Syria against relying on Chinese technology in its telecommunications sector, arguing it conflicts with U.S. interests and threatens U.S. national security, according to three sources familiar with the matter.",
+            "image": {
+                "byLine": "Khalil Ashawi",
+                "text": "Syrian President Ahmed al-Sharaa attends the Ministry of Awqaf conference titled \"Unity of Islamic Discourse\" at the Conference Palace in Damascus, Syria, February 16, 2026. ",
+                "id": "2026-02-26T182651Z_1_PC5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T18:10:00.000Z",
+            "versionCreated": "2026-02-26T19:13:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM17P",
+            "relatedHeadlines": [
+                {
+                    "text": "US charges former F-35 pilot for training China's air force",
+                    "versionCreated": "2026-02-26T19:39:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "snippet": "The U.S. has arrested and charged a former U.S. Air Force fighter jet pilot with allegedly training China's military, highlighting Beijing's persistent efforts to modernize its armed forces by siphoning off U.S. secrets.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM196"
+                },
+                {
+                    "text": "EXCLUSIVE-US aims to bring in 4,500 white South Africans per month as refugees, document says",
+                    "versionCreated": "2026-02-26T19:18:00.000Z",
+                    "dateLine": "WASHINGTON/JOHANNESBURG, Feb 26 (Reuters)",
+                    "snippet": "The U.S. aims to process 4,500 refugee applications from white South Africans per month, far above President Donald Trump's stated refugee program cap, and is installing trailers on embassy property in Pretoria to support the effort, a U.S. contracting document said.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL1CT"
+                },
+                {
+                    "text": "US officials met Castro grandson in St. Kitts, Miami Herald reports",
+                    "versionCreated": "2026-02-26T18:18:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "U.S. officials close to Secretary of State Marco Rubio met with the grandson of former Cuban leader Raul Castro on the sidelines of this week's regional Caribbean Community conference in St. Kitts and Nevis, the Miami Herald reported on Thursday. Citing unnamed sources, the Miami Herald said it was not clear whether Rubio himself met with Castro's grandson, Raul Guillermo Rodriguez Castro, who is also Raul Castro's bodyguard and the son of the late head of Cuba's GAESA military conglomerate.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM16G"
+                },
+                {
+                    "text": "Canada says it could have bilateral critical sector deals with US",
+                    "versionCreated": "2026-02-26T18:44:00.000Z",
+                    "dateLine": "OTTAWA, Feb 26 (Reuters)",
+                    "snippet": "Canada is negotiating with the U.S. to remove tariffs on some critical sectors, and a deal could be wrapped into bilateral pacts alongside a review of the United States-Mexico-Canada free trade agreement, a Canadian senior minister said on Thursday.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM18L"
+                },
+                {
+                    "text": "US, Ukraine to discuss post-war reconstruction at Geneva talks",
+                    "versionCreated": "2026-02-26T08:33:00.000Z",
+                    "dateLine": "GENEVA, Feb 26 (Reuters)",
+                    "snippet": "Ukrainian negotiators were due to meet U.S. officials on Thursday in Geneva for talks on post-war reconstruction, including a \"prosperity package\" of funding to rebuild Ukraine's economy, despite a deadlock in peace negotiations with Russia.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZL2DJ"
+                },
+                {
+                    "text": "Africa CDC head cites major concerns over data, pathogen sharing in US health deals",
+                    "versionCreated": "2026-02-26T17:42:00.000Z",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "snippet": "There are big issues in the deals the United States is pursuing with African countries that govern how U.S. global health funding will work from now on, the head of the Africa Centres for Disease Control and Prevention said on Thursday.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM136"
+                },
+                {
+                    "text": "EXPLAINER-Does Trump's new 'surcharge' make EU worse off than under trade deal?",
+                    "versionCreated": "2026-02-26T17:22:00.000Z",
+                    "dateLine": "BRUSSELS, Feb 26 (Reuters)",
+                    "snippet": "The EU has demanded that the United States stick to the terms of a trade deal they agreed last year after the U.S. Supreme Court struck down President Donald Trump's global tariffs and he responded with a new, across-the-board \"import surcharge\".",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0VH"
+                }
+            ]
+        },
+        {
+            "text": "BREAKINGVIEWS-SpaceX’s nascent monopoly faces durability test",
+            "dateLine": "LONDON, Feb 26 (Reuters Breakingviews)",
+            "snippet": "Achieving a valuation of $1 trln or more is only a first step for the rockets‑and‑satellites group. Post IPO, rivals like Amazon will roll out competing broadband services, threatening its market share and pricing power. SpaceX may then face a tighter supply of financial fuel.",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": " SpaceX logo is seen in this illustration taken on March 10, 2025. ",
+                "id": "2026-02-26T050812Z_1_XT8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-25T23:08:00.000Z",
+            "versionCreated": "2026-02-26T04:59:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZJ0JO",
+            "relatedHeadlines": [
+                {
+                    "text": "Congress to weigh extending space station life, NASA moon base",
+                    "versionCreated": "2026-02-26T01:18:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 25 (Reuters)",
+                    "snippet": "A U.S. Senate committee next week will consider extending the planned life of the International Space Station by two years to give companies more time to develop a replacement, one of a few changes to a NASA bill focused on rivaling China's growing footprint in space.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM00O"
+                },
+                {
+                    "text": "NASA may take moon mission Artemis II rocket back to assembly site, affecting March launch window",
+                    "versionCreated": "2026-02-21T16:28:00.000Z",
+                    "dateLine": "Feb 21 (Reuters)",
+                    "snippet": "NASA is taking steps to potentially roll back the Artemis II rocket and Orion spacecraft to its Vehicle Assembly Building after observing an interrupted flow of helium, the space agency said on Saturday. \"This will almost assuredly impact the March launch window,\" NASA said.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260221:nL6N3ZH04I"
+                },
+                {
+                    "text": "ANALYSIS-Musk fires up SpaceX, Bezos pushes Blue Origin as US billionaires race China to moon",
+                    "versionCreated": "2026-02-13T11:00:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 13 (Reuters)",
+                    "snippet": "The space race between U.S. billionaires is heating up, with Elon Musk's SpaceX planning to build a lunar base and Jeff Bezos pushing Blue Origin's ambitions as both companies aim to return humans to the moon ahead of a planned mission by China in 2030.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL1N3Z816M"
+                }
+            ]
+        },
+        {
+            "text": "Berkshire CEO Abel to lay out thinking for a post-Buffett world",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Berkshire Hathaway's new Chief Executive Greg Abel faces numerous challenges as the successor to famed billionaire Warren Buffett. This Saturday, Wall Street will see how he tackled one unique to Berkshire: the highly anticipated annual letter to shareholders.",
+            "image": {
+                "byLine": "Brendan McDermid",
+                "text": "Berkshire Vice Chairman Greg Abel speaks with shareholders during the Berkshire Hathaway Inc. annual shareholders' meeting, in Omaha, Nebraska, U.S., May 2, 2025.  ",
+                "id": "2026-02-26T123716Z_1_PS5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T12:00:00.000Z",
+            "versionCreated": "2026-02-26T11:59:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL0YV",
+            "relatedHeadlines": [
+                {
+                    "text": "Carlyle targets $200 billion in new flows by 2028, touts Washington connections",
+                    "versionCreated": "2026-02-26T12:39:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "Carlyle aims to rake in $200 billion in fresh capital by the end of 2028 and to boost earnings from managing that money, it said on Thursday, three years after Chief Executive Harvey Schwartz took the job of turning around the investment firm.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM15S"
+                },
+                {
+                    "text": "US regulator may share World Liberty bank application with lawmakers",
+                    "versionCreated": "2026-02-26T19:22:00.000Z",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM15Y"
+                },
+                {
+                    "text": "Jefferies holds $135 million exposure to collapsed UK lender MFS, Bloomberg News reports",
+                    "versionCreated": "2026-02-26T17:48:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "Jefferies has an exposure of about 100 million pounds ($135 million) to Market Financial Solutions, or MFS, a mortgage-finance firm that entered a UK form of insolvency this week, Bloomberg News reported on Thursday, citing a person familiar with the matter.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM20A"
+                },
+                {
+                    "text": "Vanguard settles Republican states' antitrust suit for $29.5 million",
+                    "versionCreated": "2026-02-26T17:07:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "Fund manager Vanguard Group said on Thursday it agreed to settle litigation filed by the Republican attorneys general of Texas, Kansas and other states, who had alleged the fund manager and rivals violated antitrust law through their climate activism.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM113"
+                },
+                {
+                    "text": "BREAKINGVIEWS-‘The Big Short’ confab makes merry amid credit storm",
+                    "versionCreated": "2026-02-26T15:21:00.000Z",
+                    "dateLine": "LAS VEGAS, Feb 26 (Reuters Breakingviews)",
+                    "snippet": "Wall Street may be buried in snow, but the mood this week at SFVegas — the annual conclave of financiers made infamous by Michael Lewis’s \"The Big Short\" — was strikingly sunny. Accumulating worries about credit cockroaches or software-sector blowups barely clouded the outlook. Instead, 10,000 attendees crowded the halls of Sin City’s structured-finance gathering to celebrate Wall Street’s continued mania for byzantine IOUs, treating recent upsets as opportunities for ever more slicing and dicing.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZK184"
+                }
+            ]
+        },
+        {
+            "text": "Warner Bros’ TV decline puts pressure on Netflix deal",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Warner Bros Discovery heaped an additional burden on Netflix's $82.7 billion bid for the movie studio and HBO.",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "Warner Bros Discovery logo is seen in this illustration taken December 5, 2025. ",
+                "id": "2026-02-26T123044Z_1_WY7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T12:00:00.000Z",
+            "versionCreated": "2026-02-26T18:25:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0X2",
+            "relatedHeadlines": [
+                {
+                    "text": "Warner Bros weighing revised bid from Paramount as bidding war escalates",
+                    "versionCreated": "2026-02-24T13:19:00.000Z",
+                    "dateLine": "Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL4N3ZK17W"
+                },
+                {
+                    "text": "Paramount submits higher offer for Warner Bros Discovery in bid to block Netflix, source says",
+                    "versionCreated": "2026-02-23T21:51:00.000Z",
+                    "dateLine": "Feb 23 (Reuters)",
+                    "snippet": "Paramount Skydance submitted a higher offer for Warner Bros Discovery, a source familiar with the matter told Reuters on Monday, ratcheting up efforts to derail the HBO Max owner's deal with Netflix.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL4N3ZJ1P2"
+                }
+            ]
+        },
+        {
+            "text": "EXCLUSIVE-Trump EPA to shift at least half of waived biofuel obligations to big refiners, sources say",
+            "dateLine": "ORLANDO, Florida, Feb 26 (Reuters)",
+            "snippet": "The Trump administration has settled on a plan that would require big oil refineries to make up for at least half of the biofuel blending volumes obligations waived in recent years under the Small Refinery Exemption program, according to three sources familiar with the discussions.",
+            "firstCreated": "2026-02-26T13:08:00.000Z",
+            "versionCreated": "2026-02-26T14:53:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0TZ",
+            "relatedHeadlines": [
+                {
+                    "text": "US FDA to offer bonuses to staff for faster drug reviews, Bloomberg News reports",
+                    "versionCreated": "2026-02-26T17:49:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "The U.S. Food and Drug Administration plans to give quarterly bonuses to scientific staff for completing drug reviews more quickly, Bloomberg News reported on Thursday, citing an FDA official familiar with the matter.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM21J"
+                },
+                {
+                    "text": "Trump administration moves to nix Biden-era limits on independent contractors",
+                    "versionCreated": "2026-02-26T16:06:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "President Donald Trump's administration on Thursday moved to scrap a rule long opposed by business groups that made it harder to classify workers as independent contractors rather than employees, who can cost a company more.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0SI"
+                },
+                {
+                    "text": "US CDC declares ByHeart infant botulism outbreak over, probe continues",
+                    "versionCreated": "2026-02-26T17:08:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "The U.S. Centers for Disease Control and Prevention declared the multistate infant botulism outbreak linked to ByHeart powdered infant formula over on Thursday, while health officials continue investigating for the root cause of the contamination.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM1TO"
+                }
+            ]
+        },
+        {
+            "text": "Woman suing Meta, YouTube over social media addiction expected to take stand at trial",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "A California woman is expected to testify in court on Thursday about how using Meta Platforms' Instagram and Google's YouTube as a child harmed her mental health, as her landmark trial in Los Angeles continues.",
+            "image": {
+                "byLine": "Mike Blake",
+                "text": "Julianna Arnold, who founded the nonprofit Parents RISE after her daughter Koko died at the age of 17 in 2022, speaks to the media outside the courthouse on the day plaintiff Kaley G.M. takes the stand at a trial in a key test case accusing Meta and Google's YouTube of harming children's mental health through addictive social media platforms, in Los Angeles, California, U.S., February 25, 2026.  ",
+                "id": "2026-02-26T163549Z_1_VQ7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T16:32:00.000Z",
+            "versionCreated": "2026-02-26T16:32:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM121",
+            "relatedHeadlines": [
+                {
+                    "text": "Setback for Meta as court adviser backs EU regulators in data spat",
+                    "versionCreated": "2026-02-26T17:03:00.000Z",
+                    "dateLine": "BRUSSELS, Feb 26 (Reuters)",
+                    "snippet": "An adviser to Europe's top court on Thursday sided with EU regulators demanding information regarding two antitrust investigations of Meta Platforms, in a setback for the U.S.-based social media company.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM100"
+                },
+                {
+                    "text": "Instagram to alert parents on teen suicide searches as UK weighs social media ban",
+                    "versionCreated": "2026-02-26T12:00:00.000Z",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "snippet": "Instagram said it would notify parents if their teenager repeatedly searches for terms related to suicide or self-harm within a short period, as pressure grows for governments to follow Australia's ban on the use of social media for under 16s.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM15N"
+                },
+                {
+                    "text": "Apple seeks dismissal of fraud lawsuit over Siri AI, Epic injunction",
+                    "versionCreated": "2026-02-26T15:59:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "Apple urged a federal judge to dismiss a proposed class action claiming it defrauded shareholders twice, by overstating the artificial intelligence capabilities of its Siri voice assistant and falsely representing its compliance with an injunction governing commissions on app sales.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0WB"
+                },
+                {
+                    "text": "EU court adviser rejects Meta's fight against EU antitrust demands for Facebook data",
+                    "versionCreated": "2026-02-26T09:19:00.000Z",
+                    "dateLine": "BRUSSELS, Feb 26 (Reuters)",
+                    "snippet": "An adviser to Europe's top court on Thursday backed EU antitrust regulators in Meta Platforms' fight against what the U.S. tech giant said were their aberrant requests for information during two investigations into the company.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZL25H"
+                }
+            ]
+        },
+        {
+            "text": "Kansas invalidates driver’s licenses, birth certificates of over 1,000 transgender residents",
+            "dateLine": "NEW YORK, Feb 26 (Reuters)",
+            "snippet": "The Kansas state government has invalidated the driver’s licenses and birth certificates of transgender residents who changed the gender on those documents, in accordance with a law that took effect on Thursday.",
+            "image": {
+                "byLine": "Tyrone Siu",
+                "text": "Transgender rights activists gather outside the U.S. Supreme Court, on the day justices are expected to hear oral arguments in two cases concerning efforts to enforce Republican-backed state laws banning transgender athletes from female sports teams at public schools, in Washington, D.C., U.S., January 13, 2026. ",
+                "id": "2026-02-26T180946Z_1_RP6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T17:45:00.000Z",
+            "versionCreated": "2026-02-26T17:45:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM138",
+            "relatedHeadlines": [
+
+            ]
+        }
+    ],
+    "meta": {
+        "revisionId": 126898,
+        "revisionDate": "2026-02-26T20:15:59.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

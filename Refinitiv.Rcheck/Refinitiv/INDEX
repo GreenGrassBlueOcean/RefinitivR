@@ -1,0 +1,79 @@
+CorrectCustomInstrument
+                        Function to check if custom symbol is in format
+                        "S)INSTRUMENTSYMBOL.UUID"
+CustomInstrumentBasketBuilder
+                        Build a basket element for a custom instrument
+CustomInstrumentHolidayBuilder
+                        Build a holiday object for a custom instrument
+CustomInstrumentUDCBuilder
+                        Build a user defined continuation object for a
+                        custom instrument
+DataStreamConnect       Initialize DataStream Connection
+EikonConnect            Connect to LSEG Workspace via JSON
+EikonGetData            Function to obtain data from Eikon via the JSON
+                        API
+EikonGetNewsHeadlines   Returns a list of news headlines
+EikonGetNewsStory       Return a single news story corresponding to the
+                        identifier provided in story_id
+EikonGetSymbology       Returns a list of instrument names converted
+                        into another instrument code. For example:
+                        convert SEDOL instrument names to RIC names
+EikonGetTimeseries      Function to obtain timeseries from Eikon via
+                        the JSON API
+EikonRepairMic          Repair Market Identifier Codes (MIC) utilizing
+                        RDN Exchange Identifiers
+NagerHolidayData        Public Holidays between the years 1990 and 2030
+OperatingMicLookup      Operating Mic lookup from Reuters Exchange Code
+RDConnect               Connect to LSEG / Refinitiv Data via JSON
+RDPGetOptionAnalytics   Get RDP option analytics
+RDPShowAvailableSearchViews
+                        Show Available Search Views for searchView
+                        parameter in RDPget_search_metadata
+RDPget_search_metadata
+                        Get search metadata from RDP
+RDPsearch               RDP search function is a wrapper for the pyton
+                        rdp.search function
+RefinitivJsonConnect    Create a JSON connection object for the LSEG
+                        Workspace proxy
+SearchViewsLookup       Lookup code for SearchViews to alternate
+                        between RD and JSON format SearchViews
+TR_Field                Helper function to build the Eikonformulas
+                        parameter for the EikonGetData function.
+TestDataStreamCredentials
+                        Test if the DataStream Credentials are valid
+install_eikon           Install Eikon Python environment (Defunct)
+names.RefinitivConnection
+                        List methods on a RefinitivConnection object
+print.RefinitivConnection
+                        Print a RefinitivConnection object
+rd_CacheInfo            Show RefinitivR Cache Statistics
+rd_ClearCache           Clear the RefinitivR Session Cache
+rd_GetData              Function to obtain data from Eikon/LSEG via the
+                        JSON API
+rd_GetESG               Retrieve ESG Data from LSEG
+rd_GetEstimates         Retrieve Estimates Data from LSEG
+rd_GetHistoricalPricing
+                        GetHistoricalPricing
+rd_GetHistory           The get_history function allows you to retrieve
+                        pricing history, as well as Fundamental and
+                        Reference data history through a single
+                        function call.
+rd_GetOwnership         Retrieve Ownership Data from LSEG
+rd_ManageCustomInstruments
+                        CREATE, GET, UPDATE or DELETE a custom
+                        instrument
+rd_SearchCustomInstruments
+                        Show all available custom instruments that have
+                        been created
+rd_connection           Get or create the default Refinitiv connection
+rd_get_news_headlines   Retrieve News Headlines from a Refinitiv RDP
+                        (JSON) Connection
+rd_get_news_story       Retrieve Full News Story from a Refinitiv RDP
+                        (JSON) Connection
+rd_get_streaming_data   Get streaming data from Refinitiv
+rd_get_top_news         Retrieve Top News Packages from a Refinitiv RDP
+                        (JSON) Connection, Then Fetch Stories
+rd_handshake            Get Bearer Key from Terminal
+rd_streaming_debug      Debug streaming connection
+rd_streaming_pricing    Pricing Stream Definition
+refinitiv_vault         Inspect the credential vault safely

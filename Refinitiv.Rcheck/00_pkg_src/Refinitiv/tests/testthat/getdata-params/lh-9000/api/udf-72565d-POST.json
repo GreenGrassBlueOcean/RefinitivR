@@ -1,0 +1,38 @@
+{
+    "responses": [
+        {
+            "columnHeadersCount": 1,
+            "data": [
+                [
+                    "AAPL.O",
+                    "",
+                    "",
+                    ""
+                ]
+            ],
+            "headerOrientation": "horizontal",
+            "headers": [
+                [
+                    {
+                        "displayName": "Instrument"
+                    },
+                    {
+                        "displayName": "Capital Change Effective Date",
+                        "field": "TR.CAEFFECTIVEDATE"
+                    },
+                    {
+                        "displayName": "Adjustment Factor",
+                        "field": "TR.CAADJUSTMENTFACTOR"
+                    },
+                    {
+                        "displayName": "Adjustment Type",
+                        "field": "TR.CAADJUSTMENTTYPE"
+                    }
+                ]
+            ],
+            "rowHeadersCount": 1,
+            "totalColumnsCount": 4,
+            "totalRowsCount": 2
+        }
+    ]
+}

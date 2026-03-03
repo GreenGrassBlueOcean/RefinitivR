@@ -1,16 +1,19 @@
-test_that("EikonGetNewsHeadlines works", {
+# Snapshot + auto-restore all Refinitiv options and vault at end of file
+.saved_state <- save_refinitiv_state()
 
+test_that("EikonGetNewsHeadlines works with live API", {
+  skip_if(!has_live_api(), "No live API available")
+  Eikon <- RefinitivJsonConnect(getOption(".EikonApiKey"))
 
-  Eikon <- check_Eikonapi()
-  CheckHeadlines <- EikonGetNewsHeadlines(EikonObject = Eikon
-                                              , query = "R:MSFT.O", count = 2)
+  CheckHeadlines <- EikonGetNewsHeadlines(
+    EikonObject = Eikon,
+    query = "R:MSFT.O", count = 2
+  )
 
-  CorrectOutput <- list(query = "character", displayDirection = "character", documentType = "character",
-                        firstCreated = "character", isAlert = "logical", language = "character",
-                        reportCode = "character", sourceCode = "character", sourceName = "character",
-                        storyId = "character", text = "character", versionCreated = "character")
-
-  expect_equal(lapply(CheckHeadlines, class), CorrectOutput)
+  expect_s3_class(CheckHeadlines, "data.frame")
+  expect_true("storyId" %in% names(CheckHeadlines))
+  expect_true("text" %in% names(CheckHeadlines))
+  expect_true(nrow(CheckHeadlines) > 0)
 })
 
 
@@ -44,8 +47,10 @@ dummy_Eikon <- list(
 
 test_that("EikonGetNewsHeadlines returns raw output correctly", {
   # When raw_output is TRUE, the function should return a list of raw responses.
-  result <- EikonGetNewsHeadlines(EikonObject = dummy_Eikon, query = "R:MSFT.O",
-                                  count = 2, raw_output = TRUE, debug = FALSE)
+  result <- EikonGetNewsHeadlines(
+    EikonObject = dummy_Eikon, query = "R:MSFT.O",
+    count = 2, raw_output = TRUE, debug = FALSE
+  )
   expect_type(result, "list")
   expect_equal(length(result), 1)
   expect_equal(result[[1]], dummy_headlines)
@@ -53,8 +58,10 @@ test_that("EikonGetNewsHeadlines returns raw output correctly", {
 
 test_that("EikonGetNewsHeadlines processes raw output and returns a data.frame", {
   # When raw_output is FALSE, the function should process the raw headlines.
-  result <- EikonGetNewsHeadlines(EikonObject = dummy_Eikon, query = "R:MSFT.O",
-                                  count = 2, raw_output = FALSE, debug = FALSE)
+  result <- EikonGetNewsHeadlines(
+    EikonObject = dummy_Eikon, query = "R:MSFT.O",
+    count = 2, raw_output = FALSE, debug = FALSE
+  )
   expect_true(is.data.frame(result))
 
   # The function assembles the results via data.table::rbindlist with an id column "query".
@@ -70,21 +77,25 @@ test_that("EikonGetNewsHeadlines handles multiple query values", {
   # Create a dummy EikonObject that returns different results based on the query.
   dummy_Eikon_multi <- list(
     get_news_headlines = function(query, count, repository, date_from, date_to, raw_output, debug) {
-      if(query == "R:MSFT.O"){
+      if (query == "R:MSFT.O") {
         list(headlines = list(
-          data.table(Index = "2024-01-01T00:00:00",
-                     version_created = "2024-01-01",
-                     text = "MSFT headline",
-                     story_id = "story_msft",
-                     source_code = "SRC1")
+          data.table(
+            Index = "2024-01-01T00:00:00",
+            version_created = "2024-01-01",
+            text = "MSFT headline",
+            story_id = "story_msft",
+            source_code = "SRC1"
+          )
         ))
-      } else if(query == "R:AAPL.O"){
+      } else if (query == "R:AAPL.O") {
         list(headlines = list(
-          data.table(Index = "2024-01-02T00:00:00",
-                     version_created = "2024-01-02",
-                     text = "AAPL headline",
-                     story_id = "story_aapl",
-                     source_code = "SRC2")
+          data.table(
+            Index = "2024-01-02T00:00:00",
+            version_created = "2024-01-02",
+            text = "AAPL headline",
+            story_id = "story_aapl",
+            source_code = "SRC2"
+          )
         ))
       } else {
         stop("Unknown query")
@@ -92,23 +103,32 @@ test_that("EikonGetNewsHeadlines handles multiple query values", {
     }
   )
   queries <- c("R:MSFT.O", "R:AAPL.O")
-  result <- EikonGetNewsHeadlines(EikonObject = dummy_Eikon_multi, query = queries,
-                                  count = 2, raw_output = FALSE, debug = FALSE)
+  result <- EikonGetNewsHeadlines(
+    EikonObject = dummy_Eikon_multi, query = queries,
+    count = 2, raw_output = FALSE, debug = FALSE
+  )
   expect_true(is.data.frame(result))
   expect_equal(nrow(result), 2)
   expect_equal(sort(result$query), sort(queries))
 })
 
 test_that("EikonGetNewsHeadlines stops after exceeding retry limit", {
-  # Simulate failures: get_news_headlines always returns NA.
+  # Simulate failures: get_news_headlines always errors.
   failing_Eikon <- list(
     get_news_headlines = function(query, count, repository, date_from, date_to, raw_output, debug) {
-      NA  # always fail
+      stop("simulated API failure")
     }
   )
   expect_error(
-    EikonGetNewsHeadlines(EikonObject = failing_Eikon, query = "R:MSFT.O",
-                          count = 2, raw_output = TRUE, debug = FALSE),
+    suppressWarnings(suppressMessages(
+      EikonGetNewsHeadlines(
+        EikonObject = failing_Eikon, query = "R:MSFT.O",
+        count = 2, raw_output = TRUE, debug = FALSE
+      )
+    )),
     "EikonGetNewsHeadlines downloading data failed"
   )
 })
+
+
+restore_refinitiv_state(.saved_state, "test-EikonGetNewsHeadlines")

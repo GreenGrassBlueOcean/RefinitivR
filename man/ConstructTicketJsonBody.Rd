@@ -21,7 +21,7 @@ rewrite JSON body in case a waiting ticket is assigned so that the correct json 
 }
 \examples{
 \dontrun{
- see tests for examples
+# See tests for examples
 }
 }
 \keyword{internal}

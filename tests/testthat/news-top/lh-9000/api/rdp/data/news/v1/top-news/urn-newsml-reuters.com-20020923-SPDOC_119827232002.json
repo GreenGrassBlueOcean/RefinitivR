@@ -1,0 +1,728 @@
+{
+    "_metadata": {
+        "outdated": false,
+        "cached": true
+    },
+    "data": [
+        {
+            "snippet": "Nvidia's shares fell on Thursday as investors looked past strong earnings, wary that the chip designer continues to channel capital into expanding the AI ecosystem, the payoffs for which are still unclear, rather than boosting shareholder returns.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0BJ",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "An NVIDIA logo and a computer motherboard appear in this illustration taken August 25, 2025. ",
+                "id": "2026-02-26T200532Z_1_RP5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Nvidia may have made its immense fortune on the back of specialized graphics processing units (GPUs) used to power artificial intelligence servers, but CEO Jensen Huang is increasingly professing his love for the more generalist CPU.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM059",
+                    "dateLine": "SAN FRANCISCO, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "text": "ANALYSIS-Nvidia's CEO prepares investors for a renewed battle with Intel, AMD"
+                },
+                {
+                    "snippet": "A global shortage of gaming chips could last until the end of this year, an Nvidia executive has said, signaling more pain for the video game industry that is already buckling under weak sales due to slowing consumer demand.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM250",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:38:00.000Z",
+                    "text": "Nvidia expects gaming chips shortage to last until year-end"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T17:25:00.000Z",
+            "text": "Nvidia shares fall as investors fret over returns, look past strong results",
+            "firstCreated": "2026-02-26T07:13:00.000Z"
+        },
+        {
+            "snippet": "The average rate on the popular U.S. 30-year fixed-rate mortgage fell below 6% this week for the first time in 3-1/2 years, but economists said the improvement was likely temporary and on its own insufficient to boost housing demand unless supply increased.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM15B",
+            "image": {
+                "byLine": "Mike Blake",
+                "text": "A construction worker is shown at work on a multi-unit residential housing project in Encinitas, California, U.S., July 28, 2025.   ",
+                "id": "2026-02-26T172614Z_1_LT3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The number of Americans filing new applications for jobless benefits increased slightly last week and the unemployment rate appeared to hold steady in February amid a stable labor market.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0RA",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:11:00.000Z",
+                    "text": "US weekly jobless claims rise slightly; unemployment rate likely unchanged in February"
+                },
+                {
+                    "snippet": "Federal Reserve chair nominee Kevin Warsh's path to out-of-the-gate interest rate cuts in alignment with President Donald Trump's expectations could be narrowing amid emerging bullishness about the U.S. economy, growing CEO confidence in the outlook, and investors keying off a hawkish shift among the central bank's policymakers. The International Monetary Fund said on Wednesday that with expected U.S. growth rising to 2.4% this year from 2.2% last year, the unemployment rate likely hovering near 4%, and inflation falling gradually, the Fed would have \"only modest scope to lower the policy rate over the coming year\" through a single quarter-percentage-point cut. A new Conference Board CEO survey, meanwhile, saw a sharp jump in the outlook for both the wider economy and within each leader's industry, with little sense that large rounds of layoffs were in the offing and firms passing through price increases from the Trump administration's import tariffs - a combination that could make it harder to justify rate cuts. Investors, meanwhile, have pushed back their bets on the timing of an initial Warsh-led rate cut, to the Fed's July 28-29 meeting from the June 16-17 gathering. Though his nomination has not been formally submitted to the Senate, Warsh is expected to be confirmed in time for the June meeting, with current Fed Chair Jerome Powell's leadership term ending in May.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0VA",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:55:00.000Z",
+                    "text": "Odds of early Warsh-led Fed rate cuts slide with bullish outlook"
+                },
+                {
+                    "snippet": "Federal Reserve Governor Stephen Miran said strong job growth in January was \"a really good thing,\" but that the Fed should still cut a full percentage point from its policy rate this year because there were still risks to the labor market while inflation was no longer a problem.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nS0N3RO02C",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T13:55:00.000Z",
+                    "text": "Fed's Miran: Four quarter-point cuts still warranted this year, no \"all clear\" for job market"
+                },
+                {
+                    "snippet": "Chicago Federal Reserve President Austan Goolsbee said on Thursday his forecast for several interest-rate cuts later this year makes him one of the more \"optimistic\" Fed policymakers, but said he wants the Fed to be \"careful\" in doing so because it could overheat the economy and inflation.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nS0N3YT02T",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:42:00.000Z",
+                    "text": "Fed's Goolsbee forecasts several more rate cuts this year, but not soon"
+                },
+                {
+                    "snippet": "President Donald Trump on Tuesday used his State of the Union address to announce a program that could help tens of millions of Americans save for retirement, giving those without access to an employer-sponsored retirement plan a vehicle to do so.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL13B",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T13:58:00.000Z",
+                    "text": "FACTBOX-What is Trump's plan to boost retirement savings?"
+                }
+            ],
+            "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T18:50:00.000Z",
+            "text": "US mortgage rates dip below 6%, but supply remains key",
+            "firstCreated": "2026-02-26T17:00:00.000Z"
+        },
+        {
+            "snippet": " The United States and Iran made significant progress in talks on Thursday aimed at resolving a longstanding nuclear dispute and averting new U.S. strikes, mediator Oman said, amid Washington's large-scale military buildup in the Middle East.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0WX",
+            "image": {
+                "byLine": "Oman News Agency",
+                "text": "Omani Foreign Minister Badr Albusaidi meets with U.S. Special Envoy Steve Witkoff and U.S. President Donald Trump's son-in-law Jared Kushner, in Geneva, Switzerland, February 26, 2026.",
+                "id": "2026-02-26T193304Z_1_JG3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Iran said the next round of Iran–U.S. nuclear talks is expected in less than a week after what Iranian Foreign Minister Abbas Araqchi described as the most serious exchanges with Washington, saying Tehran clearly laid out its demand for lifting sanctions and the process for relief.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nS8N3RC05U",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:29:00.000Z",
+                    "text": "Iran's Araqchi says next Iran–US nuclear talks within a week after 'most serious' exchanges"
+                },
+                {
+                    "snippet": "The son of an Iranian carpet merchant from Isfahan, Foreign Minister Abbas Araqchi has compared the country's negotiating style to the bartering of the bazaar, an approach requiring \"patience and great time\".",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZL1PF",
+                    "dateLine": "DUBAI, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T12:20:00.000Z",
+                    "text": "NEWSMAKER-Iran's Araqchi aims to reprise role as nuclear dealmaker"
+                },
+                {
+                    "snippet": "The United States hopes talks with Iran in Geneva will produce an agreement to prevent Tehran acquiring nuclear weapons, and President Donald Trump has amassed forces in the Middle East to increase pressure on the Islamic Republic to reach a deal.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0DA",
+                    "dateLine": "VIENNA, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T10:37:00.000Z",
+                    "text": "EXPLAINER-US seeks deal to prevent Iran acquiring nuclear arsenal"
+                },
+                {
+                    "snippet": "Iran holds a new round of nuclear talks with the United States on Thursday in Geneva. Its arsenal of missiles has been a sticking point in negotiations.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0HF",
+                    "dateLine": "DUBAI, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T09:49:00.000Z",
+                    "text": "FACTBOX-What are Iran's ballistic missile capabilities?"
+                }
+            ],
+            "dateLine": "GENEVA, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T20:12:00.000Z",
+            "text": "US and Iran make significant progress in talks, will meet again soon, mediator says",
+            "firstCreated": "2026-02-26T00:59:00.000Z"
+        },
+        {
+            "snippet": "U.S. stock indexes turned sharply lower on Thursday, the day after a less-than-stellar earnings report from artificial intelligence vanguard Nvidia dragged technology shares which have provided muscle to the recent rally. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM173",
+            "image": {
+                "byLine": "Brendan McDermid",
+                "text": "Traders work on the floor at the New York Stock Exchange (NYSE) in New York City, U.S., February 25, 2026.  ",
+                "id": "2026-02-26T111908Z_1_YA8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "versionCreated": "2026-02-26T04:36:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM045",
+                    "text": "Oil prices little changed in choppy trade as traders follow US, Iran talks",
+                    "dateLine": "HOUSTON, Feb 26 (Reuters)",
+                    "documentType": "Story"
+                },
+                {
+                    "snippet": "An index of global equity markets eased after hitting a fresh record high on Thursday as concerns about lofty valuations of leading technology companies weighed on markets after artificial intelligence chipmaker Nvidia reported strong quarterly results.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM13Q",
+                    "dateLine": "NEW YORK, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:59:00.000Z",
+                    "text": "GLOBAL MARKETS-World shares ease on concerns about tech valuations"
+                },
+                {
+                    "snippet": "The Japanese yen rebounded on Thursday after the head of the Bank of Japan said the decision on whether to increase interest rates will be based on economic data, while overall movements in the market were subdued as traders waited for fresh catalysts.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0SV",
+                    "dateLine": "NEW YORK, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:27:00.000Z",
+                    "text": "FOREX-Yen strengthens after Bank of Japan signals data-driven rate hikes"
+                },
+                {
+                    "snippet": "Gold prices were little changed on Thursday as investors stayed on the sidelines ahead of the third round of indirect U.S.-Iran nuclear talks in Geneva, hoping for signals on whether the negotiations could ease geopolitical tensions. Spot gold stood at $5,168.72 per ounce at 01:37 p.m. ET (1837 GMT). U.S. gold futures for April delivery settled 0.6% lower at $5,194.20.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM191",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T18:42:00.000Z",
+                    "text": "PRECIOUS-Gold steady as markets await US-Iran nuclear talks outcome"
+                },
+                {
+                    "snippet": "U.S. Treasury prices edged higher on Thursday on the back of some safe-haven bids as investors grew nervous about tensions involving Iran, also pricing in expectations that the Federal Reserve will hold interest rates steady at least for the first half of the year. Iran and the United States are holding indirect talks in Geneva over their long-running nuclear dispute to avert a conflict after U.S. President Donald Trump ordered a huge military build-up in the region.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0YO",
+                    "dateLine": "NEW YORK, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T16:29:00.000Z",
+                    "text": "TREASURIES-US bonds moderately higher on safe-haven buying fueled by Iran fears"
+                }
+            ],
+            "dateLine": "NEW YORK, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:25:00.000Z",
+            "text": "US STOCKS-Wall St slides as tech rally stalls, AI enthusiasm wanes after Nvidia results",
+            "firstCreated": "2026-02-26T11:09:00.000Z"
+        },
+        {
+            "snippet": "Former U.S. Secretary of State Hillary Clinton told a congressional committee on Thursday that she did not remember ever meeting the late sex offender Jeffrey Epstein and had no information to share about his criminal activities. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM10J",
+            "image": {
+                "byLine": "Francis Mascarenhas",
+                "text": "Former U.S. Secretary of State Hillary Clinton speaks at the Mumbai Climate Week in Mumbai, India, February 18, 2026. ",
+                "id": "2026-02-26T200236Z_1_OF4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The president and CEO of the World Economic Forum, Borge Brende, said he was stepping down on Thursday, a few weeks after the forum launched an independent investigation into his relationship with late U.S. sex offender Jeffrey Epstein.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM18K",
+                    "dateLine": "ZURICH, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:12:00.000Z",
+                    "text": "CEO of World Economic Forum quits after Epstein ties come to light"
+                },
+                {
+                    "snippet": "Britain's government has agreed a framework with the police on which documents relating to the late 2024 appointment of former ambassador to the United States Peter Mandelson can be released, the committee in charge of the disclosures said on Thursday.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM175",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T18:12:00.000Z",
+                    "text": "UK government agrees framework on publishing Mandelson vetting documents"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T18:56:00.000Z",
+            "text": "Hillary Clinton tells congressional panel she has no information on Epstein",
+            "firstCreated": "2026-02-26T16:33:00.000Z"
+        },
+        {
+            "snippet": "Berkshire Hathaway's new Chief Executive Greg Abel faces numerous challenges as the successor to famed billionaire Warren Buffett. This Saturday, Wall Street will see how he tackled one unique to Berkshire: the highly anticipated annual letter to shareholders.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL0YV",
+            "image": {
+                "byLine": "Brendan McDermid",
+                "text": "Berkshire Vice Chairman Greg Abel speaks with shareholders during the Berkshire Hathaway Inc. annual shareholders' meeting, in Omaha, Nebraska, U.S., May 2, 2025.  ",
+                "id": "2026-02-26T124842Z_1_FU1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Carlyle aims to rake in $200 billion in fresh capital by the end of 2028 and to boost earnings from managing that money, it said on Thursday, three years after Chief Executive Harvey Schwartz took the job of turning around the investment firm.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM15S",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T12:39:00.000Z",
+                    "text": "Carlyle targets $200 billion in new flows by 2028, touts Washington connections"
+                },
+                {
+                    "snippet": "Victory Capital went public with its $8.6 billion offer for Janus Henderson on Thursday, ratcheting up pressure on the asset manager that previously agreed to a $7.4 billion buyout by Nelson Peltz's Trian and General Catalyst. Victory offered $30 in cash and 0.350 of its shares for each share of Janus for a value of $57.04 per share that would create a money manager with more than $800 billion in assets.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM1F8",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:16:00.000Z",
+                    "text": "Victory Capital goes public with $8.6 billion rival bid for Janus Henderson"
+                },
+                {
+                    "snippet": "London Stock Exchange Group investors are eyeing the potential for more share-boosting moves from the company after welcoming its plan to launch a 3 billion pound ($4.1 billion) share buyback, amid pressure from activist investor Elliott Management.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0F1",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T07:08:00.000Z",
+                    "text": "LSEG investors welcome $4.1 billion buyback, eye more share-boosting moves"
+                },
+                {
+                    "snippet": "Canada's six biggest banks exceeded profit forecasts this week in results boosted by wealth management and fee-based income, underlining the resilience of the country's economy to the impact of U.S. tariffs and broader policy uncertainty. On Thursday, Royal Bank of Canada, TD Bank and CIBC beat analysts' profit estimates, as did BMO Financial and National Bank on Wednesday and Bank of Nova Scotia earlier this week. Prime Minister Mark Carney's diversification of trade ties has helped the economy to perform better than expected in the first quarter ended January 31, in turn giving the banks a boost.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0R0",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T13:36:00.000Z",
+                    "text": "RBC, other big Canadian banks beat profit estimates as economy resists tariff impact"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T11:59:00.000Z",
+            "text": "Berkshire CEO Abel to lay out thinking for a post-Buffett world",
+            "firstCreated": "2026-02-26T12:00:00.000Z"
+        },
+        {
+            "snippet": "Agents from the U.S. Department of Homeland Security said they were searching for a missing person when they entered a Columbia University residential building on Thursday and detained a student, Columbia acting President Claire Shipman said.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM158",
+            "image": {
+                "byLine": "Eduardo Munoz",
+                "text": "People participate in a protest outside the Columbia University campus after agents from the U.S. Department of Homeland Security (DHS) detained a student in university housing, in New York City, U.S., February 26, 2026. ",
+                "id": "2026-02-26T200533Z_1_MJ4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "U.S. Immigration and Customs Enforcement is struggling to keep pace with vetting new hires during its historic recruitment push and is laying out a process to deal with allegations of past misconduct among recruits, the agency said in an internal email on Monday, underscoring concerns about ICE’s rapid expansion.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL112",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "text": "EXCLUSIVE-ICE struggles to vet recruits amid US immigration enforcement push, internal email shows"
+                },
+                {
+                    "snippet": "A U.S. judge on Thursday declined to block President Donald Trump from proceeding with construction of a $400 million White House ballroom to replace the demolished East Wing, finding that a challenge from preservationists did not meet the high bar for a preliminary injunction that would halt the project for now. U.S. District Judge Richard Leon's ruling came in a lawsuit by the National Trust for Historic Preservation aiming to stop construction until the White House complies with federal law and rules including congressional authorization. The National Trust had sought a preliminary injunction to freeze the work on the ballroom, planned to be 90,000 square feet (8,360 square meters), while the private nonprofit group's lawsuit proceeds.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM14H",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:55:00.000Z",
+                    "text": "Trump's White House ballroom can move ahead for now, judge rules"
+                },
+                {
+                    "snippet": "The U.S. aims to process 4,500 refugee applications from white South Africans per month, far above President Donald Trump's stated refugee program cap, and is installing trailers on embassy property in Pretoria to support the effort, a U.S. contracting document said.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL1CT",
+                    "dateLine": "WASHINGTON/JOHANNESBURG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:18:00.000Z",
+                    "text": "EXCLUSIVE-US aims to bring in 4,500 white South Africans per month as refugees, document says"
+                },
+                {
+                    "snippet": "The Kansas state government has invalidated the driver’s licenses and birth certificates of transgender residents who changed the gender on those documents, in accordance with a law that took effect on Thursday.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM138",
+                    "dateLine": "NEW YORK, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:45:00.000Z",
+                    "text": "Kansas invalidates driver’s licenses, birth certificates of over 1,000 transgender residents"
+                },
+                {
+                    "versionCreated": "2026-02-26T16:39:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM11G",
+                    "text": "Vance pushes Trump's economic strategy in competitive Wisconsin congressional district",
+                    "dateLine": "PLOVER, Wisconsin, Feb 26 (Reuters)",
+                    "documentType": "Story"
+                }
+            ],
+            "dateLine": "NEW YORK, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:16:00.000Z",
+            "text": "Federal agents detain Columbia University student in campus housing",
+            "firstCreated": "2026-02-26T17:40:00.000Z"
+        },
+        {
+            "snippet": "Images of debris from Russian strikes on Ukraine strongly indicate that Moscow has used a cruise missile whose development led Donald Trump to quit a landmark nuclear pact in his first term, two experts said, confirming earlier Reuters reporting.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZE2DZ",
+            "image": {
+                "byLine": "Handout",
+                "text": "Purported image of fragments of a Russian 9M729 missile provided by Ukrainian law enforcement sources. in Khmelnytskyi region, Ukraine. September 10, 2025. ",
+                "id": "2026-02-26T080404Z_1_WB7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Ukrainian and U.S. officials met in Geneva on Thursday for talks on post-war reconstruction despite a deadlock in peace negotiations with Russia, which pounded infrastructure across Ukraine with drone and missile strikes overnight.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0EW",
+                    "dateLine": "GENEVA/KYIV, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T10:49:00.000Z",
+                    "text": "US, Ukraine discuss post-war reconstruction as Russia pummels grid"
+                },
+                {
+                    "snippet": "Top Ukrainian negotiator Rustem Umerov said participants in talks with U.S. negotiators in Geneva spoke to Ukrainian President Volodymyr Zelenskiy and were working to make the next three-sided meeting on a settlement \"as substantive as possible.\"",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM27T",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:51:00.000Z",
+                    "text": "Ukraine aims for substantive peace talks in Geneva with US and Russia"
+                },
+                {
+                    "snippet": "The United States has slowed the sale of Russian oil giant Lukoil's international assets to pressure Russia in the Ukraine peace talks, according to four sources familiar with the discussions.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0WT",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:40:00.000Z",
+                    "text": "EXCLUSIVE-US slows sale of Lukoil assets to pressure Russia in Ukraine peace talks"
+                },
+                {
+                    "versionCreated": "2026-02-25T10:24:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0BX",
+                    "text": "Zelenskiy, after speaking with Trump, says talks should lead to leaders' meeting",
+                    "dateLine": "KYIV, Feb 25 (Reuters)",
+                    "documentType": "Story"
+                },
+                {
+                    "snippet": "The stoppage of the last Russian oil flows to Europe, via the Soviet-era Druzhba pipeline, has triggered a geopolitical clash that has blocked new EU sanctions on Russia and vital funding for Ukraine.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL130",
+                    "dateLine": "BRUSSELS, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T10:53:00.000Z",
+                    "text": "EXPLAINER-What is the Druzhba oil pipeline and why has it held up EU sanctions on Russia?"
+                },
+                {
+                    "snippet": "Hungary's Prime Minister Viktor Orban accused Ukraine on Wednesday of planning to disrupt the Hungarian energy system, and dispatched troops to safeguard infrastructure, escalating a dispute that has undermined Europe's pro-Ukraine consensus.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL8N3ZL158",
+                    "dateLine": "BUDAPEST, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T12:58:00.000Z",
+                    "text": "Escalating an oil dispute, Hungary says Ukraine plans to disrupt energy system"
+                }
+            ],
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T07:42:00.000Z",
+            "text": "EXCLUSIVE-Ukraine images indicate Russia used missile at heart of nuclear pact collapse",
+            "firstCreated": "2026-02-26T07:42:00.000Z"
+        },
+        {
+            "snippet": "Cuba on Thursday appeared to be holding at a guarded provincial hospital at least some of the six wounded exiles who were detained following what Cuba described as an attack by 10 heavily armed Cuban nationals who tried to infiltrate the country by speedboat.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0RO",
+            "image": {
+                "byLine": "Norlys Perez",
+                "text": "People approach the entrance of the Provincial Clinical–Surgical Hospital \"Arnaldo Milian Castro,\" where, according to local information, injured people were being treated after an armed incident involving a Florida-registered speedboat and a Cuban patrol, in Santa Clara, Cuba, February 25, 2026. ",
+                "id": "2026-02-26T052654Z_1_ZH8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "U.S. officials close to Secretary of State Marco Rubio met with the grandson of former Cuban leader Raul Castro on the sidelines of this week's regional Caribbean Community conference in St. Kitts and Nevis, the Miami Herald reported on Thursday. Citing unnamed sources, the Miami Herald said it was not clear whether Rubio himself met with Castro's grandson, Raul Guillermo Rodriguez Castro, who is also Raul Castro's bodyguard and the son of the late head of Cuba's GAESA military conglomerate.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM16G",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T18:18:00.000Z",
+                    "text": "US officials met Castro grandson in St. Kitts, Miami Herald reports"
+                },
+                {
+                    "snippet": "Russia's foreign ministry spokeswoman said on Thursday that an incident with a Florida-registered speedboat off the coast of Cuba was an ‘aggressive provocation by the United States’ aimed at escalating the situation and triggering a conflict, state-owned TASS news agency reported.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0D3",
+                    "dateLine": "MOSCOW, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T06:38:00.000Z",
+                    "text": "Russia says boat incident near Cuba is 'aggressive provocation' by U.S."
+                }
+            ],
+            "dateLine": "SANTA CLARA, Cuba, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T17:27:00.000Z",
+            "text": "Cuba appears to hold speedboat suspects in provincial hospital",
+            "firstCreated": "2026-02-26T13:51:00.000Z"
+        },
+        {
+            "snippet": "Suppliers to U.S. aerospace and semiconductor firms face worsening rare earth shortages, with two turning away some clients, industry insiders said, weeks before U.S. President Donald Trump is expected to meet his Chinese counterpart Xi Jinping for a summit in Beijing.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3Z3003",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "A block with the symbol, atomic number and mass number of Scandium (Sc) element, in this illustration taken January 21, 2026. ",
+                "id": "2026-02-26T090054Z_1_SU6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Saudi Aramco's Juaymah liquefied petroleum gas export terminal is expected to be offline for repairs for at least a month after an outage this week forced the cancellation of cargoes through March, traders said on Thursday. ",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM18P",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:07:00.000Z",
+                    "text": "Aramco cancels Juaymah LPG deliveries through March for repairs, traders say"
+                },
+                {
+                    "snippet": "Venezuela's association of gasoline station operators has declared an emergency in the sector because of what operators say are minimal earnings, sources and a document seen by Reuters showed.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM14N",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:41:00.000Z",
+                    "text": "Venezuela fuel station operators declare emergency on minimal earnings-document, sources"
+                },
+                {
+                    "snippet": "Ecuador's National Assembly on Thursday approved reforms proposed by President Daniel Noboa aimed at boosting the nation's mining sector, but that have been criticized by environmentalists and indigenous groups.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM186",
+                    "dateLine": "QUITO, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:37:00.000Z",
+                    "text": "Ecuadorean lawmakers pass reform geared at driving mining investment"
+                },
+                {
+                    "snippet": "Cheniere Energy said its fourth-quarter profit more than doubled to $2.3 billion on strong liquefied natural gas demand, which allowed the company to increase its share repurchase target to more than $10 billion through 2030.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM104",
+                    "dateLine": "HOUSTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:12:00.000Z",
+                    "text": "Cheniere lifts buyback plan to more than $10 billion as profit surges on strong LNG demand"
+                },
+                {
+                    "snippet": "OPEC+ meets on Sunday to set its next production move amid heightened geopolitical friction affecting nearly a third of its output. That volatility may give the group cover to stick to its balanced-market narrative, even if the facts on the ground suggest otherwise.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZL1FV",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "text": "ROI-Geopolitical turmoil gives OPEC+ cover for cautious output hike: Bousso"
+                },
+                {
+                    "snippet": "The cost of hiring a supertanker from the Middle East to China exceeded $200,000 a day on Thursday for the first time since 2020 as the threat of U.S. attacks on Iran grows and buyers seek to lock in oil cargoes, according to data and market sources.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0CX",
+                    "dateLine": "SINGAPORE, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T09:08:00.000Z",
+                    "text": "Mideast-Asia oil tanker rates at highest since 2020 as Iran tensions simmer"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T04:29:00.000Z",
+            "text": "EXCLUSIVE-Rare earth shortages worsen in US aerospace, chips despite trade truce, sources say",
+            "firstCreated": "2026-02-26T04:29:00.000Z"
+        },
+        {
+            "snippet": "The U.S. Treasury handed Swiss private bank MBaer Merchant Bank AG a potentially crippling blow on Thursday by threatening to sever its access to the U.S. financial system on the grounds it had breached sanctions against Iran, Russia and Venezuela.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0TL",
+            "image": {
+                "byLine": "Kevin Lamarque",
+                "text": "A bronze seal for the Department of the Treasury is shown at the U.S. Treasury building in Washington, U.S., January 20, 2023. ",
+                "id": "2026-02-26T175353Z_1_VC7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Fund manager Vanguard Group said on Thursday it agreed to settle litigation filed by the Republican attorneys general of Texas, Kansas and other states, who had alleged the fund manager and rivals violated antitrust law through their climate activism.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM113",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:07:00.000Z",
+                    "text": "Vanguard settles Republican states' antitrust suit for $29.5 million"
+                },
+                {
+                    "snippet": "Some private credit firms that borrow from retail investors may be embellishing their financial health, Rubric Capital, a $3 billion hedge fund founded by a former Point72 star manager, warned its backers in a letter seen by Reuters.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM17O",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T20:13:00.000Z",
+                    "text": "Some private credit firms are using accounting tools to mask leverage, Rubric Capital tells investors"
+                },
+                {
+                    "snippet": "Britain's Serious Fraud Office said on Thursday that Graham McNulty would take over in early April as interim director to lead the investigator and prosecutor.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM1AA",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:26:00.000Z",
+                    "text": "UK's Serious Fraud Office appoints interim boss"
+                },
+                {
+                    "snippet": "Jefferies has an exposure of about 100 million pounds ($135 million) to Market Financial Solutions, or MFS, a mortgage-finance firm that entered a UK form of insolvency this week, Bloomberg News reported on Thursday, citing a person familiar with the matter.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM20A",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:48:00.000Z",
+                    "text": "Jefferies holds $135 million exposure to collapsed UK lender MFS, Bloomberg News reports"
+                }
+            ],
+            "dateLine": "WASHINGTON/ZURICH, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:11:00.000Z",
+            "text": "US threatens to cut off Swiss bank MBaer from financial system over alleged Iran, Russia, Venezuela ties",
+            "firstCreated": "2026-02-26T14:29:00.000Z"
+        },
+        {
+            "snippet": "Denmark will hold a parliamentary election on March 24, Prime Minister Mette Frederiksen said on Thursday, seeking to capitalise on a surge in support for her defiant stance against U.S. pressure over Greenland. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM1DD",
+            "image": {
+                "byLine": "Thomas Traasdahl",
+                "text": "Danish Prime Minister Mette Frederiksen speaks on the day she announced that Denmark will hold a parliamentary election on March 24, in the Parliament Hall at Christiansborg in Copenhagen, Denmark, February 26, 2026. ",
+                "id": "2026-02-26T121731Z_1_GE2_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "A German court granted the Alternative for Germany party (AfD) an injunction on Thursday ordering the domestic intelligence agency not to classify it as \"extremist\" for the moment, pending a final decision on the case.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM1SV",
+                    "dateLine": "BERLIN, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T14:30:00.000Z",
+                    "text": "German court grants injunction to AfD party, suspending 'extremist' label by spy agency"
+                },
+                {
+                    "snippet": "The U.N. expert on the Palestinian territories, Francesca Albanese, denounced on Thursday what she described as \"toxic\" attacks impacting her personal life and work, after a number of European states called for her resignation.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM153",
+                    "dateLine": "GENEVA, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:39:00.000Z",
+                    "text": "UN expert on Palestinian territories denounces 'toxic' attacks against her"
+                },
+                {
+                    "snippet": "Pakistani and Afghan border forces clashed on Thursday night after the Taliban launched what it called retaliatory strikes on Pakistani installations, sharply escalating tensions after days of cross-border hostilities.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM135",
+                    "dateLine": "KABUL, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:48:00.000Z",
+                    "text": "Pakistan, Afghan forces clash after days of hostilities"
+                },
+                {
+                    "snippet": "Former French Prime Minister Edouard Philippe could lose his seat as mayor of the port city of Le Havre in municipal elections next month, an opinion poll showed, dealing a potential blow to his presidential ambitions for 2027.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM24K",
+                    "dateLine": "PARIS, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:56:00.000Z",
+                    "text": "Poll shows main rival of French far-right in presidential election could lose mayor seat"
+                },
+                {
+                    "snippet": "At a training centre in Nepal's capital Kathmandu, Rahul Pariyar carefully hooks his harness to a rope, learning the basic skills he will need for painting walls, cleaning high rises and other construction work in the United Arab Emirates.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZJ0C1",
+                    "dateLine": "KATHMANDU, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T04:00:00.000Z",
+                    "text": "'Will it give me a job?': Nepal's election promises don't stop youth exodus"
+                }
+            ],
+            "dateLine": "COPENHAGEN, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T14:42:00.000Z",
+            "text": "Denmark to hold elections as PM bets on Greenland crisis boost",
+            "firstCreated": "2026-02-26T11:53:00.000Z"
+        },
+        {
+            "snippet": "CNBC is restructuring its newsroom to unify its TV and digital operations in a move that would result in nearly a dozen layoffs including the departure of the website's managing editor, Jeff McCracken, four sources familiar with the matter told Reuters.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM13M",
+            "image": {
+                "byLine": "Brendan McDermid",
+                "text": "The company logo for Versant is displayed on a screen on the floor at the New York Stock Exchange (NYSE) in New York City, U.S., July 21, 2025.  ",
+                "id": "2026-02-26T180009Z_1_FJ1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Warner Bros Discovery heaped an additional burden on Netflix's $82.7 billion bid for the movie studio and HBO.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0X2",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T16:27:00.000Z",
+                    "text": "Warner Bros’ TV decline puts pressure on Netflix deal"
+                },
+                {
+                    "snippet": "Mexican broadcaster TV Azteca said on Thursday that shareholders had approved a voluntary bankruptcy process for restructuring the company's finances and liabilities.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM13B",
+                    "dateLine": "MEXICO CITY, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T16:49:00.000Z",
+                    "text": "Mexico's Salinas-controlled TV Azteca announces bankruptcy proceedings"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T17:23:00.000Z",
+            "text": "EXCLUSIVE-CNBC to unify digital and TV news operations, cut nearly a dozen jobs, sources say",
+            "firstCreated": "2026-02-26T15:28:00.000Z"
+        },
+        {
+            "snippet": "The 50% surge in South Korean stocks in the first two months of 2026 is grabbing headlines, but other emerging markets are also boasting double-digit gains. Even the most ardent EM bull must be wondering if this blistering rally can continue.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM1LA",
+            "image": {
+                "byLine": "Soo-hyeon Kim",
+                "text": "Currency dealers work in front of an electronic board displaying the Korea Composite Stock Price Index (KOSPI) over 5,000 points in the dealing room of a bank, in Seoul, South Korea, January 22, 2026. ",
+                "id": "2026-02-26T140547Z_1_AP0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "With Washington raising barriers, China's push to shift trade toward Europe is running into one big demand: let the yuan rise against the euro and level the playing field.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZK2HS",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "text": "ROI-To win Europe's embrace, China needs to uncap the yuan: Mike Dolan"
+                },
+                {
+                    "snippet": "U.S. tariffs have rerouted trade, but not dented it as much as feared, allowing larger-than-expected economic growth in certain developing markets, the European Bank for Reconstruction and Development said on Thursday.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0N6",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T12:39:00.000Z",
+                    "text": "Trump tariff turmoil yet to dent emerging countries' growth, EBRD says"
+                },
+                {
+                    "snippet": "Investors ploughed a record $22.3 billion of private credit into emerging markets last year, according to data released on Wednesday, amid banks tightening their lending and wobbles in traditionally safe markets.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL154",
+                    "dateLine": "LONDON, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T21:17:00.000Z",
+                    "text": "Private credit in emerging markets surges to record, industry group says"
+                }
+            ],
+            "dateLine": "ORLANDO, Florida, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T13:59:00.000Z",
+            "text": "ROI-Blistering EM equity rally can't keep this pace up. Can it?: McGeever",
+            "firstCreated": "2026-02-26T13:59:00.000Z"
+        },
+        {
+            "snippet": "A Texas judge on Thursday rejected Kenvue's bid to dismiss a lawsuit by state Attorney General Ken Paxton accusing the company of failing to warn consumers that it may be unsafe for pregnant women to take Tylenol.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM12H",
+            "image": {
+                "byLine": "Kylie Cooper",
+                "text": "Tylenol for infants, for sale at a Target store in Valley Stream, New York, U.S., November 6, 2025. ",
+                "id": "2026-02-26T201658Z_1_RQ5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The U.S. Food and Drug Administration on Thursday approved Boehringer Ingelheim's zongertinib as a first-line treatment for a rare form of non-small cell lung cancer, making it the second drug to be cleared under the agency's new speedy review program.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM22U",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T18:19:00.000Z",
+                    "text": "US FDA approves first-line use of Boehringer Ingelheim's lung cancer drug"
+                },
+                {
+                    "snippet": "The U.S. Food and Drug Administration plans to give quarterly bonuses to scientific staff for quicker completion of drug reviews, Bloomberg News reported on Thursday, citing an FDA official familiar with the matter.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM21J",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:49:00.000Z",
+                    "text": "US FDA to offer bonuses to staff for faster drug reviews, Bloomberg News reports"
+                },
+                {
+                    "snippet": "The European Commission said on Thursday that member states may use an existing EU social fund to terminate pregnancies free of charge for women visiting from EU nations that restrict access to safe abortions, a significant policy clarification amid divisive debates on abortion rights.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0ZO",
+                    "dateLine": "BRUSSELS, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:50:00.000Z",
+                    "text": "EU says social fund can be used to allow access to safe abortions across bloc"
+                },
+                {
+                    "snippet": "Healthcare company Grifols on Thursday said it expects core earnings to grow by more than a quarter in 2026 and will continue to cut debt.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM2K4",
+                    "dateLine": "BARCELONA, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T18:30:00.000Z",
+                    "text": "Grifols sees core earnings rising by a quarter as it prioritises profitability"
+                },
+                {
+                    "snippet": "The U.S. CDC's vaccine advisory committee will discuss and may vote on recommendations for issues including COVID-19 vaccine injuries and long COVID at its scheduled meeting on March 18 and 19, according to a notice in the Federal Register. The notice was posted on Wednesday.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM119",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:50:00.000Z",
+                    "text": "CDC vaccine advisors to consider COVID-19 vaccine injuries, long COVID"
+                },
+                {
+                    "snippet": "There are big issues in the deals the United States is pursuing with African countries that govern how U.S. global health funding will work from now on, the head of the Africa Centres for Disease Control and Prevention said on Thursday.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM136",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:42:00.000Z",
+                    "text": "Africa CDC head cites major concerns over data, pathogen sharing in US health deals"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T18:20:00.000Z",
+            "text": "Judge rejects Kenvue bid to dismiss Texas lawsuit over Tylenol safety",
+            "firstCreated": "2026-02-26T16:10:00.000Z"
+        }
+    ],
+    "meta": {
+        "revisionId": 962855,
+        "revisionDate": "2026-02-26T20:17:08.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

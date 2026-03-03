@@ -2,7 +2,7 @@
 % Please edit documentation in R/eikonHelperfunctions.r
 \name{EikonPostProcessor}
 \alias{EikonPostProcessor}
-\title{A postprocessor to process Eikon (python) get_Data into r data.frames}
+\title{A postprocessor to process Eikon get_data output into R data.frames}
 \usage{
 EikonPostProcessor(Eikon_get_dataOuput, SpaceConvertor = ".")
 }
@@ -15,12 +15,14 @@ EikonPostProcessor(Eikon_get_dataOuput, SpaceConvertor = ".")
 a list of a data.frame with cleaned output and the resulting error data.frame
 }
 \description{
-As the Python eikon get_data structure contains various list that are null these should be replaced
+As the Eikon get_data JSON response structure contains various list elements that are null these should be replaced
 with NA to prevent disasters when later handling the data.frame. For example when using the unlist function Null elements
 are removed from the lists causing shorter vectors than expected.
 }
 \examples{
-\dontrun{"internal function no examples"}
+\dontrun{
+"internal function no examples"
+}
 }
 \seealso{
 EikonNameCleaner

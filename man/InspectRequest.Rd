@@ -21,6 +21,6 @@ function to check if a downloaded dataframe is empty
 }
 \examples{
 Refinitiv:::InspectRequest(data.frame(), functionname = "test")
-Refinitiv:::InspectRequest(data.frame(test = c(1,2),test2 = c("a","b")), functionname = "test")
+Refinitiv:::InspectRequest(data.frame(test = c(1, 2), test2 = c("a", "b")), functionname = "test")
 }
 \keyword{internal}

@@ -20,7 +20,7 @@ list
 Replace items in nested list
 }
 \examples{
- x <- list(list(NA, NULL, NULL), list("a", "b", "c"))
+x <- list(list(NA, NULL, NULL), list("a", "b", "c"))
 # test <- Refinitiv:::replaceInList(x, function(x)if(is.null(x))NA else x)
 }
 \keyword{internal}

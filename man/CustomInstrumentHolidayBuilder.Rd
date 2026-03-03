@@ -18,8 +18,10 @@ object with holidays
 Build a holiday object for a custom instrument
 }
 \examples{
-CustomInstrumentHolidayBuilder(dates = c("2023-12-01", "2023-12-31")
-, reasons = c("Special Bank Holiday 1", "Special Bank Holiday 2"))
+CustomInstrumentHolidayBuilder(
+  dates = c("2023-12-01", "2023-12-31"),
+  reasons = c("Special Bank Holiday 1", "Special Bank Holiday 2")
+)
 }
 \seealso{
 [rd_ManageCustomInstruments()]

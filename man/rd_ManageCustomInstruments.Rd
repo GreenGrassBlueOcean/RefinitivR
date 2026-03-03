@@ -5,7 +5,7 @@
 \title{CREATE, GET, UPDATE or DELETE a custom instrument}
 \usage{
 rd_ManageCustomInstruments(
-  RDObject = RefinitivJsonConnect(),
+  RDObject = rd_connection(),
   symbol = NULL,
   formula = NULL,
   basket = NULL,
@@ -58,33 +58,43 @@ CREATE, GET, UPDATE or DELETE a custom instrument
 }
 \examples{
 \dontrun{
- # Create Simple Instrument
- rd_ManageCustomInstruments(operation = "CREATE", symbol = "testAAPLandAMZN",
-                              formula = "AAPL.O + AMZN.O")
- #'  #get instrument details
- rd_ManageCustomInstruments(operation = "GET", symbol = "testAAPLandAMZN")
+# Create Simple Instrument
+rd_ManageCustomInstruments(
+  operation = "CREATE", symbol = "testAAPLandAMZN",
+  formula = "AAPL.O + AMZN.O"
+)
+#'  #get instrument details
+rd_ManageCustomInstruments(operation = "GET", symbol = "testAAPLandAMZN")
 
- # Update Instrument formula
- rd_ManageCustomInstruments(operation = "UPDATE", symbol = "testAAPLandAMZN",
-                              formula = "AAPL.O + 2 * AMZN.O")
- #Delete
- rd_ManageCustomInstruments(operation = "DELETE", symbol = "testAAPLandAMZN")
+# Update Instrument formula
+rd_ManageCustomInstruments(
+  operation = "UPDATE", symbol = "testAAPLandAMZN",
+  formula = "AAPL.O + 2 * AMZN.O"
+)
+# Delete
+rd_ManageCustomInstruments(operation = "DELETE", symbol = "testAAPLandAMZN")
 
-#build a custom instrument with a basket
+# build a custom instrument with a basket
 basket <- CustomInstrumentBasketBuilder(RICs = c("AAPL.O", "AMZN.O"), Weights = c(0.5, 0.5))
 
-rd_ManageCustomInstruments(operation = "CREATE", symbol = "InterestingBasket",
-                              basket = basket, currency = "USD")
+rd_ManageCustomInstruments(
+  operation = "CREATE", symbol = "InterestingBasket",
+  basket = basket, currency = "USD"
+)
 
-#update the basket with some holidays
-holidays <-  CustomInstrumentHolidayBuilder(dates = c("2023-12-01", "2023-12-31")
-       , reasons = c("Special Bank Holiday 1", "Special Bank Holiday 2"))
+# update the basket with some holidays
+holidays <- CustomInstrumentHolidayBuilder(
+  dates = c("2023-12-01", "2023-12-31"),
+  reasons = c("Special Bank Holiday 1", "Special Bank Holiday 2")
+)
 
 
-rd_ManageCustomInstruments(operation = "UPDATE", symbol = "InterestingBasket",
-                             holidays = holidays )
- #Delete instrument
- rd_ManageCustomInstruments(operation = "DELETE", symbol = "InterestingBasket")
+rd_ManageCustomInstruments(
+  operation = "UPDATE", symbol = "InterestingBasket",
+  holidays = holidays
+)
+# Delete instrument
+rd_ManageCustomInstruments(operation = "DELETE", symbol = "InterestingBasket")
 
 RealInstrumentName <- CorrectCustomInstrument("InterestingBasket")
 }

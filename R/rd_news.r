@@ -8,93 +8,46 @@
 #' language codes, explicit free-text tokens (using quotes), and date ranges. In addition,
 #' the function supports pagination via a cursor.
 #'
+#' @details
 #' Examples of queries include:
+#' \describe{
+#'   \item{Explicit FreeText (use quotes)}{
+#'     \code{rd_get_news_headlines(query = "\"electric car\" or \"electric vehicle\"")}}
+#'   \item{SearchIn token (HeadlineOnly)}{
+#'     \code{rd_get_news_headlines(query = "\"Reports\" or \"Announces\" and searchIn:HeadlineOnly")}}
+#'   \item{SearchIn token (FullStory)}{
+#'     \code{rd_get_news_headlines(query = "\"inflation\" and searchIn:FullStory")}}
+#'   \item{Language Filter}{
+#'     French: \code{rd_get_news_headlines(query = "LFR")};
+#'     English: \code{rd_get_news_headlines(query = "L:EN")}}
+#'   \item{Reuters Instrument Code (RIC)}{
+#'     \code{rd_get_news_headlines(query = "MSFT.O")}}
+#'   \item{RIC + Relevancy}{
+#'     \code{rd_get_news_headlines(query = "MSFT.O", relevancy = "High")}}
+#'   \item{Company Name + RIC + Relevancy}{
+#'     \code{rd_get_news_headlines(query = "LEN and \"Microsoft\" and MSFT.O", relevancy = "High")}}
+#'   \item{Most Read News (M:1RS)}{
+#'     \code{rd_get_news_headlines(query = "M:1RS")}}
+#'   \item{Newswire Specific RCS Codes}{
+#'     \code{rd_get_news_headlines(query = "MRG")}}
+#'   \item{Explicit Token News Source (NS)}{
+#'     \code{rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR")}}
+#'   \item{Increasing the Limit}{
+#'     \code{rd_get_news_headlines(query = "\"stock repurchase\"", limit = 50)}}
+#'   \item{Pagination using Cursor}{
+#'     \code{rd_get_news_headlines(query = "MSFT.O", cursor = "H4sIAAAAAAAA...", limit = 10)}}
+#'   \item{Daterange using LAST syntax}{
+#'     \code{rd_get_news_headlines(query = "MRG last 5 days")}}
+#'   \item{Daterange with BETWEEN syntax}{
+#'     \code{rd_get_news_headlines(query = "M:1RS BETWEEN 2024-03 AND 2024-04")}}
+#'   \item{Daterange with explicit from/to}{
+#'     \code{rd_get_news_headlines(query = "Major breaking news",
+#'       dateFrom = "2024-04-13T00:00:00Z", dateTo = "2024-04-14T00:00:00Z")}}
+#' }
 #'
-#' - **Explicit FreeText (use quotes):**
-#'   Obtains headlines for stories containing the text "electric car" or "electric vehicle"
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "\"electric car\" or \"electric vehicle\"")
-#'   }
-#'
-#' - **SearchIn token (HeadlineOnly):**
-#'   Obtains headlines for stories with "Reports" or "Announces" in their title, limiting the search to headlines only
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "\"Reports\" or \"Announces\" and searchIn:HeadlineOnly")
-#'   }
-#'
-#' - **SearchIn token (FullStory):**
-#'   Obtains headlines for stories with "inflation" when searching in the full story text
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "\"inflation\" and searchIn:FullStory")
-#'   }
-#'
-#' - **Language Filter:**
-#'   For French headlines:
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "LFR")
-#'   }
-#'   For English headlines (disambiguated with the language prefix "L:"):
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "L:EN")
-#'   }
-#'
-#' - **Reuters Instrument Code (RIC):**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "MSFT.O")
-#'   }
-#'
-#' - **Combination of RIC and Relevancy:**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "MSFT.O", relevancy = "High")
-#'   }
-#'
-#' - **Combination of Company Name, RIC and Relevancy:**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "LEN and \"Microsoft\" and MSFT.O", relevancy = "High")
-#'   }
-#'
-#' - **Most Read News (M:1RS):**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "M:1RS")
-#'   }
-#'
-#' - **Newswire Specific RCS Codes (MRG):**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "MRG")
-#'   }
-#'
-#' - **Explicit Token News Source (NS):**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR")
-#'   }
-#'
-#' - **Increasing the Limit:**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "\"stock repurchase\"", limit = 50)
-#'   }
-#'
-#' - **Pagination using Cursor:**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "MSFT.O", cursor = "H4sIAAAAAAAA...", limit = 10)
-#'   }
-#'
-#' - **Daterange using LAST syntax:**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "MRG last 5 days")
-#'   }
-#'
-#' - **Daterange with BETWEEN syntax:**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "M:1RS BETWEEN 2024-03 AND 2024-04")
-#'   }
-#'
-#' - **Daterange with explicit "from,to" syntax:**
-#'   \preformatted{
-#'     rd_get_news_headlines(query = "Major breaking news", dateFrom = "2024-04-13T00:00:00Z", dateTo = "2024-04-14T00:00:00Z")
-#'   }
-#'
-#' **Note:** The parameter \code{limit} must not exceed 100. If a value greater than 100
-#' is provided, the function will throw an error. When \code{raw_output = TRUE}, a list of raw JSON responses is returned.
+#' Note: The parameter \code{limit} must not exceed 100. If a value greater
+#' than 100 is provided, the function will throw an error. When
+#' \code{raw_output = TRUE}, a list of raw JSON responses is returned.
 #'
 #' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. Defaults to \code{RefinitivJsonConnect()} if not supplied.
 #' @param query A character string (or vector) representing the search query.
@@ -106,20 +59,39 @@
 #' @param dateTo An optional end date/time (ISO 8601 format).
 #' @param raw_output If \code{TRUE}, returns the raw JSON response; otherwise, the response is flattened into a \code{data.frame}.
 #' @param debug If \code{TRUE}, prints debugging messages.
+#' @param cache Controls caching. \code{NULL} (default) defers to
+#'   \code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
+#'   function default TTL (60 s). \code{FALSE} disables caching. A positive
+#'   numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.
 #'
 #' @return A \code{data.frame} with flattened fields, or the raw JSON if \code{raw_output = TRUE}.
 #'
 #' @export
-rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
-                                  query      = NULL,
-                                  limit      = 10L,
-                                  sort       = "NewToOld",
-                                  relevancy  = "All",
-                                  cursor     = NULL,
-                                  dateFrom   = NULL,
-                                  dateTo     = NULL,
+rd_get_news_headlines <- function(RDObject = rd_connection(),
+                                  query = NULL,
+                                  limit = 10L,
+                                  sort = "NewToOld",
+                                  relevancy = "All",
+                                  cursor = NULL,
+                                  dateFrom = NULL,
+                                  dateTo = NULL,
                                   raw_output = FALSE,
-                                  debug      = TRUE) {
+                                  debug = TRUE,
+                                  cache = NULL) {
+  # ── Cache lookup ──
+  ttl <- resolve_cache(cache, fn_default_ttl = 60)
+  if (!isFALSE(ttl)) {
+    .ck <- cache_key(
+      "rd_get_news_headlines", query, limit, sort, relevancy,
+      cursor, dateFrom, dateTo, raw_output
+    )
+    .hit <- cache_get(.ck)
+    if (.hit$found) {
+      if (debug) message("[RefinitivR] Cache hit")
+      return(.hit$value)
+    }
+  }
+
   # Check that limit is not greater than 100
   if (limit > 100) {
     stop("rd_get_news_headlines: 'limit' cannot exceed 100.")
@@ -130,84 +102,68 @@ rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
   }
   orig_query <- query
 
-  # Prepare a list to store responses
-  HeadlinesList <- vector("list", length(query))
-  DownloadCoordinator <- data.frame(
-    index = seq_along(query),
-    success = FALSE,
-    retries = 0L,
-    stringsAsFactors = FALSE
+  # Fetch headlines with chunked retry coordination
+  HeadlinesList <- chunked_download(
+    n_chunks = length(query),
+    fetch_fn = function(j) {
+      retry(function() {
+        RDObject$rd_get_news_headlines(
+          query      = query[j],
+          limit      = as.integer(limit),
+          sort       = sort,
+          relevancy  = relevancy,
+          cursor     = cursor,
+          dateFrom   = dateFrom,
+          dateTo     = dateTo,
+          raw_output = TRUE,
+          debug      = debug
+        )
+      }, max_attempts = 1L, on_failure = "NA")
+    },
+    max_retries = 1L,
+    sleep = 0.1,
+    verbose = debug,
+    fail_message = "rd_get_news_headlines: retrieving data failed after multiple retries."
   )
 
-  # Retry until all queries have succeeded or maximum retries reached.
-  while (!all(DownloadCoordinator$success) && !any(DownloadCoordinator$retries > 1L)) {
-    pending <- which(!DownloadCoordinator$success)
-    for (j in pending) {
-      HeadlinesList[[j]] <- try({
-        retry(
-          RDObject$rd_get_news_headlines(
-            query      = query[j],
-            limit      = as.integer(limit),
-            sort       = sort,
-            relevancy  = relevancy,
-            cursor     = cursor,
-            dateFrom   = dateFrom,
-            dateTo     = dateTo,
-            raw_output = TRUE,
-            debug      = debug
-          ),
-          max = 2
-        )
-      })
-      if (!identical(HeadlinesList[[j]], NA)) {
-        DownloadCoordinator$success[j] <- TRUE
-      }
-      Sys.sleep(0.1)
-      if (debug) {
-        message("Download Status:\n", paste(capture.output(DownloadCoordinator), collapse = "\n"))
-      }
-    }
-    DownloadCoordinator$retries[!DownloadCoordinator$success] <-
-      DownloadCoordinator$retries[!DownloadCoordinator$success] + 1
-  }
-
-  if (any(DownloadCoordinator$retries > 1L)) {
-    stop("rd_get_news_headlines: retrieving data failed after multiple retries.")
-  }
-
   if (raw_output) {
-    return(HeadlinesList)
-  }
-
-  # -- Flatten each headline in each response --
-  # Each element of HeadlinesList is presumed to be a list with a 'data' field.
+    ReturnElement <- HeadlinesList
+  } else {
+    # -- Flatten each headline in each response --
+    # Each element of HeadlinesList is presumed to be a list with a 'data' field.
     dtlist <- lapply(seq_along(HeadlinesList), function(i) {
-    x <- HeadlinesList[[i]]
-    if (!is.list(x) || is.null(x$data)) {
-      return(data.table::data.table())
-    }
-    # Assume x$data is a list of headlines
-    headlines_vec <- x$data
-    # Flatten each news item
-    flattened_list <- lapply(headlines_vec, flatten_headline_item)
-    flattened_list <- Filter(Negate(is.null), flattened_list)
-    if (length(flattened_list) == 0) {
-      return(data.table::data.table())
-    }
-    outdt <- data.table::rbindlist(flattened_list, fill = TRUE)
-    outdt[, query := orig_query[i]]
-    return(outdt)
-  })
+      x <- HeadlinesList[[i]]
+      if (!is.list(x) || is.null(x$data)) {
+        return(data.table::data.table())
+      }
+      # Assume x$data is a list of headlines
+      headlines_vec <- x$data
+      # Flatten each news item
+      flattened_list <- lapply(headlines_vec, flatten_headline_item)
+      flattened_list <- Filter(Negate(is.null), flattened_list)
+      if (length(flattened_list) == 0) {
+        return(data.table::data.table())
+      }
+      outdt <- data.table::rbindlist(flattened_list, fill = TRUE)
+      outdt[, query := orig_query[i]]
+      return(outdt)
+    })
 
-  if (length(dtlist) == 0 || all(sapply(dtlist, nrow) == 0)) {
-    return(data.frame())
+    if (length(dtlist) == 0 || all(sapply(dtlist, nrow) == 0)) {
+      ReturnElement <- data.frame()
+    } else {
+      final_dt <- data.table::rbindlist(dtlist, fill = TRUE, use.names = TRUE)
+      ReturnElement <- data.table::setDF(final_dt)
+    }
   }
 
-  final_dt <- data.table::rbindlist(dtlist, fill = TRUE, use.names = TRUE)
-  # Ensure that the returned product is a data.frame
-  return(data.table::setDF(final_dt))
-}
+  # ── Cache store (skip errors / NULL) ──
+  if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
+    cache_set(.ck, ReturnElement, ttl)
+  }
 
+  return(ReturnElement)
+}
 
 
 #' Flatten a Headline JSON Object
@@ -266,7 +222,6 @@ rd_get_news_headlines <- function(RDObject   = RefinitivJsonConnect(),
 #' @keywords Internal
 #' @noRd
 flatten_headline_item <- function(h) {
-
   # Helper to extract a single field (e.g., title)
   extract_single_field <- function(x_list) {
     if (!is.null(x_list) && length(x_list) > 0 && !is.null(x_list[[1]]$`$`)) {
@@ -294,41 +249,38 @@ flatten_headline_item <- function(h) {
   im <- news_item[["itemMeta"]]
 
   # Inline defaulting without %||%
-  storyId_val        <- if (is.null(h[["storyId"]])) NA_character_ else h[["storyId"]]
-  version_val        <- if (is.null(news_item[["_version"]])) NA_integer_ else news_item[["_version"]]
-  urgency_val        <- if (!is.null(cm$urgency$`$`)) cm$urgency$`$` else NA_integer_
-  firstCreated_val   <- if (!is.null(im$firstCreated$`$`)) im$firstCreated$`$` else NA_character_
+  storyId_val <- if (is.null(h[["storyId"]])) NA_character_ else h[["storyId"]]
+  version_val <- if (is.null(news_item[["_version"]])) NA_integer_ else news_item[["_version"]]
+  urgency_val <- if (!is.null(cm$urgency$`$`)) cm$urgency$`$` else NA_integer_
+  firstCreated_val <- if (!is.null(im$firstCreated$`$`)) im$firstCreated$`$` else NA_character_
   versionCreated_val <- if (!is.null(im$versionCreated$`$`)) im$versionCreated$`$` else NA_character_
 
   out <- list(
-    storyId        = storyId_val,
-    version        = version_val,
-    urgency        = urgency_val,
-    firstCreated   = firstCreated_val,
+    storyId = storyId_val,
+    version = version_val,
+    urgency = urgency_val,
+    firstCreated = firstCreated_val,
     versionCreated = versionCreated_val,
 
     # Use helper for single-field extraction
-    title          = extract_single_field(im$title),
+    title = extract_single_field(im$title),
 
     # Use helper for qcode extraction
-    creator        = extract_qcodes(cm$creator),
-    infoSource     = extract_qcodes(cm$infoSource),
+    creator = extract_qcodes(cm$creator),
+    infoSource = extract_qcodes(cm$infoSource),
 
     # For language, extract the '_tag' field from each element
-    language       = if (!is.null(cm$language) && length(cm$language) > 0) {
+    language = if (!is.null(cm$language) && length(cm$language) > 0) {
       tags <- sapply(cm$language, function(x) x[["_tag"]])
       paste(tags, collapse = ",")
     } else {
       NA_character_
     },
-    subject        = extract_qcodes(cm$subject)
+    subject = extract_qcodes(cm$subject)
   )
 
   return(out)
 }
-
-
-
 
 
 #' Convert plain URLs in a string to clickable HTML links
@@ -344,154 +296,12 @@ flatten_headline_item <- function(h) {
 make_links_clickable <- function(text) {
   # The regex matches any substring starting with http:// or https:// up to the first whitespace or a double quote or '<'
   clickable <- gsub("((http[s]?://[^\\s\"<]+))",
-                    "<a href=\"\\1\" target=\"_blank\">\\1</a><br/>",
-                    text, perl = TRUE)
+    "<a href=\"\\1\" target=\"_blank\">\\1</a><br/>",
+    text,
+    perl = TRUE
+  )
   return(clickable)
 }
-
-# #' Retrieve Full News Story from a Refinitiv RDP (JSON) Connection
-# #'
-# #' This function retrieves a full news story identified by its story ID via a
-# #' Refinitiv JSON connection. In the RDP response the story text may be found in
-# #' different places:
-# #'
-# #' - If the response comes from the legacy UDF service, the story is expected in the
-# #'   \code{story$storyHtml} element.
-# #'
-# #' - If the response comes from the RDP service, the content will be located under
-# #'   \code{newsItem$contentSet}. In that case, the function first checks for HTML content
-# #'   in \code{newsItem$contentSet$inlineXML} (if available) and, if not, in
-# #'   \code{newsItem$contentSet$inlineData}.
-# #'
-# #' If \code{renderHTML} is TRUE, any plain URLs in the resulting HTML will be converted
-# #' to clickable links via a helper function \code{make_links_clickable()} (which you should
-# #' define elsewhere in your package), and the combined HTML is opened in the viewer.
-# #'
-# #' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. Defaults to \code{RefinitivJsonConnect()} if not supplied.
-# #' @param story_id Vector of story IDs.
-# #' @param raw_output If \code{TRUE}, returns the raw list of responses.
-# #' @param debug If \code{TRUE}, prints debugging messages.
-# #' @param renderHTML If \code{TRUE}, the function will open the combined HTML in a browser viewer,
-# #'   and also return the HTML string.
-# #'
-# #' @return If \code{raw_output = FALSE} (the default), a character vector of the story HTML
-# #'   (or a single combined HTML string if \code{renderHTML = TRUE}). Otherwise, the raw list
-# #'   of responses.
-# #'
-# #' @export
-# rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
-#                               story_id   = NULL,
-#                               raw_output = FALSE,
-#                               debug      = FALSE,
-#                               renderHTML = FALSE) {
-#
-#
-#
-#   if (is.null(story_id)) {
-#     stop("rd_get_news_story: must supply 'story_id'")
-#   } else {
-#     story_id <- unique(story_id)
-#   }
-#
-#   NewsList <- vector("list", length(story_id))
-#   DownloadCoordinator <- data.frame(
-#     index   = seq_along(story_id),
-#     success = FALSE,
-#     retries = 0L,
-#     stringsAsFactors = FALSE
-#   )
-#
-#   # -- The retry loop --
-#   while (!all(DownloadCoordinator$success) && !any(DownloadCoordinator$retries > 4L)) {
-#     pending <- which(!DownloadCoordinator$success)
-#     for (j in pending) {
-#       NewsList[[j]] <- try({
-#         retry(
-#           RDObject$rd_get_news_story(
-#             story_id   = story_id[j],
-#             raw_output = raw_output,   # This is OK since your dummy_RD function ignores it anyway
-#             debug      = debug
-#           ),
-#           max = 2
-#         )
-#       })
-#       # If not an error, mark as success
-#       if (!inherits(NewsList[[j]], "try-error") && !is.null(NewsList[[j]])) {
-#         DownloadCoordinator$success[j] <- TRUE
-#       }
-#       Sys.sleep(0.1)
-#       if (debug) {
-#         message("Download Status:\n", paste(capture.output(DownloadCoordinator), collapse = "\n"))
-#       }
-#     }
-#     DownloadCoordinator$retries[!DownloadCoordinator$success] <-
-#       DownloadCoordinator$retries[!DownloadCoordinator$success] + 1
-#   }
-#
-#   # -- Stop if still failing after 4 tries --
-#   if (any(DownloadCoordinator$retries > 4L)) {
-#     stop("rd_get_news_story: retrieving data failed after multiple retries.")
-#   }
-#
-#   # -- If raw_output=TRUE, return the raw list now --
-#   if (raw_output) {
-#     return(NewsList)
-#   }
-#
-#   # -- Otherwise, continue processing as before --
-#   outvec <- vapply(
-#     X = NewsList,
-#     FUN = function(x) {
-#       if (is.list(x) && "story" %in% names(x)) {
-#         if (!is.null(x$story$storyHtml)) {
-#           return(x$story$storyHtml)
-#         } else {
-#           return("")
-#         }
-#       } else if (is.list(x) && "webURL" %in% names(x)) {
-#         if (!is.null(x$webURL)) {
-#           return(x$webURL)
-#         } else {
-#           return("")
-#         }
-#       } else if (is.list(x) && "newsItem" %in% names(x)) {
-#         if (!is.null(x$newsItem$contentSet$inlineXML) &&
-#             !is.null(x$newsItem$contentSet$inlineXML$`$`)) {
-#           return(x$newsItem$contentSet$inlineXML$`$`)
-#         } else if (!is.null(x$newsItem$contentSet$inlineData) &&
-#                    !is.null(x$newsItem$contentSet$inlineData$`$`)) {
-#           return(x$newsItem$contentSet$inlineData$`$`)
-#         } else {
-#           return("")
-#         }
-#       } else {
-#         return("")
-#       }
-#     },
-#     FUN.VALUE = character(1)
-#   )
-#
-#   if (renderHTML) {
-#     combined_html <- paste0(outvec, collapse = "<hr/>")
-#     # Convert plain URL substrings into clickable links.
-#     combined_html <- make_links_clickable(combined_html)
-#     tmpfile <- tempfile(fileext = ".html")
-#     writeLines(combined_html, con = tmpfile)
-#     if (debug) {
-#       message("Opening story content in browser: ", tmpfile)
-#     }
-#     if (requireNamespace("rstudioapi", quietly = TRUE) &&
-#         rstudioapi::hasFun("viewer")) {
-#       rstudioapi::viewer(tmpfile)
-#     } else {
-#       utils::browseURL(tmpfile)
-#     }
-#     return(combined_html)
-#   } else {
-#     return(outvec)
-#   }
-#   return(outvec)
-# }
 
 #' Retrieve Full News Story from a Refinitiv RDP (JSON) Connection
 #'
@@ -519,6 +329,11 @@ make_links_clickable <- function(text) {
 #' @param debug If \code{TRUE}, prints debugging messages.
 #' @param renderHTML If \code{TRUE}, the function will open the combined HTML in a browser viewer,
 #'   and also return the HTML string.
+#' @param cache Controls caching. \code{NULL} (default) defers to
+#'   \code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
+#'   function default TTL (Inf / session lifetime, since stories are immutable).
+#'   \code{FALSE} disables caching. A positive numeric value sets the cache TTL
+#'   in seconds. See \code{\link{rd_ClearCache}}.
 #'
 #' @return If \code{raw_output = FALSE} (the default), a named list keyed by story_id,
 #'   where each element is a sub-list containing:
@@ -534,11 +349,22 @@ make_links_clickable <- function(text) {
 #'   If \code{raw_output = TRUE}, returns a named list of raw responses keyed by story_id.
 #'
 #' @export
-rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
-                              story_id   = NULL,
+rd_get_news_story <- function(RDObject = rd_connection(),
+                              story_id = NULL,
                               raw_output = FALSE,
-                              debug      = FALSE,
-                              renderHTML = FALSE) {
+                              debug = FALSE,
+                              renderHTML = FALSE,
+                              cache = NULL) {
+  # ── Cache lookup ──
+  ttl <- resolve_cache(cache, fn_default_ttl = Inf)
+  if (!isFALSE(ttl)) {
+    .ck <- cache_key("rd_get_news_story", story_id, raw_output, renderHTML)
+    .hit <- cache_get(.ck)
+    if (.hit$found) {
+      if (debug) message("[RefinitivR] Cache hit")
+      return(.hit$value)
+    }
+  }
 
   if (is.null(story_id)) {
     stop("rd_get_news_story: must supply 'story_id'")
@@ -578,6 +404,9 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 
   # -- If raw_output=TRUE, return the named raw list now --
   if (raw_output) {
+    if (!isFALSE(ttl) && !is.null(NewsList) && !inherits(NewsList, "try-error")) {
+      cache_set(.ck, NewsList, ttl)
+    }
     return(NewsList)
   }
 
@@ -585,7 +414,7 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
   out_list <- list()
   for (i in seq_along(NewsList)) {
     x <- NewsList[[i]]
-    id <- story_id[i]  # Use the corresponding story_id for debug
+    id <- story_id[i] # Use the corresponding story_id for debug
 
     if (is.null(x)) {
       out_list[[id]] <- list(inline = "(Fetch failed)", html = "(Fetch failed)", headline = "", versionCreated = NA, urgency = NA)
@@ -601,27 +430,27 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 
     if (is.list(x) && "story" %in% names(x)) {
       html <- x$story$storyHtml %||% ""
-      headline <- x$story$headline %||% ""  # Assume headline field if available
+      headline <- x$story$headline %||% "" # Assume headline field if available
     } else if (is.list(x) && "webURL" %in% names(x)) {
       inline <- x$webURL %||% ""
-      headline <- x$headline %||% ""  # Assume if available
+      headline <- x$headline %||% "" # Assume if available
     } else if (is.list(x) && "newsItem" %in% names(x)) {
       # Headline
       if (!is.null(x$newsItem$itemMeta$title) && length(x$newsItem$itemMeta$title) > 0 &&
-          !is.null(x$newsItem$itemMeta$title[[1]]$`$`)) {
+        !is.null(x$newsItem$itemMeta$title[[1]]$`$`)) {
         headline <- x$newsItem$itemMeta$title[[1]]$`$`
         if (debug) message("Extracted headline: ", headline, " for ID: ", id)
       }
 
       # Content - Unlist to get the string
       if (!is.null(x$newsItem$contentSet$inlineXML) &&
-          !is.null(x$newsItem$contentSet$inlineXML$`$`)) {
+        !is.null(x$newsItem$contentSet$inlineXML$`$`)) {
         html <- x$newsItem$contentSet$inlineXML$`$`[[1]] %||% ""
         if (debug) message("Extracted from inlineXML for ID: ", id)
       }
 
       if (!is.null(x$newsItem$contentSet$inlineData) &&
-                 !is.null(x$newsItem$contentSet$inlineData$`$`)) {
+        !is.null(x$newsItem$contentSet$inlineData$`$`)) {
         inline <- x[["newsItem"]][["contentSet"]][["inlineData"]][["$"]][[1]] %||% ""
         if (debug) message("Extracted from inlineData for ID: ", id)
       }
@@ -638,7 +467,7 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
       if (nzchar(html) > 0 && grepl("^data:image", html)) {
         if (requireNamespace("base64enc", quietly = TRUE)) {
           img_src <- paste0("<img src='", html, "' alt='Embedded Image'/>")
-          html <- gsub("^data:image/[^;]+;base64,[^']+", img_src, html)  # Embed
+          html <- gsub("^data:image/[^;]+;base64,[^']+", img_src, html) # Embed
         } else {
           warning("base64enc package required for image decoding.")
         }
@@ -674,15 +503,22 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
       message("Opening story content in browser: ", tmpfile)
     }
     if (requireNamespace("rstudioapi", quietly = TRUE) &&
-        rstudioapi::hasFun("viewer")) {
+      rstudioapi::hasFun("viewer")) {
       rstudioapi::viewer(tmpfile)
     } else {
       utils::browseURL(tmpfile)
     }
-    return(combined_html)
+    ReturnElement <- combined_html
   } else {
-    return(out_list)
+    ReturnElement <- out_list
   }
+
+  # ── Cache store (skip errors / NULL) ──
+  if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
+    cache_set(.ck, ReturnElement, ttl)
+  }
+
+  return(ReturnElement)
 }
 
 #' Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection, Then Fetch Stories
@@ -692,46 +528,36 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #' top news groups. Each group contains one or more pages, where each page represents a specific
 #' news category.
 #'
-#' **Overview of Top News Groups and Pages:**
+#' Overview of Top News Groups and Pages:
+#' \describe{
+#'   \item{Main}{Pages such as "Front Page", "Central Banks & Global Economy",
+#'     "Sustainable Finance", "World News", and "Regulation & Compliance".}
+#'   \item{Breakingviews}{Generally contains the page "Reuters Breakingviews".}
+#'   \item{Banking & Finance}{Pages like "Financial Services", "Investment Banking",
+#'     "IFR", and "Digital Finance & Crypto".}
+#'   \item{Markets}{Pages such as "Global Markets", "Foreign Exchange",
+#'     "Fixed Income", "Emerging Markets", and "IFR".}
+#'   \item{Commodities}{Pages like "Commodities", "Energy", "Metals",
+#'     "Agricultural Commodities", and "Global Gas, Power & LNG".}
+#'   \item{Industries}{Pages such as "Technology, Media & Telecoms",
+#'     "Heavy Industry & Transport", "Consumer & Retail", and "Healthcare & Pharma".}
+#'   \item{Companies}{Sub-groups such as "U.S. Companies", "European Companies",
+#'     and "Asian Companies".}
+#'   \item{Regional}{Pages such as "Australia & New Zealand", "Japan & the Koreas",
+#'     "Greater China", "Southeast Asia", "India & South Asia", "Middle East & Africa",
+#'     "Europe & Russia", "United Kingdom", "Latin America", "United States", and "Canada".}
+#'   \item{National Languages}{News in various languages including Japanese, Chinese,
+#'     German, French, Portuguese, and Russian top news.}
+#'   \item{Sports & Lifestyle}{Pages like "Sport" and "Lifestyle & Entertainment".}
+#'   \item{AWP Top News}{Pages such as "AWP German Top News" and "AWP French Top News".}
+#' }
 #'
-#' - **Main**: Typically includes pages such as "Front Page", "Central Banks & Global Economy",
-#'   "Sustainable Finance", "World News", and "Regulation & Compliance".
-#'
-#' - **Breakingviews**: Generally contains the page "Reuters Breakingviews".
-#'
-#' - **Banking & Finance**: Often includes pages like "Financial Services", "Investment Banking",
-#'   "IFR", and "Digital Finance & Crypto".
-#'
-#' - **Markets**: Usually features pages such as "Global Markets", "Foreign Exchange",
-#'   "Fixed Income", "Emerging Markets", and "IFR".
-#'
-#' - **Commodities**: Contains pages like "Commodities", "Energy", "Metals",
-#'   "Agricultural Commodities", and "Global Gas, Power & LNG".
-#'
-#' - **Industries**: Contains pages such as "Technology, Media & Telecoms",
-#'   "Heavy Industry & Transport", "Consumer & Retail", and "Healthcare & Pharma".
-#'
-#' - **Companies**: Typically includes sub-groups such as "U.S. Companies", "European Companies",
-#'   and "Asian Companies".
-#'
-#' - **Regional**: Groups news by region with pages such as "Australia & New Zealand",
-#'   "Japan & the Koreas", "Greater China", "Southeast Asia", "India & South Asia",
-#'   "Middle East & Africa", "Europe & Russia", "United Kingdom", "Latin America",
-#'   "United States", and "Canada".
-#'
-#' - **National Languages**: Offers news in various languages with pages such as
-#'   "日本語トップニュース", "路透中文新闻", "Deutschland", "L’essentiel de l'actualité",
-#'   "Brasil", and "Россия".
-#'
-#' - **Sports & Lifestyle**: Contains pages like "Sport" and "Lifestyle & Entertainment".
-#'
-#' - **AWP Top News**: Includes pages such as "AWP German Top News" and "AWP French Top News".
-#'
-#' In addition to returning key fields from the top news packages (group, page name, revision information,
-#' and the **topNewsId**), this function makes an additional GET call for each page by calling
-#' `/data/news/v1/top-news/<topNewsId>`. This call retrieves the actual story details including the
-#' story identifier (in **storyId**), the title (in **text**), and a summary (in **snippet**) that can subsequently
-#' be used with \code{rd_get_news_story}.
+#' In addition to returning key fields from the top news packages (group, page name, revision
+#' information, and the \code{topNewsId}), this function makes an additional GET call for each
+#' page by calling \code{/data/news/v1/top-news/<topNewsId>}. This call retrieves the actual
+#' story details including the story identifier (in \code{storyId}), the title (in \code{text}),
+#' and a summary (in \code{snippet}) that can subsequently be used with
+#' \code{rd_get_news_story}.
 #'
 #'
 #' @param RDObject A connection object returned by \code{RefinitivJsonConnect()}. If not supplied,
@@ -740,6 +566,10 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #' @param page Optional character string (or regular expression) to filter pages by name.
 #' @param raw_output If \code{TRUE}, returns the raw JSON response (list) for each page in a named list keyed by \code{topNewsId}.
 #' @param debug If \code{TRUE}, prints debugging messages.
+#' @param cache Controls caching. \code{NULL} (default) defers to
+#'   \code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
+#'   function default TTL (60 s). \code{FALSE} disables caching. A positive
+#'   numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.
 #'
 #' @importFrom data.table rbindlist setDF
 #'
@@ -747,7 +577,7 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #' @examples
 #' \dontrun{
 #'
-#' **Examples for Filtering:**
+#' # Examples for Filtering:
 #' # Example 1: Retrieve all top news from the "Main" group
 #' main_news <- rd_get_top_news(group = "^Main$")
 #'
@@ -760,9 +590,6 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #' # Example 4: Filtering yields no results (empty data frame)
 #' no_news <- rd_get_top_news(group = "NonExistent")
 #' }
-#'
-#'
-#'
 #'
 #' @return A data frame (by default) with one row per story and the following columns:
 #'   \itemize{
@@ -780,11 +607,23 @@ rd_get_news_story <- function(RDObject   = RefinitivJsonConnect(),
 #'
 #'
 #' @export
-rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
+rd_get_top_news <- function(RDObject = rd_connection(),
                             group = NULL,
                             page = NULL,
                             raw_output = FALSE,
-                            debug = FALSE) {
+                            debug = FALSE,
+                            cache = NULL) {
+  # ── Cache lookup ──
+  ttl <- resolve_cache(cache, fn_default_ttl = 60)
+  if (!isFALSE(ttl)) {
+    .ck <- cache_key("rd_get_top_news", group, page, raw_output)
+    .hit <- cache_get(.ck)
+    if (.hit$found) {
+      if (debug) message("[RefinitivR] Cache hit")
+      return(.hit$value)
+    }
+  }
+
   base_endpoint <- "data/news/v1/top-news"
   response <- send_json_request(
     service      = "rdp",
@@ -795,12 +634,16 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
 
   if (is.null(response$data)) {
     if (debug) message("No data found in /top-news response.")
-    return(if (raw_output) list() else data.frame())
+    ReturnElement <- if (raw_output) list() else data.frame()
+    if (!isFALSE(ttl)) cache_set(.ck, ReturnElement, ttl)
+    return(ReturnElement)
   }
 
   dt_pages <- data.table::rbindlist(
     lapply(response$data, function(g) {
-      if (is.null(g$pages)) return(NULL)
+      if (is.null(g$pages)) {
+        return(NULL)
+      }
       data.table::rbindlist(lapply(g$pages, function(p) {
         data.table::data.table(
           group        = g$name,
@@ -825,7 +668,7 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
     group_pattern <- paste(group, collapse = "|")
     dt_group <- dt_pages[grepl(group_pattern, group, ignore.case = TRUE)]
   } else {
-    dt_group <- data.table::data.table()  # empty
+    dt_group <- data.table::data.table() # empty
   }
 
   # 2) If page is specified, find matching rows
@@ -850,7 +693,9 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
 
   if (nrow(dt_pages) == 0) {
     if (debug) message("No matching top news pages after filtering.")
-    return(if (raw_output) list() else data.frame())
+    ReturnElement <- if (raw_output) list() else data.frame()
+    if (!isFALSE(ttl)) cache_set(.ck, ReturnElement, ttl)
+    return(ReturnElement)
   }
 
   unique_ids <- unique(dt_pages$topNewsId)
@@ -879,17 +724,18 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
   }
 
   if (raw_output) {
+    if (!isFALSE(ttl) && !is.null(top_news_dict)) cache_set(.ck, top_news_dict, ttl)
     return(top_news_dict)
   }
 
   expanded_rows <- lapply(seq_len(nrow(dt_pages)), function(i) {
     row_info <- dt_pages[i, ]
-    tnid     <- row_info$topNewsId
-    resp     <- top_news_dict[[tnid]]
+    tnid <- row_info$topNewsId
+    resp <- top_news_dict[[tnid]]
 
     if (is.null(resp) || is.null(resp$data)) {
       row_info$storyId <- NA_character_
-      row_info$title   <- NA_character_
+      row_info$title <- NA_character_
       row_info$snippet <- NA_character_
       return(row_info)
     }
@@ -903,7 +749,7 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
       lapply(story_data, function(s) {
         data.table::data.table(
           storyId = if (!is.null(s$storyId)) s$storyId else NA_character_,
-          title   = if (!is.null(s$text))    s$text    else NA_character_,
+          title   = if (!is.null(s$text)) s$text else NA_character_,
           snippet = if (!is.null(s$snippet)) s$snippet else NA_character_
         )
       }),
@@ -912,11 +758,18 @@ rd_get_top_news <- function(RDObject = RefinitivJsonConnect(),
 
     row_expanded <- row_info[rep(1, nrow(dt_stories)), ]
     row_expanded$storyId <- dt_stories$storyId
-    row_expanded$title   <- dt_stories$title
+    row_expanded$title <- dt_stories$title
     row_expanded$snippet <- dt_stories$snippet
     row_expanded
   })
 
   out_dt <- data.table::rbindlist(expanded_rows, fill = TRUE)
-  data.table::setDF(out_dt)
+  ReturnElement <- data.table::setDF(out_dt)
+
+  # ── Cache store ──
+  if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
+    cache_set(.ck, ReturnElement, ttl)
+  }
+
+  return(ReturnElement)
 }

@@ -1,0 +1,490 @@
+{
+    "_metadata": {
+        "outdated": false,
+        "cached": true
+    },
+    "data": [
+        {
+            "snippet": "The 50% surge in South Korean stocks in the first two months of 2026 is grabbing headlines, but other emerging markets are also boasting double-digit gains. Even the most ardent EM bull must be wondering if this blistering rally can continue.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM1LA",
+            "image": {
+                "byLine": "Soo-hyeon Kim",
+                "text": "Currency dealers work in front of electronic board showing the Korea Composite Stock Price Index (KOSPI) and the exchange rate between the U.S. dollar and South Korean won in the dealing room of a bank, in Seoul, South Korea, April 10, 2025. ",
+                "id": "2026-02-26T143533Z_1_UL7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Investors ploughed a record $22.3 billion of private credit into emerging markets last year, according to data released on Wednesday, amid banks tightening their lending and wobbles in traditionally safe markets.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL154",
+                    "dateLine": "LONDON, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T21:17:00.000Z",
+                    "text": "Private credit in emerging markets surges to record, industry group says"
+                },
+                {
+                    "snippet": "Global investors poured money into emerging market stocks at the fastest clip in years in January, as a weaker dollar and diversification away from the U.S. point to an extension of the rally the asset class staged last year. Emerging market equity funds last week posted one of their biggest weekly inflows on record, lifting year-to-date inflows above $39 billion, according to J.P. Morgan. That marks one of the strongest starts to the year for EM equities in more than 20 years, the investment bank said, and has historically been associated with sustained rallies rather than brief bursts of optimism.",
+                    "storyId": "urn:newsml:reuters.com:20260202:nL6N3YU1CR",
+                    "dateLine": "NEW YORK, Feb 2 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-02T08:00:00.000Z",
+                    "text": "ANALYSIS-Emerging market stocks rally appears intact after buoyant January inflows"
+                },
+                {
+                    "snippet": "Emerging market equity exchange-traded funds have attracted substantial inflows since the start of the year for their cheaper valuations and growth prospects, despite markets grappling with geopolitical tensions and a decline in global bond markets.",
+                    "storyId": "urn:newsml:reuters.com:20260122:nL4N3YM0SU",
+                    "dateLine": "Jan 22 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-01-22T06:59:00.000Z",
+                    "text": "GRAPHIC-Emerging market ETFs draw strong inflows on cheaper valuations amid market turmoil"
+                }
+            ],
+            "dateLine": "ORLANDO, Florida, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T13:59:00.000Z",
+            "text": "ROI-Blistering EM equity rally can't keep this pace up. Can it?: McGeever",
+            "firstCreated": "2026-02-26T13:59:00.000Z"
+        },
+        {
+            "snippet": "U.S. tariffs have rerouted trade, but not dented it as much as feared, allowing larger-than-expected economic growth in certain developing markets, the European Bank for Reconstruction and Development said on Thursday.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0N6",
+            "image": {
+                "byLine": "Nathan Howard",
+                "text": "U.S. President Donald Trump delivers the State of the Union address in the House Chamber of the U.S. Capitol in Washington, D.C., U.S., February 24, 2026. ",
+                "id": "2026-02-26T062218Z_1_QI5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "China is closely monitoring U.S. policies and will decide \"in due course\" whether to adjust countermeasures to U.S. tariffs, a commerce ministry official said on Tuesday after President Donald Trump said he would levy a new temporary tariff of 15% on U.S. imports from all countries.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL1N3ZK0AZ",
+                    "dateLine": "BEIJING, Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T10:12:00.000Z",
+                    "text": "China says it will decide on US tariff countermeasures in due course"
+                },
+                {
+                    "snippet": "U.S. trading partners in Asia were weighing fresh uncertainties this weekend after President Donald Trump announced a new tariff on imports, hours after the Supreme Court struck down many of the sweeping levies he used to launch a global trade war.",
+                    "storyId": "urn:newsml:reuters.com:20260222:nL1N3ZI00C",
+                    "dateLine": "HONG KONG/TAIPEI, Feb 22 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-22T04:31:00.000Z",
+                    "text": "Asian economies weigh impact of fresh Trump tariff moves, confusion"
+                },
+                {
+                    "snippet": "Malaysian Prime Minister Anwar Ibrahim said on Tuesday that the government was closely monitoring the situation on U.S. tariffs after the U.S. Supreme Court declared the duties illegal.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL1N3ZK03H",
+                    "dateLine": "KUALA LUMPUR, Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T03:07:00.000Z",
+                    "text": "Malaysia monitoring U.S. tariff situation closely, PM says"
+                }
+            ],
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T12:39:00.000Z",
+            "text": "Trump tariff turmoil yet to dent emerging countries' growth, EBRD says",
+            "firstCreated": "2026-02-26T05:59:00.000Z"
+        },
+        {
+            "snippet": "With Washington raising barriers, China's push to shift trade toward Europe is running into one big demand: let the yuan rise against the euro and level the playing field.\n\n",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZK2HS",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "U.S. dollar, Euro, Chinese Yuan and Pound banknotes are seen in this illustration taken May 4, 2025. ",
+                "id": "2026-02-26T070630Z_1_OT5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "German Chancellor Friedrich Merz wrapped up his two-day visit to China on Thursday hailing \"good cooperation\" with Beijing but pointing to overcapacity by Chinese exporters that have taken a growing share of German markets.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0TE",
+                    "dateLine": "HANGZHOU, China, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:29:00.000Z",
+                    "text": "Germany's Merz says challenges remain as he concludes inaugural China trip"
+                },
+                {
+                    "snippet": "German business bosses warned on Friday of what they called destabilising and unfair global business practices by China, ahead of a visit to Beijing by Chancellor Friedrich Merz in which he is expected to focus on cooperation opportunities.",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6N3ZG0KZ",
+                    "dateLine": "BERLIN, Feb 20 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-20T14:51:00.000Z",
+                    "text": "German business lobby warns of unfair trade practices by China"
+                },
+                {
+                    "snippet": "BMW Chief Executive Oliver Zipse has warned that ignoring China, the world's top auto market, would put at risk future economic success, saying on Thursday cooperation with Beijing was fundamental ahead of German Chancellor Friedrich Merz's first trip to the country.",
+                    "storyId": "urn:newsml:reuters.com:20260219:nL6N3ZE0PW",
+                    "dateLine": "BERLIN, Feb 19 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-19T11:00:00.000Z",
+                    "text": "German carmakers need China to compete globally, BMW CEO says ahead of Merz trip"
+                }
+            ],
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T06:59:00.000Z",
+            "text": "ROI-To win Europe's embrace, China needs to uncap the yuan: Mike Dolan",
+            "firstCreated": "2026-02-26T06:59:00.000Z"
+        },
+        {
+            "snippet": "India's Trade Minister Piyush Goyal discussed trade and economic partnership with U.S. Commerce Secretary Howard Lutnick over lunch in New Delhi on Thursday, Goyal said in a post on X, days after President Donald Trump's sweeping global tariffs were invalidated.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0CF",
+            "image": {
+                "byLine": "Francis Mascarenhas",
+                "text": "A person drives a truck inside a shipping container yard in Navi Mumbai, India, February 4, 2026. ",
+                "id": "2026-02-26T092120Z_1_DF1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Stocks of Indian solar equipment makers plunged on Wednesday, after the United States imposed preliminary duties on imports from India, Indonesia and Laos, the latest in a decade-long series of levies on cheap Asian imports.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZL0C1",
+                    "dateLine": "BENGALURU/SINGAPORE, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T05:06:00.000Z",
+                    "text": "Indian solar shares slump as US duties threaten bigger tariff hit"
+                }
+            ],
+            "dateLine": "NEW DELHI, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T08:41:00.000Z",
+            "text": "US commerce secretary, India minister discuss trade days after Trump's tariffs are struck down",
+            "firstCreated": "2026-02-26T08:01:00.000Z"
+        },
+        {
+            "snippet": "Most Latin American currencies and stocks drifted lower on Thursday, with investors turning cautious about the AI trade. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM1F6",
+            "image": {
+                "byLine": "Luisa Gonzalez",
+                "text": "Traders work on the floor of the Colombian Stock Exchange in Bogota, Colombia May 9, 2024. ",
+                "id": "2026-02-26T160952Z_1_CE0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "versionCreated": "2026-02-26T10:25:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0SZ",
+                    "text": "INDIA STOCKS-Indian benchmarks end flat; HDFC Bank counters PSU banks, pharma gains",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story"
+                },
+                {
+                    "snippet": "Major Gulf stock markets fell on Thursday as investors maintained a risk-averse approach amid heightened geopolitical tensions and uncertainty surrounding a third round of U.S.-Iran nuclear talks set to take place in Geneva later in the day.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0QZ",
+                    "dateLine": "BANGALORE, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T13:10:00.000Z",
+                    "text": "MIDEAST STOCKS-Major Gulf markets ease as investors await US-Iran developments"
+                },
+                {
+                    "snippet": "The forint steadied near a more than 2-1/2 year high on Thursday, unshaken by the first Hungarian interest rate cut since late 2024 this week as the outlook for further easing remained limited.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0DQ",
+                    "dateLine": "PRAGUE, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T09:40:00.000Z",
+                    "text": "CEE MARKETS-Forint settles around 2-1/2 year high after rate outlook relief"
+                },
+                {
+                    "snippet": "Uganda's currency is expected to weaken against the dollar in the next week to Thursday, while those of Nigeria, Ghana, Kenya and Zambia should be little changed, traders said.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0SZ",
+                    "dateLine": "KAMPALA, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:19:00.000Z",
+                    "text": "WEEKAHEAD-AFRICA-FX-Uganda's currency expected to fall, most others seen steady"
+                },
+                {
+                    "snippet": " South Korean shares rose more than 3% on Thursday, hitting a fresh record high, as chipmakers jumped after Nvidia's earnings and automakers also extended a rally.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM08I",
+                    "dateLine": "SEOUL, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T07:03:00.000Z",
+                    "text": "S.Korean shares hit record on chip, auto surge; president says market 'normalising'"
+                },
+                {
+                    "snippet": "China stocks closed lower on Thursday, snapping a two-session post-Lunar New Year rally, as investors held off on major moves ahead of an annual parliamentary meeting next week.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0C3",
+                    "dateLine": "HONG KONG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T08:35:00.000Z",
+                    "text": "China stocks end lower as traders hold off before key policy meeting"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T15:48:00.000Z",
+            "text": "EMERGING MARKETS-Colombian stocks lead Latin America shares lower; investors cautious about AI risk",
+            "firstCreated": "2026-02-26T15:48:00.000Z"
+        },
+        {
+            "snippet": "India's markets regulator on Thursday overhauled rules for mutual funds, introducing newer categories of schemes, curbing portfolio overlaps and allowing more exposure to gold and silver.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0F3",
+            "image": {
+                "byLine": "Hemanshi Kamani",
+                "text": "The logo of Securities and Exchange Board of India (SEBI) is seen on its headquarters in Mumbai, India, March 24, 2025.",
+                "id": "2026-02-26T065946Z_1_WJ7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The Indian central bank's additional liquidity support to lenders, which has pushed overnight rates towards the floor of the policy rate corridor in a bid to ease money market stress and improve transmission, is unlikely to extend beyond March, according to bankers.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZJ08N",
+                    "dateLine": "MUMBAI, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T06:37:00.000Z",
+                    "text": "India central bank's additional liquidity support to wind down after March, bankers say"
+                },
+                {
+                    "snippet": "India's central bank is not planning to revisit recently announced rules for bank financing of proprietary traders and brokers, its governor said on Monday.",
+                    "storyId": "urn:newsml:reuters.com:20260223:nFWN3ZI019",
+                    "dateLine": "MUMBAI, Feb 23 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-23T07:15:00.000Z",
+                    "text": "India cenbank not looking to revisit lending rules for proprietary traders, brokers, governor says"
+                },
+                {
+                    "snippet": "An Indian brokers' body has sought a six-month pause on rules that will tighten bank lending to stock brokers and other market intermediaries from April 1, according to a document reviewed by Reuters on Thursday.",
+                    "storyId": "urn:newsml:reuters.com:20260219:nL4N3ZF0AZ",
+                    "dateLine": "Feb 19 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-19T06:25:00.000Z",
+                    "text": "Indian brokers seek 6-month freeze on RBI curbs on bank lending, document shows"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T10:28:00.000Z",
+            "text": "India revamps mutual fund rulebook, opens room for higher gold and silver exposure",
+            "firstCreated": "2026-02-26T04:58:00.000Z"
+        },
+        {
+            "snippet": "India is likely to record one of its warmest Marches on record, with above-average temperatures forecast in key wheat and rapeseed-growing states, potentially cutting yields, two weather bureau sources said on Thursday.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0KJ",
+            "image": {
+                "byLine": "Anushree Fadnavis",
+                "text": "Men load sacks on a truck after having harvested rapeseed crops, at a market yard in Niwai, India, February 23, 2023.",
+                "id": "2026-02-26T095658Z_1_OX5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Prices of rice exported from major hubs in Asia were largely stagnant this week, as demand lagged and ample supplies weighed on the market.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0VD",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T10:26:00.000Z",
+                    "text": "ASIA RICE-Export prices stagnant on muted demand, robust supply"
+                },
+                {
+                    "snippet": "Nepal's soybean oil exports to India jumped more than tenfold in 2025 to a record high, boosted by duty-free access that helped the Himalayan nation double total exports to its neighbour, industry officials told Reuters.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0AS",
+                    "dateLine": "MUMBAI, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T10:21:00.000Z",
+                    "text": "Nepal's soyoil exports to India jump tenfold on duty free access"
+                },
+                {
+                    "snippet": "India is likely to produce 29.3 million metric tons of sugar in the current season ending in September, down from an earlier estimate of 30.95 million tons, a leading industry body said on Wednesday.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nFWN3ZL0SQ",
+                    "dateLine": "MUMBAI, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T10:09:00.000Z",
+                    "text": "Indian sugar industry body cuts production estimate to 29.3 mln tons amid lower yields"
+                }
+            ],
+            "dateLine": "MUMBAI, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T09:33:00.000Z",
+            "text": "India braces for unusually hot March; wheat, rapeseed crops at risk, sources say",
+            "firstCreated": "2026-02-26T09:32:00.000Z"
+        },
+        {
+            "snippet": "South Korea's central bank stood pat on interest rates on Thursday and signalled policy would stay unchanged for the next six months as a chip boom in exports and steady inflation allow policymakers more time to assess financial stability risks.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZL00Z",
+            "image": {
+                "byLine": "Kim Hong-Ji",
+                "text": "The buliding of Bank of Korea is seen in Seoul, South Korea, July 14, 2016. ",
+                "id": "2026-02-26T010237Z_1_XD7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "South Korea's central bank is closely watching bond markets and will respond if needed, an official said on Thursday, adding that treasury bond yields were trading at significantly high levels.",
+                    "storyId": "urn:newsml:reuters.com:20260212:nP8N3Y802J",
+                    "dateLine": "SEOUL, Feb 12 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-12T02:11:00.000Z",
+                    "text": "Bank of Korea will respond to excessive increases in bond yields, official says"
+                },
+                {
+                    "snippet": "Lee Seung-heon, one of the leading candidates to become the next Bank of Korea governor, backs raising taxes on property ownership to stop surging home prices from stoking inflation but a policy pivot to more monetary tightening would be premature.",
+                    "storyId": "urn:newsml:reuters.com:20260209:nL4N3Z302Q",
+                    "dateLine": "SEOUL, Feb 9 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-09T03:50:00.000Z",
+                    "text": "Contender for Bank of Korea governor backs higher property taxes to contain inflation"
+                }
+            ],
+            "dateLine": "SEOUL, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T04:24:00.000Z",
+            "text": "S.Korea central bank holds rates, adopts dot-plot path signalling extended pause",
+            "firstCreated": "2026-02-26T01:05:00.000Z"
+        },
+        {
+            "snippet": "China's central bank set the yuan's guidance rate significantly weaker than market expectations on Thursday, signaling its intent to curb the currency's rapid appreciation.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM01X",
+            "image": {
+                "byLine": "Carlos Barria",
+                "text": "Chinese 100 yuan banknotes are seen in this picture illustration created in Shanghai on January 17 , 2011. ",
+                "id": "2026-02-26T051123Z_1_YH8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The Indian rupee was a tad firmer on Thursday, helped by a broadly softer dollar, though it has remained a laggard among emerging market peers over 2026 as investors favour tech, export and commodity-heavy global markets.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0BR",
+                    "dateLine": "MUMBAI, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T05:05:00.000Z",
+                    "text": "INDIA RUPEE-Indian rupee stuck in range, missing tech and commodity lift for EM peers"
+                },
+                {
+                    "snippet": "The South African rand was steady in early trade on Thursday as investors digested the annual budget, which analysts said underscored the government's commitment to restoring fiscal sustainability.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM092",
+                    "dateLine": "JOHANNESBURG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T07:22:00.000Z",
+                    "text": "South African rand steady as investors digest budget, await producer inflation"
+                }
+            ],
+            "dateLine": "HONG KONG, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T02:21:00.000Z",
+            "text": "Yuan midpoint weaker than estimates in biggest spread on record",
+            "firstCreated": "2026-02-26T02:02:00.000Z"
+        },
+        {
+            "snippet": "Vietnam's fiscal deficit and public debt are expected to increase as the country invests in large infrastructure projects, Moody's Ratings said on Thursday, urging banks to boost capital buffers.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM05G",
+            "image": {
+                "byLine": "Athit Perawongmetha",
+                "text": "Lights illuminate condominium buildings and traditional houses in Hanoi, Vietnam, September 2, 2025.",
+                "id": "2026-02-26T022907Z_1_US6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Vietnam's foreign and domestic investors have welcomed top leader To Lam's economic reform drive, but his goal of double-digit growth under a model that has been called \"market Leninism\" looks unrealistic, economists and analysts say.",
+                    "storyId": "urn:newsml:reuters.com:20260123:nL6N3YM09K",
+                    "dateLine": "HANOI, Jan 23 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-01-23T07:13:00.000Z",
+                    "text": "ANALYSIS-Investors cheer Vietnam reforms, but To Lam's growth target looks elusive"
+                },
+                {
+                    "snippet": "Vietnam's economy grew by 8% in 2025, accelerating from the previous year's pace due to robust exports despite U.S. tariffs, preliminary government data showed on Monday, as the country posted its highest annual trade surplus with Washington. The Southeast Asian nation, which is one of the top exporters to the United States, is still in talks with Washington over a possible trade deal but has largely shrugged off U.S. duties of 20% imposed on its goods by the Trump administration to cut Vietnam's huge trade advantage. Vietnam's total exports rose by 17% to about $475 billion last year, the data showed, with shipments to the United States worth $153 billion, far outstripping 2024's record figure of $119.5 billion. That has led to an unprecedented trade surplus with Washington of nearly $134 billion last year, far higher than the previous peak reached in 2024, according to the Vietnamese figures, which are usually more conservative than U.S. data. The latest trade figures available from the U.S. statistics agency show that Vietnam's surplus with Washington had already hit an unprecedented $129.5 billion in September, higher than the $123.5 billion surplus recorded for all of 2024, which was a record.",
+                    "storyId": "urn:newsml:reuters.com:20260105:nL4N3Y60GT",
+                    "dateLine": "HANOI, Jan 5 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-01-05T08:17:00.000Z",
+                    "text": "Vietnam's annual growth reaches 8% as trade surplus with US hits record despite tariffs"
+                },
+                {
+                    "snippet": "Vietnam's State Treasury raised 11.5 trillion dong ($441 million) in its weekly government bond auction on Wednesday, up from the $424 million raised last week.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL04W",
+                    "dateLine": "HANOI, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T05:16:00.000Z",
+                    "text": "Vietnam raises $441 million in government bond auction"
+                }
+            ],
+            "dateLine": "HANOI, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T02:58:00.000Z",
+            "text": "Infrastructure splurge to increase Vietnam's deficit, Moody's says",
+            "firstCreated": "2026-02-26T02:09:00.000Z"
+        },
+        {
+            "snippet": "Thailand's manufacturing production index rose 1.46% in January from a year earlier, the industry ministry said on Thursday, a touch stronger than analysts' forecasts.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM08W",
+            "image": {
+                "byLine": "Chalinee Thirasupa",
+                "text": "Twilight falls over the Bangkok skyline on New Year's Eve, in Bangkok, Thailand, December 31, 2025. ",
+                "id": "2026-02-25T070520Z_1_CL0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "versionCreated": "2026-02-24T03:52:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6N3ZK09Q",
+                    "text": "Thailand car production rises 10.53% on year in January on rising domestic sales and EVs",
+                    "dateLine": "BANGKOK, Feb 24 (Reuters)",
+                    "documentType": "Story"
+                },
+                {
+                    "snippet": "Thailand's exports surged in January, data showed on Monday, and the commerce ministry expects them to increase in coming months even as the baht's strength remains a concern and there is uncertainty about U.S. tariffs. Customs-cleared exports, a key economic driver, surged 24.4% in January from a year earlier, the fastest pace in four years and well above a forecast rise of 9.35% in a Reuters poll. Imports rose 29.4%, leading to a wider-than-expected trade deficit of $3.3 billion in January.",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6N3ZJ057",
+                    "dateLine": "BANGKOK, Feb 23 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-23T05:32:00.000Z",
+                    "text": "Thai January exports beat forecast,  US shipments surge"
+                },
+                {
+                    "snippet": "Thailand's exports surged in January, data showed on Monday, and the commerce ministry expects them to increase in coming months even as the baht's strength remains a concern and there is uncertainty about U.S. tariffs. Customs-cleared exports, a key economic driver, surged 24.4% in January from a year earlier, the fastest pace in four years and well above a forecast rise of 9.35% in a Reuters poll. Imports rose 29.4%, leading to a wider-than-expected trade deficit of $3.3 billion in January.",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6N3ZJ057",
+                    "dateLine": "BANGKOK, Feb 23 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-23T05:32:00.000Z",
+                    "text": "Thai January exports beat forecast,  US shipments surge"
+                }
+            ],
+            "dateLine": "BANGKOK, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T05:07:00.000Z",
+            "text": "Thai January factory output rises slightly above forecast, U.S. tariff uncertainty a risk",
+            "firstCreated": "2026-02-26T04:06:00.000Z"
+        },
+        {
+            "snippet": "The International Monetary Fund's executive board will review an $8.1 billion lending agreement for Ukraine and vote on its approval on Thursday, two sources familiar with the plans said.",
+            "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0WN",
+            "image": {
+                "byLine": "Benoit Tessier",
+                "text": "A view of the International Monetary Fund (IMF) logo at its headquarters in Washington, D.C., U.S., November 24, 2024. ",
+                "id": "2026-02-25T171649Z_1_IJ2_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "WASHINGTON, Feb 25 (Reuters)",
+            "versionCreated": "2026-02-25T17:08:00.000Z",
+            "text": "IMF board to review $8.1 bln loan for Ukraine on Thursday, sources say",
+            "firstCreated": "2026-02-25T16:38:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "Mexico saw a significant surge in foreign direct investment (FDI) in 2025, reaching a record high of $40.87 billion, a 10.8% jump from the previous year, Mexico's economy ministry said in a statement on Wednesday.",
+            "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL159",
+            "image": {
+                "byLine": "HENRY ROMERO",
+                "text": "A view of Mexico city's skyline during a sunset as cars are pictured along Reforma Avenue in Mexico City, Mexico in this picture taken through glass in a building, May 24, 2023. ",
+                "id": "2026-02-25T183629Z_1_ZP8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "versionCreated": "2026-02-24T12:38:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL1N3ZK0GU",
+                    "text": "Mexico's annual inflation speeds more than expected in early February",
+                    "dateLine": "MEXICO CITY, Feb 24 (Reuters)",
+                    "documentType": "Story"
+                },
+                {
+                    "snippet": "Mexico's economy grew more than expected in the fourth quarter, registering its strongest quarterly expansion in more than a year, official data showed on Monday.",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL1N3ZJ0D2",
+                    "dateLine": "MEXICO CITY, Feb 23 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-23T12:41:00.000Z",
+                    "text": "Mexico economy beats expectations in fourth quarter, largest expansion in a year"
+                },
+                {
+                    "versionCreated": "2026-02-23T12:59:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL1N3ZJ0DN",
+                    "text": "Mexican economy bounces in December as all sectors grow",
+                    "dateLine": "MEXICO CITY, Feb 23 (Reuters)",
+                    "documentType": "Story"
+                }
+            ],
+            "dateLine": "MEXICO CITY, Feb 25 (Reuters)",
+            "versionCreated": "2026-02-25T18:12:00.000Z",
+            "text": "Mexico's foreign investment hits record high in 2025",
+            "firstCreated": "2026-02-25T18:12:00.000Z"
+        }
+    ],
+    "meta": {
+        "revisionId": 178507,
+        "revisionDate": "2026-02-26T16:47:04.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

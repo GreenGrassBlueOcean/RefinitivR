@@ -1,0 +1,419 @@
+{
+    "_metadata": {
+        "outdated": false,
+        "cached": true
+    },
+    "data": [
+        {
+            "snippet": "S uppliers to U.S. aerospace and semiconductor firms face worsening rare earth shortages, with two turning away some clients, industry insiders said, weeks before U.S. President Donald Trump is expected to meet his Chinese counterpart Xi Jinping for a summit in Beijing.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3Z3003",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "A block with the symbol, atomic number and mass number of Yttrium (Y) element, in this illustration taken January 21, 2026. ",
+                "id": "2026-02-26T045134Z_1_YT8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "China's second-ranking official, Premier Li Qiang,inspected rare earth facilities in the southern province of Jiangxi on Tuesday, state news agency Xinhua reported, using the visit to hint at intensifying competition with the U.S. over strategic minerals.",
+                    "storyId": "urn:newsml:reuters.com:20260211:nL1N3Z61I4",
+                    "dateLine": "BEIJING, Feb 11 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-11T00:40:00.000Z",
+                    "text": "China's Li inspects rare earth facilities, hints at leverage in US rivalry"
+                },
+                {
+                    "snippet": "USA Rare Earth said on Monday that the Trump administration would back a $1.6 billion debt-and-equity funding package to help it build a Texas mine and magnet facility to supply the defense and high-tech sectors.",
+                    "storyId": "urn:newsml:reuters.com:20260126:nL4N3YR0VD",
+                    "dateLine": "Jan 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-01-26T12:36:00.000Z",
+                    "text": "US to back $1.6 billion USA Rare Earth funding, shares jump"
+                }
+            ],
+            "dateLine": "MONTREAL/BEIJING/WASHINGTON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T04:29:00.000Z",
+            "text": "EXCLUSIVE-Rare earth shortages worsen in US aerospace, chips despite trade truce, sources say",
+            "firstCreated": "2026-02-26T04:29:00.000Z"
+        },
+        {
+            "snippet": "Achieving a valuation of $1 trln or more is only a first step for the rockets‑and‑satellites group. Post IPO, rivals like Amazon will roll out competing broadband services, threatening its market share and pricing power. SpaceX may then face a tighter supply of financial fuel.",
+            "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZJ0JO",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": " SpaceX logo is seen in this illustration taken on March 10, 2025. ",
+                "id": "2026-02-26T050812Z_1_XT8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Public markets are desperate for fresh titans, and billionaire Elon Musk knows it. His rocket maker SpaceX is angling for light-speed entry into blue-chip stock indexes once it completes an initial public offering, potentially turning such funds into early buyers. Quicker inclusion would widen access to a far deeper pool of investors, helping steady a market debut that could exceed $1 trillion. There are stronger reasons, however, for gatekeepers to hold the line. SpaceX's appeal is clear. Quick addition to broad baskets of stocks, as the Wall Street Journal reported is under consideration, would summon price-insensitive demand from retirement and other funds that mimic benchmarks managed by MSCI, Nasdaq and S&P Global. Between options, futures and exchange-traded products, the market value linked to the S&P 500 ecosystem alone hit some $280 trillion in 2024, its designer reckons. Grumblers have long complained of waning dynamism. The median age of a new stock issuer last year was 12 years, about a third older than historical norms. Promising upstarts are staying private longer, supported by a vast machinery of private capital, evidenced by software developer Databricks and payments processor Stripe, for two. In response, the argument goes, index managers should be eager to welcome newcomers to freshen the pool and give regular investors access to the best of what's available. Fresh blood often comes at a high price, though. An index of U.S. IPOs is up about 120% since October 2013, lagging the S&P 500's more than 450% return. Shares minted in big IPO waves also go on to deliver especially weak longterm returns relative to the market, academic research has found. Existing rulebooks intentionally slow things down. S&P Global’s marquee indices force companies to build a track record, profit included, before they can even be considered for inclusion. The Nasdaq-100 wants debutants to arrive months ahead of its annual shakeup and endure a three-month seasoning before eligibility. Nasdaq is now weighing allowing some to join after just 15 trading sessions, and possibly enlarging the index temporarily rather than ejecting an incumbent. S&P's total U.S. market benchmark offers speedier inclusion for large and liquid IPOs. Truly opening the floodgates, however, would turn the broad swathe of steady savers into momentum-chasers, making them subsidize hot, but unproven, companies. A $1 trillion arrival hardly needs any help with popularity.",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL6N3Z8181",
+                    "dateLine": "NEW YORK, Feb 12 (Reuters Breakingviews)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-13T13:00:00.000Z",
+                    "text": "BREAKINGVIEWS-SpaceX index thrust preys on market FOMO"
+                },
+                {
+                    "snippet": "The space race between U.S. billionaires is heating up, with Elon Musk's SpaceX planning to build a lunar base and Jeff Bezos pushing Blue Origin's ambitions as both companies aim to return humans to the moon ahead of a planned mission by China in 2030.",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL1N3Z816M",
+                    "dateLine": "WASHINGTON, Feb 13 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-13T11:00:00.000Z",
+                    "text": "ANALYSIS-Musk fires up SpaceX, Bezos pushes Blue Origin as US billionaires race China to moon"
+                }
+            ],
+            "dateLine": "LONDON, Feb 26 (Reuters Breakingviews)",
+            "versionCreated": "2026-02-26T04:59:00.000Z",
+            "text": "BREAKINGVIEWS-SpaceX’s nascent monopoly faces durability test",
+            "firstCreated": "2026-02-25T23:08:00.000Z"
+        },
+        {
+            "snippet": "Rolls-Royce promised further strong growth after its profit jumped 40% last year driven by a robust performance in airline engines and new data centre business, enabling it to lift returns and send its stock to record highs.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0HZ",
+            "image": {
+                "byLine": "NADJA WOHLLEBEN",
+                "text": "A BR700-725 jet engine is seen at the assembly line of the Rolls-Royce Germany plant in Dahlewitz near Berlin, Germany, February 28, 2023.   ",
+                "id": "2026-02-26T082144Z_1_QS5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Rolls-Royce’s stratospheric share price climb is grounded in strong fundamentals. The aero engine maker’s stock rose 6% on Thursday morning as it raised operating profit targets and announced a new share buyback scheme. That takes the gains since Tufan Erginbilgic became CEO in 2023 to an eye-watering over 1,300%. Yet tight aircraft supply, strong travel demand, and exposure to the hot areas of data centres and defence mean the UK-based group could have further to fly. Rolls has gained considerable altitude since Erginbilgic declared the company a “burning platform” shortly after taking the helm in 2023. A major driver has been the post-pandemic travel recovery, as the company’s airline contracts mean higher revenue when engines are used more. Rolls specialises in “widebody” engines used in long-haul flying, which was slower to recover from lockdowns than short-haul trips. Its so-called large engine flying hours rose to 111% of 2019 levels last year. It’s not just a matter of flying more, though. A crucial post-pandemic theme in civil aerospace has been aircraft shortages, with the production shortfall in widebody jets particularly pronounced, leasing giant Avolon noted in a January report. Rolls said on Thursday that its profits were boosted by renegotiating contracts on more favourable terms as well as increased profitability on sales of spare engines. Moreover, the company’s power systems division, which supplies backup generators to data centres, has tripled operating profit since 2022, while its defence unit is benefiting from higher military spending. All told, Rolls’ forward enterprise value to EBITDA multiple is around 23 times, according to LSEG data, compared with a five-year average of below 12 times.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0MN",
+                    "dateLine": "LONDON, Feb 26 (Reuters Breakingviews)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:31:00.000Z",
+                    "text": "BREAKINGVIEWS-Rolls-Royce valuation can remain in the heavens"
+                }
+            ],
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T09:52:00.000Z",
+            "text": "UK's Rolls-Royce soars on aero-engines and data centres",
+            "firstCreated": "2026-02-26T07:55:00.000Z"
+        },
+        {
+            "snippet": "Italian energy group Eni beat forecasts on Thursday with a 35% year-on-year jump in fourth-quarter adjusted earnings, driven by a strong performance in its exploration and production division and improved refining results.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0G6",
+            "image": {
+                "byLine": "Chris Helgren",
+                "text": "The logo of Italian multinational energy company Eni is displayed at their booth during the LNG 2023 energy trade show in Vancouver, British Columbia, Canada, July 12, 2023. ",
+                "id": "2026-02-26T072336Z_1_QX5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "British power company Drax beat annual profit expectations and raised its dividend on Thursday, driven by strong pellet output in North America and record renewable generation, lifting shares to a near two-decade high.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0KE",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T07:48:00.000Z",
+                    "text": "UK's Drax shares hit 20-year high as power firm beats profit estimates"
+                },
+                {
+                    "snippet": "Energy infrastructure company Sempra raised its five-year capital plan by 16% and beat Wall Street estimates for fourth-quarter adjusted profit on Thursday, helped by the strong performance of its utility in Texas and its efforts to modernize the electrical grid.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM1GQ",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T16:23:00.000Z",
+                    "text": "Sempra lifts five-year spending plan, beats quarterly profit estimates"
+                },
+                {
+                    "snippet": "Siemens Energy should not sell its wind division below value, a top-20 shareholder said on Thursday at the group's annual general meeting, where the future of the struggling business will be a key topic after calls for a spin-off.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0PE",
+                    "dateLine": "FRANKFURT, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T13:42:00.000Z",
+                    "text": "Siemens Energy should not 'squander' wind division, top-20 investor says"
+                },
+                {
+                    "snippet": "Spain's Redeia, the owner of power grid operator Red Electrica, plans to invest 6.5 billion euros ($7.67 billion) through 2029, it said on Thursday, mostly to expand and upgrade the country's power network. Utilities have blamed Redeia for last April's blackout in Portugal and Spain - Europe's most significant outage in more than two decades - and Redeia, in which the state holds a 20% stake, has blamed them. Redeia's senior management has said the company complied with all procedures and rules. Multiple investigations have followed the power outage, including one by the Spanish government, which concluded both Redeia and power generators had been at fault.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0R5",
+                    "dateLine": "MADRID, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:33:00.000Z",
+                    "text": "Spain's grid operator Redeia to invest $7.7 billion through 2029"
+                },
+                {
+                    "snippet": "Dutch offshore oil services company SBM Offshore announced a 57% annual surge in shareholder returns to a record $470 million (397.80 million euros) on Thursday and committed to returning at least $2.1 billion to investors over the next six years.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0CF",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T06:39:00.000Z",
+                    "text": "Dutch firm SBM Offshore boosts shareholder returns as revenue beats guidance"
+                }
+            ],
+            "dateLine": "MILAN, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T13:06:00.000Z",
+            "text": "Italy's Eni beats profit forecast on strong upstream business",
+            "firstCreated": "2026-02-26T07:12:00.000Z"
+        },
+        {
+            "snippet": "French industrial group Schneider Electric on Thursday reported stronger-than-expected core earnings, driven by robust data centre demand, and provided 2026 expectations that analysts saw as conservative.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0H3",
+            "image": {
+                "byLine": "Benoit Tessier",
+                "text": "The logo of Schneider Electric is pictured at the Global Industrie exhibition in Villepinte near Paris, France, March 26, 2024. ",
+                "id": "2026-02-26T070119Z_1_RX6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Japanese electric motor maker Nidec on Thursday said its founder, Shigenobu Nagamori, has resigned as chairman emeritus, amid an investigation into accounting improprieties involving a Chinese subsidiary.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM08K",
+                    "dateLine": "TOKYO, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T07:30:00.000Z",
+                    "text": "Founder of scandal-hit Nidec resigns as chairman emeritus"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T10:16:00.000Z",
+            "text": "Schneider beats profit expectations on data center demand",
+            "firstCreated": "2026-02-26T06:29:00.000Z"
+        },
+        {
+            "snippet": "India's efforts to improve its airport infrastructure will give Bombardier a chance to boost sales of business jets there, chief executive officer Eric Martel said on Thursday.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM1AJ",
+            "image": {
+                "byLine": "Evan Buhler",
+                "text": "A view shows Bombardier's private jet completion center in Montreal, Quebec, Canada February 6, 2025. ",
+                "id": "2026-02-26T194548Z_1_MN4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Bombardier said on Thursday it expected to generate higher revenues and deliver more private jets in 2026 after reporting quarterly earnings per share ahead of analysts’ estimates.",
+                    "storyId": "urn:newsml:reuters.com:20260212:nL4N3Z813Q",
+                    "dateLine": "Feb 12 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-12T13:20:00.000Z",
+                    "text": "Bombardier sees higher 2026 revenues but faces U.S. trade risks"
+                },
+                {
+                    "snippet": "Canada's Bombardier said on Wednesday that Dubai-based private jet provider Vista Global has placed an order worth $1.18 billion for 40 Challenger 3500 business jets.",
+                    "storyId": "urn:newsml:reuters.com:20260211:nL6N3Z7066",
+                    "dateLine": "Feb 11 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-11T10:03:00.000Z",
+                    "text": "Bombardier lands $1.18 billion business jet order from Vista Global"
+                }
+            ],
+            "dateLine": "MONTREAL, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:26:00.000Z",
+            "text": "Bombardier has chance to boost business jet sales in India, says CEO",
+            "firstCreated": "2026-02-26T19:12:00.000Z"
+        },
+        {
+            "snippet": "Swiss-based seeds and agrochemicals company Syngenta Group plans to apply in the second quarter for an up to $10 billion listing on the Hong Kong Stock Exchange and has hired banks to manage the IPO, two people with knowledge of the matter told Reuters.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0XA",
+            "image": {
+                "byLine": "Tyrone Siu",
+                "text": "The logo of Hong Kong Exchanges & Clearing (HKEX) is pictured in its office, in Hong Kong, China, June 10, 2025. ",
+                "id": "2026-02-26T061650Z_1_DG1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Swiss speciality chemicals maker Clariant said on Thursday it expected broadly flat sales in local currencies in 2026, citing a persistently challenging market environment.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0C7",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T06:34:00.000Z",
+                    "text": "Swiss chemicals group Clariant sees flat sales in 2026"
+                }
+            ],
+            "dateLine": "ZURICH/HONG KONG, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T16:16:00.000Z",
+            "text": "Syngenta plans to kick off process in second quarter for up to $10 billion Hong Kong IPO, sources say",
+            "firstCreated": "2026-02-26T14:07:00.000Z"
+        },
+        {
+            "snippet": "Chile's Codelco, the world's largest copper producer, and miner Rio Tinto signed a memorandum of understanding on Thursday to explore development and investment opportunities.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM181",
+            "image": {
+                "byLine": "Maxim Shemetov",
+                "text": "A logo of Rio Tinto at the company’s booth at the 8th China International Import Expo (CIIE) in Shanghai, China, November 6, 2025.",
+                "id": "2026-02-26T192220Z_1_LI4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The latest corporate results from major miners BHP Group and Rio Tinto highlight copper's starring role in driving profits, but they also underline how difficult it will be to get more exposure to the industrial metal.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL1N3ZK06I",
+                    "dateLine": "LAUNCESTON, Australia, Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T13:00:00.000Z",
+                    "text": "ROI-Copper drives BHP and Rio, but getting more is the trick: Russell"
+                },
+                {
+                    "snippet": "Rio Tinto on Thursday reported flat annual earnings that missed expectations as its mainstay iron ore business suffered from lower prices, though this was offset by a strong performance from its copper division.",
+                    "storyId": "urn:newsml:reuters.com:20260219:nL4N3ZF0AP",
+                    "dateLine": "MELBOURNE, Feb 19 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-19T05:46:00.000Z",
+                    "text": "Rio Tinto annual earnings flat as iron ore weakens, copper cushions blow"
+                },
+                {
+                    "snippet": "Output at Codelco's El Teniente mine, the site of a deadly accident last year that has hit production, will be depressed for about the next five years, mine head Claudio Sougarret said on Tuesday.",
+                    "storyId": "urn:newsml:reuters.com:20260210:nL1N3Z60OS",
+                    "dateLine": "SANTIAGO, Feb 10 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-10T14:53:00.000Z",
+                    "text": "Production at Codelco's El Teniente mine to remain at lower level next 5 years, executive says"
+                }
+            ],
+            "dateLine": "SANTIAGO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:16:00.000Z",
+            "text": "Codelco, Rio Tinto sign early agreement to weigh investments",
+            "firstCreated": "2026-02-26T19:16:00.000Z"
+        },
+        {
+            "snippet": "Ecuador's National Assembly on Thursday approved reforms proposed by President Daniel Noboa aimed at boosting the nation's mining sector, but that have been criticized by environmentalists and indigenous groups.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM186",
+            "dateLine": "QUITO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:37:00.000Z",
+            "text": "Ecuadorean lawmakers pass reform geared at driving mining investment",
+            "firstCreated": "2026-02-26T19:10:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "Australia's BlueScope Steel rejected a A$15 billion ($10.7 billion) revised bid from SGH and U.S.-based Steel Dynamics, sending its shares down almost 5% on Thursday, but said it was open to further talks.",
+            "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZL2A2",
+            "image": {
+                "byLine": "Staff",
+                "text": "The entrance of the BlueScope Port Kembla Steelworks is pictured, in Wollongong, Australia, February 9, 2024. ",
+                "id": "2026-02-26T062707Z_1_FT1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Australia's Lynas Rare Earths reported its best first-half profit in three years on Thursday, helped by higher sales volumes and elevated commodity prices.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZL2ER",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T22:39:00.000Z",
+                    "text": "Australia's Lynas posts best interim profit in three years, still misses estimates"
+                }
+            ],
+            "dateLine": "SYDNEY, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T06:12:00.000Z",
+            "text": "BlueScope spurns $10.7 billion offer, but leaves door open to talks",
+            "firstCreated": "2026-02-25T22:00:00.000Z"
+        },
+        {
+            "snippet": "Europe's steel industry said on Thursday that EU provisions due to be set out next week that prioritise the use of locally-made materials must include steel, and 'local' should be understood as only close EU neighbours such as Britain and Norway. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL12S",
+            "image": {
+                "byLine": "Wolfgang Rattay",
+                "text": "A steel worker in heat protection gear is silhouetted against the fire of a furnace at the steel plant of ThyssenKrupp in Duisburg, Germany, July 26, 2023. ",
+                "id": "2026-02-26T061502Z_1_VU7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "European Union officials expect the U.S. to lower tariffs on goods containing steel and aluminum within weeks, potentially easing a major source of friction in transatlantic trade ties, Bloomberg News reported on Tuesday, citing people familiar with the matter.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL1N3ZK0PV",
+                    "dateLine": "Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T14:49:00.000Z",
+                    "text": "EU expects US to scale back steel, aluminum goods tariffs within weeks, Bloomberg News reports"
+                }
+            ],
+            "dateLine": "BRUSSELS, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T04:59:00.000Z",
+            "text": "EU steel sector pushes to be part of 'Made in Europe' act, seeks narrow scope",
+            "firstCreated": "2026-02-26T05:00:00.000Z"
+        },
+        {
+            "snippet": "Bouygues set a cautious tone for 2026 on Thursday, guiding for stable sales and core earnings, a step down from the slight growth seen in 2025, as the linear TV ad market in France remains under pressure.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0DN",
+            "image": {
+                "byLine": "Gonzalo Fuentes",
+                "text": "A logo of Bouygues is seen at the Viva Technology conference dedicated to innovation and startups at Porte de Versailles exhibition center in Paris, France, June 14, 2023. ",
+                "id": "2026-02-26T153423Z_1_YC8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "PARIS, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T10:25:00.000Z",
+            "text": "Bouygues eyes stable 2026 as energy arm offsets French media slowdown",
+            "firstCreated": "2026-02-26T06:29:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "Southeast Asia's top ride-hailing and delivery firm, Grab, is betting on artificial intelligence and expansion of new services such as online groceries and financial products to triple profit by 2028, the company's president told Reuters. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZL0IS",
+            "image": {
+                "byLine": "CAROLINE CHIA",
+                "text": "Grab's CEO Anthony Tan greets the chairman of Nasdaq APAC, Robert McCooey, at the Grab Bell Ringing Ceremony, at a hotel in Singapore, December 2, 2021. ",
+                "id": "2026-02-26T082145Z_1_UT7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Singapore's Grab forecast fiscal 2026 revenue below Wall Street expectations on Wednesday, signaling slower momentum in the tech firm's core businesses of ride hailing and deliveries as consumers grapple with economic uncertainty.",
+                    "storyId": "urn:newsml:reuters.com:20260211:nL4N3Z72A0",
+                    "dateLine": "Feb 11 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-11T22:24:00.000Z",
+                    "text": "Grab Holdings forecasts annual revenue below estimates as platform momentum slows"
+                },
+                {
+                    "snippet": "It's another step outside of its home market for Grab. The 14-year-old Southeast Asian ride-hailing and deliveries firm on Wednesday announced it will acquire a U.S. fintech startup. That is a bold move for a company that on the same day reported its first full-year net profit and a slightly weaker-than-expected revenue forecast. The acquiror's stock fell 4% in extended trading but there is some logic behind CEO Anthony Tan's deal.",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL6N3Z80OY",
+                    "dateLine": "HONG KONG, Feb 12 (Reuters Breakingviews)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-13T00:30:00.000Z",
+                    "text": "BREAKINGVIEWS-Grab's US fintech foray is not as odd as it seems"
+                }
+            ],
+            "dateLine": "SINGAPORE, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T07:38:00.000Z",
+            "text": "Singapore's Grab bets on AI, new services to triple profit by 2028",
+            "firstCreated": "2026-02-26T07:38:00.000Z"
+        },
+        {
+            "snippet": "German defence contractor Hensoldt on Thursday reported full-year revenue slightly below market expectations but a surge in high-value orders and strong backlog demonstrated its gains from Europe's rearmament push.",
+            "storyId": "urn:newsml:reuters.com:20260226:nS8N3VP0K9",
+            "image": {
+                "byLine": "RALPH ORLOWSKI",
+                "text": "A logo of defense supplier Hensoldt AG is pictured during Hensoldt's initial public offering (IPO) at the Frankfurt Stock Exchange in Frankfurt, Germany, September 25, 2020. ",
+                "id": "2026-02-26T060817Z_1_AZ0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Italian defence and aerospace group Leonardo LDOF.MIon Wednesday said it had beaten its 2025 financial targets, reporting significant growth in all key areas and a substantial reduction in debt, buoyed by strong demand for military and security equipment.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL8N3ZL098",
+                    "dateLine": "ROME, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T06:38:00.000Z",
+                    "text": "Italian defence group Leonardo beats 2025 guidance, cuts debt"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T05:29:00.000Z",
+            "text": "Hensoldt reports revenue miss but defense boom supports backlog",
+            "firstCreated": "2026-02-26T05:29:00.000Z"
+        },
+        {
+            "snippet": "Italian cable maker Prysmian forecast a higher 2026 profit on Thursday, after margin expansion in its transmission business drove 20% rise in fourth-quarter core earnings.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0CN",
+            "relatedHeadlines": [
+                {
+                    "snippet": "Italy's cable maker Prysmian plans to buy Spain-based ACSM, a submarine cable installation company, in a 169-million-euros ($198 million) deal, it said on Friday.",
+                    "storyId": "urn:newsml:reuters.com:20260123:nL8N3YO15U",
+                    "dateLine": "Jan 23 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-01-23T14:40:00.000Z",
+                    "text": "Prysmian to buy Spain's ACSM for 169 million euros, boosting submarine cable leadership"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T11:19:00.000Z",
+            "text": "Prysmian sees higher 2026 earnings after slight miss on Q4 core profit",
+            "firstCreated": "2026-02-26T06:16:00.000Z"
+        }
+    ],
+    "meta": {
+        "revisionId": 40124,
+        "revisionDate": "2026-02-26T19:45:53.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

@@ -1,0 +1,36 @@
+{
+    "responses": [
+        {
+            "columnHeadersCount": 1,
+            "data": [
+                [
+                    "WRONGRIC",
+                    null
+                ]
+            ],
+            "error": [
+                {
+                    "code": 412,
+                    "col": 1,
+                    "message": "Unable to resolve all requested identifiers.",
+                    "row": 0
+                }
+            ],
+            "headerOrientation": "horizontal",
+            "headers": [
+                [
+                    {
+                        "displayName": null
+                    },
+                    {
+                        "displayName": "TR.COMPANYNAME",
+                        "field": "TR.COMPANYNAME"
+                    }
+                ]
+            ],
+            "rowHeadersCount": 1,
+            "totalColumnsCount": 2,
+            "totalRowsCount": 2
+        }
+    ]
+}

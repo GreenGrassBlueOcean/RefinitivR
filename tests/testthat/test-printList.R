@@ -3,10 +3,14 @@ library(testthat)
 test_that("printList outputs correct messages for a named list", {
   # Create a named list to test.
   test_list <- list(
-    error1 = list(code = 218L, col = 1L,
-                  message = "The formula must contain at least one field or function.", row = 0L),
-    error2 = list(code = 218L, col = 1L,
-                  message = "The formula must contain at least one field or function.", row = 1L)
+    error1 = list(
+      code = 218L, col = 1L,
+      message = "The formula must contain at least one field or function.", row = 0L
+    ),
+    error2 = list(
+      code = 218L, col = 1L,
+      message = "The formula must contain at least one field or function.", row = 1L
+    )
   )
 
   # Capture the messages produced by printList.
@@ -62,3 +66,5 @@ test_that("printList handles an empty list by throwing an error", {
   test_list <- list()
   expect_error(printList(list = test_list), "subscript out of bounds")
 })
+
+dump_refinitiv_options("test-printList")

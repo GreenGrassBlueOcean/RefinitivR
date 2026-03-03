@@ -2,34 +2,33 @@
 % Please edit documentation in R/CheckTerminalType.r
 \name{CheckTerminalType}
 \alias{CheckTerminalType}
-\title{Check Terminal Type and Connectivity for Eikon or Workspace}
+\title{Check LSEG Workspace Connectivity}
 \usage{
 CheckTerminalType(verbose = FALSE, force = FALSE)
 }
 \arguments{
-\item{verbose}{Logical; if `TRUE`, the function will print messages about the detection process. Defaults to `FALSE`.}
+\item{verbose}{Logical; if \code{TRUE}, prints status messages. Defaults to \code{FALSE}.}
 
-\item{force}{Logical; if `TRUE`, the function will recheck and reset the terminal type even if the \code{eikon_port}
-option is already set. Defaults to `FALSE`.}
+\item{force}{Logical; if \code{TRUE}, rechecks even when \code{eikon_port} is
+already set. Defaults to \code{FALSE}.}
 }
 \value{
-This function sets a global option \code{eikon_port} to either 9000 (Workspace) or 9060 (Eikon),
-depending on the detected connection. If there is no connection, the function will stop with an error message.
+Invisibly \code{NULL}. Sets \code{options(eikon_port = 9000L)} on
+  success; issues a warning if the proxy is not reachable.
 }
 \description{
-This function checks the connectivity to Eikon or Workspace and sets the corresponding port
-in the global options. It first verifies if there is a terminal connection available and
-then checks if Eikon or Workspace Desktop is running by testing specific ports.
+Verifies that the LSEG Workspace Data API proxy is reachable on port 9000
+and sets the \code{eikon_port} option accordingly.
 }
 \details{
-The function checks for the existence of a terminal connection by attempting to connect to the proxy on port 9000.
-If successful, it then checks for Eikon connectivity by attempting to connect to port 9060. If Eikon is running,
-the port is set to 9060, and if Workspace is detected, the port is set to 9000.
+Auto-detection is skipped when \code{eikon_port} is already set.
+Pre-configure via \code{options(eikon_port = 9000L)} or the
+\code{REFINITIV_PORT} environment variable (read at package load).
 }
 \examples{
 \dontrun{
-# Check terminal connection and detect terminal type
 CheckTerminalType(verbose = TRUE, force = TRUE)
 }
 
 }
+\keyword{internal}

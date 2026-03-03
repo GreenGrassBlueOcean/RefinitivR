@@ -1,0 +1,79 @@
+{
+    "responses": [
+        {
+            "columnHeadersCount": 1,
+            "data": [
+                [
+                    "GOOG.O",
+                    "2025-12-31T00:00:00Z",
+                    402836000000,
+                    240301000000
+                ],
+                [
+                    "GOOG.O",
+                    "2024-12-31T00:00:00Z",
+                    350018000000,
+                    203712000000
+                ],
+                [
+                    "GOOG.O",
+                    "2023-12-31T00:00:00Z",
+                    307394000000,
+                    175022000000
+                ],
+                [
+                    "GOOG.O",
+                    "2022-12-31T00:00:00Z",
+                    282836000000,
+                    156633000000
+                ],
+                [
+                    "MSFT.O",
+                    "2025-06-30T00:00:00Z",
+                    281724000000,
+                    193893000000
+                ],
+                [
+                    "MSFT.O",
+                    "2024-06-30T00:00:00Z",
+                    245122000000,
+                    171008000000
+                ],
+                [
+                    "MSFT.O",
+                    "2023-06-30T00:00:00Z",
+                    211915000000,
+                    146052000000
+                ],
+                [
+                    "MSFT.O",
+                    "2022-06-30T00:00:00Z",
+                    198270000000,
+                    135620000000
+                ]
+            ],
+            "headerOrientation": "horizontal",
+            "headers": [
+                [
+                    {
+                        "displayName": "Instrument"
+                    },
+                    {
+                        "displayName": "Date"
+                    },
+                    {
+                        "displayName": "Revenue",
+                        "field": "TR.REVENUE"
+                    },
+                    {
+                        "displayName": "Gross Profit",
+                        "field": "TR.GROSSPROFIT"
+                    }
+                ]
+            ],
+            "rowHeadersCount": 2,
+            "totalColumnsCount": 4,
+            "totalRowsCount": 9
+        }
+    ]
+}

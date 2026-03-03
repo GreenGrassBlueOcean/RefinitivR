@@ -1,71 +1,124 @@
-test_that("EikonConnect does not work without application id", {
+# Snapshot + auto-restore all Refinitiv options and vault at end of file
+.saved_state <- save_refinitiv_state()
 
-  originalOptionValue = getOption(".EikonApiKey")
-  options(.EikonApiKey = NULL)
+test_that("EikonConnect uses DEFAULT_WORKSPACE_APP_KEY when no key supplied", {
+  original_key <- getOption(".EikonApiKey")
+  original_port <- getOption("eikon_port")
+  on.exit(
+    {
+      options(.EikonApiKey = original_key, eikon_port = original_port)
+      refinitiv_vault_clear(keys = "api_key")
+      if (!is.null(original_key)) refinitiv_vault_set("api_key", original_key)
+    },
+    add = TRUE
+  )
 
-  if (is.null(getOption(".EikonApiKey"))){
-      expect_error( EikonConnect()
-                  , "Please supply Eikonapplication_id")
-  }
+  options(.EikonApiKey = NULL, eikon_port = 9000L)
+  refinitiv_vault_clear(keys = "api_key")
 
-  options(.EikonApiKey = originalOptionValue)
+  # Stub CheckTerminalType so we don't need a live terminal
+
+  mockery::stub(EikonConnect, "CheckTerminalType", NULL)
+
+  conn <- EikonConnect()
+  expect_equal(refinitiv_vault_get("api_key"), "DEFAULT_WORKSPACE_APP_KEY")
 })
 
-test_that("EikonConnect does not work with wrong connection method", {
+test_that("EikonConnect warns on deprecated PythonModule values", {
+  original_key <- getOption(".EikonApiKey")
+  original_api <- getOption(".RefinitivAPI")
+  original_vault_key <- refinitiv_vault_get("api_key")
+  on.exit(
+    {
+      options(.EikonApiKey = original_key, .RefinitivAPI = original_api)
+      refinitiv_vault_clear(keys = "api_key")
+      if (!is.null(original_vault_key)) refinitiv_vault_set("api_key", original_vault_key)
+    },
+    add = TRUE
+  )
 
-  originalOptionValue = getOption(".EikonApiKey")
-  originalAPIValue = getOption(".RefinitivAPI")
-  options(.RefinitivAPI = NULL)
   options(.EikonApiKey = "testing_key")
 
-  expect_error( RDConnect(PythonModule = "NA")
-              , "RDConnect parameter PythonModule can only be RD (python) or JSON (direct JSON message) but is NA"
-              , fixed = TRUE)
+  expect_warning(
+    RDConnect(PythonModule = "NA"),
+    "PythonModule parameter is deprecated"
+  )
 
-  expect_error( EikonConnect(PythonModule =NA)
-                , "EikonConnect parameter PythonModule can only be RD (python) or JSON (direct JSON message) but is NA"
-                , fixed = TRUE)
-
-
-  options(.EikonApiKey = originalOptionValue)
-  options(.RefinitivAPI = originalAPIValue)
+  expect_warning(
+    EikonConnect(PythonModule = NA),
+    "PythonModule parameter is deprecated"
+  )
 })
 
-
-test_that("EikonConnect does not work when parameter TestConnection is not a logical ", {
-
-  originalOptionValue = getOption(".EikonApiKey")
+test_that("EikonConnect errors when TestConnection is not logical", {
+  original_key <- getOption(".EikonApiKey")
+  on.exit(options(.EikonApiKey = original_key), add = TRUE)
   options(.EikonApiKey = "testing_key")
 
-  expect_error( EikonConnect(TestConnection = "notalogical")
-                , "TestConnection should be TRUE or FALSE"
-                , fixed = TRUE)
+  expect_error(EikonConnect(TestConnection = "notalogical"),
+    "TestConnection should be TRUE or FALSE",
+    fixed = TRUE
+  )
+})
 
-  options(.EikonApiKey = originalOptionValue)
+test_that("EikonConnect works with default PythonModule", {
+  original_key <- getOption(".EikonApiKey")
+  original_port <- getOption("eikon_port")
+  original_vault_key <- refinitiv_vault_get("api_key")
+  on.exit(
+    {
+      options(.EikonApiKey = original_key, eikon_port = original_port)
+      refinitiv_vault_clear(keys = "api_key")
+      if (!is.null(original_vault_key)) refinitiv_vault_set("api_key", original_vault_key)
+    },
+    add = TRUE
+  )
+  options(.EikonApiKey = "testing_key", eikon_port = 9000L)
+
+  expect_no_error(EikonConnect(PythonModule = "JSON"))
+})
+
+test_that("RDConnect uses DEFAULT_WORKSPACE_APP_KEY when no key supplied", {
+  original_key <- getOption(".EikonApiKey")
+  original_port <- getOption("eikon_port")
+  on.exit(
+    {
+      options(.EikonApiKey = original_key, eikon_port = original_port)
+      refinitiv_vault_clear(keys = "api_key")
+      if (!is.null(original_key)) refinitiv_vault_set("api_key", original_key)
+    },
+    add = TRUE
+  )
+
+  options(.EikonApiKey = NULL, eikon_port = 9000L)
+  refinitiv_vault_clear(keys = "api_key")
+
+  # Stub CheckTerminalType so we don't need a live terminal
+  mockery::stub(RDConnect, "RefinitivJsonConnect", function(...) rlang::env())
+  mockery::stub(RDConnect, "CheckTerminalType", NULL)
+
+  conn <- RDConnect()
+  expect_equal(refinitiv_vault_get("api_key"), "DEFAULT_WORKSPACE_APP_KEY")
+})
+
+test_that("EikonConnect uses explicit key when supplied", {
+  original_key <- getOption(".EikonApiKey")
+  original_port <- getOption("eikon_port")
+  on.exit(
+    {
+      options(.EikonApiKey = original_key, eikon_port = original_port)
+      refinitiv_vault_clear(keys = "api_key")
+      if (!is.null(original_key)) refinitiv_vault_set("api_key", original_key)
+    },
+    add = TRUE
+  )
+
+  options(eikon_port = 9000L)
+  mockery::stub(EikonConnect, "CheckTerminalType", NULL)
+
+  conn <- EikonConnect(Eikonapplication_id = "my_custom_key")
+  expect_equal(refinitiv_vault_get("api_key"), "my_custom_key")
 })
 
 
-test_that("EikonConnect does work when parameter TestConnection is JSON", {
-
-  originalOptionValue = getOption(".EikonApiKey")
-  options(.EikonApiKey = "testing_key")
-
-  expect_error(EikonConnect(PythonModule = "JSON")
-              , NA, fixed = TRUE)
-
-  options(.EikonApiKey = originalOptionValue)
-})
-
-test_that("RDConnect does not work without application id", {
-
-  originalOptionValue = getOption(".EikonApiKey")
-  options(.EikonApiKey = NULL)
-
-  if (is.null(getOption(".EikonApiKey"))){
-    expect_error( RDConnect()
-                  , "Please supply application_id")
-  }
-
-  options(.EikonApiKey = originalOptionValue)
-
-})
+restore_refinitiv_state(.saved_state, "test-EikonConnect")

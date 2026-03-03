@@ -1,0 +1,563 @@
+{
+    "_metadata": {
+        "outdated": false,
+        "cached": true
+    },
+    "data": [
+        {
+            "snippet": "The United States and Iran made significant progress in\ntalks on Thursday aimed at resolving a longstanding nuclear\ndispute and averting new U.S. strikes, mediator Oman said, amid\nWashington's large-scale military buildup in the Middle East.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0WX",
+            "image": {
+                "byLine": "Florion Goga",
+                "text": "Police officers stand guard near the residence of the Omani ambassador to the United Nations, believed to be the venue for indirect U.S.-Iran talks over their long-running nuclear dispute, in Cologny, Switzerland, February 26, 2026. ",
+                "id": "2026-02-26T113410Z_1_WF7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The United States hopes talks with Iran in Geneva will produce an agreement to prevent Tehran acquiring nuclear weapons, and President Donald Trump has amassed forces in the Middle East to increase pressure on the Islamic Republic to reach a deal.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0DA",
+                    "dateLine": "VIENNA, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T10:37:00.000Z",
+                    "text": "EXPLAINER-US seeks deal to prevent Iran acquiring nuclear arsenal"
+                },
+                {
+                    "snippet": "U.S. President Donald Trump briefly laid out a case for a possible attack on Iran in his State of the Union speech to Congress, saying he would not allow what he called the world's biggest sponsor of terrorism to obtain a nuclear weapon.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL8N3ZL267",
+                    "dateLine": "WASHINGTON, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T21:25:00.000Z",
+                    "text": "EXPLAINER-After Trump remarks, what is status of Iran's weapons programs?"
+                },
+                {
+                    "snippet": "The son of an Iranian carpet merchant from Isfahan, Foreign Minister Abbas Araqchi has compared the country's negotiating style to the bartering of the bazaar, an approach requiring \"patience and great time\".",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZL1PF",
+                    "dateLine": "DUBAI, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T12:20:00.000Z",
+                    "text": "NEWSMAKER-Iran's Araqchi aims to reprise role as nuclear dealmaker"
+                },
+                {
+                    "snippet": "Iran holds a new round of nuclear talks with the United States on Thursday in Geneva. Its arsenal of missiles has been a sticking point in negotiations.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0HF",
+                    "dateLine": "DUBAI, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T09:49:00.000Z",
+                    "text": "FACTBOX-What are Iran's ballistic missile capabilities?"
+                },
+                {
+                    "snippet": "BASSETERRE, Saint Kitts and Nevis/WASHINGTON, Feb 25 S enior Trump administration officials on Wednesday made the case that Iran poses a major threat to the United States ahead of Thursday negotiations over Tehran's nuclear program.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL1I2",
+                    "dateLine": "(Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T22:44:00.000Z",
+                    "text": "US officials warn of Iranian threat to the US ahead of nuclear talks"
+                }
+            ],
+            "dateLine": "GENEVA, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T20:12:00.000Z",
+            "text": "US and Iran make significant progress in talks, will meet again soon, mediator says",
+            "firstCreated": "2026-02-26T00:59:00.000Z"
+        },
+        {
+            "snippet": "Former U.S. Secretary of State Hillary Clinton told a congressional committee on Thursday that she did not remember ever meeting the late sex offender Jeffrey Epstein and had no information to share about his criminal activities. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM10J",
+            "image": {
+                "byLine": "Francis Mascarenhas",
+                "text": "Former U.S. Secretary of State Hillary Clinton speaks at the Mumbai Climate Week in Mumbai, India, February 18, 2026. ",
+                "id": "2026-02-26T112850Z_1_BD0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The president and CEO of the World Economic Forum, Borge Brende, said he was stepping down on Thursday, a few weeks after the forum launched an independent investigation into his relationship with late U.S. sex offender Jeffrey Epstein.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM18K",
+                    "dateLine": "ZURICH, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:12:00.000Z",
+                    "text": "CEO of World Economic Forum quits after Epstein ties come to light"
+                },
+                {
+                    "snippet": "A top Democrat in Congress accused the Justice Department on Wednesday of withholding FBI interviews with a woman who accused President Donald Trump of sexually abusing her as a minor from its public release of documents related to the late sex offender Jeffrey Epstein. ",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM02H",
+                    "dateLine": "WASHINGTON, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T03:58:00.000Z",
+                    "text": "Democrat accuses Justice Department of withholding documents on Trump Epstein accusation"
+                },
+                {
+                    "snippet": "Former U.S. Treasury Secretary Larry Summers on Wednesday said he will resign from teaching at Harvard University at the end of the academic year, amid the continuing fallout from his ties to the late convicted sex offender Jeffrey Epstein.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0WG",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T17:10:00.000Z",
+                    "text": "Larry Summers to resign from Harvard over Epstein ties"
+                },
+                {
+                    "snippet": "Swiss private bank Edmond de Rothschild said on Wednesday its board would \"monitor the situation\" after U.S. Department of Justice files showed CEO Ariane de Rothschild kept up years-long contact with late sex offender Jeffrey Epstein, as she sought to reassure clients and staff about the firm's financial strength.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL19G",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T22:13:00.000Z",
+                    "text": "Edmond de Rothschild says it will 'monitor the situation' after release of Epstein files"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T18:56:00.000Z",
+            "text": "Hillary Clinton tells congressional panel she has no information on Epstein",
+            "firstCreated": "2026-02-26T16:33:00.000Z"
+        },
+        {
+            "snippet": "Agents from the U.S. Department of Homeland Security said they were searching for a missing person when they entered a Columbia University residential building on Thursday and detained a student, Columbia acting President Claire Shipman said.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM158",
+            "image": {
+                "byLine": "Ryan Murphy",
+                "text": "Students walk on campus at Columbia University during the first day of the fall semester in New York City, U.S., September 2, 2025. ",
+                "id": "2026-02-26T181601Z_1_PA5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "U.S. Immigration and Customs Enforcement is struggling to keep pace with vetting new hires during its historic recruitment push and is laying out a process to deal with allegations of past misconduct among recruits, the agency said in an internal email on Monday, underscoring concerns about ICE’s rapid expansion.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL112",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "text": "EXCLUSIVE-ICE struggles to vet recruits amid US immigration enforcement push, internal email shows"
+                },
+                {
+                    "snippet": "President Donald Trump's administration asked the U.S. Supreme Court on Thursday to intervene in its effort to strip deportation protections from about 6,000 Syrians living in the United States. The Justice Department in an emergency request asked the Supreme Court to lift a judge's November decision that blocked the administration's move to end Temporary Protected Status, or TPS, for Syrians while litigation challenging the move continues. It is the third time the administration has turned to the Supreme Court related to its efforts to terminate these protections for migrants. The court sided with the administration on both previous occasions, involving the revocation of TPS for hundreds of thousands of Venezuelans.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0Y7",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T16:33:00.000Z",
+                    "text": "Trump asks US Supreme Court to end protections for Syrian immigrants"
+                },
+                {
+                    "snippet": "A nearly blind refugee from Myanmar missing since his release from a Buffalo jail into the custody of U.S. Border Patrol has been found dead on a downtown street, city authorities said on Wednesday.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM01T",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T02:58:00.000Z",
+                    "text": "Near-blind refugee found dead in Buffalo after release by US Border Patrol"
+                },
+                {
+                    "snippet": "U.S. President Donald Trump’s top immigration officials have repeatedly made statements after violent encounters involving federal agents - including two fatal shootings of U.S. citizens in Minneapolis this month - that were later contradicted by evidence, a Reuters review found. Trump officials quickly painted the two recently shot dead - Renee Good and Alex Pretti - as aggressors and said the shootings were justified. But video and other evidence soon emerged that contrasted sharply with these accounts, fueling questions about the credibility of federal officials and doubts about their willingness to fully investigate these and other incidents. The Reuters review included these two incidents and four others in recent months that, collectively, show a pattern in which officials rushed to defend immigration officers without waiting for key facts to emerge – in what former immigration officials called a clear break with past practice for federal agencies in such situations. These initial representations have been challenged by video footage or other evidence, sometimes in court. In one non-lethal shooting in Minnesota, court documents emerged showing the incident began with a case of mistaken identity. A death in a detention center that the U.S. Department of Homeland Security described as an attempted suicide was later ruled a homicide by a county medical examiner. \"They are trying to control a narrative from the very start, and they don't seem to care when they're proven wrong,\" said David Lapan, who was the DHS press secretary in 2017, during Trump's first administration.",
+                    "storyId": "urn:newsml:reuters.com:20260127:nL6N3YR1BT",
+                    "dateLine": "WASHINGTON, Jan 27 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-01-27T20:04:00.000Z",
+                    "text": "Evidence contradicts Trump immigration officials' accounts of violent encounters"
+                }
+            ],
+            "dateLine": "NEW YORK, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:16:00.000Z",
+            "text": "Federal agents detain Columbia University student in campus housing",
+            "firstCreated": "2026-02-26T17:40:00.000Z"
+        },
+        {
+            "snippet": "Images of debris from Russian strikes on Ukraine strongly indicate that Moscow has used a cruise missile whose development led Donald Trump to quit a landmark nuclear pact in his first term, two experts said, confirming earlier Reuters reporting.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZE2DZ",
+            "image": {
+                "byLine": "Handout",
+                "text": "Purported image of fragments of a Russian 9M729 missile provided by Ukrainian law enforcement sources. Date given as September 10, 2025. Location given as Khmelnytskyi region, Ukraine. Reuters could not verify where and when the photograph of the fragments was taken.",
+                "id": "2026-02-26T074522Z_1_EE1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Russia's Defence Ministry said on Thursday its air defence units had downed 167 Ukrainian drones over a six-hour period, including 12 headed for Moscow, Russian news agencies reported.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM16L",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:44:00.000Z",
+                    "text": "Russia says it downed 167 Ukrainian drones over six hours"
+                },
+                {
+                    "snippet": "Ukrainian and U.S. officials met in Geneva on Thursday for talks on post-war reconstruction despite a deadlock in peace negotiations with Russia, which pounded infrastructure across Ukraine with drone and missile strikes overnight.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0EW",
+                    "dateLine": "GENEVA/KYIV, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T10:49:00.000Z",
+                    "text": "US, Ukraine discuss post-war reconstruction as Russia pummels grid"
+                },
+                {
+                    "snippet": "France hit back on Thursday over what it called baseless Russian accusations that Ukraine was seeking a nuclear weapon or dirty bomb with help from London or Paris, calling it the latest example of Russian disinformation.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0TJ",
+                    "dateLine": "PARIS, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:08:00.000Z",
+                    "text": "France calls Russian allegations of nuclear transfers to Ukraine baseless"
+                },
+                {
+                    "snippet": "South Africa and Kenya faced more signs on Thursday of citizens being drawn into the war in Ukraine, as Pretoria reported two South Africans killed on the front lines and a Nairobi court charged a man with trafficking 25 Kenyans to fight for Russia.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0YO",
+                    "dateLine": "JOHANNESBURG/NAIROBI, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T16:02:00.000Z",
+                    "text": "S.Africa deaths, Kenya court case show citizens drawn into Ukraine war"
+                }
+            ],
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T07:42:00.000Z",
+            "text": "EXCLUSIVE-Ukraine images indicate Russia used missile at heart of nuclear pact collapse",
+            "firstCreated": "2026-02-26T07:42:00.000Z"
+        },
+        {
+            "snippet": "Denmark will hold a parliamentary election on March 24, Prime Minister Mette Frederiksen said on Thursday, seeking to capitalise on a surge in support for her defiant stance against U.S. pressure over Greenland. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM1DD",
+            "image": {
+                "byLine": "Thomas Traasdahl",
+                "text": "Danish Prime Minister Mette Frederiksen speaks on the day she announced that Denmark will hold a parliamentary election on March 24, in the Parliament Hall at Christiansborg in Copenhagen, Denmark February 26, 2026. ",
+                "id": "2026-02-26T121540Z_1_CZ0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Former French Prime Minister Edouard Philippe could lose his seat as mayor of the port city of Le Havre in municipal elections next month, an opinion poll showed, dealing a potential blow to his presidential ambitions for 2027.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM24K",
+                    "dateLine": "PARIS, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:56:00.000Z",
+                    "text": "Poll shows main rival of French far-right in presidential election could lose mayor seat"
+                },
+                {
+                    "snippet": "A German court granted the Alternative for Germany party (AfD) an injunction on Thursday ordering the domestic intelligence agency not to classify it as \"extremist\" for the moment, pending a final decision on the case.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM1SV",
+                    "dateLine": "BERLIN, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T14:30:00.000Z",
+                    "text": "German court grants injunction to AfD party, suspending 'extremist' label by spy agency"
+                }
+            ],
+            "dateLine": "COPENHAGEN, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T14:42:00.000Z",
+            "text": "Denmark to hold elections as PM bets on Greenland crisis boost",
+            "firstCreated": "2026-02-26T11:53:00.000Z"
+        },
+        {
+            "snippet": "Cuba on Thursday appeared to be holding at a guarded provincial hospital at least some of the six wounded exiles who were detained following what Cuba described as an attack by 10 heavily armed Cuban nationals who tried to infiltrate the country by speedboat.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0RO",
+            "image": {
+                "byLine": "Desmond Boylan",
+                "text": "A man stands on the roof of the Ministry of Interior (MININT) building where a national flag is hung, in Havana's Revolution Square March 15, 2012. ",
+                "id": "2026-02-25T194316Z_1_CP0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "U.S. officials close to Secretary of State Marco Rubio met with the grandson of former Cuban leader Raul Castro on the sidelines of this week's regional Caribbean Community conference in St. Kitts and Nevis, the Miami Herald reported on Thursday. Citing unnamed sources, the Miami Herald said it was not clear whether Rubio himself met with Castro's grandson, Raul Guillermo Rodriguez Castro, who is also Raul Castro's bodyguard and the son of the late head of Cuba's GAESA military conglomerate.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM16G",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T18:18:00.000Z",
+                    "text": "US officials met Castro grandson in St. Kitts, Miami Herald reports"
+                },
+                {
+                    "snippet": "The Kremlin said on Thursday that the situation in Cuba was heating up and called for restraint after a deadly incident with a Florida-registered speedboat off the coast of the Caribbean island.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0ZC",
+                    "dateLine": "MOSCOW, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T10:02:00.000Z",
+                    "text": "Kremlin says Cuba situation is escalating, humanitarian needs must be solved"
+                },
+                {
+                    "snippet": "U .S. Secretary of State Marco Rubio on Wednesday called for deeper cooperation on tackling criminal gangs as he met Caribbean leaders, even as regional concerns grew over the potential fallout from Washington's squeeze on Cuba.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL13E",
+                    "dateLine": "BASSETERRE, Saint Kitts and Nevis, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T17:58:00.000Z",
+                    "text": "Rubio urges Caribbean leaders to cooperate on gangs as Cuba worries grow"
+                },
+                {
+                    "snippet": "The U.S. Treasury Department said on Wednesday it would authorize companies seeking licenses to resell Venezuelan oil to Cuba's private sector, according to guidance posted on the department's website, a move that could help ease the island's acute fuel scarcity.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0WZ",
+                    "dateLine": "WASHINGTON, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T18:22:00.000Z",
+                    "text": "US to allow resale of Venezuelan oil to Cuba's private sector, Treasury says"
+                }
+            ],
+            "dateLine": "SANTA CLARA, Cuba, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T17:27:00.000Z",
+            "text": "Cuba appears to hold speedboat suspects in provincial hospital",
+            "firstCreated": "2026-02-26T13:51:00.000Z"
+        },
+        {
+            "snippet": "U.S. Vice President JD Vance took aim at Democrats in a partisan speech on Thursday in a competitive Wisconsin district, as the White House tries to protect a narrow Republican majority in the House of Representatives ahead of the November 3midterm elections.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM11G",
+            "image": {
+                "byLine": "Rebecca Cook",
+                "text": "Republican vice presidential nominee JD Vance speaks to supporters during a campaign stop in Flint, Michigan, U.S. November 4, 2024.  ",
+                "id": "2026-02-26T175528Z_1_WW7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "A U.S. judge on Thursday declined to block President Donald Trump from proceeding with construction of a $400 million White House ballroom to replace the demolished East Wing, finding that a challenge from preservationists did not meet the high bar for a preliminary injunction that would halt the project for now. U.S. District Judge Richard Leon's ruling came in a lawsuit by the National Trust for Historic Preservation aiming to stop construction until the White House complies with federal law and rules including congressional authorization. The National Trust had sought a preliminary injunction to freeze the work on the ballroom, planned to be 90,000 square feet (8,360 square meters), while the private nonprofit group's lawsuit proceeds.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM14H",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T17:55:00.000Z",
+                    "text": "Trump's White House ballroom can move ahead for now, judge rules"
+                },
+                {
+                    "snippet": "First lady Melania Trump will chair a meeting of the United Nations Security Council on Monday as the U.S. takes over the monthly rotating presidency, the White House said.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM15Z",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:44:00.000Z",
+                    "text": "Melania Trump to chair a meeting of the UN Security Council, White House says"
+                }
+            ],
+            "dateLine": "PLOVER, Wisconsin, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:10:00.000Z",
+            "text": "Vance pushes Trump's economic strategy in competitive Wisconsin congressional district",
+            "firstCreated": "2026-02-26T09:59:00.000Z"
+        },
+        {
+            "snippet": "Most Americans share President Donald Trump's view that immigrants living illegally in the U.S. should be deported, but generally disapprove of his hard-line tactics, including masked agents in tactical gear who have clashed with U.S. citizens, a new Reuters/Ipsos poll found. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL12Q",
+            "image": {
+                "byLine": "Shannon Stapleton",
+                "text": "Detainment shackles sit on a tarmac for immigrants deemed eligible for an expedited order of removal, by the U.S. Immigration and Customs Enforcement (ICE) to an airport in Tampa, Florida, U.S., November 7, 2025.",
+                "id": "2026-02-26T112920Z_1_RM6_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The U.S. aims to process 4,500 refugee applications from white South Africans per month, far above President Donald Trump's stated refugee program cap, and is installing trailers on embassy property in Pretoria to support the effort, a U.S. contracting document said.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL1CT",
+                    "dateLine": "WASHINGTON/JOHANNESBURG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:18:00.000Z",
+                    "text": "EXCLUSIVE-US aims to bring in 4,500 white South Africans per month as refugees, document says"
+                },
+                {
+                    "snippet": "Six in ten Americans, including a significant slice of Republicans, think President Donald Trump has become erratic as he ages, according to a new Reuters/Ipsos poll. The six-day poll concluded on Monday, the day before the 79-year-old president gives his annual State of the Union address to Congress following a month of angry reprimands of lawmakers and judges.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL6N3ZK18T",
+                    "dateLine": "WASHINGTON, Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T16:44:00.000Z",
+                    "text": "Most Americans say Trump is growing erratic with age, Reuters/Ipsos poll finds"
+                },
+                {
+                    "snippet": "A bipartisan majority of Americans believe vaccines are safe and that children should receive them to attend school, according to a new Reuters/Ipsos poll, illustrating the challenges President Donald Trump's administration faces to win broad support for upending decades of health policy. The six-day poll, which closed on Monday, comes as Health Secretary Robert F. Kennedy Jr. has led the U.S. government to drop recommendations for several childhood immunizations and boosted federal support for states providing exemptions to vaccine mandates, such as for school attendance. Some 84% of respondents, including 92% of Democrats and 81% of Republicans, said vaccines for diseases like measles, mumps and rubella are safe for children. The readings were little changed from when the question was asked in a 2020 Reuters/Ipsos poll.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL0XW",
+                    "dateLine": "WASHINGTON, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T14:45:00.000Z",
+                    "text": "Americans trust vaccines, school mandates, rejecting Trump agenda, Reuters/Ipsos poll finds"
+                }
+            ],
+            "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T10:59:00.000Z",
+            "text": "Most Americans back Trump's deportation goals but not his tactics, Reuters/Ipsos poll finds",
+            "firstCreated": "2026-02-26T11:00:00.000Z"
+        },
+        {
+            "snippet": "The United States has warned Syria against relying on Chinese technology in its telecommunications sector, arguing it conflicts with U.S. interests and threatens U.S. national security, according to three sources familiar with the matter.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM17P",
+            "image": {
+                "byLine": "Khalil Ashawi",
+                "text": "Syrian President Ahmed al-Sharaa attends the Ministry of Awqaf conference titled \"Unity of Islamic Discourse\" at the Conference Palace in Damascus, Syria, February 16, 2026. ",
+                "id": "2026-02-26T182651Z_1_PC5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The U.S. has arrested and charged a former U.S. Air Force fighter jet pilot with allegedly training China's military, highlighting Beijing's persistent efforts to modernize its armed forces by siphoning off U.S. secrets.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM196",
+                    "dateLine": "WASHINGTON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T19:39:00.000Z",
+                    "text": "US charges former F-35 pilot for training China's air force"
+                },
+                {
+                    "snippet": "In the days surrounding Japanese Prime Minister Sanae Takaichi's February election win, several dozen X accounts linked to a Chinese misinformation campaign attacked her deeply conservative views and hawkish approach to China, said a U.S. research institute focused on national security and foreign policy.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL14V",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "text": "Chinese influence operation targets Japan elections, Trump, other countries, US foundation says"
+                }
+            ],
+            "dateLine": "DAMASCUS, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:13:00.000Z",
+            "text": "EXCLUSIVE-Washington presses Syria to shift from Chinese telecom systems",
+            "firstCreated": "2026-02-26T18:10:00.000Z"
+        },
+        {
+            "snippet": "A large Chinese military drone has conducted regular flights over the South China Sea in recent months while transmitting false transponder signals that made it appear to be other aircraft, including a sanctioned Belarusian cargo plane and a British Typhoon fighter jet.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM069",
+            "image": {
+                "byLine": "VANTOR",
+                "text": "A satellite image shows large drones at Qionghai Boao International Airport on Hainan Island, China, September 3, 2025.   ",
+                "id": "2026-02-26T055839Z_1_QO5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "China is the real threat to security and is hypocritically claiming to uphold U.N. principles of peace, Taiwan Foreign Minister Lin Chia-lung said on Sunday in a rebuff to comments by China's top diplomat at the Munich Security Conference.",
+                    "storyId": "urn:newsml:reuters.com:20260215:nL1N3ZB00F",
+                    "dateLine": "TAIPEI, Feb 15 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-15T03:40:00.000Z",
+                    "text": "China is the real threat, Taiwan says in rebuff to Munich speech"
+                },
+                {
+                    "versionCreated": "2026-02-05T16:01:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260205:nL4N3Z100M",
+                    "text": "Taiwan risks becoming numb to China drills, but threat is urgent, defence minister says",
+                    "dateLine": "TAIPEI, Feb 6 (Reuters)",
+                    "documentType": "Story"
+                }
+            ],
+            "dateLine": "HONG KONG, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T13:36:00.000Z",
+            "text": "INSIGHT-How China is masking drone flights in potential Taiwan rehearsal",
+            "firstCreated": "2026-02-26T05:01:00.000Z"
+        },
+        {
+            "snippet": "Spain's newest drive to fast-track legal status for at least half a million undocumented migrants has already burdened immigration offices and sparked anxiety among prospective applicants weeks before the process even begins, a dozen union officials, lawyers, and migrants said. ",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZJ0OO",
+            "image": {
+                "byLine": "Nacho Doce",
+                "text": "Muhammad Hassan Raza, 24, from Pakistan, poses with his book of Spanish before going to the Spanish school in Barcelona's Raval district, Spain February 18, 2026. ",
+                "id": "2026-02-26T072216Z_1_CD0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Spain's Socialist-led government presented a draft decree on Tuesday to expedite legal status to hundreds of thousands of undocumented immigrants, in its latest move to integrate migrant workers even as other European countries curb immigration.",
+                    "storyId": "urn:newsml:reuters.com:20260127:nL8N3YS17I",
+                    "dateLine": "MADRID, Jan 27 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-01-27T15:23:00.000Z",
+                    "text": "Spain to grant around half a million undocumented migrants legal status"
+                },
+                {
+                    "snippet": "A federal judge on Wednesday ruled that the Trump administration had adopted an unlawful policy that allows for the rapid deportation of migrants to countries other than their own without providing them a chance to object and raise concerns for their safety.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0ZF",
+                    "dateLine": "BOSTON, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T19:34:00.000Z",
+                    "text": "Trump policy allowing swift deportations to alternate countries rejected by US judge"
+                }
+            ],
+            "dateLine": "MADRID, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T06:59:00.000Z",
+            "text": "INSIGHT-Spain's looming migrant amnesty strains services, sends applicants scrambling",
+            "firstCreated": "2026-02-26T07:00:00.000Z"
+        },
+        {
+            "snippet": "German Chancellor Friedrich Merz wrapped up his two-day visit to China on Thursday hailing \"good cooperation\" with Beijing but pointing to overcapacity by Chinese exporters that have taken a growing share of German markets.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0TE",
+            "image": {
+                "byLine": "Andres Martinez Casares",
+                "text": "German Chancellor Friedrich Merz (R) listens to an explanation as he visits the Unitree Robotics headquarters during the last day of his official visit to China, in Hangzhou, China, 26 February, 2026.    ",
+                "id": "2026-02-26T113211Z_1_WB7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Germany's ruling coalition will slash the size of a longer-term framework deal to purchase strike drones to 2 billion euros ($2.4 billion) from 4.3 billion euros previously envisioned as lawmakers seek tighter control over future budgets.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL0R6",
+                    "dateLine": "BERLIN, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T13:17:00.000Z",
+                    "text": "Germany approves reduced long-term strike drone purchasing plan"
+                },
+                {
+                    "snippet": "German car exports to China plunged by roughly a third in 2025, extending a steep decline that has wiped out more than half the sector's shipments since their 2022 peak, according to a study released by the German Economic Institute (IW) on Tuesday.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL8N3ZK0II",
+                    "dateLine": "BERLIN, Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T08:02:00.000Z",
+                    "text": "German car exports to China plunge by a third in 2025, says economic institute"
+                }
+            ],
+            "dateLine": "HANGZHOU, China, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T11:29:00.000Z",
+            "text": "Germany's Merz says challenges remain as he concludes inaugural China trip",
+            "firstCreated": "2026-02-26T08:39:00.000Z"
+        },
+        {
+            "snippet": "Pakistani and Afghan border forces clashed on Thursday night after the Taliban launched what it called retaliatory strikes on Pakistani installations, sharply escalating tensions after days of cross-border hostilities.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM135",
+            "image": {
+                "byLine": "Stringer",
+                "text": "Afghan Taliban fighters patrol near the Afghanistan-Pakistan border in Spin Boldak, Kandahar Province, following exchanges of fire between Pakistani and Afghan forces in Afghanistan, October 15, 2025. ",
+                "id": "2026-02-26T184539Z_1_JN3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "KABUL, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T18:44:00.000Z",
+            "text": "Pakistan, Afghan forces clash after days of hostilities",
+            "firstCreated": "2026-02-26T16:17:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "Pro-democracy media tycoon Jimmy Lai's fraud conviction and prison sentence were overturned by a Hong Kong court on Thursday, in a surprise legal decision that comes soon after Lai was jailed for 20 years on a separate national security charge.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM02J",
+            "image": {
+                "byLine": "Tyrone Siu",
+                "text": "Media mogul Jimmy Lai, founder of Apple Daily, arrives the Court of Final Appeal by prison van in Hong Kong, China February 9, 2021. ",
+                "id": "2026-02-26T023545Z_1_ZE8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Hong Kong's Court of Appeal on Thursday overturned a lower court ruling against jailed pro-democracy media tycoon Jimmy Lai's conviction and sentence for a fraud offence, saying the judge in the case had \"erred.\" The ruling came just weeks after Lai was sentenced to 20 years in jail on separate charges on two counts of conspiracy to collude with foreign forces and one for publishing seditious materials.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM03D",
+                    "dateLine": "HONG KONG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T03:58:00.000Z",
+                    "text": "TIMELINE-Hong Kong's legal clampdown on Jimmy Lai, tycoon and China critic"
+                }
+            ],
+            "dateLine": "HONG KONG, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T07:27:00.000Z",
+            "text": "Hong Kong court overturns China critic Jimmy Lai's fraud conviction in rare legal victory",
+            "firstCreated": "2026-02-26T02:19:00.000Z"
+        },
+        {
+            "snippet": "At a training centre in Nepal's capital Kathmandu, Rahul Pariyar carefully hooks his harness to a rope, learning the basic skills he will need for painting walls, cleaning high rises and other construction work in the United Arab Emirates.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZJ0C1",
+            "image": {
+                "byLine": "Navesh Chitrakar",
+                "text": "People planning to leave the country and apply for foreign employment in search of better opportunities queue as they prepare for an interview at Motherland Overseas, a recruitment agency, as Nepal's biggest political parties vow to fix the outflow of workers ahead of the elections of the House of Representatives scheduled for March 5, triggered by historic youth-led protests fuelled by the lack of jobs and endemic corruption that forced an elected prime minister to resign, in Kathmandu, Nepal, February 22, 2026. ",
+                "id": "2026-02-26T071725Z_1_NB4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Nepal will hold a national election next month, its first since deadly youth-led anti-graft protests toppled the government of then-Prime Minister K.P. Sharma Oli in September.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZD0C8",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T04:00:00.000Z",
+                    "text": "FACTBOX-Who is contesting Nepal's polls and what is at stake?"
+                },
+                {
+                    "snippet": "After Nepal's historic youth-led uprising last September killed 77 people and forced then-Prime Minister K.P. Sharma Oli to resign, a 35-year-old rapper-turned-politician posted a typically terse message to millions of followers on social media.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZI00Y",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T02:23:00.000Z",
+                    "text": "NEWSMAKER-Nepal's rapper-mayor in pole position to become prime minister"
+                },
+                {
+                    "snippet": "Thousands of supporters of Nepal’s former king rallied in Kathmandu on Friday to greet its last monarch Gyanendra on his return from holiday, ahead of the first election since anti-graft unrest by Gen Z young people.",
+                    "storyId": "urn:newsml:reuters.com:20260213:nL1N3Z90BI",
+                    "dateLine": "KATHMANDU, Feb 13 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-13T10:30:00.000Z",
+                    "text": "Monarchists rally in support of ex-king as Nepal limps toward election"
+                }
+            ],
+            "dateLine": "KATHMANDU, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T04:00:00.000Z",
+            "text": "'Will it give me a job?': Nepal's election promises don't stop youth exodus",
+            "firstCreated": "2026-02-26T04:00:00.000Z"
+        }
+    ],
+    "meta": {
+        "revisionId": 390847,
+        "revisionDate": "2026-02-26T20:16:44.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

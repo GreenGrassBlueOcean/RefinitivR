@@ -5,115 +5,75 @@ library(mockery)
 
 context("Streaming Utilities")
 
+# Snapshot + auto-restore all Refinitiv options and vault at end of file
+.saved_state <- save_refinitiv_state()
+
 # Teardown: Clear any pending event loops after each test
 teardown({
   # Run any pending later callbacks to clear the queue
   if (requireNamespace("later", quietly = TRUE)) {
     # Process and clear all pending callbacks
-    tryCatch({
-      later::run_now()
-      # Give a moment for any scheduled callbacks to complete
-      Sys.sleep(0.1)
-      later::run_now()
-    }, error = function(e) {
-      # Ignore errors during cleanup
-    })
+    tryCatch(
+      {
+        later::run_now()
+        # Give a moment for any scheduled callbacks to complete
+        Sys.sleep(0.1)
+        later::run_now()
+      },
+      error = function(e) {
+        # Ignore errors during cleanup
+      }
+    )
   }
 })
 
 # Test get_streaming_url
 test_that("get_streaming_url constructs correct URL with default port", {
-  options(refinitiv_base_url = "http://localhost")
-  options(streaming_port = 9000L)
-  
+  withr::local_options(refinitiv_base_url = "http://localhost", streaming_port = 9000L)
+
   url <- get_streaming_url("pricing")
   expect_equal(url, "ws://localhost:9000/api/rdp/streaming/pricing/v1/WebSocket")
-  
-  # Cleanup
-  options(refinitiv_base_url = NULL)
-  options(streaming_port = NULL)
 })
 
 test_that("get_streaming_url uses provided port", {
-  options(refinitiv_base_url = "http://localhost")
-  
+  withr::local_options(refinitiv_base_url = "http://localhost")
+
   url <- get_streaming_url("pricing", port = 8080L)
   expect_equal(url, "ws://localhost:8080/api/rdp/streaming/pricing/v1/WebSocket")
-  
-  # Cleanup
-  options(refinitiv_base_url = NULL)
 })
 
 test_that("get_streaming_url falls back to eikon_port", {
-  options(refinitiv_base_url = "http://localhost")
-  options(streaming_port = NULL)
-  options(eikon_port = 9060L)
-  
+  withr::local_options(refinitiv_base_url = "http://localhost", streaming_port = NULL, eikon_port = 9000L)
+
   url <- get_streaming_url("pricing")
-  expect_equal(url, "ws://localhost:9060/api/rdp/streaming/pricing/v1/WebSocket")
-  
-  # Cleanup
-  options(refinitiv_base_url = NULL)
-  options(eikon_port = NULL)
+  expect_equal(url, "ws://localhost:9000/api/rdp/streaming/pricing/v1/WebSocket")
 })
 
-test_that("get_streaming_url falls back to rdp_port", {
-  options(refinitiv_base_url = "http://localhost")
-  options(streaming_port = NULL)
-  options(eikon_port = NULL)
-  options(rdp_port = 9060L)
-  
-  url <- get_streaming_url("pricing")
-  expect_equal(url, "ws://localhost:9060/api/rdp/streaming/pricing/v1/WebSocket")
-  
-  # Cleanup
-  options(refinitiv_base_url = NULL)
-  options(rdp_port = NULL)
-})
+test_that("get_streaming_url uses default port 9000 when no options set", {
+  withr::local_options(refinitiv_base_url = "http://localhost", streaming_port = NULL, eikon_port = NULL)
 
-test_that("get_streaming_url uses default port when no options set", {
-  options(refinitiv_base_url = "http://localhost")
-  options(streaming_port = NULL)
-  options(eikon_port = NULL)
-  options(rdp_port = NULL)
-  
   url <- get_streaming_url("pricing")
-  expect_equal(url, "ws://localhost:9060/api/rdp/streaming/pricing/v1/WebSocket")
-  
-  # Cleanup
-  options(refinitiv_base_url = NULL)
+  expect_equal(url, "ws://localhost:9000/api/rdp/streaming/pricing/v1/WebSocket")
 })
 
 test_that("get_streaming_url converts http to ws and https to wss", {
-  # Test http -> ws
-  options(refinitiv_base_url = "http://api.example.com")
-  options(streaming_port = 80L)
-  
+  withr::local_options(refinitiv_base_url = "http://api.example.com", streaming_port = 80L)
+
   url <- get_streaming_url("pricing")
   expect_equal(url, "ws://api.example.com:80/api/rdp/streaming/pricing/v1/WebSocket")
-  
+
   # Test https -> wss
-  options(refinitiv_base_url = "https://api.example.com")
-  options(streaming_port = 443L)
-  
+  withr::local_options(refinitiv_base_url = "https://api.example.com", streaming_port = 443L)
+
   url <- get_streaming_url("pricing")
   expect_equal(url, "wss://api.example.com:443/api/rdp/streaming/pricing/v1/WebSocket")
-  
-  # Cleanup
-  options(refinitiv_base_url = NULL)
-  options(streaming_port = NULL)
 })
 
 test_that("get_streaming_url handles analytics stream type", {
-  options(refinitiv_base_url = "http://localhost")
-  options(streaming_port = 9000L)
-  
+  withr::local_options(refinitiv_base_url = "http://localhost", streaming_port = 9000L)
+
   url <- get_streaming_url("analytics")
   expect_equal(url, "ws://localhost:9000/api/rdp/streaming/quantitative-analytics/beta1/financial-contracts/WebSocket")
-  
-  # Cleanup
-  options(refinitiv_base_url = NULL)
-  options(streaming_port = NULL)
 })
 
 test_that("get_streaming_url errors on unknown stream type", {
@@ -143,7 +103,7 @@ test_that("get_streaming_protocol defaults to tr_json2 for unknown", {
 test_that("create_omm_login_request creates valid JSON", {
   token <- "test_token_123"
   request <- create_omm_login_request(access_token = token)
-  
+
   expect_type(request, "character")
   expect_true(grepl('"ID":1', request))
   expect_true(grepl('"Domain":"Login"', request))
@@ -154,8 +114,15 @@ test_that("create_omm_login_request creates valid JSON", {
 test_that("create_omm_login_request uses custom app_key", {
   token <- "test_token"
   request <- create_omm_login_request(app_key = "CUSTOM_KEY", access_token = token)
-  
+
   expect_true(grepl('"AppKey":"CUSTOM_KEY"', request))
+})
+
+test_that("create_omm_login_request does not leak machine hostname", {
+  request <- create_omm_login_request(access_token = "tok")
+
+  expect_true(grepl('"Position":"127.0.0.1/localhost"', request))
+  expect_false(grepl(as.character(Sys.info()["nodename"]), request, fixed = TRUE))
 })
 
 # Test create_omm_stream_request
@@ -167,7 +134,7 @@ test_that("create_omm_stream_request creates valid request", {
     streaming = TRUE,
     stream_id = 2L
   )
-  
+
   expect_type(request, "character")
   expect_true(grepl('"ID":2', request))
   expect_true(grepl('"Domain":"MarketPrice"', request))
@@ -185,21 +152,27 @@ test_that("create_omm_stream_request handles streaming = FALSE", {
     streaming = FALSE,
     stream_id = 3L
   )
-  
+
   expect_true(grepl('"Streaming":false', request))
 })
 
-test_that("create_omm_stream_request warns on multiple instruments", {
-  expect_warning(
-    create_omm_stream_request(
-      domain = "MarketPrice",
-      universe = c("EUR=", "GBP="),
-      fields = c("BID"),
-      streaming = TRUE,
-      stream_id = 4L
-    ),
-    "Multiple instruments not yet fully supported"
+test_that("create_omm_stream_request returns named list for multiple instruments", {
+  requests <- create_omm_stream_request(
+    domain = "MarketPrice",
+    universe = c("EUR=", "GBP="),
+    fields = c("BID"),
+    streaming = TRUE,
+    stream_id = 4L
   )
+
+  expect_type(requests, "list")
+  expect_equal(names(requests), c("EUR=", "GBP="))
+  # First instrument gets base_id, second gets base_id + 1
+
+  expect_true(grepl('"ID":4', requests[["EUR="]]))
+  expect_true(grepl('"ID":5', requests[["GBP="]]))
+  expect_true(grepl('"Name":"EUR="', requests[["EUR="]]))
+  expect_true(grepl('"Name":"GBP="', requests[["GBP="]]))
 })
 
 test_that("create_omm_stream_request uses default stream_id", {
@@ -210,7 +183,7 @@ test_that("create_omm_stream_request uses default stream_id", {
     streaming = TRUE,
     stream_id = NULL
   )
-  
+
   expect_true(grepl('"ID":2', request))
 })
 
@@ -218,7 +191,7 @@ test_that("create_omm_stream_request uses default stream_id", {
 test_that("create_streaming_headers creates correct headers", {
   token <- "test_token_456"
   headers <- create_streaming_headers(token)
-  
+
   expect_type(headers, "list")
   expect_equal(headers$`User-Agent`, "R")
   expect_equal(headers$`x-tr-applicationid`, "DEFAULT_WORKSPACE_APP_KEY")
@@ -292,17 +265,19 @@ test_that("build_json_list_string handles empty vector", {
 test_that("poll_until_connected returns TRUE when connected", {
   # Mock WebSocket object
   mock_ws <- list(
-    readyState = function() 1L  # Connected
+    readyState = function() 1L # Connected
   )
-  
+
   # Mock later package
   stub(poll_until_connected, "requireNamespace", function(pkg, quietly) {
-    if (pkg == "later") return(TRUE)
+    if (pkg == "later") {
+      return(TRUE)
+    }
     return(FALSE)
   })
-  
+
   stub(poll_until_connected, "later::run_now", function(timeout) NULL)
-  
+
   result <- poll_until_connected(mock_ws, timeout = 1)
   expect_true(result)
 })
@@ -310,17 +285,19 @@ test_that("poll_until_connected returns TRUE when connected", {
 test_that("poll_until_connected errors when not connected", {
   # Mock WebSocket object that never connects
   mock_ws <- list(
-    readyState = function() 0L  # Connecting
+    readyState = function() 0L # Connecting
   )
-  
+
   # Mock later package
   stub(poll_until_connected, "requireNamespace", function(pkg, quietly) {
-    if (pkg == "later") return(TRUE)
+    if (pkg == "later") {
+      return(TRUE)
+    }
     return(FALSE)
   })
-  
+
   stub(poll_until_connected, "later::run_now", function(timeout) NULL)
-  
+
   expect_error(
     poll_until_connected(mock_ws, timeout = 0.1),
     "Unable to establish websocket connection"
@@ -329,12 +306,14 @@ test_that("poll_until_connected errors when not connected", {
 
 test_that("poll_until_connected errors when later package not available", {
   mock_ws <- list(readyState = function() 0L)
-  
+
   stub(poll_until_connected, "requireNamespace", function(pkg, quietly) FALSE)
-  
+
   expect_error(
     poll_until_connected(mock_ws, timeout = 1),
     "Please install 'later' package"
   )
 })
 
+
+restore_refinitiv_state(.saved_state, "test-rd_streaming_utils")

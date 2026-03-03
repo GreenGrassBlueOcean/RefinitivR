@@ -28,11 +28,12 @@ ConvertNestedlisttoDT <- function(input) {
     # Ensure that each column in dt has the same class as in the original list
     for (col in names(x)) {
       dt[[col]] <- switch(class(x[[col]])[1],
-                          "character" = as.character(dt[[col]]),
-                          "numeric" = as.numeric(dt[[col]]),
-                          "integer" = as.integer(dt[[col]]),
-                          "logical" = as.logical(dt[[col]]),
-                          dt[[col]])  # default case: keep as is
+        "character" = as.character(dt[[col]]),
+        "numeric" = as.numeric(dt[[col]]),
+        "integer" = as.integer(dt[[col]]),
+        "logical" = as.logical(dt[[col]]),
+        dt[[col]]
+      ) # default case: keep as is
     }
 
 

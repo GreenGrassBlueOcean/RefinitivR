@@ -1,0 +1,22 @@
+Package: Refinitiv
+Type: Package
+Title: Connect to LSEG/Refinitiv Eikon and DataStream from R
+Version: 0.2.0
+Author: Laurens van der Burg
+Maintainer: Laurens van der Burg <laurens@ggbo.eu>
+Description: R interface to LSEG/Refinitiv Eikon via direct JSON and to DataStream via the DatastreamDSWS2R package. This package is in no way affiliated with LSEG, Refinitiv, Eikon or Datastream. Use at own risk.
+             This package makes use of the DatastreamDSWS2R package from CharlesCara on Github for DataStream Connections.
+License: LGPL (>= 2.0, < 3) | Mozilla Public License
+Encoding: UTF-8
+LazyData: true
+Imports: zoo, methods, DatastreamDSWS2R, stringi, data.table, jsonlite,
+        rlang, rstudioapi, httr2, R6, base64enc
+Remotes: github::CharlesCara/DatastreamDSWS2R
+RoxygenNote: 7.3.3
+Depends: R (>= 4.1.0)
+Suggests: testthat, covr, lubridate, devtools, countrycode, dplyr,
+        shiny, websocket, later, mockery, httptest2, withr
+URL: https://greengrassblueocean.github.io/RefinitivR/
+NeedsCompilation: no
+Packaged: 2026-03-02 13:14:33 UTC; LaurensVdb
+Built: R 4.5.2; ; 2026-03-02 13:15:02 UTC; windows

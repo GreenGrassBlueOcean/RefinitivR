@@ -1,0 +1,522 @@
+{
+    "data": [
+        {
+            "storyId": "urn:link:webnews:20260226:nNRAzmy1oh:0",
+            "newsItem": {
+                "_version": 0,
+                "contentMeta": {
+                    "audience": [
+
+                    ],
+                    "creator": [
+                        {
+                            "_qcode": "NS:HANGEU",
+                            "_role": "sRole:source"
+                        }
+                    ],
+                    "infoSource": [
+                        {
+                            "_qcode": "NS:HANGEU",
+                            "_role": "sRole:source"
+                        },
+                        {
+                            "_qcode": "NS:HANGEU",
+                            "_role": "sRole:origProv"
+                        }
+                    ],
+                    "language": [
+                        {
+                            "_tag": "de"
+                        }
+                    ],
+                    "subject": [
+                        {
+                            "_qcode": "B:104"
+                        },
+                        {
+                            "_qcode": "G:4"
+                        },
+                        {
+                            "_qcode": "B:202"
+                        },
+                        {
+                            "_qcode": "B:279"
+                        },
+                        {
+                            "_qcode": "M:2DZ"
+                        },
+                        {
+                            "_qcode": "M:1WN"
+                        },
+                        {
+                            "_qcode": "G:6J"
+                        },
+                        {
+                            "_qcode": "B:278"
+                        },
+                        {
+                            "_qcode": "B:255"
+                        },
+                        {
+                            "_qcode": "G:9"
+                        },
+                        {
+                            "_qcode": "B:1769"
+                        },
+                        {
+                            "_qcode": "B:98"
+                        },
+                        {
+                            "_qcode": "B:282"
+                        },
+                        {
+                            "_qcode": "B:172"
+                        },
+                        {
+                            "_qcode": "R:AAPL.O"
+                        },
+                        {
+                            "_qcode": "B:174"
+                        },
+                        {
+                            "_qcode": "B:284"
+                        },
+                        {
+                            "_qcode": "L:de"
+                        },
+                        {
+                            "_qcode": "M:Z"
+                        },
+                        {
+                            "_qcode": "M:1WJ"
+                        },
+                        {
+                            "_qcode": "M:1NN"
+                        },
+                        {
+                            "_qcode": "M:1P2"
+                        },
+                        {
+                            "_qcode": "Meta:WebNews"
+                        },
+                        {
+                            "_qcode": "P:4295905573"
+                        }
+                    ],
+                    "urgency": {
+                        "$": 3
+                    }
+                },
+                "itemMeta": {
+                    "firstCreated": {
+                        "$": "2026-02-26T20:04:07.414Z"
+                    },
+                    "versionCreated": {
+                        "$": "2026-02-26T20:04:07.681Z"
+                    },
+                    "title": [
+                        {
+                            "$": "Nato stuft iPhone und iPad als sicher ein"
+                        }
+                    ]
+                },
+                "assert": [
+                    {
+                        "_qcode": "B:104"
+                    },
+                    {
+                        "_qcode": "G:4"
+                    },
+                    {
+                        "_qcode": "B:202"
+                    },
+                    {
+                        "_qcode": "B:279"
+                    },
+                    {
+                        "_qcode": "M:2DZ"
+                    },
+                    {
+                        "_qcode": "M:1WN"
+                    },
+                    {
+                        "_qcode": "G:6J"
+                    },
+                    {
+                        "_qcode": "B:278"
+                    },
+                    {
+                        "_qcode": "B:255"
+                    },
+                    {
+                        "_qcode": "G:9"
+                    },
+                    {
+                        "_qcode": "B:1769"
+                    },
+                    {
+                        "_qcode": "B:98"
+                    },
+                    {
+                        "_qcode": "B:282"
+                    },
+                    {
+                        "_qcode": "B:172"
+                    },
+                    {
+                        "_qcode": "R:AAPL.O"
+                    },
+                    {
+                        "_qcode": "B:174"
+                    },
+                    {
+                        "_qcode": "B:284"
+                    },
+                    {
+                        "_qcode": "L:de"
+                    },
+                    {
+                        "_qcode": "M:Z"
+                    },
+                    {
+                        "_qcode": "M:1WJ"
+                    },
+                    {
+                        "_qcode": "M:1NN"
+                    },
+                    {
+                        "_qcode": "M:1P2"
+                    },
+                    {
+                        "_qcode": "Meta:WebNews"
+                    },
+                    {
+                        "_qcode": "P:4295905573"
+                    }
+                ]
+            }
+        },
+        {
+            "storyId": "urn:link:webnews:20260226:nNRAzmxxxx:0",
+            "newsItem": {
+                "_version": 0,
+                "contentMeta": {
+                    "audience": [
+
+                    ],
+                    "creator": [
+                        {
+                            "_qcode": "NS:FINGEV",
+                            "_role": "sRole:source"
+                        }
+                    ],
+                    "infoSource": [
+                        {
+                            "_qcode": "NS:FINGEV",
+                            "_role": "sRole:source"
+                        },
+                        {
+                            "_qcode": "NS:FINGEV",
+                            "_role": "sRole:origProv"
+                        }
+                    ],
+                    "language": [
+                        {
+                            "_tag": "en"
+                        }
+                    ],
+                    "subject": [
+                        {
+                            "_qcode": "B:104"
+                        },
+                        {
+                            "_qcode": "G:4"
+                        },
+                        {
+                            "_qcode": "B:202"
+                        },
+                        {
+                            "_qcode": "M:2DZ"
+                        },
+                        {
+                            "_qcode": "M:1WN"
+                        },
+                        {
+                            "_qcode": "G:6J"
+                        },
+                        {
+                            "_qcode": "G:9"
+                        },
+                        {
+                            "_qcode": "B:1769"
+                        },
+                        {
+                            "_qcode": "B:98"
+                        },
+                        {
+                            "_qcode": "B:282"
+                        },
+                        {
+                            "_qcode": "R:AAPL.O"
+                        },
+                        {
+                            "_qcode": "B:284"
+                        },
+                        {
+                            "_qcode": "M:2YI"
+                        },
+                        {
+                            "_qcode": "M:1WJ"
+                        },
+                        {
+                            "_qcode": "M:1QD"
+                        },
+                        {
+                            "_qcode": "E:G"
+                        },
+                        {
+                            "_qcode": "I:GL"
+                        },
+                        {
+                            "_qcode": "B:1798"
+                        },
+                        {
+                            "_qcode": "M:1NN"
+                        },
+                        {
+                            "_qcode": "B:279"
+                        },
+                        {
+                            "_qcode": "M:2CY"
+                        },
+                        {
+                            "_qcode": "B:278"
+                        },
+                        {
+                            "_qcode": "M:1ZT"
+                        },
+                        {
+                            "_qcode": "B:255"
+                        },
+                        {
+                            "_qcode": "M:2CN"
+                        },
+                        {
+                            "_qcode": "B:172"
+                        },
+                        {
+                            "_qcode": "M:2CP"
+                        },
+                        {
+                            "_qcode": "B:174"
+                        },
+                        {
+                            "_qcode": "M:2CQ"
+                        },
+                        {
+                            "_qcode": "M:Z"
+                        },
+                        {
+                            "_qcode": "M:21C"
+                        },
+                        {
+                            "_qcode": "M:2CU"
+                        },
+                        {
+                            "_qcode": "L:en"
+                        },
+                        {
+                            "_qcode": "M:1F1"
+                        },
+                        {
+                            "_qcode": "M:1QN"
+                        },
+                        {
+                            "_qcode": "M:1R2"
+                        },
+                        {
+                            "_qcode": "R:ADBE.O"
+                        },
+                        {
+                            "_qcode": "E:1"
+                        },
+                        {
+                            "_qcode": "M:1P2"
+                        },
+                        {
+                            "_qcode": "M:2B"
+                        },
+                        {
+                            "_qcode": "Meta:WebNews"
+                        },
+                        {
+                            "_qcode": "P:4295905431"
+                        },
+                        {
+                            "_qcode": "P:4295905573"
+                        }
+                    ],
+                    "urgency": {
+                        "$": 3
+                    }
+                },
+                "itemMeta": {
+                    "firstCreated": {
+                        "$": "2026-02-26T20:00:11.380Z"
+                    },
+                    "versionCreated": {
+                        "$": "2026-02-26T20:00:13.853Z"
+                    },
+                    "title": [
+                        {
+                            "$": "Apple vs. Adobe: Which AI-Driven Tech Stock Has an Edge Now?"
+                        }
+                    ]
+                },
+                "assert": [
+                    {
+                        "_qcode": "B:104"
+                    },
+                    {
+                        "_qcode": "G:4"
+                    },
+                    {
+                        "_qcode": "B:202"
+                    },
+                    {
+                        "_qcode": "M:2DZ"
+                    },
+                    {
+                        "_qcode": "M:1WN"
+                    },
+                    {
+                        "_qcode": "G:6J"
+                    },
+                    {
+                        "_qcode": "G:9"
+                    },
+                    {
+                        "_qcode": "B:1769"
+                    },
+                    {
+                        "_qcode": "B:98"
+                    },
+                    {
+                        "_qcode": "B:282"
+                    },
+                    {
+                        "_qcode": "R:AAPL.O"
+                    },
+                    {
+                        "_qcode": "B:284"
+                    },
+                    {
+                        "_qcode": "M:2YI"
+                    },
+                    {
+                        "_qcode": "M:1WJ"
+                    },
+                    {
+                        "_qcode": "M:1QD"
+                    },
+                    {
+                        "_qcode": "E:G"
+                    },
+                    {
+                        "_qcode": "I:GL"
+                    },
+                    {
+                        "_qcode": "B:1798"
+                    },
+                    {
+                        "_qcode": "M:1NN"
+                    },
+                    {
+                        "_qcode": "B:279"
+                    },
+                    {
+                        "_qcode": "M:2CY"
+                    },
+                    {
+                        "_qcode": "B:278"
+                    },
+                    {
+                        "_qcode": "M:1ZT"
+                    },
+                    {
+                        "_qcode": "B:255"
+                    },
+                    {
+                        "_qcode": "M:2CN"
+                    },
+                    {
+                        "_qcode": "B:172"
+                    },
+                    {
+                        "_qcode": "M:2CP"
+                    },
+                    {
+                        "_qcode": "B:174"
+                    },
+                    {
+                        "_qcode": "M:2CQ"
+                    },
+                    {
+                        "_qcode": "M:Z"
+                    },
+                    {
+                        "_qcode": "M:21C"
+                    },
+                    {
+                        "_qcode": "M:2CU"
+                    },
+                    {
+                        "_qcode": "L:en"
+                    },
+                    {
+                        "_qcode": "M:1F1"
+                    },
+                    {
+                        "_qcode": "M:1QN"
+                    },
+                    {
+                        "_qcode": "M:1R2"
+                    },
+                    {
+                        "_qcode": "R:ADBE.O"
+                    },
+                    {
+                        "_qcode": "E:1"
+                    },
+                    {
+                        "_qcode": "M:1P2"
+                    },
+                    {
+                        "_qcode": "M:2B"
+                    },
+                    {
+                        "_qcode": "Meta:WebNews"
+                    },
+                    {
+                        "_qcode": "P:4295905431"
+                    },
+                    {
+                        "_qcode": "P:4295905573"
+                    }
+                ]
+            }
+        }
+    ],
+    "meta": {
+        "count": 2,
+        "pageLimit": 2,
+        "next": "eyJxdWVyeSI6eyJpbnB1dCI6IlI6QUFQTC5PIiwiY2F0ZWdvcnkiOiJPcmdhbmlzYXRpb24iLCJncm91cCI6Ik9yZGluYXJ5IFNoYXJlIiwiaWQiOiJSOkFBUEwuTyIsImxhYmVsIjoiQXBwbGUgSW5jIiwicmVhZGFibGUiOiJSOkFBUEwuTyIsInJlYWx0aW1lRmlsdGVyIjoiUjpBQVBMLk8iLCJyZWFsdGltZUZpbHRlcnMiOlsiUjpBQVBMLk8iLCJQOjQyOTU5MDU1NzMiXSwicmVhbHRpbWVDYXBhYmlsaXRpZXMiOltdLCJuZXdzd2lyZSI6InZhbHVlIiwibmV3c3Jvb20iOiJ2YWx1ZSIsIndlYm5ld3MiOiJ2YWx1ZSIsInNvY2lhbCI6InZhbHVlIiwiZmlsdGVyIjoidmFsdWUiLCJpc1JlY29tbWVuZGVkIjpmYWxzZSwiaGFzQ2hpbGRyZW4iOmZhbHNlLCJidXNpbmVzc1NlY3RvciI6IkI6MTY5IiwicHJldmlld1RlbXBsYXRlIjoiRVEifSwicGFyYW0iOnsicmVwb3NpdG9yaWVzIjpbIk5ld3NXaXJlIiwiTmV3c1Jvb20iLCJXZWJOZXdzIiwiU29jaWFsIl0sInNlYXJjaEluIjoiSGVhZGxpbmVPbmx5IiwibnVtYmVyIjoyLCJyZXNlYXJjaFJlc3VsdHMiOmZhbHNlLCJzbmlwcGV0cyI6ZmFsc2UsImhpZ2hsaWdodHMiOmZhbHNlLCJzb3J0T3JkZXIiOiJuZXdUb09sZCIsImFyY2hpdmUiOmZhbHNlLCJmYWNldHMiOltdLCJtYXhGYWNldENvdW50IjoyMCwidHJhY2tpbmciOiJhdXRvIiwic2VudGltZW50IjpmYWxzZSwicmVsZXZhbmNlIjoiSGlnaCJ9LCJwaXZvdCI6eyJzb3J0T3JkZXIiOiJuZXdUb09sZCIsIm5ld3Nyb29tQ29udGV4dCI6bnVsbCwibmV3c3Jvb21PZmZzZXQiOjAsIm5ld3N3aXJlUGl2b3QiOnsiZGF0ZXRpbWUiOiIyMDI2LTAyLTI2VDIwOjAwOjEzLjg1M1oiLCJwbmFjIjoibk5SQXpteHh4eCJ9LCJmZWRlcmF0ZWRDb250ZXh0IjpudWxsLCJpbml0aWFsU29ydE9yZGVyIjoibmV3VG9PbGQifX0=",
+        "prev": "eyJxdWVyeSI6eyJpbnB1dCI6IlI6QUFQTC5PIiwiY2F0ZWdvcnkiOiJPcmdhbmlzYXRpb24iLCJncm91cCI6Ik9yZGluYXJ5IFNoYXJlIiwiaWQiOiJSOkFBUEwuTyIsImxhYmVsIjoiQXBwbGUgSW5jIiwicmVhZGFibGUiOiJSOkFBUEwuTyIsInJlYWx0aW1lRmlsdGVyIjoiUjpBQVBMLk8iLCJyZWFsdGltZUZpbHRlcnMiOlsiUjpBQVBMLk8iLCJQOjQyOTU5MDU1NzMiXSwicmVhbHRpbWVDYXBhYmlsaXRpZXMiOltdLCJuZXdzd2lyZSI6InZhbHVlIiwibmV3c3Jvb20iOiJ2YWx1ZSIsIndlYm5ld3MiOiJ2YWx1ZSIsInNvY2lhbCI6InZhbHVlIiwiZmlsdGVyIjoidmFsdWUiLCJpc1JlY29tbWVuZGVkIjpmYWxzZSwiaGFzQ2hpbGRyZW4iOmZhbHNlLCJidXNpbmVzc1NlY3RvciI6IkI6MTY5IiwicHJldmlld1RlbXBsYXRlIjoiRVEifSwicGFyYW0iOnsicmVwb3NpdG9yaWVzIjpbIk5ld3NXaXJlIiwiTmV3c1Jvb20iLCJXZWJOZXdzIiwiU29jaWFsIl0sInNlYXJjaEluIjoiSGVhZGxpbmVPbmx5IiwibnVtYmVyIjoyLCJyZXNlYXJjaFJlc3VsdHMiOmZhbHNlLCJzbmlwcGV0cyI6ZmFsc2UsImhpZ2hsaWdodHMiOmZhbHNlLCJzb3J0T3JkZXIiOiJuZXdUb09sZCIsImFyY2hpdmUiOmZhbHNlLCJmYWNldHMiOltdLCJtYXhGYWNldENvdW50IjoyMCwidHJhY2tpbmciOiJhdXRvIiwic2VudGltZW50IjpmYWxzZSwicmVsZXZhbmNlIjoiSGlnaCJ9LCJwaXZvdCI6eyJzb3J0T3JkZXIiOiJvbGRUb05ldyIsIm5ld3Nyb29tQ29udGV4dCI6bnVsbCwibmV3c3Jvb21PZmZzZXQiOjAsIm5ld3N3aXJlUGl2b3QiOnsiZGF0ZXRpbWUiOiIyMDI2LTAyLTI2VDIwOjA0OjA3LjY4MVoiLCJwbmFjIjoibk5SQXpteTFvaCJ9LCJmZWRlcmF0ZWRDb250ZXh0IjpudWxsLCJpbml0aWFsU29ydE9yZGVyIjoibmV3VG9PbGQifX0="
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

@@ -1,0 +1,64 @@
+{
+    "responses": [
+        {
+            "columnHeadersCount": 1,
+            "data": [
+                [
+                    "AAPL.O",
+                    "Ordinary Shares",
+                    "Consolidated Issue Listed on Nasdaq Global Select Market",
+                    "XXXX",
+                    true
+                ],
+                [
+                    "GOOG.O",
+                    "Ordinary Shares",
+                    "Consolidated Issue Listed on Nasdaq Global Select Market",
+                    "XXXX",
+                    true
+                ],
+                [
+                    "III.L",
+                    "Ordinary Shares",
+                    "London Stock Exchange",
+                    "XLON",
+                    true
+                ],
+                [
+                    "MMM",
+                    "Ordinary Shares",
+                    "New York Consolidated",
+                    "XXXX",
+                    true
+                ]
+            ],
+            "headerOrientation": "horizontal",
+            "headers": [
+                [
+                    {
+                        "displayName": "Instrument"
+                    },
+                    {
+                        "displayName": "Instrument Type",
+                        "field": "TR.INSTRUMENTTYPE"
+                    },
+                    {
+                        "displayName": "Exchange Name",
+                        "field": "TR.EXCHANGENAME"
+                    },
+                    {
+                        "displayName": "Exchange Market Identifier Code",
+                        "field": "TR.EXCHANGEMARKETIDCODE"
+                    },
+                    {
+                        "displayName": "Instrument Is Active Flag",
+                        "field": "TR.INSTRUMENTISACTIVE"
+                    }
+                ]
+            ],
+            "rowHeadersCount": 1,
+            "totalColumnsCount": 5,
+            "totalRowsCount": 5
+        }
+    ]
+}

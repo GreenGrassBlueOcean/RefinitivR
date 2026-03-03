@@ -33,8 +33,10 @@ test_that("TestDataStreamCredentials fails when it should", {
   })
 
   expect_error(TestDataStreamCredentials(), "Please supply the DataStream username.")
-  expect_error(TestDataStreamCredentials(DatastreamUsername = "someuser"),
-               "Please supply the DataStream password.")
+  expect_error(
+    TestDataStreamCredentials(DatastreamUsername = "someuser"),
+    "Please supply the DataStream password."
+  )
 })
 
 test_that("TestDataStreamCredentials satisfies test cases", {
@@ -60,8 +62,10 @@ test_that("DataStreamConnect sets options and returns a stubbed dsws object", {
   stub(DataStreamConnect, "DatastreamDSWS2R::dsws$new", function(...) "mock_dsws_object")
 
   # Call DataStreamConnect with valid credentials.
-  result <- DataStreamConnect(DatastreamUserName = "test_user",
-                              DatastreamPassword = "test_password")
+  result <- DataStreamConnect(
+    DatastreamUserName = "test_user",
+    DatastreamPassword = "test_password"
+  )
 
   expect_equal(result, "mock_dsws_object")
   expect_equal(getOption("Datastream.Username"), "test_user")
@@ -94,6 +98,22 @@ test_that("TestDataStreamCredentials returns FALSE if response lacks valid token
   expect_false(result)
 })
 
+test_that("TestDataStreamCredentials returns FALSE on non-200 HTTP status", {
+  dummy_response <- structure(
+    list(status_code = 401),
+    class = "httr2_response"
+  )
+
+  stub(TestDataStreamCredentials, "httr2::req_perform", function(...) dummy_response)
+  stub(TestDataStreamCredentials, "httr2::resp_status", function(response) response$status_code)
+
+  expect_warning(
+    result <- TestDataStreamCredentials(DatastreamUsername = "user", DatastreamPassword = "pass"),
+    "HTTP status code: 401"
+  )
+  expect_false(result)
+})
+
 test_that("TestDataStreamCredentials returns TRUE if a valid token is received", {
   # Create a dummy response with status 200 and a valid TokenValue.
   dummy_response <- structure(
@@ -116,3 +136,5 @@ test_that("TestDataStreamCredentials returns TRUE if a valid token is received",
   expect_true(result)
   expect_true(any(grepl("DataStream credentials are valid", msgs)))
 })
+
+dump_refinitiv_options("test-DataStreamConnect")

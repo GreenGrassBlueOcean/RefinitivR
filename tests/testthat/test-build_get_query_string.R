@@ -1,4 +1,3 @@
-
 test_that("build_get_query_string returns empty string for an empty list", {
   expect_equal(build_get_query_string(list()), "")
 })
@@ -19,3 +18,5 @@ test_that("build_get_query_string errors if any element is unnamed", {
   params <- list("R:TSLA.O", limit = 5)
   expect_error(build_get_query_string(params), "All elements of the list must be named")
 })
+
+dump_refinitiv_options("test-build_get_query_string")

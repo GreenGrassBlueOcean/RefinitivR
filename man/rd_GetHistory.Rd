@@ -5,7 +5,7 @@
 \title{The get_history function allows you to retrieve pricing history, as well as Fundamental and Reference data history through a single function call.}
 \usage{
 rd_GetHistory(
-  RD = RDConnect(),
+  RD = rd_connection(),
   universe = NULL,
   fields = NULL,
   parameters = NULL,
@@ -16,11 +16,12 @@ rd_GetHistory(
   count = NULL,
   use_field_names_in_headers = TRUE,
   SpaceConvertor = NULL,
-  debug = FALSE
+  debug = FALSE,
+  cache = NULL
 )
 }
 \arguments{
-\item{RD}{Refinitiv data object (currently only RDconnect())}
+\item{RD}{Refinitiv JSON connection object, default is RDConnect()}
 
 \item{universe}{Instruments to request    str or vector}
 
@@ -43,6 +44,11 @@ rd_GetHistory(
 \item{SpaceConvertor}{converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is NULL, use this for compatability with eikon}
 
 \item{debug}{boolean, default = FALSE, if TRUE, prints out the url used to retrieve the data}
+
+\item{cache}{Controls caching. \code{NULL} (default) defers to
+\code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
+function default TTL (300 s). \code{FALSE} disables caching. A positive
+numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.}
 }
 \value{
 data.frame
@@ -51,9 +57,7 @@ data.frame
 The get_history function allows you to retrieve pricing history, as well as Fundamental and Reference data history through a single function call.
 }
 \details{
-This function is currently work in progress and only works with RDConnect (python), directJson is not available for this function.
-
- #section regarding adjustments parameters:
+#section regarding adjustments parameters:
 
  The vector of adjustment types (comma delimiter) that tells the system whether
  to apply or not apply CORAX (Corporate Actions) events or
@@ -71,31 +75,70 @@ This function is currently work in progress and only works with RDConnect (pytho
  \item \bold{"qualifiers"}:Apply price or volume adjustment to historical pricing according to trade/quote qualifier summarization actions
 }
 }
+\section{Merge behavior}{
+
+When the requested \code{fields} include both historical-pricing fields
+(e.g. \code{BID}, \code{TRDPRC_1}) and fundamental/reference fields
+(e.g. \code{TR.Revenue}), the function routes them to two different
+backend endpoints and merges the results with a \strong{full outer join}
+on \code{(Instrument, Date)}.
+
+If the two endpoints return data at different date granularity (e.g. daily
+prices vs. quarterly fundamentals), the merged result will contain rows
+where one set of columns is populated and the other is \code{NA}. A
+warning is emitted when the date-count ratio exceeds 5:1 for any
+instrument.
+
+The result carries a \code{"merge_info"} attribute (when both endpoints
+contributed data) with row counts and merge type. Inspect with
+\code{attr(result, "merge_info")}.
+
+For full control over date alignment, call
+\code{\link{rd_GetHistoricalPricing}} and \code{\link{rd_GetData}}
+separately.
+}
+
 \examples{
 \dontrun{
-RDObject <-  RDConnect("your api key here", PythonModule = "JSON")
-timeseries1 <-  rd_GetHistory(universe=c("AAPL.O", "NVDA.O"))
-timeseries2 <- rd_GetHistory(universe="GOOG.O"
-                            ,fields = c("BID", "ASK"),interval="tick",count=5)
+RDObject <- RDConnect("your api key here")
+timeseries1 <- rd_GetHistory(universe = c("AAPL.O", "NVDA.O"))
+timeseries2 <- rd_GetHistory(
+  universe = "GOOG.O",
+  fields = c("BID", "ASK"), interval = "tick", count = 5
+)
 
-test <- rd_GetHistory(universe= "AAPL.O"
-                     , fields = c("TR.IssueMarketCap(Scale=6,ShType=FFL)"
-                       ,"TR.FreeFloatPct()/100/*FreefloatWeight*/"
-                       ,"TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/"
-                       ,"TR.CLOSEPRICE(Adjusted=0)/*close*/")
-                     , parameters = list("Curn" = "USD"
-                     , "SDate" = "2020-10-27", "EDate" = "2020-12-01"))
+test <- rd_GetHistory(
+  universe = "AAPL.O",
+  fields = c(
+    "TR.IssueMarketCap(Scale=6,ShType=FFL)",
+    "TR.FreeFloatPct()/100/*FreefloatWeight*/",
+    "TR.IssueSharesOutstanding(Scale=3)/*shares outstanding*/",
+    "TR.CLOSEPRICE(Adjusted=0)/*close*/"
+  ),
+  parameters = list(
+    "Curn" = "USD",
+    "SDate" = "2020-10-27", "EDate" = "2020-12-01"
+  )
+)
 
-test <- rd_GetHistory(universe = c("GOOG.O","AAPL.O")
-                       , fields = c("TR.Revenue","TR.GrossProfit")
-                       , parameters = list("SDate" = "0CY", "Curn" = "CAD"))
-test <-  rd_GetHistory(universe = c("GOOG.O","AAPL.O")
-                      , fields = c("TR.PriceTargetMean(SDate:0CY)","TR.LOWPRICE(SDate:0d)"))
+test <- rd_GetHistory(
+  universe = c("GOOG.O", "AAPL.O"),
+  fields = c("TR.Revenue", "TR.GrossProfit"),
+  parameters = list("SDate" = "0CY", "Curn" = "CAD")
+)
+test <- rd_GetHistory(
+  universe = c("GOOG.O", "AAPL.O"),
+  fields = c("TR.PriceTargetMean(SDate:0CY)", "TR.LOWPRICE(SDate:0d)")
+)
 
 
-test <- rd_GetHistory( universe = c("GOOG.O","MSFT.O","FB.O","AMZN.O")
-                     ,fields = c("TR.Revenue.date","TR.Revenue","TR.GrossProfit")
-                     ,parameters = list("Scale" = 6,"SDate" = 0
-                     ,"EDate" = -3,"FRQ" = "FY", "Curn" = "EUR"))
+test <- rd_GetHistory(
+  universe = c("GOOG.O", "MSFT.O", "FB.O", "AMZN.O"),
+  fields = c("TR.Revenue.date", "TR.Revenue", "TR.GrossProfit"),
+  parameters = list(
+    "Scale" = 6, "SDate" = 0,
+    "EDate" = -3, "FRQ" = "FY", "Curn" = "EUR"
+  )
+)
 }
 }

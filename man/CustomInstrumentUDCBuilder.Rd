@@ -21,7 +21,7 @@ Build a user defined continuation object for a custom instrument
 }
 \examples{
 \dontrun{
- # no example cause function not implemented yet
+# no example cause function not implemented yet
 }
 }
 \seealso{

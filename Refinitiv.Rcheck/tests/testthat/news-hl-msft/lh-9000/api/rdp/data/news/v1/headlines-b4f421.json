@@ -1,0 +1,348 @@
+{
+    "data": [
+        {
+            "storyId": "urn:link:webnews:20260226:nNRAzmy95l:0",
+            "newsItem": {
+                "_version": 0,
+                "contentMeta": {
+                    "audience": [
+
+                    ],
+                    "creator": [
+                        {
+                            "_qcode": "NS:WEBPRO",
+                            "_role": "sRole:source"
+                        }
+                    ],
+                    "infoSource": [
+                        {
+                            "_qcode": "NS:WEBPRO",
+                            "_role": "sRole:source"
+                        },
+                        {
+                            "_qcode": "NS:WEBPRO",
+                            "_role": "sRole:origProv"
+                        }
+                    ],
+                    "language": [
+                        {
+                            "_tag": "en"
+                        }
+                    ],
+                    "subject": [
+                        {
+                            "_qcode": "G:4"
+                        },
+                        {
+                            "_qcode": "M:2DZ"
+                        },
+                        {
+                            "_qcode": "G:6J"
+                        },
+                        {
+                            "_qcode": "B:278"
+                        },
+                        {
+                            "_qcode": "G:9"
+                        },
+                        {
+                            "_qcode": "M:1YE"
+                        },
+                        {
+                            "_qcode": "M:NL"
+                        },
+                        {
+                            "_qcode": "M:V"
+                        },
+                        {
+                            "_qcode": "B:172"
+                        },
+                        {
+                            "_qcode": "B:174"
+                        },
+                        {
+                            "_qcode": "M:Z"
+                        },
+                        {
+                            "_qcode": "F:C"
+                        },
+                        {
+                            "_qcode": "B:1796"
+                        },
+                        {
+                            "_qcode": "L:en"
+                        },
+                        {
+                            "_qcode": "F:I"
+                        },
+                        {
+                            "_qcode": "A:4"
+                        },
+                        {
+                            "_qcode": "R:MSFT.O"
+                        },
+                        {
+                            "_qcode": "M:27V"
+                        },
+                        {
+                            "_qcode": "M:E7"
+                        },
+                        {
+                            "_qcode": "M:1P2"
+                        },
+                        {
+                            "_qcode": "M:3DE"
+                        },
+                        {
+                            "_qcode": "U:C"
+                        },
+                        {
+                            "_qcode": "Meta:WebNews"
+                        },
+                        {
+                            "_qcode": "P:4295907168"
+                        }
+                    ],
+                    "urgency": {
+                        "$": 3
+                    }
+                },
+                "itemMeta": {
+                    "firstCreated": {
+                        "$": "2026-02-26T20:24:14.399Z"
+                    },
+                    "versionCreated": {
+                        "$": "2026-02-26T20:24:14.756Z"
+                    },
+                    "title": [
+                        {
+                            "$": "Microsoft's Billion-Dollar Bet on Topological Superconductors Could Reshape How AI Gets Its Power"
+                        }
+                    ]
+                },
+                "assert": [
+                    {
+                        "_qcode": "G:4"
+                    },
+                    {
+                        "_qcode": "M:2DZ"
+                    },
+                    {
+                        "_qcode": "G:6J"
+                    },
+                    {
+                        "_qcode": "B:278"
+                    },
+                    {
+                        "_qcode": "G:9"
+                    },
+                    {
+                        "_qcode": "M:1YE"
+                    },
+                    {
+                        "_qcode": "M:NL"
+                    },
+                    {
+                        "_qcode": "M:V"
+                    },
+                    {
+                        "_qcode": "B:172"
+                    },
+                    {
+                        "_qcode": "B:174"
+                    },
+                    {
+                        "_qcode": "M:Z"
+                    },
+                    {
+                        "_qcode": "F:C"
+                    },
+                    {
+                        "_qcode": "B:1796"
+                    },
+                    {
+                        "_qcode": "L:en"
+                    },
+                    {
+                        "_qcode": "F:I"
+                    },
+                    {
+                        "_qcode": "A:4"
+                    },
+                    {
+                        "_qcode": "R:MSFT.O"
+                    },
+                    {
+                        "_qcode": "M:27V"
+                    },
+                    {
+                        "_qcode": "M:E7"
+                    },
+                    {
+                        "_qcode": "M:1P2"
+                    },
+                    {
+                        "_qcode": "M:3DE"
+                    },
+                    {
+                        "_qcode": "U:C"
+                    },
+                    {
+                        "_qcode": "Meta:WebNews"
+                    },
+                    {
+                        "_qcode": "P:4295907168"
+                    }
+                ]
+            }
+        },
+        {
+            "storyId": "urn:newsml:newsroom:20260226:nNRAzmy85y:0",
+            "newsItem": {
+                "_version": 0,
+                "contentMeta": {
+                    "audience": [
+
+                    ],
+                    "creator": [
+                        {
+                            "_qcode": "NS:TECHRB",
+                            "_role": "sRole:source"
+                        }
+                    ],
+                    "infoSource": [
+                        {
+                            "_qcode": "NS:TECHRB",
+                            "_role": "sRole:source"
+                        },
+                        {
+                            "_qcode": "NS:TECHRB",
+                            "_role": "sRole:origProv"
+                        }
+                    ],
+                    "language": [
+                        {
+                            "_tag": "en"
+                        }
+                    ],
+                    "subject": [
+                        {
+                            "_qcode": "G:4"
+                        },
+                        {
+                            "_qcode": "B:1796"
+                        },
+                        {
+                            "_qcode": "M:2DZ"
+                        },
+                        {
+                            "_qcode": "L:en"
+                        },
+                        {
+                            "_qcode": "G:6J"
+                        },
+                        {
+                            "_qcode": "B:278"
+                        },
+                        {
+                            "_qcode": "G:9"
+                        },
+                        {
+                            "_qcode": "B:172"
+                        },
+                        {
+                            "_qcode": "B:174"
+                        },
+                        {
+                            "_qcode": "R:MSFT.O"
+                        },
+                        {
+                            "_qcode": "M:Z"
+                        },
+                        {
+                            "_qcode": "M:1P2"
+                        },
+                        {
+                            "_qcode": "Meta:NewsRoom"
+                        },
+                        {
+                            "_qcode": "P:4295907168"
+                        }
+                    ],
+                    "urgency": {
+                        "$": 3
+                    }
+                },
+                "itemMeta": {
+                    "firstCreated": {
+                        "$": "2026-02-26T20:17:42.956Z"
+                    },
+                    "versionCreated": {
+                        "$": "2026-02-26T20:17:43.588Z"
+                    },
+                    "title": [
+                        {
+                            "$": "'If your printer works today, it will continue to work' - Microsoft says it isn't killing off your old printer for good after all"
+                        }
+                    ]
+                },
+                "assert": [
+                    {
+                        "_qcode": "G:4"
+                    },
+                    {
+                        "_qcode": "B:1796"
+                    },
+                    {
+                        "_qcode": "M:2DZ"
+                    },
+                    {
+                        "_qcode": "L:en"
+                    },
+                    {
+                        "_qcode": "G:6J"
+                    },
+                    {
+                        "_qcode": "B:278"
+                    },
+                    {
+                        "_qcode": "G:9"
+                    },
+                    {
+                        "_qcode": "B:172"
+                    },
+                    {
+                        "_qcode": "B:174"
+                    },
+                    {
+                        "_qcode": "R:MSFT.O"
+                    },
+                    {
+                        "_qcode": "M:Z"
+                    },
+                    {
+                        "_qcode": "M:1P2"
+                    },
+                    {
+                        "_qcode": "Meta:NewsRoom"
+                    },
+                    {
+                        "_qcode": "P:4295907168"
+                    }
+                ]
+            }
+        }
+    ],
+    "meta": {
+        "count": 2,
+        "pageLimit": 2,
+        "next": "eyJxdWVyeSI6eyJpbnB1dCI6IlI6TVNGVC5PIiwiY2F0ZWdvcnkiOiJPcmdhbmlzYXRpb24iLCJncm91cCI6Ik9yZGluYXJ5IFNoYXJlIiwiaWQiOiJSOk1TRlQuTyIsImxhYmVsIjoiTWljcm9zb2Z0IENvcnAiLCJyZWFkYWJsZSI6IlI6TVNGVC5PIiwicmVhbHRpbWVGaWx0ZXIiOiJSOk1TRlQuTyIsInJlYWx0aW1lRmlsdGVycyI6WyJSOk1TRlQuTyIsIlA6NDI5NTkwNzE2OCJdLCJyZWFsdGltZUNhcGFiaWxpdGllcyI6W10sIm5ld3N3aXJlIjoidmFsdWUiLCJuZXdzcm9vbSI6InZhbHVlIiwid2VibmV3cyI6InZhbHVlIiwic29jaWFsIjoidmFsdWUiLCJmaWx0ZXIiOiJ2YWx1ZSIsImlzUmVjb21tZW5kZWQiOmZhbHNlLCJoYXNDaGlsZHJlbiI6ZmFsc2UsImJ1c2luZXNzU2VjdG9yIjoiQjoxNzQiLCJwcmV2aWV3VGVtcGxhdGUiOiJFUSJ9LCJwYXJhbSI6eyJyZXBvc2l0b3JpZXMiOlsiTmV3c1dpcmUiLCJOZXdzUm9vbSIsIldlYk5ld3MiLCJTb2NpYWwiXSwic2VhcmNoSW4iOiJIZWFkbGluZU9ubHkiLCJudW1iZXIiOjIsInJlc2VhcmNoUmVzdWx0cyI6ZmFsc2UsInNuaXBwZXRzIjpmYWxzZSwiaGlnaGxpZ2h0cyI6ZmFsc2UsInNvcnRPcmRlciI6Im5ld1RvT2xkIiwiYXJjaGl2ZSI6ZmFsc2UsImZhY2V0cyI6W10sIm1heEZhY2V0Q291bnQiOjIwLCJ0cmFja2luZyI6ImF1dG8iLCJzZW50aW1lbnQiOmZhbHNlLCJyZWxldmFuY2UiOiJIaWdoIn0sInBpdm90Ijp7InNvcnRPcmRlciI6Im5ld1RvT2xkIiwibmV3c3Jvb21Db250ZXh0IjpudWxsLCJuZXdzcm9vbU9mZnNldCI6MCwibmV3c3dpcmVQaXZvdCI6eyJkYXRldGltZSI6IjIwMjYtMDItMjZUMjA6MTc6NDMuNTg4WiIsInBuYWMiOiJuTlJBem15ODV5In0sImZlZGVyYXRlZENvbnRleHQiOm51bGwsImluaXRpYWxTb3J0T3JkZXIiOiJuZXdUb09sZCJ9fQ==",
+        "prev": "eyJxdWVyeSI6eyJpbnB1dCI6IlI6TVNGVC5PIiwiY2F0ZWdvcnkiOiJPcmdhbmlzYXRpb24iLCJncm91cCI6Ik9yZGluYXJ5IFNoYXJlIiwiaWQiOiJSOk1TRlQuTyIsImxhYmVsIjoiTWljcm9zb2Z0IENvcnAiLCJyZWFkYWJsZSI6IlI6TVNGVC5PIiwicmVhbHRpbWVGaWx0ZXIiOiJSOk1TRlQuTyIsInJlYWx0aW1lRmlsdGVycyI6WyJSOk1TRlQuTyIsIlA6NDI5NTkwNzE2OCJdLCJyZWFsdGltZUNhcGFiaWxpdGllcyI6W10sIm5ld3N3aXJlIjoidmFsdWUiLCJuZXdzcm9vbSI6InZhbHVlIiwid2VibmV3cyI6InZhbHVlIiwic29jaWFsIjoidmFsdWUiLCJmaWx0ZXIiOiJ2YWx1ZSIsImlzUmVjb21tZW5kZWQiOmZhbHNlLCJoYXNDaGlsZHJlbiI6ZmFsc2UsImJ1c2luZXNzU2VjdG9yIjoiQjoxNzQiLCJwcmV2aWV3VGVtcGxhdGUiOiJFUSJ9LCJwYXJhbSI6eyJyZXBvc2l0b3JpZXMiOlsiTmV3c1dpcmUiLCJOZXdzUm9vbSIsIldlYk5ld3MiLCJTb2NpYWwiXSwic2VhcmNoSW4iOiJIZWFkbGluZU9ubHkiLCJudW1iZXIiOjIsInJlc2VhcmNoUmVzdWx0cyI6ZmFsc2UsInNuaXBwZXRzIjpmYWxzZSwiaGlnaGxpZ2h0cyI6ZmFsc2UsInNvcnRPcmRlciI6Im5ld1RvT2xkIiwiYXJjaGl2ZSI6ZmFsc2UsImZhY2V0cyI6W10sIm1heEZhY2V0Q291bnQiOjIwLCJ0cmFja2luZyI6ImF1dG8iLCJzZW50aW1lbnQiOmZhbHNlLCJyZWxldmFuY2UiOiJIaWdoIn0sInBpdm90Ijp7InNvcnRPcmRlciI6Im9sZFRvTmV3IiwibmV3c3Jvb21Db250ZXh0IjpudWxsLCJuZXdzcm9vbU9mZnNldCI6MCwibmV3c3dpcmVQaXZvdCI6eyJkYXRldGltZSI6IjIwMjYtMDItMjZUMjA6MjQ6MTQuNzU2WiIsInBuYWMiOiJuTlJBem15OTVsIn0sImZlZGVyYXRlZENvbnRleHQiOm51bGwsImluaXRpYWxTb3J0T3JkZXIiOiJuZXdUb09sZCJ9fQ=="
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

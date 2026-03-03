@@ -4,19 +4,12 @@
 \alias{rd_OutputProcesser}
 \title{Process output from refintiv data to r data.frame output}
 \usage{
-rd_OutputProcesser(
-  x,
-  use_field_names_in_headers = TRUE,
-  NA_cleaning = TRUE,
-  SpaceConvertor = NULL
-)
+rd_OutputProcesser(x, use_field_names_in_headers = TRUE, SpaceConvertor = NULL)
 }
 \arguments{
 \item{x}{refinitiv data platform output}
 
 \item{use_field_names_in_headers}{boolean wheater or not to return titles of field (formulas) as headers}
-
-\item{NA_cleaning}{clean NA in return data}
 }
 \value{
 data.frame
@@ -26,15 +19,18 @@ Process output from refintiv data to r data.frame output
 }
 \examples{
 \dontrun{
- EndPoint = "data/datagrid/beta1/"
- payload <- list( 'universe'= as.list(c("GOOG.O", "NVDA.O"))
-               , 'fields'= as.list(c('TR.CLOSE', 'TR.OPEN'))
-               , 'parameters'=list('SDate'= '2022-10-05', 'EDate'= '2022-11-05')
-               , 'output'= 'Col,T|Va,Row,In,date|'
-               )
+EndPoint <- "data/datagrid/beta1/"
+payload <- list(
+  "universe" = as.list(c("GOOG.O", "NVDA.O")),
+  "fields" = as.list(c("TR.CLOSE", "TR.OPEN")),
+  "parameters" = list("SDate" = "2022-10-05", "EDate" = "2022-11-05"),
+  "output" = "Col,T|Va,Row,In,date|"
+)
 
-response <- send_json_request(json = payload, service = "rdp"
-, EndPoint = EndPoint, request_type = "POST")
+response <- send_json_request(
+  json = payload, service = "rdp",
+  EndPoint = EndPoint, request_type = "POST"
+)
 Output <- rd_OutputProcesser(response)
 }
 }

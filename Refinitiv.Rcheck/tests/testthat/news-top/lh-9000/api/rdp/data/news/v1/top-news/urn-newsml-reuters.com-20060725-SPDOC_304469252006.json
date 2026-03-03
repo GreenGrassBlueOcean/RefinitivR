@@ -1,0 +1,501 @@
+{
+    "_metadata": {
+        "outdated": false,
+        "cached": true
+    },
+    "data": [
+        {
+            "text": "Nvidia shares fall as investors fret over returns, look past strong results",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Nvidia's shares fell on Thursday as investors looked past strong earnings, wary that the chip designer continues to channel capital into expanding the AI ecosystem, the payoffs for which are still unclear, rather than boosting shareholder returns.",
+            "image": {
+                "byLine": "NVIDIA",
+                "text": "The logo of NVIDIA as seen at its corporate headquarters in Santa Clara, California, in May of 2022. ",
+                "id": "2026-02-25T213645Z_1_YA8_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T07:13:00.000Z",
+            "versionCreated": "2026-02-26T17:25:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0BJ",
+            "relatedHeadlines": [
+                {
+                    "text": "Nvidia expects gaming chips shortage to last until year-end",
+                    "versionCreated": "2026-02-26T19:38:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "A global shortage of gaming chips could last until the end of this year, an Nvidia executive has said, signaling more pain for the video game industry that is already buckling under weak sales due to slowing consumer demand.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM250"
+                },
+                {
+                    "text": "ANALYSIS-Nvidia's CEO prepares investors for a renewed battle with Intel, AMD",
+                    "versionCreated": "2026-02-26T11:00:00.000Z",
+                    "dateLine": "SAN FRANCISCO, Feb 25 (Reuters)",
+                    "snippet": "Nvidia may have made its immense fortune on the back of specialized graphics processing units (GPUs) used to power artificial intelligence servers, but CEO Jensen Huang is increasingly professing his love for the more generalist CPU.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM059"
+                },
+                {
+                    "text": "BREAKINGVIEWS-Nvidia is dogged by memories of cycles past",
+                    "versionCreated": "2026-02-25T22:02:00.000Z",
+                    "dateLine": "NEW YORK, Feb 25 (Reuters Breakingviews)",
+                    "snippet": "Nvidia’s chips are essential for artificial intelligence. It's unsurprising, then, that on Wednesday it reported selling a lot of them. In the quarter ending January 25, revenue expanded 73% year-over-year to $68 billion, as demand grows at a seemingly insatiable rate. The problem for the $4.8 trillion technology titan is that investors seem skeptical that the good times will last. For now, it's hard to fault boss Jensen Huang’s results. Nvidia’s gross margin came in at an astonishing 75%. The mad rush among the biggest tech firms in the world to stuff data centers with its gear – Meta Platforms, for example, increased investment spending by some 50% last quarter – means the company has incredible pricing power. And the boom isn’t ending soon, with Alphabet pledging to double capital expenditures this year, up to as much as $185 billion.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL1B5"
+                },
+                {
+                    "text": "Nvidia's results beat estimates, but Wall Street wants more cash return",
+                    "versionCreated": "2026-02-25T21:36:00.000Z",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "snippet": "Chipmaker Nvidia posted better-than-expected results for the January quarter on Wednesday and forecast current-quarter revenue above market estimates, betting on Big Tech's unabated spending on its artificial-intelligence processors.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZL28E"
+                }
+            ]
+        },
+        {
+            "text": "EXCLUSIVE-Broadcom expects to sell 1 million 3D stacked chips by 2027",
+            "dateLine": "SAN JOSE, California, Feb 26 (Reuters)",
+            "snippet": "Artificial intelligence chip designer Broadcom said that it expects to sell at least 1 million chips by 2027 based on its stacked design tech, an executive told Reuters on Wednesday.",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "A Broadcom logo and a computer motherboard appear in this illustration taken August 25, 2025.",
+                "id": "2026-02-26T141300Z_1_ID2_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T14:00:00.000Z",
+            "versionCreated": "2026-02-26T13:59:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZL18U",
+            "relatedHeadlines": [
+                {
+                    "text": "OpenAI taps Broadcom to build its first AI processor in latest chip deal",
+                    "versionCreated": "2025-10-13T13:00:00.000Z",
+                    "dateLine": "Oct 13 (Reuters)",
+                    "snippet": "OpenAI has partnered with Broadcom to produce its first in-house artificial intelligence processors, the latest chip tie-up for the ChatGPT maker as it races to secure the computing power needed to meet surging demand for its services.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20251013:nL3N3VU0JH"
+                },
+                {
+                    "text": "Cisco unveils new AI networking chip, taking on Broadcom and Nvidia",
+                    "versionCreated": "2026-02-10T08:30:00.000Z",
+                    "dateLine": "SAN FRANCISCO, Feb 10 (Reuters)",
+                    "snippet": "Cisco Systems on Tuesday launched a new chip and router designed to speed information through massive data centers that will compete against offerings from Broadcom and Nvidia for a piece of the $600 billion AI infrastructure spending boom.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260210:nL6N3Z51BH"
+                }
+            ]
+        },
+        {
+            "text": "Warner Bros’ TV decline puts pressure on Netflix deal",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Warner Bros Discovery heaped an additional burden on Netflix's $82.7 billion bid for the movie studio and HBO.",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "Warner Bros Discovery logo is seen in this illustration taken December 5, 2025. ",
+                "id": "2026-02-26T121230Z_1_BW0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T12:00:00.000Z",
+            "versionCreated": "2026-02-26T18:25:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0X2",
+            "relatedHeadlines": [
+                {
+                    "text": "Netflix and Apple TV join forces on F1 content",
+                    "versionCreated": "2026-02-26T18:33:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "Netflix will broadcast the Canadian Formula One Grand Prix live to U.S. viewers in May as part of a deal that makes season eight of its hit docu-series 'Drive to Survive' available for streaming on Apple TV.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM189"
+                },
+                {
+                    "text": "English Premier League to debut streaming service in Singapore, FT reports",
+                    "versionCreated": "2026-02-26T19:06:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "The world’s most popular club football competition, the English Premier League, is set to launch its own direct-to-consumer streaming service in Singapore this year, with plans for potential expansion to other countries, the Financial Times reported on Thursday. Speaking at the FT Business of Football Summit in London, Premier League CEO Richard Masters said the new service, called Premier League +, would be available for the 2026-2027 season, according to the report.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM16U"
+                },
+                {
+                    "text": "BREAKINGVIEWS-Ellisons tempt Netflix into a game of M&A chicken",
+                    "versionCreated": "2026-02-25T17:04:00.000Z",
+                    "dateLine": "NEW YORK, Feb 25 (Reuters Breakingviews)",
+                    "snippet": "David, son of Oracle founder Larry Ellison, upped his $108 bln offer for Warner Bros, effectively promising his father’s stock fortune will backstop the bid. Putting the clan's tech empire on the line pressures rival Netflix to de-risk its complex proposal.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL0TQ"
+                }
+            ]
+        },
+        {
+            "text": "Google rolls out Nano Banana 2 after viral success of AI image generation tool",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Google on Thursday unveiled a successor to its viral Nano Banana image generation model, touting faster performance as the search-engine behemoth pushes to attract more users to its AI tools.",
+            "image": {
+                "byLine": "Lisi Niesner",
+                "text": "The Google logo is displayed during a press conference in Berlin, Germany, November 11, 2025. ",
+                "id": "2026-02-26T173421Z_1_JT3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T16:00:00.000Z",
+            "versionCreated": "2026-02-26T15:59:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0ZG",
+            "relatedHeadlines": [
+                {
+                    "text": "Google goes from laggard to leader as it pulls ahead of OpenAI with stellar AI growth",
+                    "versionCreated": "2026-02-05T04:19:00.000Z",
+                    "dateLine": "SAN FRANCISCO, Feb 4 (Reuters)",
+                    "snippet": "Alphabet is taking on OpenAI with a gusto that underscores Wall Street's perception that the Google parent is the leader in AI, a turn of events from a year ago when investors thought it was badly lagging behind rivals and punished its stock.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260205:nL6N3Z102L"
+                },
+                {
+                    "text": "Threat to large IT firms 'overblown', Cognizant's AI chief says amid Anthropic-driven disruption",
+                    "versionCreated": "2026-02-26T10:24:00.000Z",
+                    "dateLine": "MUMBAI, Feb 26 (Reuters)",
+                    "snippet": "Fears that new artificial intelligence tools could replace large IT services firms are \"overblown\" as clients still need help deploying and scaling the technology, Babak Hodjat, chief AI officer at Cognizant, told Reuters in an interview.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM095"
+                }
+            ]
+        },
+        {
+            "text": "EXCLUSIVE-CNBC to unify digital and TV news operations, cut nearly a dozen jobs, sources say",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "CNBC is restructuring its newsroom to unify its TV and digital operations in a move that would result in nearly a dozen layoffs including the departure of the website's managing editor, Jeff McCracken, four sources familiar with the matter told Reuters.",
+            "image": {
+                "byLine": "Brendan McDermid",
+                "text": "The company logo for Versant is displayed on a screen on the floor at the New York Stock Exchange (NYSE) in New York City, U.S., July 21, 2025.  ",
+                "id": "2026-02-26T173421Z_1_CQ0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T15:28:00.000Z",
+            "versionCreated": "2026-02-26T17:23:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM13M",
+            "relatedHeadlines": [
+                {
+                    "text": "Mexico's Salinas-controlled TV Azteca announces bankruptcy proceedings",
+                    "versionCreated": "2026-02-26T16:49:00.000Z",
+                    "dateLine": "MEXICO CITY, Feb 26 (Reuters)",
+                    "snippet": "Mexican broadcaster TV Azteca said on Thursday that shareholders had approved a voluntary bankruptcy process for restructuring the company's finances and liabilities.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM13B"
+                }
+            ]
+        },
+        {
+            "text": "Setback for Meta as court adviser backs EU regulators in data spat",
+            "dateLine": "BRUSSELS, Feb 26 (Reuters)",
+            "snippet": "An adviser to Europe's top court on Thursday sided with EU regulators demanding information regarding two antitrust investigations of Meta Platforms, in a setback for the U.S.-based social media company.",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "Meta logo, EU flag and Judge gavel are seen in this illustration taken, August 6, 2024. ",
+                "id": "2026-02-26T172047Z_1_OB4_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T09:19:00.000Z",
+            "versionCreated": "2026-02-26T17:03:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM100",
+            "relatedHeadlines": [
+                {
+                    "text": "Prada layers winter jackets over light dresses at Milan show as Zuckerberg's presence fuels smart glasses talk",
+                    "versionCreated": "2026-02-26T18:23:00.000Z",
+                    "dateLine": "MILAN, Feb 26 (Reuters)",
+                    "snippet": "Prada's autumn/winter show in Milan on Thursday included embroidered satin dresses, sheer skirts and wool sweaters, while the front row presence of Mark Zuckerberg fuelled speculation about a potential smart glasses partnership.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM12J"
+                },
+                {
+                    "text": "Social media addiction trial takes new turn with therapist's testimony",
+                    "versionCreated": "2026-02-25T22:09:00.000Z",
+                    "dateLine": "LOS ANGELES, Feb 25 (Reuters)",
+                    "snippet": "The former psychotherapist of a California woman suing Meta's META.O Instagram and Alphabet's GOOGL.O YouTube, claiming a childhood addiction to the platforms damaged her mental health, testified on Tuesday that adolescent social media usage was a contributing factor.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL176"
+                },
+                {
+                    "text": "Instagram to alert parents on teen suicide searches as UK weighs social media ban",
+                    "versionCreated": "2026-02-26T12:00:00.000Z",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "snippet": "Instagram said it would notify parents if their teenager repeatedly searches for terms related to suicide or self-harm within a short period, as pressure grows for governments to follow Australia's ban on the use of social media for under 16s.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM15N"
+                },
+                {
+                    "text": "Louisiana utility regulator denies request for probe of Meta data center deal, law group says",
+                    "versionCreated": "2026-02-25T20:32:00.000Z",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL16K"
+                }
+            ]
+        },
+        {
+            "text": "Apple seeks dismissal of fraud lawsuit over Siri AI, Epic injunction",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Apple urged a federal judge to dismiss a proposed class action claiming it defrauded shareholders twice, by overstating the artificial intelligence capabilities of its Siri voice assistant and falsely representing its compliance with an injunction governing commissions on app sales.",
+            "image": {
+                "byLine": "Mike Segar",
+                "text": "An Apple logo hangs above the entrance to the Apple store on 5th Avenue in the Manhattan borough of New York City, July 21, 2015. ",
+                "id": "2026-02-26T163824Z_1_UU7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T15:59:00.000Z",
+            "versionCreated": "2026-02-26T15:59:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0WB",
+            "relatedHeadlines": [
+                {
+                    "text": "EU court adviser rejects Meta's fight against EU antitrust demands for Facebook data",
+                    "versionCreated": "2026-02-26T09:19:00.000Z",
+                    "dateLine": "BRUSSELS, Feb 26 (Reuters)",
+                    "snippet": "An adviser to Europe's top court on Thursday backed EU antitrust regulators in Meta Platforms' fight against what the U.S. tech giant said were their aberrant requests for information during two investigations into the company.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZL25H"
+                },
+                {
+                    "text": "West Virginia sues Apple, saying iCloud distributed 'child porn'",
+                    "versionCreated": "2026-02-19T15:27:00.000Z",
+                    "dateLine": "Feb 19 (Reuters)",
+                    "snippet": "West Virginia's attorney general sued Apple on Thursday, accusing the iPhone maker of allowing its iCloud service to become what the company's own internal communications called the \"greatest platform for distributing child porn.\"",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260219:nL6N3ZF0U5"
+                },
+                {
+                    "text": "Google asks US judge to defer order forcing it to share data while it appeals",
+                    "versionCreated": "2026-01-16T21:06:00.000Z",
+                    "dateLine": "Jan 16 (Reuters)",
+                    "snippet": "Alphabet's Google asked a judge on Friday to postpone making the company share data with rivals while it challenges a ruling that the company holds an illegal monopoly in online search, according to court papers. U.S. District Judge Amit Mehta in Washington ruled in 2024 that the company used unlawful tactics to maintain its dominance in online search. Google will urge a federal appeals court to reverse that ruling, it said in court papers on Friday. And Mehta went too far in trying to level the playing field by ordering the company to share its data with competitors including generative artificial intelligence companies such as ChatGPT maker OpenAI, Google said.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260116:nL6N3YH15K"
+                }
+            ]
+        },
+        {
+            "text": "EXCLUSIVE-Washington presses Syria to shift from Chinese telecom systems",
+            "dateLine": "DAMASCUS, Feb 26 (Reuters)",
+            "snippet": "The United States has warned Syria against relying on Chinese technology in its telecommunications sector, arguing it conflicts with U.S. interests and threatens U.S. national security, according to three sources familiar with the matter.",
+            "image": {
+                "byLine": "Khalil Ashawi",
+                "text": "Syrian President Ahmed al-Sharaa attends the Ministry of Awqaf conference titled \"Unity of Islamic Discourse\" at the Conference Palace in Damascus, Syria, February 16, 2026. ",
+                "id": "2026-02-26T185013Z_1_BR0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T18:10:00.000Z",
+            "versionCreated": "2026-02-26T19:13:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM17P",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "text": "Musk touts California robotaxis but Tesla does nothing to get permits",
+            "dateLine": "LOS ANGELES, Feb 26 (Reuters)",
+            "snippet": "For more than a year, Elon Musk has repeatedly said Tesla is months away from launching a driverless robotaxi service in California – once state regulators give their blessing.",
+            "image": {
+                "byLine": "Joel Angel Juarez",
+                "text": "A Tesla robotaxi drives on the street along South Congress Avenue in Austin, Texas, U.S., June 22, 2025.",
+                "id": "2026-02-26T163546Z_1_FA1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T11:00:00.000Z",
+            "versionCreated": "2026-02-26T10:59:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZK1EZ",
+            "relatedHeadlines": [
+                {
+                    "text": "German union says truce reached in dispute with Tesla",
+                    "versionCreated": "2026-02-26T16:57:00.000Z",
+                    "dateLine": "BERLIN, Feb 26 (Reuters)",
+                    "snippet": "Tesla and German union IG Metall have agreed for now to set aside their dispute over a labour meeting at the carmaker's plant outside Berlin this month, the union said on Thursday. Tesla had filed a criminal complaint against a member of the union it accused of secretly recording the meeting on February 10. IG Metall described the allegation as a \"calculated lie\".",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM2BX"
+                },
+                {
+                    "text": "Tesla must face lawsuit alleging anti-American bias in hiring, US judge rules",
+                    "versionCreated": "2026-02-24T16:28:00.000Z",
+                    "dateLine": "Feb 24 (Reuters)",
+                    "snippet": "A U.S. judge has refused to dismiss a lawsuit accusing Tesla of discriminating against American citizens in hiring so it can pay less to foreign workers, but said he was skeptical that the software engineer who sued would prevail.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL1N3ZK0QA"
+                },
+                {
+                    "text": "US judge upholds $243 million verdict against Tesla over fatal Autopilot crash",
+                    "versionCreated": "2026-02-20T15:50:00.000Z",
+                    "dateLine": "Feb 20 (Reuters)",
+                    "snippet": "A federal judge rejected Tesla's request to overturn a $243 million jury verdict over the 2019 crash of an Autopilot-equipped Model S, which killed a 22-year-old woman and severely injured her boyfriend. In a decision made public on Friday, U.S. District Judge Beth Bloom in Miami said the evidence at trial \"more than supports\" the August 2025 verdict, and Tesla raised no new arguments to set the verdict aside. Tesla, led by Elon Musk, is expected to appeal. Neither Tesla nor its lawyers immediately responded to requests for comment.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260220:nL6N3ZG0S1"
+                }
+            ]
+        },
+        {
+            "text": "Amazon's $50 billion OpenAI investment may depend on IPO or AGI, The Information reports",
+            "dateLine": "Feb 25 (Reuters)",
+            "snippet": "Amazon's plan to invest up to $50 billion in OpenAI could depend on whether the AI developer goes public or achieves an artificial general intelligence (AGI) milestone, The Information reported on Wednesday, citing people familiar with the matter.",
+            "image": {
+                "byLine": "Priyanshu Singh",
+                "text": "The Amazon logo is seen at its newly inaugurated office in Bengaluru, India, February 23, 2026.",
+                "id": "2026-02-23T194434Z_1_KW3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T02:03:00.000Z",
+            "versionCreated": "2026-02-26T02:47:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM059",
+            "relatedHeadlines": [
+                {
+                    "text": "OpenAI to make London its biggest research hub outside US",
+                    "versionCreated": "2026-02-26T13:58:00.000Z",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "snippet": "ChatGPT maker OpenAI said on Thursday that it would make London its largest research hub outside the United States, citing Britain's technology ecosystem as an ideal environment to invest in and develop new artificial intelligence systems.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM1Q3"
+                },
+                {
+                    "text": "OpenAI hires ex-Apple models head from Meta, The Information reports",
+                    "versionCreated": "2026-02-26T02:51:00.000Z",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "snippet": "OpenAI has hired Ruoming Pang, a high-profile AI researcher at Meta, who had joined the company from Apple about seven months ago, The Information reported on Wednesday, citing an OpenAI spokesperson.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM06L"
+                },
+                {
+                    "text": "Apple and Amazon took too long to remove anti-competitive clauses, Spanish watchdog says",
+                    "versionCreated": "2026-02-25T14:40:00.000Z",
+                    "dateLine": "MADRID, Feb 25 (Reuters)",
+                    "snippet": "Apple and Amazon took too long to take out anti-competitive clauses outlining Amazon's conditions as an Apple distributor that the companies had been told to remove immediately, Spain's competition regulator ruled on Wednesday. ",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0OL"
+                },
+                {
+                    "text": "US lawmakers want UK briefing on backdoor order to Apple",
+                    "versionCreated": "2026-02-25T19:36:00.000Z",
+                    "dateLine": "BRUSSELS, Feb 25 (Reuters)",
+                    "snippet": "U.S. House Judiciary Chair Jim Jordan and Foreign Affairs Chair Brian Mast on Wednesday asked the British government to brief them on its order to Apple to create a back door to its encrypted user data so they could better understand the British move. The two lawmakers last year warned that such an order could allow encrypted user data to be exploited by cyber criminals and authoritarian governments. Britain subsequently dropped its demand, U.S. Director of National Intelligence Tulsi Gabbard said in August.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL12C"
+                },
+                {
+                    "text": "Italy watchdog bans Amazon logistics unit from using staff personal data",
+                    "versionCreated": "2026-02-24T18:05:00.000Z",
+                    "dateLine": "MILAN, Feb 24 (Reuters)",
+                    "snippet": "Italy's privacy watchdog on Tuesday ordered a local unit of e-commerce giant Amazon to stop using the personal information of more than 1,800 employees at a warehouse north-east of Rome.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL8N3ZK29L"
+                },
+                {
+                    "text": "German cartel office bans Amazon from using price controls",
+                    "versionCreated": "2026-02-05T10:21:00.000Z",
+                    "dateLine": "FRANKFURT, Feb 5 (Reuters)",
+                    "snippet": "Germany's cartel office has prohibited Amazon from imposing price caps on online retailers in its German marketplace and for the first time claimed several million euros that it said the U.S. firm obtained through anti-competitive behavior.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260205:nL6N3Z10N1"
+                }
+            ]
+        },
+        {
+            "text": "China's Baidu revenue falls as AI cloud growth fails to offset ad weakness",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "China's largest search engine operator Baidu reported a 4% revenue drop for its December quarter on Thursday, as persistent weakness in its mainstay advertising business offset strong growth in its cloud business.",
+            "image": {
+                "byLine": "Dado Ruvic",
+                "text": "A Baidu logo appears in this illustration taken August 18, 2025.",
+                "id": "2026-02-26T105905Z_1_OW5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T09:02:00.000Z",
+            "versionCreated": "2026-02-26T15:17:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0RB",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "text": "Deutsche Telekom beats core profit forecasts, eyes EU data centres funds",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Deutsche Telekom beat fourth-quarter core profit expectations on Thursday, helped by a slight recovery in its home market and a solid performance at its U.S. unit T-Mobile, but issued a mixed outlook for 2026.",
+            "image": {
+                "byLine": "Michaela Stache",
+                "text": " Logo of German telecommunication giant Deutsche Telekom is displayed before the official news conference about the opening of the AI Cloud centre in Munich, Germany, February 4, 2026. ",
+                "id": "2026-02-26T064012Z_1_ED1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T05:59:00.000Z",
+            "versionCreated": "2026-02-26T14:07:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0C0",
+            "relatedHeadlines": [
+                {
+                    "text": "Deutsche Telekom CEO criticises EU telecom rules overhaul",
+                    "versionCreated": "2026-02-26T12:20:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "Deutsche Telekom chief executive Timotheus Hoettges expressed dissatisfaction with how the European Union is handling the reform of telecommunication sector rules and called for more deregulation. \"We're seeing more and more red tape, more requirements,\" he said during a press conference after the publication of the company's fourth-quarter results. \"We did not find any answers\". Following several months of pressure from European telecom companies, the European Commission unveiled in January a major revamp of the sector rules known as the Digital Networks Act.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0QN"
+                },
+                {
+                    "text": "Bouygues eyes stable 2026 as energy arm offsets French media slowdown",
+                    "versionCreated": "2026-02-26T07:00:00.000Z",
+                    "dateLine": "PARIS, Feb 26 (Reuters)",
+                    "snippet": "Bouygues set a cautious tone for 2026 on Thursday, guiding for stable sales and core earnings, a step down from the slight growth seen in 2025, as the linear TV ad market in France remains under pressure.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0DN"
+                },
+                {
+                    "text": "Greece's OTE quarterly earnings rise 2.3% on mobile and home fibre broadband growth",
+                    "versionCreated": "2026-02-26T08:54:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "Greece's biggest telecoms operator OTE posted on Thursday a 2.3% rise in adjusted core earnings in the fourth quarter, supported by accelerating mobile growth and record demand for fibre-to-the-home connections.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0CP"
+                },
+                {
+                    "text": "French firm TP revamps management as AI shake-up bites, guides for soft 2026 start",
+                    "versionCreated": "2026-02-26T17:40:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "French call centre firm TP on Thursday announced a sweeping management overhaul that will see founder and CEO Daniel Julien and deputy CEO Thomas Mackenbrock step down from executive roles next month.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0ZQ"
+                },
+                {
+                    "text": "Nokia to deploy network solutions for Telefónica's AI data centres across Spain",
+                    "versionCreated": "2026-02-26T07:09:00.000Z",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "snippet": "Nokia has won a multi-year contract with Telefónica to deploy AI-enabling networking solutions to support its new Edge data centre network across Spain, the Finnish group said on Thursday.",
+                    "documentType": "Story",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0DP"
+                }
+            ]
+        },
+        {
+            "text": "WPP's new CEO simplifies ad group to save 500 million pounds by 2028",
+            "dateLine": "LONDON, Feb 26 (Reuters)",
+            "snippet": "WPP will combine its agencies into a single integrated company under new CEO Cindy Rose's turnaround plan, targeting a return to growth in 2027 and 500 million pounds ($676 million) of annual cost savings by the following year.",
+            "image": {
+                "byLine": "HANDOUT",
+                "text": "The corporate logo of WPP is seen in this picture from 2018, obtained July 12, 2019.",
+                "id": "2026-02-26T105859Z_1_BO0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "firstCreated": "2026-02-26T07:00:00.000Z",
+            "versionCreated": "2026-02-26T10:40:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0IC",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "text": "QST weighs options for Saudi business, including sale, amid Gulf AI boom, sources say",
+            "dateLine": "DUBAI, Feb 26 (Reuters)",
+            "snippet": "Data-center company Quantum Switch Tamasuk is considering strategic options, including a sale of its Saudi business, four people with knowledge of the matter told Reuters, in a deal that could attract renewed interest from global buyout firms seeking a slice of the Gulf's AI boom.",
+            "firstCreated": "2026-02-26T17:17:00.000Z",
+            "versionCreated": "2026-02-26T17:17:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3Z70DQ",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "text": "Spain's eDreams reports strong Q3, shares on track for best day in 5 years",
+            "dateLine": "Feb 26 (Reuters)",
+            "snippet": "Spanish online travel booking firm eDreams Odigeo on Thursday reported strong third-quarter results, sending its shares higher and on track for their best one day performance for five years.",
+            "firstCreated": "2026-02-26T06:32:00.000Z",
+            "versionCreated": "2026-02-26T10:46:00.000Z",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM0EW",
+            "relatedHeadlines": [
+
+            ]
+        }
+    ],
+    "meta": {
+        "revisionId": 207526,
+        "revisionDate": "2026-02-26T20:05:12.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}

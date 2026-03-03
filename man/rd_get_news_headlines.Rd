@@ -5,7 +5,7 @@
 \title{Retrieve News Headlines from a Refinitiv RDP (JSON) Connection}
 \usage{
 rd_get_news_headlines(
-  RDObject = RefinitivJsonConnect(),
+  RDObject = rd_connection(),
   query = NULL,
   limit = 10L,
   sort = "NewToOld",
@@ -14,7 +14,8 @@ rd_get_news_headlines(
   dateFrom = NULL,
   dateTo = NULL,
   raw_output = FALSE,
-  debug = TRUE
+  debug = TRUE,
+  cache = NULL
 )
 }
 \arguments{
@@ -37,6 +38,11 @@ rd_get_news_headlines(
 \item{raw_output}{If \code{TRUE}, returns the raw JSON response; otherwise, the response is flattened into a \code{data.frame}.}
 
 \item{debug}{If \code{TRUE}, prints debugging messages.}
+
+\item{cache}{Controls caching. \code{NULL} (default) defers to
+\code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
+function default TTL (60 s). \code{FALSE} disables caching. A positive
+numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.}
 }
 \value{
 A \code{data.frame} with flattened fields, or the raw JSON if \code{raw_output = TRUE}.
@@ -51,91 +57,44 @@ The query parameters may include various tokens such as Reuters Instrument Codes
 language codes, explicit free-text tokens (using quotes), and date ranges. In addition,
 the function supports pagination via a cursor.
 
+
 Examples of queries include:
+\describe{
+  \item{Explicit FreeText (use quotes)}{
+    \code{rd_get_news_headlines(query = "\"electric car\" or \"electric vehicle\"")}}
+  \item{SearchIn token (HeadlineOnly)}{
+    \code{rd_get_news_headlines(query = "\"Reports\" or \"Announces\" and searchIn:HeadlineOnly")}}
+  \item{SearchIn token (FullStory)}{
+    \code{rd_get_news_headlines(query = "\"inflation\" and searchIn:FullStory")}}
+  \item{Language Filter}{
+    French: \code{rd_get_news_headlines(query = "LFR")};
+    English: \code{rd_get_news_headlines(query = "L:EN")}}
+  \item{Reuters Instrument Code (RIC)}{
+    \code{rd_get_news_headlines(query = "MSFT.O")}}
+  \item{RIC + Relevancy}{
+    \code{rd_get_news_headlines(query = "MSFT.O", relevancy = "High")}}
+  \item{Company Name + RIC + Relevancy}{
+    \code{rd_get_news_headlines(query = "LEN and \"Microsoft\" and MSFT.O", relevancy = "High")}}
+  \item{Most Read News (M:1RS)}{
+    \code{rd_get_news_headlines(query = "M:1RS")}}
+  \item{Newswire Specific RCS Codes}{
+    \code{rd_get_news_headlines(query = "MRG")}}
+  \item{Explicit Token News Source (NS)}{
+    \code{rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR")}}
+  \item{Increasing the Limit}{
+    \code{rd_get_news_headlines(query = "\"stock repurchase\"", limit = 50)}}
+  \item{Pagination using Cursor}{
+    \code{rd_get_news_headlines(query = "MSFT.O", cursor = "H4sIAAAAAAAA...", limit = 10)}}
+  \item{Daterange using LAST syntax}{
+    \code{rd_get_news_headlines(query = "MRG last 5 days")}}
+  \item{Daterange with BETWEEN syntax}{
+    \code{rd_get_news_headlines(query = "M:1RS BETWEEN 2024-03 AND 2024-04")}}
+  \item{Daterange with explicit from/to}{
+    \code{rd_get_news_headlines(query = "Major breaking news",
+      dateFrom = "2024-04-13T00:00:00Z", dateTo = "2024-04-14T00:00:00Z")}}
+}
 
-- **Explicit FreeText (use quotes):**
-  Obtains headlines for stories containing the text "electric car" or "electric vehicle"
-  \preformatted{
-    rd_get_news_headlines(query = "\"electric car\" or \"electric vehicle\"")
-  }
-
-- **SearchIn token (HeadlineOnly):**
-  Obtains headlines for stories with "Reports" or "Announces" in their title, limiting the search to headlines only
-  \preformatted{
-    rd_get_news_headlines(query = "\"Reports\" or \"Announces\" and searchIn:HeadlineOnly")
-  }
-
-- **SearchIn token (FullStory):**
-  Obtains headlines for stories with "inflation" when searching in the full story text
-  \preformatted{
-    rd_get_news_headlines(query = "\"inflation\" and searchIn:FullStory")
-  }
-
-- **Language Filter:**
-  For French headlines:
-  \preformatted{
-    rd_get_news_headlines(query = "LFR")
-  }
-  For English headlines (disambiguated with the language prefix "L:"):
-  \preformatted{
-    rd_get_news_headlines(query = "L:EN")
-  }
-
-- **Reuters Instrument Code (RIC):**
-  \preformatted{
-    rd_get_news_headlines(query = "MSFT.O")
-  }
-
-- **Combination of RIC and Relevancy:**
-  \preformatted{
-    rd_get_news_headlines(query = "MSFT.O", relevancy = "High")
-  }
-
-- **Combination of Company Name, RIC and Relevancy:**
-  \preformatted{
-    rd_get_news_headlines(query = "LEN and \"Microsoft\" and MSFT.O", relevancy = "High")
-  }
-
-- **Most Read News (M:1RS):**
-  \preformatted{
-    rd_get_news_headlines(query = "M:1RS")
-  }
-
-- **Newswire Specific RCS Codes (MRG):**
-  \preformatted{
-    rd_get_news_headlines(query = "MRG")
-  }
-
-- **Explicit Token News Source (NS):**
-  \preformatted{
-    rd_get_news_headlines(query = "NS:RTRS or NS:PRN or NS:TWTR")
-  }
-
-- **Increasing the Limit:**
-  \preformatted{
-    rd_get_news_headlines(query = "\"stock repurchase\"", limit = 50)
-  }
-
-- **Pagination using Cursor:**
-  \preformatted{
-    rd_get_news_headlines(query = "MSFT.O", cursor = "H4sIAAAAAAAA...", limit = 10)
-  }
-
-- **Daterange using LAST syntax:**
-  \preformatted{
-    rd_get_news_headlines(query = "MRG last 5 days")
-  }
-
-- **Daterange with BETWEEN syntax:**
-  \preformatted{
-    rd_get_news_headlines(query = "M:1RS BETWEEN 2024-03 AND 2024-04")
-  }
-
-- **Daterange with explicit "from,to" syntax:**
-  \preformatted{
-    rd_get_news_headlines(query = "Major breaking news", dateFrom = "2024-04-13T00:00:00Z", dateTo = "2024-04-14T00:00:00Z")
-  }
-
-**Note:** The parameter \code{limit} must not exceed 100. If a value greater than 100
-is provided, the function will throw an error. When \code{raw_output = TRUE}, a list of raw JSON responses is returned.
+Note: The parameter \code{limit} must not exceed 100. If a value greater
+than 100 is provided, the function will throw an error. When
+\code{raw_output = TRUE}, a list of raw JSON responses is returned.
 }

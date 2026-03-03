@@ -1,0 +1,393 @@
+{
+    "_metadata": {
+        "outdated": false,
+        "cached": true
+    },
+    "data": [
+        {
+            "snippet": "Brazil, which is reaping a record soy crop this year, may increase exports of the oilseed to China in 2026 amid lower Argentine shipments and in spite of stronger competition from U.S. farmers, an analyst at Hedgepoint Global Markets said on Thursday.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0PM",
+            "image": {
+                "byLine": "Diego Vara",
+                "text": "A view of soybeans stored in a warehouse of the Cotrijal agricultural cooperative during a record soybean harvest season in Brazil's southernmost state in Nao Me Toque, state of Rio Grande do Sul, Brazil April 3, 2024. ",
+                "id": "2026-02-26T142909Z_1_PC5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Brazil's soybean exports are expected to fall 3% in 2026 from last year, agribusiness consultancy Safras & Mercado said on Monday, estimating shipments from the world's largest producer and exporter to total 105 million metric tons.",
+                    "storyId": "urn:newsml:reuters.com:20260119:nL1N3YK0D6",
+                    "dateLine": "SAO PAULO, Jan 19 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-01-19T12:54:00.000Z",
+                    "text": "Brazil's soybean exports to fall 3% in 2026, says Safras"
+                },
+                {
+                    "snippet": "Brazil, the world's largest soybean producer and exporter, will reap a record of nearly 178 million metric tons in the 2025/26 marketing year, crop agency Conab said on Thursday, as average yields rise and harvesting is well underway.",
+                    "storyId": "urn:newsml:reuters.com:20260212:nL1N3Z80SZ",
+                    "dateLine": "SAO PAULO, Feb 12 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-12T14:18:00.000Z",
+                    "text": "Brazil soy farmers reaping record crop, Conab confirms"
+                }
+            ],
+            "dateLine": "SAO PAULO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T14:24:00.000Z",
+            "text": "Brazil to raise soy sales to China after record shipments in 2025, consultancy says",
+            "firstCreated": "2026-02-26T14:24:00.000Z"
+        },
+        {
+            "snippet": "U.S. soybean futures rallied on Thursday to their highest since mid-2024 on hopes for more U.S. biofuel demand and Chinese imports before the market eased in a profit-taking retreat.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM168",
+            "image": {
+                "byLine": "Martin Cossarini",
+                "text": "Soybeans are loaded on a truck after being harvested, in San Andres de Giles, on the outskirts of Buenos Aires, Argentina, May 12, 2025. ",
+                "id": "2026-02-18T015412Z_1_FO1_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Euronext wheat eased on Wednesday, moving back from a three-month peak under pressure from weakness in Chicago futures and a rise in the euro, traders said.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL8N3ZL28O",
+                    "dateLine": "PARIS, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T17:36:00.000Z",
+                    "text": "EU wheat lower as euro and Chicago weigh"
+                },
+                {
+                    "snippet": "European Union soft wheat exports since the start of the 2025/26 season in July had reached 15.38 million metric tons by February 22, compared to 15.11 million the previous week and up 10% from a year earlier, European Commission data showed on Tuesday.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL8N3ZK1W9",
+                    "dateLine": "February 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T15:44:00.000Z",
+                    "text": "EU 2025/26 soft wheat exports up 10% by February 22"
+                },
+                {
+                    "snippet": "European Union soybean imports for the 2025/26 season, which began in July, had reached 8.11 million metric tons by February 22, down 11% from the same period a year earlier, according to data published by the European Commission on Tuesday.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL8N3ZK1WP",
+                    "dateLine": "February 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T16:18:00.000Z",
+                    "text": "EU 2025/26 soybean imports down 11% by Feb 22, rapeseed down 36%"
+                }
+            ],
+            "dateLine": "CHICAGO, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T18:32:00.000Z",
+            "text": "GRAINS-Soybeans ease on profit taking after hitting 20-month peak on demand hopes",
+            "firstCreated": "2026-02-26T18:32:00.000Z"
+        },
+        {
+            "snippet": "Ukraine's grain deliveries to its Black Sea ports for export have risen by 2% so far in February compared with January, but volumes remain below February 2025 levels, state railway Ukrzaliznytsia said on Thursday.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0D9",
+            "image": {
+                "byLine": "Nina Liashonok",
+                "text": "A cargo vessel leaves a port in the Black Sea, amid Russia's attack on Ukraine, in Odesa, Ukraine March 26, 2025. ",
+                "id": "2026-02-26T092502Z_1_WK7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Indicative export prices for Ukraine's 2026 rapeseed harvest have risen to $530-$540 per ton CPT July-August delivery from $510-$520 reported a month earlier, as weather problems could reduce the harvest, farmers' union UAC said on Wednesday.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0B2",
+                    "dateLine": "KYIV, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T09:12:00.000Z",
+                    "text": "Ukrainian export prices for new rapeseed crop rise amid fears of smaller output, union says"
+                },
+                {
+                    "snippet": "Record low temperatures across most of Ukraine in February led to deep soil freezing, which could delay the start of the grain sowing campaign, the head of the agricultural department of the state meteorological centre was quoted as saying late on Monday.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL1N3ZK0OB",
+                    "dateLine": "KYIV, Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T14:29:00.000Z",
+                    "text": "Ukraine grain sowing may be delayed by deeply frozen soil, chief forecaster says"
+                },
+                {
+                    "snippet": "Ukraine's wheat harvest may grow by 2.9% to 23.1 million metric tons in 2026 due to an increase in sowing acreage and despite a decline in yield, the UCAB agricultural lobby and the economy ministry said over the weekend.",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL1N3ZJ072",
+                    "dateLine": "KYIV, Feb 23 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-23T09:29:00.000Z",
+                    "text": "Ukraine sees higher wheat, corn harvest and exports in 2025/26"
+                }
+            ],
+            "dateLine": "KYIV, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T09:01:00.000Z",
+            "text": "Ukraine's grain deliveries to ports rise in February, railway says",
+            "firstCreated": "2026-02-26T09:01:00.000Z"
+        },
+        {
+            "snippet": "Ivory Coast plans to bring forward the start of its cocoa mid-crop season for the first time ever, allowing the regulator to sharply reduce its set price paid to farmers in hopes of boosting sales, two government sources and two regulator sources told Reuters.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL8N3ZM12X",
+            "image": {
+                "byLine": "Luc Gnago",
+                "text": "Kouassi Kouassi Frederic, a cocoa farmer, holds cocoa pods at a farm in the village of Remikro in Fengolo, Ivory Coast, February 11, 2026. ",
+                "id": "2026-02-26T101613Z_1_US7_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "The producers of half the world's cocoa - Ivory Coast and Ghana - have struggled to sell beans and pay farmers this year due to ample global harvests, lower cocoa prices and falling demand from chocolate makers for the ingredient.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZJ0HC",
+                    "dateLine": "LONDON, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T15:56:00.000Z",
+                    "text": "EXPLAINER-How did Ivory Coast and Ghana's cocoa sales crisis come about?"
+                },
+                {
+                    "snippet": "Ivory Coast will have accumulated about 200,000 metric tons of unsold cocoa by end-March when its main crop concludes unless the government cuts state-regulated farmer prices in order to unlock sales from farmers to traders, industry experts and global trading executives said.",
+                    "storyId": "urn:newsml:reuters.com:20260224:nL1N3ZK0TN",
+                    "dateLine": "LONDON, Feb 24 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-24T16:46:00.000Z",
+                    "text": "Ivory Coast unsold cocoa stocks set to soar if price standoff persists"
+                }
+            ],
+            "dateLine": "ABIDJAN, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T10:41:00.000Z",
+            "text": "EXCLUSIVE-Ivory Coast to cut farmer cocoa price with earlier start of mid-crop, sources say",
+            "firstCreated": "2026-02-26T10:41:00.000Z"
+        },
+        {
+            "snippet": "India is likely to record one of its warmest Marches on record, with above-average temperatures forecast in key wheat and rapeseed-growing states, potentially cutting yields, two weather bureau sources said on Thursday.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0KJ",
+            "image": {
+                "byLine": "ANUSHREE FADNAVIS",
+                "text": "A farmer works in a wheat field near Jaipur, India, February 24, 2023. ",
+                "id": "2026-02-26T093549Z_1_KN3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "MUMBAI, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T09:33:00.000Z",
+            "text": "India braces for unusually hot March; wheat, rapeseed crops at risk, sources say",
+            "firstCreated": "2026-02-26T09:32:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "Swiss-based seeds and agrochemicals company Syngenta Group plans to apply in the second quarter for an up to $10 billion listing on the Hong Kong Stock Exchange and has hired banks to manage the IPO, two people with knowledge of the matter told Reuters.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM0XA",
+            "image": {
+                "byLine": "TINGSHU WANG",
+                "text": "A cutout in a shape of China's map is seen at Syngenta Group China's Modern Agriculture Platform (MAP) service centre, during a media tour in Wei county of Handan, Hebei province June 11, 2021. ",
+                "id": "2026-02-26T142150Z_1_BB0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "U.S. agrichemicals company Corteva said on Wednesday it expects the previously announced planned separation into two listed companies to occur sometime in the fourth quarter of this year.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL4N3ZL1P1",
+                    "dateLine": "Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T16:58:00.000Z",
+                    "text": "Corteva targets fourth quarter for planned split into two companies"
+                }
+            ],
+            "dateLine": "ZURICH/HONG KONG, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T16:16:00.000Z",
+            "text": "Syngenta plans to kick off process in second quarter for up to $10 billion Hong Kong IPO, sources say",
+            "firstCreated": "2026-02-26T14:07:00.000Z"
+        },
+        {
+            "snippet": "London cocoa futures fell on Thursday, slipping back towards a near three-year low they had touched earlier this week, while coffee prices also declined.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM1A5",
+            "image": {
+                "byLine": "Francis Kokoroko",
+                "text": "Cocoa beans are sun-dried at a home in Zambolee, Central Region, Ghana February 10, 2026. ",
+                "id": "2026-02-13T143938Z_1_JK3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Brazilian coffee exports in the 2026/27 season could hit an all-time high of close to 47 million 60-kilogram bags, driven by greater supply of arabica beans due to a bumper crop, Hedgepoint Global Markets said in a report published on Wednesday.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL17E",
+                    "dateLine": "SAO PAULO, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T20:29:00.000Z",
+                    "text": "Brazil 2026/27 coffee exports could hit record of close to 47 mln 60-kg, Hedgepoint says"
+                },
+                {
+                    "snippet": "Ghana’s licensed cocoa buyers owe banks as much as $750 million, the association that represents them said, leaving the financial sector starved of cash for bean purchases at a time when lenders are straining to recover from the country's deepest economic crisis in a generation.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL8N3ZK2KB",
+                    "dateLine": "ACCRA, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T18:08:00.000Z",
+                    "text": "Ghana’s cocoa buyers owe banks up to $750 million, raising fresh liquidity risks"
+                },
+                {
+                    "versionCreated": "2026-02-26T07:19:00.000Z",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM08D",
+                    "text": "RUBBER-Japan futures gain for seventh straight session on Asian stocks rally, firm oil",
+                    "dateLine": "Feb 26 (Reuters)",
+                    "documentType": "Story"
+                }
+            ],
+            "dateLine": "NEW YORK, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T19:44:00.000Z",
+            "text": "SOFTS-London cocoa prices slip back towards recent lows",
+            "firstCreated": "2026-02-26T13:41:00.000Z"
+        },
+        {
+            "snippet": "Singapore-listed Wilmar International on Thursday missed estimates for annual core net profit and warned that operating conditions in 2026 will remain challenging as geopolitical tensions and trade tariffs reshape global supply chains.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0MW",
+            "image": {
+                "byLine": "Samsul Said",
+                "text": "Workers stand near palm oil fruits inside a palm oil factory in Sepang, outside Kuala Lumpur, February 18, 2014.",
+                "id": "2026-02-26T114210Z_1_HJ2_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T10:45:00.000Z",
+            "text": "Wilmar posts profit miss, warns 2026 outlook clouded by tariff tensions",
+            "firstCreated": "2026-02-26T09:27:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "Oil major Shell, the healthier joint-venture partner in Brazilian sugar and ethanol producer Raizen, is ready to pour more resources into a recapitalization of the distressed company, three people familiar with the matter told Reuters.",
+            "storyId": "urn:newsml:reuters.com:20260225:nL6N3ZL15M",
+            "image": {
+                "byLine": "Amanda Perobelli",
+                "text": "Fuel tanks stand inside a Raizen Distribution Terminal in Sao Paulo, Brazil August 20, 2025. ",
+                "id": "2026-02-25T195844Z_1_CD0_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "SAO PAULO, Feb 25 (Reuters)",
+            "versionCreated": "2026-02-25T19:25:00.000Z",
+            "text": "Shell ready for bigger backstop of Brazil sugar-ethanol JV Raizen, sources say",
+            "firstCreated": "2026-02-25T19:25:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "Prices of rice exported from major hubs in Asia were largely stagnant this week, as demand lagged and ample supplies weighed on the market.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL4N3ZM0VD",
+            "image": {
+                "byLine": "Ajay Verma",
+                "text": "A worker uses a plastic sheet to cover sacks of rice at a wholesale grain market in the northern Indian city of Chandigarh February 9, 2012. ",
+                "id": "2026-02-26T102739Z_1_PA5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T10:26:00.000Z",
+            "text": "ASIA RICE-Export prices stagnant on muted demand, robust supply",
+            "firstCreated": "2026-02-26T10:26:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "Vietnam's domestic coffee prices rose on Thursday as trading activities resumed after a week-long Lunar New Year holiday, while premiums in Indonesia eased with farmers expecting a mini harvest to take place in April or after the Eid al-Fitr festival.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0HP",
+            "image": {
+                "byLine": "Nguyen Huy Kham",
+                "text": "A trader holds coffee cherries on his hands at a coffee farm in Vietnam's central highland of Da Lat city December 11, 2011.",
+                "id": "2026-02-26T085729Z_1_IA2_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "HANOI, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T08:01:00.000Z",
+            "text": "ASIA COFFEE-Vietnam domestic prices pick up post-holiday, Indonesia premiums fall",
+            "firstCreated": "2026-02-26T08:01:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        },
+        {
+            "snippet": "Saudi Arabia has issued a tender to purchase 655,000 metric tons of wheat, the Saudi state grains buying agency said on Thursday. The delivery of the wheat is scheduled for the period from May through July, the General Food Security Authority said.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0J0",
+            "image": {
+                "byLine": "Todd Korol",
+                "text": "A wheat crop ready for harvest are seen on the Canadian prairies near Taber, Alberta, September 7, 2011.",
+                "id": "2026-02-26T092128Z_1_QN5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Turkish grain board TMO has provisionally bought about 350,000 metric tons of animal feed corn in an international tender on Thursday, European traders said.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0PY",
+                    "dateLine": "HAMBURG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T11:51:00.000Z",
+                    "text": "Turkey provisionally buys 350,000 tons corn in tender, traders say"
+                },
+                {
+                    "snippet": "Leading South Korean animal feed maker Nonghyup Feed Inc. (NOFI) bought an estimated 135,000 metric tons of animal feed corn in an international tender on Thursday, European traders said.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0MX",
+                    "dateLine": "HAMBURG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T10:07:00.000Z",
+                    "text": "South Korea’s NOFI buys estimated 135,000 tons corn in tender, traders say"
+                },
+                {
+                    "snippet": "South Korea's Major Feedmill Group (MFG) has issued an international tender to purchase up to 210,000 metric tons of animal feed corn, European traders said on Thursday.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM10X",
+                    "dateLine": "HAMBURG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T16:04:00.000Z",
+                    "text": "South Korea’s MFG tenders for up to 210,000 tons of corn, traders say"
+                },
+                {
+                    "snippet": "Jordan's state grains buyer has issued an international tender to purchase up to 120,000 metric tons of animal feed barley, European traders said on Thursday.",
+                    "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM0FR",
+                    "dateLine": "HAMBURG, Feb 26 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-26T07:20:00.000Z",
+                    "text": "Jordan tenders to buy 120,000 metric tons feed barley, traders say"
+                }
+            ],
+            "dateLine": "Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T09:46:00.000Z",
+            "text": "Saudi Arabia issues tender to buy 655,000 metric tons of wheat",
+            "firstCreated": "2026-02-26T08:07:00.000Z"
+        },
+        {
+            "snippet": "Malaysian palm oil futures fell on Thursday, weighed down by weakness in Dalian palm oil and Chicago soy oil prices and sluggish exports, while a firm ringgit also added pressure.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL1N3ZM04V",
+            "image": {
+                "byLine": "Ajeng Dinar Ulfiana",
+                "text": "Fresh oil palm fruit bunches from Melati Hanjalipan cooperative palm oil plantation are collected in Hanjalipan village, East Kotawaringin, Central Kalimantan province, Indonesia, July 22, 2025.",
+                "id": "2026-02-19T060045Z_1_JM3_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "relatedHeadlines": [
+                {
+                    "snippet": "Nepal's soybean oil exports to India jumped more than tenfold in 2025 to a record high, boosted by duty-free access that helped the Himalayan nation double total exports to its neighbour, industry officials told Reuters.",
+                    "storyId": "urn:newsml:reuters.com:20260225:nL1N3ZL0AS",
+                    "dateLine": "MUMBAI, Feb 25 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-25T10:21:00.000Z",
+                    "text": "Nepal's soyoil exports to India jump tenfold on duty free access"
+                },
+                {
+                    "snippet": "ICE canola futures rose for a fourth straight session on Monday, with strength in Chicago soyoil providing support.",
+                    "storyId": "urn:newsml:reuters.com:20260223:nL6N3ZJ0XV",
+                    "dateLine": "WINNIPEG, Manitoba, Feb 23 (Reuters)",
+                    "documentType": "Story",
+                    "versionCreated": "2026-02-23T20:56:00.000Z",
+                    "text": "ICE canola futures rise for fourth session"
+                }
+            ],
+            "dateLine": "JAKARTA, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T05:23:00.000Z",
+            "text": "VEGOILS-Palm tracks Dalian palm, Chicago soy oils lower; weak exports weigh",
+            "firstCreated": "2026-02-26T03:03:00.000Z"
+        },
+        {
+            "snippet": "More than 30 Japanese men clad in loincloths braved cold and heavy rain in a harvest festival more than two centuries old, held in a small, muddy field in a residential pocket outside Tokyo, the capital.",
+            "storyId": "urn:newsml:reuters.com:20260226:nL6N3ZM06G",
+            "image": {
+                "byLine": "Kim Kyung-Hoon",
+                "text": "Participants in loincloths toss and scatter mud in a mud field during Warabi Hadaka Matsuri (Warabi Naked Festival) in Yotsukaido, Chiba Prefecture, Japan, February 25, 2026. ",
+                "id": "2026-02-26T034705Z_1_PQ5_RTRLXPP_2_LYNXPACKAGER__JPG"
+            },
+            "dateLine": "YOTSUKAIDO, Japan, Feb 26 (Reuters)",
+            "versionCreated": "2026-02-26T03:41:00.000Z",
+            "text": "'Blessed rain': Japanese men in loincloths  wrestle in harvest rite",
+            "firstCreated": "2026-02-26T03:41:00.000Z",
+            "relatedHeadlines": [
+
+            ]
+        }
+    ],
+    "meta": {
+        "revisionId": 157870,
+        "revisionDate": "2026-02-26T19:47:04.000Z"
+    },
+    "notifications": [
+        {
+            "notificationNumber": 2300,
+            "message": "Your requested language with value en-GB is not supported, using en-us instead."
+        }
+    ]
+}
