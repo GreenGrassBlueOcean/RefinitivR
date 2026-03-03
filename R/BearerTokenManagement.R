@@ -205,7 +205,7 @@ rd_VerifyToken <- function(token) {
         base64enc::base64decode(input)
       },
       error = function(e) {
-        warning("Base64 decoding failed: ", e$message)
+        warning("Base64 decoding failed.", call. = FALSE)
         return(NULL)
       }
     )
@@ -225,7 +225,7 @@ rd_VerifyToken <- function(token) {
       rawToChar(payload_raw)
     },
     error = function(e) {
-      warning("Failed to convert payload to character string: ", e$message)
+      warning("Failed to convert payload to character string.", call. = FALSE)
       return(NULL)
     }
   )
@@ -240,7 +240,7 @@ rd_VerifyToken <- function(token) {
       jsonlite::fromJSON(payload_json)
     },
     error = function(e) {
-      warning("JSON parsing failed: ", e$message)
+      warning("JSON parsing failed.", call. = FALSE)
       return(NULL)
     }
   )

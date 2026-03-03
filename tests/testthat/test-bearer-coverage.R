@@ -91,7 +91,7 @@ test_that("rd_VerifyToken returns FALSE when rawToChar fails on NUL bytes", {
 
   expect_warning(
     result <- rd_VerifyToken(token),
-    "Failed to convert|JSON parsing failed|embedded nul"
+    "Failed to convert|JSON parsing failed|embedded nul|Base64 decoding"
   )
   expect_false(result)
 })

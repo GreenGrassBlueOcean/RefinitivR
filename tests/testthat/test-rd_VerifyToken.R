@@ -116,7 +116,7 @@ testthat::test_that("Token with malformed Base64 payload is invalid", {
       is_valid <- rd_VerifyToken(token)
       testthat::expect_false(is_valid)
     },
-    regexp = "Base64 decoding failed\\.|JSON parsing failed"
+    regexp = "Base64 decoding failed|JSON parsing failed"
   )
 })
 
