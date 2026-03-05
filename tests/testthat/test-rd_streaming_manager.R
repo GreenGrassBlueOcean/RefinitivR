@@ -1480,8 +1480,13 @@ test_that(".send_subscription_requests handles NULL WebSocket", {
 
   def <- StreamDefinition$new(universe = "EUR=", fields = c("BID"))
 
-  # Should not error even with NULL WebSocket
-  expect_silent(priv$.send_subscription_requests(def, first_id = 2L, debug = FALSE))
+  # Should not error even with NULL WebSocket.
+  # Use expect_no_error (not expect_silent) because later::run_now() may flush
+  # pending callbacks that emit platform-specific warnings (e.g. CheckTerminalType
+  # on Windows CI where no terminal is available).
+  expect_no_error(suppressWarnings(
+    priv$.send_subscription_requests(def, first_id = 2L, debug = FALSE)
+  ))
 })
 
 test_that(".route_message falls back to all handlers when no ID match", {
