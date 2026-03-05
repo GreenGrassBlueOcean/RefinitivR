@@ -21,3 +21,4 @@ COMMIT_MESSAGE.txt
 .Renviron
 *.md
 nul
+.positai

@@ -576,7 +576,7 @@ EikonGetData <- function(
         return(x)
       }
     })
-    ReturnElement <- EikonPostProcessor(EikonDataList, SpaceConvertor)
+    ReturnElement <- new_EikonResult(EikonPostProcessor(EikonDataList, SpaceConvertor))
   } else {
     ReturnElement <- EikonDataList
   }

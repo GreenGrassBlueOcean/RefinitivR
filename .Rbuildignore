@@ -29,3 +29,5 @@
 ^lib$
 ^streaming_design_query\.md$
 ^NEWS\.md$
+^\.positai$
+^\.claude$

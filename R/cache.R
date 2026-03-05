@@ -45,15 +45,24 @@ sort_named_recursive <- function(x) {
 #' Includes the package version so that a mid-session upgrade automatically
 #' invalidates stale entries (response format may have changed).
 #'
+#' Character vectors (length > 1) are sorted before hashing so that
+#' the same set of instruments in a different order produces the same key.
+#' Named lists are recursively sorted by name.
+#'
 #' @param fn_name Character scalar — the calling function's name.
 #' @param ... Arbitrary R objects whose values affect the result.
-#'   Named list arguments are recursively sorted before hashing.
 #' @return A character scalar (hex hash).
 #' @noRd
 cache_key <- function(fn_name, ...) {
   args <- list(...)
   args <- lapply(args, function(a) {
-    if (is.list(a)) sort_named_recursive(a) else a
+    if (is.list(a)) {
+      sort_named_recursive(a)
+    } else if (is.character(a) && length(a) > 1L) {
+      sort(a)
+    } else {
+      a
+    }
   })
   pkg_version <- as.character(utils::packageVersion("Refinitiv"))
   rlang::hash(c(list(fn_name, pkg_version), args))
@@ -99,6 +108,11 @@ cache_set <- function(key, value, ttl) {
     list(value = value, expires_at = expires_at),
     envir = .refinitiv_cache
   )
+  if (isTRUE(getOption("refinitiv_verbose_cache", FALSE))) {
+    short_key <- substr(key, 1L, 8L)
+    size_kb <- round(as.numeric(utils::object.size(value)) / 1024, 1)
+    message("[RefinitivR cache] STORE (key ", short_key, "..., TTL ", ttl, "s, ~", size_kb, " KB)")
+  }
   invisible(NULL)
 }
 
@@ -109,18 +123,30 @@ cache_set <- function(key, value, ttl) {
 #' \code{list(found = FALSE)} on a miss.
 #' Expired entries are deleted immediately (lazy eviction) to free memory.
 #'
+#' When \code{getOption("refinitiv_verbose_cache", FALSE)} is \code{TRUE},
+#' logs cache hits, misses, and expirations via \code{message()}.
+#'
 #' @param key Character scalar.
 #' @return A list with element \code{found} (logical) and, on a hit,
 #'   \code{value}.
 #' @noRd
 cache_get <- function(key) {
+  verbose <- isTRUE(getOption("refinitiv_verbose_cache", FALSE))
+  short_key <- substr(key, 1L, 8L)
+
   if (!exists(key, envir = .refinitiv_cache, inherits = FALSE)) {
+    if (verbose) message("[RefinitivR cache] MISS (key ", short_key, "...)")
     return(list(found = FALSE))
   }
   entry <- get(key, envir = .refinitiv_cache, inherits = FALSE)
   if (is.finite(entry$expires_at) && as.numeric(Sys.time()) > entry$expires_at) {
     rm(list = key, envir = .refinitiv_cache)
+    if (verbose) message("[RefinitivR cache] EXPIRED (key ", short_key, "...)")
     return(list(found = FALSE))
+  }
+  if (verbose) {
+    ttl_left <- if (is.infinite(entry$expires_at)) Inf else round(entry$expires_at - as.numeric(Sys.time()))
+    message("[RefinitivR cache] HIT (key ", short_key, "..., ", ttl_left, "s remaining)")
   }
   list(found = TRUE, value = entry$value)
 }

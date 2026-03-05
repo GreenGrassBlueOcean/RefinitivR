@@ -262,7 +262,7 @@ test_that("EikonGetData filters NA chunks in non-raw mode", {
     EikonObject = RD, rics = "AAPL.O",
     Eikonformulas = "TR.Revenue", raw_output = FALSE, cache = FALSE
   )
-  expect_s3_class(result, "data.frame")
+  expect_s3_class(result, "EikonResult")
 })
 
 test_that("EikonGetData verbose emits debug messages", {
@@ -289,27 +289,31 @@ test_that("EikonGetData stores result in cache and returns cached value", {
   rd_ClearCache()
 
   call_count <- 0L
-  mock_result <- data.frame(Instrument = "AAPL.O", Revenue = 100)
+  mock_pp_result <- list(
+    PostProcessedEikonGetData = data.frame(Instrument = "AAPL.O", Revenue = 100),
+    Eikon_Error_Data = data.frame()
+  )
 
   mockery::stub(EikonGetData, "chunked_download", function(...) {
     call_count <<- call_count + 1L
     list(list())
   })
-  mockery::stub(EikonGetData, "EikonPostProcessor", function(x, ...) mock_result)
+  mockery::stub(EikonGetData, "EikonPostProcessor", function(x, ...) mock_pp_result)
 
   # First call
   r1 <- EikonGetData(
     EikonObject = RD, rics = "AAPL.O",
     Eikonformulas = "TR.Revenue", cache = 300
   )
-  expect_equal(r1, mock_result)
+  expect_s3_class(r1, "EikonResult")
+  expect_equal(r1$PostProcessedEikonGetData, mock_pp_result$PostProcessedEikonGetData)
 
   # Second call — cache hit
   r2 <- EikonGetData(
     EikonObject = RD, rics = "AAPL.O",
     Eikonformulas = "TR.Revenue", cache = 300
   )
-  expect_equal(r2, mock_result)
+  expect_equal(r2$PostProcessedEikonGetData, mock_pp_result$PostProcessedEikonGetData)
   expect_equal(call_count, 1L)
 
   rd_ClearCache()

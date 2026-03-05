@@ -80,10 +80,10 @@ test_that("cache_key differs for different arguments", {
   expect_false(k1 == k2)
 })
 
-test_that("cache_key preserves vector order", {
+test_that("cache_key is order-invariant for character vectors", {
   k1 <- Refinitiv:::cache_key("fn", c("AAPL.O", "MSFT.O"))
   k2 <- Refinitiv:::cache_key("fn", c("MSFT.O", "AAPL.O"))
-  expect_false(k1 == k2)
+  expect_true(k1 == k2)
 })
 
 test_that("cache_key handles NULL args", {
