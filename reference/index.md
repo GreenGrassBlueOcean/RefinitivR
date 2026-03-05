@@ -56,10 +56,16 @@
   EikonGetData function.
 - [`TestDataStreamCredentials()`](https://greengrassblueocean.github.io/RefinitivR/reference/TestDataStreamCredentials.md)
   : Test if the DataStream Credentials are valid
+- [`as.data.frame(`*`<EikonResult>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/as.data.frame.EikonResult.md)
+  : Convert EikonResult to data.frame
+- [`as.data.table.EikonResult()`](https://greengrassblueocean.github.io/RefinitivR/reference/as.data.table.EikonResult.md)
+  : Convert EikonResult to data.table
 - [`install_eikon()`](https://greengrassblueocean.github.io/RefinitivR/reference/install_eikon.md)
   : Install Eikon Python environment (Defunct)
 - [`names(`*`<RefinitivConnection>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/names.RefinitivConnection.md)
   : List methods on a RefinitivConnection object
+- [`print(`*`<EikonResult>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/print.EikonResult.md)
+  : Print an EikonResult
 - [`print(`*`<RefinitivConnection>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/print.RefinitivConnection.md)
   : Print a RefinitivConnection object
 - [`rd_CacheInfo()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_CacheInfo.md)

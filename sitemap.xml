@@ -38,6 +38,8 @@
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/SearchViewsLookup.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/TR_Field.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/TestDataStreamCredentials.html</loc></url>
+<url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/as.data.frame.EikonResult.html</loc></url>
+<url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/as.data.table.EikonResult.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/build_get_query_string.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/flattenNestedlist.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/get_rdp_streaming_url.html</loc></url>
@@ -46,6 +48,7 @@
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/make_links_clickable.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/mapEikonTimefieldsToRd.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/names.RefinitivConnection.html</loc></url>
+<url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/print.EikonResult.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/print.RefinitivConnection.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/rd_CacheInfo.html</loc></url>
 <url><loc>https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.html</loc></url>
