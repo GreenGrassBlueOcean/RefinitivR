@@ -14,7 +14,7 @@ EikonGetSymbology(
     "OAPermID"),
   bestMatch = TRUE,
   time_out = 60,
-  verbose = FALSE,
+  verbose = getOption("refinitiv_progress", TRUE),
   raw_output = FALSE,
   cache = NULL
 )

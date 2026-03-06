@@ -10,7 +10,8 @@ EikonChunker(
   Eikonfields = NULL,
   MaxCallsPerChunk = 12000,
   Duration = NULL,
-  MaxRicsperChunk = 300
+  MaxRicsperChunk = 300,
+  verbose = getOption("refinitiv_progress", TRUE)
 )
 ```
 

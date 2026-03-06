@@ -71,7 +71,7 @@
 <strong>DataStream</strong> — via <code>DatastreamDSWS2R</code>
 </li>
 <li>
-<strong>Robust under the hood</strong> — three-layer retry with exponential backoff, automatic chunking, HTTP 429/503 handling</li>
+<strong>Robust under the hood</strong> — three-layer retry with exponential backoff, automatic chunking, HTTP 429/503 handling, progress reporting for large requests</li>
 </ul>
 <blockquote>
 <p><strong>Note (v0.2.0):</strong> Python/reticulate support has been removed. All data retrieval now uses the JSON API exclusively. See <a href="NEWS.html">NEWS.md</a> for details.</p>
@@ -129,6 +129,7 @@
 <li><a href="#datastream">DataStream</a></li>
 <li><a href="#custom-instruments">Custom Instruments</a></li>
 <li><a href="#caching">Caching</a></li>
+<li><a href="#progress-reporting">Progress Reporting</a></li>
 <li><a href="#building-custom-visualizations">Building Custom Visualizations</a></li>
 </ol>
 <hr>
@@ -453,6 +454,50 @@
 <hr>
 </div>
 <div class="section level2">
+<h2 id="progress-reporting">Progress Reporting<a class="anchor" aria-label="anchor" href="#progress-reporting"></a>
+</h2>
+<p>Multi-chunk requests (large instrument universes, multi-query news, etc.) automatically show compact progress messages:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>[RefinitivR] <span class="dv">500</span> instruments, <span class="dv">500</span> data points, <span class="dv">3</span> chunks</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Chunk <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span> <span class="fu">done</span> (<span class="dv">167</span> items, <span class="fl">0.3</span>s)</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Chunk <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span> <span class="fu">done</span> (<span class="dv">167</span> items, <span class="fl">0.3</span>s)</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Chunk <span class="dv">3</span><span class="sc">/</span><span class="dv">3</span> <span class="fu">done</span> (<span class="dv">166</span> items, <span class="fl">0.3</span>s)</span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Download complete<span class="sc">:</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">3</span> chunks succeeded <span class="cf">in</span> <span class="fl">2.5</span>s</span></code></pre></div>
+<p>Single-instrument requests stay silent (one-chunk rule). Server-side polling and retriable errors always report status regardless of mode.</p>
+<p>Control progress output with <code>options(refinitiv_progress = ...)</code> or the <code>REFINITIV_PROGRESS</code> environment variable in <code>.Renviron</code>:</p>
+<table class="table">
+<thead><tr class="header">
+<th>Value</th>
+<th>Behavior</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>
+<code>TRUE</code> (default)</td>
+<td>Compact progress for multi-chunk requests</td>
+</tr>
+<tr class="even">
+<td><code>FALSE</code></td>
+<td>Silent</td>
+</tr>
+<tr class="odd">
+<td><code>"verbose"</code></td>
+<td>Compact progress + full debug dumps</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Disable globally</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>refinitiv_progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or per-call</span></span>
+<span><span class="fu"><a href="reference/rd_GetData.html">rd_GetData</a></span><span class="op">(</span>rics <span class="op">=</span> <span class="va">large_universe</span>, Eikonformulas <span class="op">=</span> <span class="va">fields</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or via .Renviron (read at package load)</span></span>
+<span><span class="co"># REFINITIV_PROGRESS=FALSE</span></span></code></pre></div>
+<p>All output uses <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code>, so <code><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages()</a></code> works as expected.</p>
+<hr>
+</div>
+<div class="section level2">
 <h2 id="building-custom-visualizations">Building Custom Visualizations<a class="anchor" aria-label="anchor" href="#building-custom-visualizations"></a>
 </h2>
 <p>The streaming API provides several ways to build custom visualizations:</p>
@@ -460,7 +505,7 @@
 <h3 id="using-built-in-plot_live">Using Built-in <code>plot_live()</code>
 <a class="anchor" aria-label="anchor" href="#using-built-in-plot_live"></a>
 </h3>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rd_get_streaming_data.html">rd_get_streaming_data</a></span><span class="op">(</span>universe <span class="op">=</span> <span class="st">"EUR="</span>, fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BID"</span>, <span class="st">"ASK"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">stream</span><span class="op">$</span><span class="fu">open</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -470,7 +515,7 @@
 <div class="section level3">
 <h3 id="custom-shiny-app">Custom Shiny App<a class="anchor" aria-label="anchor" href="#custom-shiny-app"></a>
 </h3>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://greengrassblueocean.github.io/RefinitivR/">Refinitiv</a></span><span class="op">)</span></span>
 <span></span>
@@ -505,7 +550,7 @@
 <div class="section level3">
 <h3 id="static-plots-with-ggplot2">Static Plots with ggplot2<a class="anchor" aria-label="anchor" href="#static-plots-with-ggplot2"></a>
 </h3>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rd_get_streaming_data.html">rd_get_streaming_data</a></span><span class="op">(</span>universe <span class="op">=</span> <span class="st">"EUR="</span>, fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BID"</span>, <span class="st">"ASK"</span><span class="op">)</span><span class="op">)</span></span>
@@ -543,7 +588,7 @@
 <h2 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a>
 </h2>
 <p>Example scripts are included in the package:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, package <span class="op">=</span> <span class="st">"Refinitiv"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"streaming_quick_example.R"</span>, package <span class="op">=</span> <span class="st">"Refinitiv"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <hr>

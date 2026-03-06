@@ -17,7 +17,7 @@ EikonGetTimeseries(
   end_date = paste0(Sys.Date(), "T01:00:00"),
   cast = TRUE,
   time_out = 60,
-  verbose = FALSE,
+  verbose = getOption("refinitiv_progress", TRUE),
   raw_output = FALSE,
   cache = NULL
 )
