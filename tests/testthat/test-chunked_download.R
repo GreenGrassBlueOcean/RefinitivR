@@ -85,14 +85,14 @@ test_that("chunked_download respects custom is_success predicate", {
   expect_gte(call_count, 2L)
 })
 
-test_that("chunked_download emits verbose messages when verbose=TRUE", {
+test_that("chunked_download emits verbose messages when verbose='verbose'", {
   expect_message(
     chunked_download(
       n_chunks = 1,
       fetch_fn = function(j) j,
       sleep    = 0,
       backoff  = 0,
-      verbose  = TRUE
+      verbose  = "verbose"
     ),
     "Download Status"
   )

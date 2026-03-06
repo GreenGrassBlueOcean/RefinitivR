@@ -82,7 +82,8 @@ EikonGetNewsHeadlines <- function(
       }, max_attempts = 1L, on_failure = "NA")
     },
     sleep = 0.1,
-    verbose = debug,
+    verbose = if (debug) "verbose" else getOption("refinitiv_progress", TRUE),
+    caller_label = "EikonGetNewsHeadlines",
     fail_message = "EikonGetNewsHeadlines downloading data failed"
   )
 
@@ -189,7 +190,8 @@ EikonGetNewsStory <- function(
       }, max_attempts = 1L, on_failure = "NA")
     },
     sleep = 0.1,
-    verbose = debug,
+    verbose = if (debug) "verbose" else getOption("refinitiv_progress", TRUE),
+    caller_label = "EikonGetNewsStory",
     fail_message = "EikonGetNewsStory downloading data failed"
   )
 

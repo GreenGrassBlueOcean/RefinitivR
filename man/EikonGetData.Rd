@@ -11,7 +11,7 @@ EikonGetData(
   Parameters = NULL,
   raw_output = FALSE,
   time_out = 60,
-  verbose = FALSE,
+  verbose = getOption("refinitiv_progress", TRUE),
   SpaceConvertor = ".",
   cache = NULL
 )

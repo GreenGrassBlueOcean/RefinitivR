@@ -146,7 +146,7 @@ EikonNameCleaner <- function(names, SpaceConvertor = ".") {
 #' \dontrun{
 #' "internal function no examples"
 #' }
-EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Duration = NULL, MaxRicsperChunk = 300) {
+EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Duration = NULL, MaxRicsperChunk = 300, verbose = getOption("refinitiv_progress", TRUE)) {
   if (is.null(RICS)) {
     stop("RICS have to be supplid other wise no api call can be made")
   }
@@ -166,13 +166,20 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
   }
 
 
-  message(paste0("the operation you intend to perform will cost ", totalDataPoints, " data points"))
-
   # Minimum chunks to satisfy both constraints, then distribute evenly
   chunks_dp <- ceiling(totalDataPoints / MaxCallsPerChunk)
   chunks_ric <- if (!is.null(MaxRicsperChunk)) ceiling(length(RICS) / MaxRicsperChunk) else 1L
   n_chunks <- max(chunks_dp, chunks_ric)
   chunk_size <- ceiling(length(RICS) / n_chunks)
+
+  # One-chunk rule: skip summary when n_chunks == 1 and mode is plain TRUE
+  if (!isFALSE(verbose) && !(n_chunks == 1L && isTRUE(verbose))) {
+    progress_msg(
+      format(length(RICS), big.mark = ","), " instruments, ",
+      format(totalDataPoints, big.mark = ","), " data points, ",
+      n_chunks, " chunk", if (n_chunks != 1L) "s" else ""
+    )
+  }
 
   SplittedRics <- split(RICS, ceiling(seq_along(RICS) / chunk_size))
   return(SplittedRics)
@@ -322,7 +329,7 @@ retry <- function(fn, max_attempts = getOption("refinitiv_max_retries", 2L),
 #'
 EikonGetTimeseries <- function(
   EikonObject = rd_connection(), rics, interval = "daily", calender = "tradingdays", corax = "adjusted", fields = c("TIMESTAMP", "VOLUME", "HIGH", "LOW", "OPEN", "CLOSE"),
-  start_date = "2020-01-01T01:00:00", end_date = paste0(Sys.Date(), "T01:00:00"), cast = TRUE, time_out = 60, verbose = FALSE, raw_output = FALSE,
+  start_date = "2020-01-01T01:00:00", end_date = paste0(Sys.Date(), "T01:00:00"), cast = TRUE, time_out = 60, verbose = getOption("refinitiv_progress", TRUE), raw_output = FALSE,
   cache = NULL
 ) {
   # ── Cache lookup ──
@@ -371,7 +378,7 @@ EikonGetTimeseries <- function(
   TimeSeriesList <- chunked_download(
     n_chunks = length(ChunckedRics),
     fetch_fn = function(j) {
-      if (verbose) {
+      if (identical(verbose, "verbose")) {
         message(paste0(
           Sys.time(), "\n",
           "EikonGetTimeseries JSON request:\n",
@@ -415,13 +422,15 @@ EikonGetTimeseries <- function(
         }, max_attempts = 1L, on_failure = "NA")
       }
 
-      InspectRequest(df = result, functionname = "EikonGetTimeseries", verbose = verbose)
+      InspectRequest(df = result, functionname = "EikonGetTimeseries", verbose = identical(verbose, "verbose"))
       result
     },
     is_success = eikon_ts_is_success,
     sleep = 0.5,
     on_failure = "warning",
     verbose = verbose,
+    caller_label = "EikonGetTimeseries",
+    chunk_sizes = lengths(ChunckedRics),
     fail_message = "EikonGetTimeseries downloading data failed for one or more Rics"
   )
 
@@ -509,7 +518,7 @@ EikonGetTimeseries <- function(
 #' }
 #'
 EikonGetData <- function(
-  EikonObject = rd_connection(), rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60, verbose = FALSE, SpaceConvertor = ".",
+  EikonObject = rd_connection(), rics, Eikonformulas, Parameters = NULL, raw_output = FALSE, time_out = 60, verbose = getOption("refinitiv_progress", TRUE), SpaceConvertor = ".",
   cache = NULL
 ) {
   # ── Cache lookup ──
@@ -529,7 +538,7 @@ EikonGetData <- function(
   try(EikonObject$set_app_key(app_key = refinitiv_vault_get("api_key")), silent = TRUE)
 
   # Divide RICS in chunks to satisfy api limits
-  ChunckedRics <- EikonChunker(RICS = rics, Eikonfields = Eikonformulas, MaxRicsperChunk = 200)
+  ChunckedRics <- EikonChunker(RICS = rics, Eikonfields = Eikonformulas, MaxRicsperChunk = 200, verbose = verbose)
 
 
   eikon_data_is_success <- function(x) {
@@ -539,7 +548,7 @@ EikonGetData <- function(
   EikonDataList <- chunked_download(
     n_chunks = length(ChunckedRics),
     fetch_fn = function(j) {
-      if (verbose) {
+      if (identical(verbose, "verbose")) {
         message(paste0(
           Sys.time(), "\n",
           "EikonGetData JSON request:\n",
@@ -558,12 +567,14 @@ EikonGetData <- function(
         )
       }, max_attempts = 1L, on_failure = "NA")
 
-      InspectRequest(df = result, functionname = "EikonGetData", verbose = verbose)
+      InspectRequest(df = result, functionname = "EikonGetData", verbose = identical(verbose, "verbose"))
       result
     },
     is_success = eikon_data_is_success,
     sleep = 0.5,
     verbose = verbose,
+    caller_label = "EikonGetData",
+    chunk_sizes = lengths(ChunckedRics),
     fail_message = "EikonGetData downloading data failed"
   )
 
@@ -662,7 +673,7 @@ EikonGetData <- function(
 #'
 EikonGetSymbology <- function(
   EikonObject = rd_connection(), symbol, from_symbol_type = "RIC", to_symbol_type = c("CUSIP", "ISIN", "SEDOL", "RIC", "ticker", "lipperID", "IMO", "OAPermID"),
-  bestMatch = TRUE, time_out = 60, verbose = FALSE, raw_output = FALSE,
+  bestMatch = TRUE, time_out = 60, verbose = getOption("refinitiv_progress", TRUE), raw_output = FALSE,
   cache = NULL
 ) {
   # ── Cache lookup ──
@@ -682,12 +693,12 @@ EikonGetSymbology <- function(
   try(EikonObject$set_app_key(app_key = refinitiv_vault_get("api_key")), silent = TRUE)
 
   # Divide symbols in chunks to satisfy api limits
-  ChunckedSymbols <- EikonChunker(RICS = symbol, Eikonfields = to_symbol_type)
+  ChunckedSymbols <- EikonChunker(RICS = symbol, Eikonfields = to_symbol_type, verbose = verbose)
 
   EikonSymbologyList <- chunked_download(
     n_chunks = length(ChunckedSymbols),
     fetch_fn = function(j) {
-      if (verbose) {
+      if (identical(verbose, "verbose")) {
         message(paste0(
           Sys.time(), "\n",
           "EikonGetSymbology JSON request:\n",
@@ -709,12 +720,14 @@ EikonGetSymbology <- function(
         )
       }, max_attempts = 1L, on_failure = "NA")
 
-      InspectRequest(df = result, functionname = "EikonGetSymbology", verbose = verbose)
+      InspectRequest(df = result, functionname = "EikonGetSymbology", verbose = identical(verbose, "verbose"))
       result
     },
     sleep = 0.5,
     on_failure = "warning",
     verbose = verbose,
+    caller_label = "EikonGetSymbology",
+    chunk_sizes = lengths(ChunckedSymbols),
     fail_message = "EikonGetSymbology downloading data failed for one or more symbols"
   )
 

@@ -227,7 +227,9 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
     pages_raw <- list()
     pages_df <- list()
 
+    page_num <- 0L
     while (offset_val < req_limit) {
+      page_num <- page_num + 1L
       chunk_limit <- as.integer(min(MAX_PAGE, req_limit - offset_val))
       page_raw <- fetch_page(chunk_limit, offset_val)
 
@@ -240,6 +242,11 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
         use_field_names_in_headers = use_field_names_in_headers
       )
       pages_df[[length(pages_df) + 1L]] <- page_df
+
+      progress_msg(
+        "rd_GetOwnership: page ", page_num, " fetched (",
+        nrow(page_df), " rows, offset ", offset_val, ")"
+      )
 
       # Early exit: data exhausted
       if (nrow(page_df) < chunk_limit || nrow(page_df) == 0L) break

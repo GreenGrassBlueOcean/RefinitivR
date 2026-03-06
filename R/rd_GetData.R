@@ -58,7 +58,7 @@
 #' }
 rd_GetData <- function(
   RDObject = rd_connection(), rics, Eikonformulas, Parameters = NULL, raw_output = FALSE,
-  time_out = 60, verbose = FALSE, SpaceConvertor = NULL, use_field_names_in_headers = FALSE, SyncFields = FALSE,
+  time_out = 60, verbose = getOption("refinitiv_progress", TRUE), SpaceConvertor = NULL, use_field_names_in_headers = FALSE, SyncFields = FALSE,
   cache = NULL
 ) {
   # ── Cache lookup ──
@@ -79,7 +79,7 @@ rd_GetData <- function(
   try(RDObject$set_app_key(app_key = refinitiv_vault_get("api_key")), silent = TRUE)
 
   # Divide RICS in chunks to satisfy api limits
-  ChunckedRics <- EikonChunker(RICS = rics, Eikonfields = Eikonformulas)
+  ChunckedRics <- EikonChunker(RICS = rics, Eikonfields = Eikonformulas, verbose = verbose)
 
   EikonDataList <- chunked_download(
     n_chunks = length(ChunckedRics),
@@ -97,6 +97,8 @@ rd_GetData <- function(
     },
     sleep = 0.01,
     verbose = verbose,
+    caller_label = "rd_GetData",
+    chunk_sizes = lengths(ChunckedRics),
     fail_message = "rd_GetData downloading data failed"
   )
 

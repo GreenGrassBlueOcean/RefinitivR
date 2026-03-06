@@ -122,7 +122,8 @@ rd_get_news_headlines <- function(RDObject = rd_connection(),
     },
     max_retries = 1L,
     sleep = 0.1,
-    verbose = debug,
+    verbose = if (debug) "verbose" else getOption("refinitiv_progress", TRUE),
+    caller_label = "rd_get_news_headlines",
     fail_message = "rd_get_news_headlines: retrieving data failed after multiple retries."
   )
 

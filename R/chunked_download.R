@@ -1,3 +1,27 @@
+#' Emit a progress message respecting the \code{refinitiv_progress} option
+#'
+#' @param ... Passed to \code{message()} after the \code{[RefinitivR]} prefix.
+#' @param verbose_only If \code{TRUE}, only emit when the option is
+#'   \code{"verbose"}.
+#' @param force If \code{TRUE}, emit regardless of the option value (except
+#'   when explicitly \code{FALSE}).
+#'
+#' @return Invisible \code{NULL}.
+#' @keywords internal
+#' @noRd
+progress_msg <- function(..., verbose_only = FALSE, force = FALSE) {
+  mode <- getOption("refinitiv_progress", TRUE)
+  if (!force) {
+    if (isFALSE(mode)) return(invisible())
+    if (verbose_only && !identical(mode, "verbose")) return(invisible())
+  }
+  # force = TRUE still respects explicit FALSE
+
+  if (force && isFALSE(mode)) return(invisible())
+  message("[RefinitivR] ", ...)
+}
+
+
 #' Execute a fetch function over chunks with retry coordination
 #'
 #' Iterates over chunks, calling \code{fetch_fn(i)} for each chunk index
@@ -26,10 +50,18 @@
 #' @param on_failure Either \code{"stop"} or \code{"warning"}. Action to
 #'   take when chunks are still failing after \code{max_retries} rounds.
 #'   Default: \code{"stop"}.
-#' @param verbose Logical. If \code{TRUE}, print download status after each
-#'   chunk. Default: \code{FALSE}.
+#' @param verbose Controls progress output. \code{TRUE} / \code{FALSE} /
+#'   \code{"verbose"} — see \code{progress_msg()}.  The default
+#'   (\code{getOption("refinitiv_progress", TRUE)}) provides compact
+#'   progress for multi-chunk requests; \code{"verbose"} adds the full
+#'   coordinator dump.
 #' @param fail_message Character string used in the stop/warning on
 #'   failure.
+#' @param caller_label Optional character label used in progress messages
+#'   (e.g. \code{"rd_GetData"}). If \code{NULL}, messages omit the label.
+#' @param chunk_sizes Optional integer vector of per-chunk element counts,
+#'   used in progress messages. Must have length \code{n_chunks} when
+#'   supplied.
 #'
 #' @return A list of length \code{n_chunks} with results from
 #'   \code{fetch_fn}.
@@ -45,9 +77,20 @@ chunked_download <- function(n_chunks,
                              sleep = 0.1,
                              backoff = 1.0,
                              on_failure = c("stop", "warning"),
-                             verbose = FALSE,
-                             fail_message = "downloading data failed") {
+                             verbose = getOption("refinitiv_progress", TRUE),
+                             fail_message = "downloading data failed",
+                             caller_label = NULL,
+                             chunk_sizes = NULL) {
   on_failure <- match.arg(on_failure)
+
+  # Resolve progress mode from the verbose parameter
+  mode <- verbose
+  show_progress <- !isFALSE(mode)
+  show_verbose   <- identical(mode, "verbose")
+  # One-chunk rule: skip routine progress when n_chunks == 1 and mode is
+
+  # plain TRUE (not "verbose")
+  one_chunk_quiet <- (n_chunks == 1L && isTRUE(mode))
 
   results <- as.list(rep(NA, n_chunks))
 
@@ -58,18 +101,41 @@ chunked_download <- function(n_chunks,
     stringsAsFactors = FALSE
   )
 
+  # Prefix for labelled messages
+  lbl <- if (!is.null(caller_label)) paste0(caller_label, ": ") else ""
+
+  t_start <- proc.time()[["elapsed"]]
+
   while (!all(coordinator$success) && !any(coordinator$retries > max_retries)) {
     pending <- which(!coordinator$success)
 
     for (j in pending) {
+      t_chunk <- proc.time()[["elapsed"]]
       results[[j]] <- try(fetch_fn(j))
+      chunk_elapsed <- proc.time()[["elapsed"]] - t_chunk
       Sys.sleep(sleep)
 
       if (is_success(results[[j]])) {
         coordinator$success[j] <- TRUE
+
+        # Per-chunk success message (skip for one-chunk-quiet)
+        if (show_progress && !one_chunk_quiet) {
+          size_info <- if (!is.null(chunk_sizes) && length(chunk_sizes) >= j) {
+            paste0(" (", format(chunk_sizes[j], big.mark = ","), " items, ",
+                   sprintf("%.1fs", chunk_elapsed), ")")
+          } else {
+            paste0(" (", sprintf("%.1fs", chunk_elapsed), ")")
+          }
+          progress_msg(lbl, "Chunk ", j, "/", n_chunks, " done", size_info)
+        }
+      } else if (show_progress && !one_chunk_quiet) {
+        round_num <- coordinator$retries[j]
+        progress_msg(lbl, "Chunk ", j, "/", n_chunks,
+                     " failed, will retry (attempt ", round_num + 1L,
+                     "/", max_retries + 1L, ")")
       }
 
-      if (verbose) {
+      if (show_verbose) {
         message(
           "Download Status:\n",
           paste(capture.output(coordinator), collapse = "\n")
@@ -90,12 +156,22 @@ chunked_download <- function(n_chunks,
     }
   }
 
+  total_elapsed <- proc.time()[["elapsed"]] - t_start
+  n_success <- sum(coordinator$success)
+
   if (any(coordinator$retries > max_retries)) {
+    if (show_progress && !one_chunk_quiet) {
+      progress_msg(lbl, "Download incomplete: ", n_success, "/", n_chunks,
+                   " chunks succeeded in ", sprintf("%.1fs", total_elapsed))
+    }
     if (on_failure == "stop") {
       stop(fail_message)
     } else {
       warning(fail_message)
     }
+  } else if (show_progress && !one_chunk_quiet) {
+    progress_msg(lbl, "Download complete: ", n_chunks, "/", n_chunks,
+                 " chunks succeeded in ", sprintf("%.1fs", total_elapsed))
   }
 
   results

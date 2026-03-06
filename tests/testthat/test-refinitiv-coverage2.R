@@ -142,7 +142,7 @@ test_that("EikonGetTimeseries verbose emits debug messages", {
 
   expect_message(
     EikonGetTimeseries(
-      EikonObject = RD, rics = "AAPL.O", verbose = TRUE, cache = FALSE
+      EikonObject = RD, rics = "AAPL.O", verbose = "verbose", cache = FALSE
     ),
     "EikonGetTimeseries JSON request"
   )
@@ -278,7 +278,7 @@ test_that("EikonGetData verbose emits debug messages", {
   expect_message(
     EikonGetData(
       EikonObject = RD, rics = "AAPL.O",
-      Eikonformulas = "TR.Revenue", verbose = TRUE, cache = FALSE
+      Eikonformulas = "TR.Revenue", verbose = "verbose", cache = FALSE
     ),
     "EikonGetData JSON request"
   )
@@ -430,7 +430,7 @@ test_that("EikonGetSymbology verbose emits debug messages in fetch_fn", {
     EikonGetSymbology(
       EikonObject = RD, symbol = "AAPL.O",
       from_symbol_type = "RIC", to_symbol_type = "ISIN",
-      verbose = TRUE, cache = FALSE
+      verbose = "verbose", cache = FALSE
     ),
     "EikonGetSymbology JSON request"
   )

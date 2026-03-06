@@ -208,14 +208,24 @@ send_json_request <- function(json = NULL, service = "eikon", debug = FALSE, req
       # Checks for ErrorCode and then aborts after printing message
       if (is.numeric(tryresults$ErrorCode) || is.numeric(tryresults$estimatedDuration)) {
         if (is.numeric(tryresults$ErrorCode) && tryresults$ErrorCode %in% c(2504, 500, 400)) {
-          message("Retriable error code: ", tryresults$ErrorCode)
-          Sys.sleep(5 * counter)
+          wait_secs <- 5 * counter
+          progress_msg(
+            "Retriable error ", tryresults$ErrorCode,
+            ", retrying in ", sprintf("%.0fs", wait_secs),
+            " (attempt ", counter + 1L, "/", max_retries, ")",
+            force = TRUE
+          )
+          Sys.sleep(wait_secs)
           counter <- counter + 1L
         } else if (is.numeric(tryresults$estimatedDuration)) {
           WaitTime <- NULL
           WaitTime <- try(tryresults$estimatedDuration / 1000, silent = TRUE)
           ticket <- try(tryresults$ticket, silent = TRUE)
-          message(paste("request not ready, server is asking to wait for", WaitTime, "seconds so waiting patiently"))
+          progress_msg(
+            "Server requested wait: ", sprintf("%.1fs", WaitTime),
+            " (async ticket, poll ", counter + 1L, "/", max_retries, ")",
+            force = TRUE
+          )
           if (!is.null(WaitTime) && WaitTime <= 60) {
             Sys.sleep(WaitTime)
           } else {

@@ -1,46 +1,38 @@
-Add real-time streaming API with live visualizations and fix RDConnect bug
+feat: add progress reporting for long-running chunked requests
 
-This commit introduces a comprehensive real-time streaming API for live
-market data and fixes a critical bug in RDConnect when API keys are not
-properly configured.
+Replace the unusable verbose mode (full coordinator dump per chunk) with
+a three-mode progress system controlled by `refinitiv_progress` option:
 
-Major Features Added:
-- Real-time streaming API with WebSocket support for live market data
-- Built-in live plotting with Shiny integration (plot_live() method)
-- Event-driven architecture with refresh, update, and error callbacks
-- Data history tracking and summary statistics
-- Support for multiple instruments and fields
-- Comprehensive documentation and examples
+- TRUE (default): compact per-chunk progress for multi-chunk requests,
+  silent for single-chunk ("one-chunk rule")
+- FALSE: silent
+- "verbose": compact progress + full coordinator dump (old behavior)
 
-Streaming API Highlights:
-- Simple API: rd_get_streaming_data() for quick setup
-- Callback system: on_refresh(), on_update(), on_error() for event handling
-- Data access: get_latest_data(), get_data_history(), get_summary()
-- Live visualization: plot_live() creates interactive Shiny apps
-- Advanced usage: R6 classes for custom stream definitions and managers
+Output uses base R message() — portable to knitr/CI/Docker, suppressible
+with suppressMessages(). Zero new dependencies.
 
-Visualization Capabilities:
-- Built-in Shiny app for live plotting (plot_live())
-- Support for custom Shiny applications
-- Integration with ggplot2 for static plots
-- Compatible with plotly for interactive visualizations
-- Programmatic data access for any visualization framework
+Changes:
+- Add progress_msg() helper and rewrite chunked_download() with
+  caller_label, chunk_sizes, per-chunk timing, and completion summary
+- Update EikonChunker() to use progress_msg() with richer format
+  (instrument count, data points, chunk count)
+- Standardize send_json_request() polling messages with [RefinitivR]
+  prefix and attempt counts (force = TRUE so always visible)
+- Add pagination progress to rd_GetOwnership()
+- Remove hardcoded verbose = TRUE from rd_GetHistoricalPricing()
+- Change verbose defaults from FALSE to getOption("refinitiv_progress",
+  TRUE) in EikonGetData, EikonGetTimeseries, EikonGetSymbology,
+  rd_GetData
+- Parse REFINITIV_PROGRESS env var in .onLoad() (TRUE/FALSE/VERBOSE)
+- Add 26 tests covering all three modes, one-chunk rule, retry
+  messaging, and .onLoad env var parsing
+- Update 4 existing tests for new verbose = "verbose" semantics
 
-Bug Fixes:
-- Fixed RDConnect() to properly handle missing API keys by correctly
-  retrieving from options or providing clear error messages instead of
-  passing invalid arguments to RefinitivJsonConnect
+Files changed: R/chunked_download.R, R/refinitiv.r, R/rd_GetData.R,
+R/HistoricalPricing.r, R/EikonNews.R, R/rd_news.r, R/json.r,
+R/rd_ownership.R, R/zzz.r, tests/testthat/test-progress.R,
+tests/testthat/test-chunked_download.R,
+tests/testthat/test-refinitiv-coverage2.R
 
-Documentation:
-- Comprehensive README.Rmd with streaming API documentation
-- "Building Custom Visualizations" guide with 5 different approaches
-- Example scripts in inst/examples/ demonstrating all features
-- Clear quick start guide and advanced usage examples
-
-Technical Improvements:
-- Fixed all R CMD check warnings (documentation parsing issues)
-- Improved test suite with environment-based state tracking
-- Code quality improvements (removed global assignments)
-- Standard package structure (examples in inst/examples/)
-
-All tests pass. R CMD check completes successfully.
+R CMD check: 0 errors | 0 warnings | 1 note (pre-existing)
+Test suite: FAIL 0 | WARN 0 | SKIP 16 | PASS 1981

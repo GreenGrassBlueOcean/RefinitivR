@@ -63,6 +63,21 @@
     }
   }
 
+  # Parse REFINITIV_PROGRESS env var: TRUE / FALSE / VERBOSE
+  if (is.null(getOption("refinitiv_progress"))) {
+    env_progress <- toupper(Sys.getenv("REFINITIV_PROGRESS", ""))
+    if (nzchar(env_progress)) {
+      options(refinitiv_progress = switch(env_progress,
+        "TRUE"    = TRUE,
+        "FALSE"   = FALSE,
+        "VERBOSE" = "verbose",
+        TRUE  # fallback
+      ))
+    }
+    # When unset, getOption("refinitiv_progress") remains NULL and
+    # progress_msg() defaults to TRUE
+  }
+
   # Clear any stale token options from previous sessions / older package
   # versions.  Tokens now live exclusively in the vault.
   options(

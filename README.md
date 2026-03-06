@@ -29,7 +29,8 @@ opt-in **session-scoped cache** with configurable TTLs.
   instruments
 - **DataStream** — via `DatastreamDSWS2R`
 - **Robust under the hood** — three-layer retry with exponential
-  backoff, automatic chunking, HTTP 429/503 handling
+  backoff, automatic chunking, HTTP 429/503 handling, progress
+  reporting for large requests
 
 > **Note (v0.2.0):** Python/reticulate support has been removed. All
 > data retrieval now uses the JSON API exclusively. See
@@ -90,7 +91,8 @@ stream$close()
 5.  [DataStream](#datastream)
 6.  [Custom Instruments](#custom-instruments)
 7.  [Caching](#caching)
-8.  [Building Custom Visualizations](#building-custom-visualizations)
+8.  [Progress Reporting](#progress-reporting)
+9.  [Building Custom Visualizations](#building-custom-visualizations)
 
 ------------------------------------------------------------------------
 
@@ -424,6 +426,44 @@ rd_ClearCache()
 
 Caching is purely in-memory and scoped to the current R session —
 restarting R or calling `rd_ClearCache()` wipes all cached results.
+
+------------------------------------------------------------------------
+
+## Progress Reporting
+
+Multi-chunk requests (large instrument universes, multi-query news,
+etc.) automatically show compact progress messages:
+
+    [RefinitivR] 500 instruments, 500 data points, 3 chunks
+    [RefinitivR] EikonGetData: Chunk 1/3 done (167 items, 0.3s)
+    [RefinitivR] EikonGetData: Chunk 2/3 done (167 items, 0.3s)
+    [RefinitivR] EikonGetData: Chunk 3/3 done (166 items, 0.3s)
+    [RefinitivR] EikonGetData: Download complete: 3/3 chunks succeeded in 2.5s
+
+Single-instrument requests stay silent (one-chunk rule). Server-side
+polling and retriable errors always report status regardless of mode.
+
+Control progress output with `options(refinitiv_progress = ...)` or the
+`REFINITIV_PROGRESS` environment variable in `.Renviron`:
+
+| Value             | Behavior                                  |
+|-------------------|-------------------------------------------|
+| `TRUE` (default)  | Compact progress for multi-chunk requests |
+| `FALSE`           | Silent                                    |
+| `"verbose"`       | Compact progress + full debug dumps       |
+
+``` r
+# Disable globally
+options(refinitiv_progress = FALSE)
+
+# Or per-call
+rd_GetData(rics = large_universe, Eikonformulas = fields, verbose = FALSE)
+
+# Or via .Renviron (read at package load)
+# REFINITIV_PROGRESS=FALSE
+```
+
+All output uses `message()`, so `suppressMessages()` works as expected.
 
 ------------------------------------------------------------------------
 

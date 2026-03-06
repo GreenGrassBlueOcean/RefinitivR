@@ -252,8 +252,9 @@ rd_GetHistoricalPricing <- function(
     },
     sleep = 0.5,
     on_failure = "warning",
-    verbose = TRUE,
-    fail_message = "EikonGetTimeseries downloading data failed for one or more Rics"
+    verbose = getOption("refinitiv_progress", TRUE),
+    caller_label = "rd_GetHistoricalPricing",
+    fail_message = "rd_GetHistoricalPricing downloading data failed for one or more RICs"
   )
   # Process request and build return data.frame using data.table ----
   return_DT <- data.table::rbindlist(
