@@ -1643,7 +1643,10 @@ test_that("Stream open() handler closure routes messages to _handle_message", {
   stub(stream$open, "requireNamespace", function(pkg, quietly) pkg == "later")
   stub(stream$open, "later::run_now",   function(timeout) NULL)
 
-  stream$open()
+  # stub_later on subscribe doesn't propagate to the private method it
+
+  # delegates to, so the real later::run_now may flush stale callbacks.
+  suppressWarnings(stream$open())
 
   # Route a message via the manager — this exercises the closure at line 49
   sid         <- stream$.__enclos_env__$private$.stream_ids[[1]]
@@ -1671,7 +1674,7 @@ test_that("Stream open() emits debug messages when refinitiv_streaming_debug is 
   stub(stream$open, "requireNamespace", function(pkg, quietly) pkg == "later")
   stub(stream$open, "later::run_now",   function(timeout) NULL)
 
-  msgs <- capture_messages(stream$open())
+  msgs <- suppressWarnings(capture_messages(stream$open()))
 
   expect_true(any(grepl("Calling subscribe()", msgs, fixed = TRUE)),
     info = "Expected '[DEBUG] Calling subscribe()' message")

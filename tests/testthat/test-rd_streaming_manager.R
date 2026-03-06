@@ -1464,6 +1464,9 @@ test_that(".send_subscription_requests sends multi-instrument requests", {
     fields = c("BID", "ASK")
   )
 
+  # Prevent later::run_now from flushing stale callbacks (e.g. terminal probe)
+  stub(priv$.send_subscription_requests, "later::run_now", function(...) NULL)
+
   # to_request returns a named list for multi-instrument
   priv$.send_subscription_requests(def, first_id = 2L, debug = FALSE)
 

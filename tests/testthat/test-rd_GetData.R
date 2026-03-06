@@ -26,7 +26,7 @@ test_that("rd_GetData calls rd_OutputProcesser in JSON mode", {
       if (...[[1]] == ".RefinitivPyModuleName") {
         return("JSON")
       }
-      base::getOption(...[[1]], ...)
+      base::getOption(...)
     }
   )
 
@@ -46,7 +46,8 @@ test_that("rd_GetData calls rd_OutputProcesser in JSON mode", {
     RDObject = dummy_rd_json,
     rics = c("MOCKED_RIC"),
     Eikonformulas = "MOCKED_FORMULA",
-    raw_output = FALSE
+    raw_output = FALSE,
+    verbose = FALSE
   )
 
   expect_true(json_called)
