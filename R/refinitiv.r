@@ -720,14 +720,24 @@ EikonGetSymbology <- function(
 
 
   if (!raw_output) {
-    EikonSymbologyList <- lapply(EikonSymbologyList, FUN = function(x) {
-      if (all(is.na(x))) {
-        return(NULL)
-      } else {
-        return(x)
-      }
+    # Process each chunk individually and rbind (fixes silent truncation
+    # when input exceeds a single chunk — ProcessSymbology expects a
+    # single-chunk wrapper, not the full multi-chunk list)
+    ReturnList <- lapply(EikonSymbologyList, function(x) {
+      if (all(is.na(x))) return(NULL)
+      ProcessSymbology(list(x),
+        from_symbol_type = from_symbol_type,
+        to_symbol_type = to_symbol_type
+      )
     })
-    ReturnElement <- ProcessSymbology(EikonSymbologyList, from_symbol_type = from_symbol_type, to_symbol_type = to_symbol_type)
+    ReturnList <- ReturnList[!vapply(ReturnList, is.null, logical(1))]
+    if (length(ReturnList) == 0L) {
+      ReturnElement <- data.frame()
+    } else {
+      ReturnElement <- data.table::rbindlist(ReturnList,
+        use.names = TRUE, fill = TRUE
+      ) |> data.table::setDF()
+    }
   } else {
     ReturnElement <- EikonSymbologyList
   }

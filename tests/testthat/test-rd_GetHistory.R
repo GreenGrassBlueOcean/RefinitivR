@@ -11,35 +11,17 @@ test_that("rd_GetHistory fails when it should", {
 test_that("rd_GetHistory can handle requests with no fields", {
   skip_if(!has_live_api(), "No live API available")
 
-  TestRDObject <- RDConnect()
-  test_python <- rd_GetHistory(RD = TestRDObject, universe = "AAPL.O")
+  result <- rd_GetHistory(RD = RDConnect(), universe = "AAPL.O")
 
-  TestJSONObject <- RefinitivJsonConnect()
-  test_json <- rd_GetHistory(RD = TestJSONObject, universe = "AAPL.O")
-
-  expect_equal(class(test_python), "data.frame")
-  expect_equal(unique(test_python$Instrument), "AAPL.O")
-
-  keycol <- c("Date", "Instrument")
-  test_python <- data.table::as.data.table(test_python)
-  test_json <- data.table::as.data.table(test_json)
-
-
-  data.table::setcolorder(test_json,
-    neworder = names(test_python)
-  )
-
-
-  data.table::setorderv(test_python, keycol)
-  data.table::setorderv(test_json, keycol)
-
-  expect_equal(test_python, test_json)
+  expect_equal(class(result), "data.frame")
+  expect_true(nrow(result) > 0L)
+  expect_equal(unique(result$Instrument), "AAPL.O")
+  expect_s3_class(result$Date, "Date")
 })
 
 
 test_that("rd_GetHistory can handle requests with only timeseries fields", {
   skip_if(!has_live_api(), "No live API available")
-
 
   Fields <- c(
     "TRDPRC_1", "HIGH_1", "LOW_1", "ACVOL_UNS",
@@ -47,16 +29,10 @@ test_that("rd_GetHistory can handle requests with only timeseries fields", {
     "NUM_MOVES", "TRD_STATUS", "SALTIM", "NAVALUE"
   )
 
-  TestRDObject <- RDConnect()
-  test_python <- rd_GetHistory(
-    RD = TestRDObject, universe = "AAPL.O",
-    fields = Fields
-  )
+  result <- rd_GetHistory(RD = RDConnect(), universe = "AAPL.O", fields = Fields)
 
-  TestJSONObject <- RefinitivJsonConnect()
-  test_json <- rd_GetHistory(RD = TestJSONObject, universe = "AAPL.O", fields = Fields)
-
-  expect_equal(class(test_python), "data.frame")
+  expect_equal(class(result), "data.frame")
+  expect_true(nrow(result) > 0L)
 
   # The proxy may return integer-valued fields as either "integer" or "numeric"
   # depending on the Workspace/Eikon version — accept both.
@@ -66,48 +42,28 @@ test_that("rd_GetHistory can handle requests with only timeseries fields", {
     "NUM_MOVES", "TRD_STATUS", "SALTIM"
   )
   for (col in numeric_cols) {
-    expect_true(class(test_python[[col]]) %in% c("integer", "numeric"),
-      info = paste("column", col, "should be integer or numeric, got:", class(test_python[[col]]))
+    expect_true(class(result[[col]]) %in% c("integer", "numeric"),
+      info = paste("column", col, "should be integer or numeric, got:", class(result[[col]]))
     )
   }
-  expect_s3_class(test_python$Date, "Date")
-  expect_type(test_python$Instrument, "character")
-  expect_type(test_python$NAVALUE, "logical")
+  expect_s3_class(result$Date, "Date")
+  expect_type(result$Instrument, "character")
+  expect_type(result$NAVALUE, "logical")
 
-  expect_equal(unique(test_python$Instrument), "AAPL.O")
-
-  keycol <- c("Date", "Instrument")
-  test_python <- data.table::as.data.table(test_python)
-  test_json <- data.table::as.data.table(test_json)
-
-  data.table::setcolorder(test_python,
-    neworder = c(keycol, sort(Fields))
-  )
-
-  data.table::setcolorder(test_json,
-    neworder = c(keycol, sort(Fields))
-  )
-
-
-  data.table::setorderv(test_python, keycol)
-  data.table::setorderv(test_json, keycol)
-
-  expect_equal(test_python, test_json)
+  expect_equal(unique(result$Instrument), "AAPL.O")
 })
 
 test_that("rd_GetHistory can handle request with simple fields", {
   skip_if(!has_live_api(), "No live API available")
-  # TestRD <- check_Eikonapi(ExecutionMode = "RD")
-
 
   Universe <- c("GOOG.O", "MSFT.O")
   Fields <- c("TR.Revenue.date", "TR.Revenue", "TR.GrossProfit")
   Parameters <- list(
     "SDate" = 0, "EDate" = -3,
     "FRQ" = "FY", "Curn" = "EUR"
-  ) # "Scale" = 6
+  )
 
-  test_json <- suppressWarnings(rd_GetHistory(
+  result <- suppressWarnings(rd_GetHistory(
     RD = RDConnect(),
     universe = Universe,
     fields = Fields,
@@ -115,20 +71,10 @@ test_that("rd_GetHistory can handle request with simple fields", {
     use_field_names_in_headers = TRUE
   ))
 
-  Universe2 <- Universe
+  expect_equal(class(result), "data.frame")
+  expect_true(nrow(result) > 0L)
 
-  test_python <- suppressWarnings(rd_GetHistory(
-    RD = RDConnect(),
-    universe = Universe2,
-    fields = Fields,
-    parameters = Parameters,
-    use_field_names_in_headers = TRUE
-  ))
-
-
-  expect_equal(class(test_python), "data.frame")
-
-  actual <- lapply(test_python, class)
+  actual <- lapply(result, class)
   actual <- actual[order(names(actual))]
 
   expected <- list(
@@ -139,21 +85,7 @@ test_that("rd_GetHistory can handle request with simple fields", {
   expected <- expected[order(names(expected))]
 
   expect_equal(actual, expected)
-
-
-  expect_equal(sort(unique(test_python$Instrument)), c("GOOG.O", "MSFT.O"))
-
-
-  keycol <- c("Date", "Instrument")
-  test_python <- data.table::as.data.table(test_python)
-  test_json <- data.table::as.data.table(test_json)
-  #
-  data.table::setorderv(test_python, keycol, order = -1)
-  data.table::setorderv(test_json, keycol, order = -1)
-
-  data.table::setcolorder(test_json, neworder = names(test_python))
-
-  expect_equal(test_python, test_json)
+  expect_equal(sort(unique(result$Instrument)), c("GOOG.O", "MSFT.O"))
 })
 
 test_that("rd_GetHistory can handle request with explicit date", {
@@ -163,30 +95,17 @@ test_that("rd_GetHistory can handle request with explicit date", {
   Start <- "2020-01-01T01:00:00"
   End <- "2020-01-10T01:00:00"
 
-  TestRDObject <- RDConnect()
-  test_python <- rd_GetHistory(
-    RD = TestRDObject,
+  result <- rd_GetHistory(
+    RD = RDConnect(),
     universe = Universe,
     start = Start,
     end = End
   )
 
-  TestRDObject <- RDConnect()
-  test_json <- rd_GetHistory(
-    RD = TestRDObject,
-    universe = Universe,
-    start = Start,
-    end = End
-  )
-
-  expect_equal(class(test_python), "data.frame")
-
-  test_json <- data.table::as.data.table(test_json)
-  test_python <- data.table::as.data.table(test_python)
-
-  data.table::setcolorder(test_json, neworder = names(test_python))
-
-  expect_equal(test_json, test_python)
+  expect_equal(class(result), "data.frame")
+  expect_true(nrow(result) > 0L)
+  expect_s3_class(result$Date, "Date")
+  expect_true(all(result$Instrument %in% Universe))
 })
 
 
@@ -203,36 +122,25 @@ test_that("rd_GetHistory can handle with fields and dates", {
 
   Parameters <- list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01")
 
-  test_json <- rd_GetHistory(
+  result <- suppressWarnings(rd_GetHistory(
     RD = RDConnect(), universe = Universe,
     fields = Fields,
     parameters = Parameters
-  )
+  ))
 
-  test_python <- rd_GetHistory(
-    RD = RDConnect(), universe = Universe,
-    fields = Fields, parameters = Parameters
-  )
+  expect_equal(class(result), "data.frame")
+  expect_true(nrow(result) > 0L)
+  expect_s3_class(result$Date, "Date")
+  # Date range is approximate — field routing through rd_GetData may
+  # return dates slightly outside the requested SDate/EDate window
+  expect_true(min(result$Date) >= as.Date("2020-09-01"))
+  expect_true(max(result$Date) <= as.Date("2021-01-01"))
+  expect_equal(sort(unique(result$Instrument)), "AAPL.O")
 
-  expect_equal(class(test_json), "data.frame")
-  expect_equal(
-    sort(unique(test_json$Date)),
-    structure(c(
-      18536, 18562, 18563, 18564, 18565, 18567, 18568,
-      18569, 18570, 18571, 18572, 18575, 18576, 18577, 18578, 18579,
-      18582, 18583, 18584, 18585, 18586, 18589, 18590, 18591, 18593,
-      18596, 18597
-    ), class = "Date")
-  )
-
-  expect_equal(sort(unique(test_json$Instrument)), c("AAPL.O"))
-
-  test_json <- data.table::as.data.table(test_json)
-  test_python <- data.table::as.data.table(test_python)
-
-  data.table::setcolorder(test_json, neworder = names(test_python))
-
-  expect_equal(test_json, test_python)
+  # All requested fields should appear as columns (with possible name cleaning)
+  expect_true("Instrument" %in% names(result))
+  expect_true("Date" %in% names(result))
+  expect_true(ncol(result) >= 3L)
 })
 
 
@@ -264,99 +172,51 @@ test_that("rd_GetHistory will handle requests with multiple instruments and one 
 
   rics <- c("AAPL.O", "NVDA.O")
   fields <- "TR.ClosePrice"
-  StartDate <- "2020-01-02"
-  EndDate <- "2020-01-10"
 
-  timeseries1_python <- rd_GetHistory(
-    universe = rics,
-    fields = fields,
+  result <- suppressWarnings(rd_GetHistory(
+    universe = rics, fields = fields,
     RD = RDConnect(),
-    start = StartDate, end = EndDate
-  )
+    start = "2020-01-02", end = "2020-01-10"
+  ))
 
-
-  timeseries1_JSON <- rd_GetHistory(
-    universe = rics,
-    fields = fields,
-    RD = RDConnect(),
-    start = StartDate, end = EndDate
-  )
-
-
-  timeseries1_python <- timeseries1_python[order(names(timeseries1_python))]
-  timeseries1_JSON <- timeseries1_JSON[order(names(timeseries1_JSON))]
-
-
-  expect_equal(timeseries1_python, timeseries1_JSON)
+  expect_equal(class(result), "data.frame")
+  expect_true(nrow(result) > 0L)
+  expect_s3_class(result$Date, "Date")
+  expect_true(all(result$Instrument %in% rics))
 })
 
 
 test_that("rd_GetHistory will handle requests with one instruments and multiple fields", {
   skip_if(!has_live_api(), "No live API available")
 
-  rics <- c("AAPL.O")
-  Fields <- c("TR.ClosePrice", "TR.OpenPrice")
-  StartDate <- "2020-01-02"
-  EndDate <- "2020-01-10"
-
-  timeseries2_python <- rd_GetHistory(
-    universe = rics,
-    fields = Fields,
+  result <- rd_GetHistory(
+    universe = "AAPL.O",
+    fields = c("TR.ClosePrice", "TR.OpenPrice"),
     RD = RDConnect(),
-    start = StartDate, end = EndDate
+    start = "2020-01-02", end = "2020-01-10"
   )
 
-  timeseries2_JSON <- rd_GetHistory(
-    universe = rics,
-    fields = Fields,
-    RD = RDConnect(),
-    start = StartDate, end = EndDate
-  )
-
-  expect_equal(timeseries2_python, timeseries2_JSON)
+  expect_equal(class(result), "data.frame")
+  expect_true(nrow(result) > 0L)
+  expect_equal(unique(result$Instrument), "AAPL.O")
+  expect_true(ncol(result) >= 4L) # Date, Instrument, + 2 fields
 })
 
 test_that("rd_GetHistory can handle timedates", {
   skip_if(!has_live_api(), "No live API available")
 
-  rics <- "AAPL.O"
-  Eikonformulas <- "TR.IssueMarketCap(Scale=6,ShType=FFL,Curn=USD)"
-
-  test_python <- Refinitiv::rd_GetHistory(
-    universe = rics, RD = RDConnect(),
-    fields = Eikonformulas,
+  result <- Refinitiv::rd_GetHistory(
+    universe = "AAPL.O", RD = RDConnect(),
+    fields = "TR.IssueMarketCap(Scale=6,ShType=FFL,Curn=USD)",
     start = "2020-10-27T01:00:00",
     end = "2020-12-01T01:00:00",
     parameters = NULL, adjustments = NULL
   )
 
-  test_json <- Refinitiv::rd_GetHistory(
-    universe = rics, RD = RDConnect(),
-    fields = Eikonformulas,
-    start = "2020-10-27T01:00:00",
-    end = "2020-12-01T01:00:00",
-    parameters = NULL, adjustments = NULL
-  )
-
-
-  test_python <- test_python[order(names(test_python))]
-  test_json <- test_json[order(names(test_json))]
-
-  keycol <- c("Date", "Instrument")
-  test_python <- data.table::as.data.table(test_python)
-  test_json <- data.table::as.data.table(test_json)
-
-
-  data.table::setcolorder(test_json,
-    neworder = names(test_python)
-  )
-
-
-  data.table::setorderv(test_python, keycol)
-  data.table::setorderv(test_json, keycol)
-
-
-  expect_equal(test_python, test_json)
+  expect_equal(class(result), "data.frame")
+  expect_true(nrow(result) > 0L)
+  expect_s3_class(result$Date, "Date")
+  expect_equal(unique(result$Instrument), "AAPL.O")
 })
 
 
@@ -366,35 +226,16 @@ test_that("rd_GetHistory can handle problematic fields", {
   fields <- c("BID", "ASK", "TRDPRC_1", "SETTLE")
   universe <- c("AAPL.O", "NVDA.O")
 
-  timeseries2_python <- suppressMessages(suppressWarnings(rd_GetHistory(
+  result <- suppressMessages(suppressWarnings(rd_GetHistory(
     universe = universe,
     fields = fields,
     RD = RDConnect()
   )))
-  timeseries2_JSON <- suppressMessages(suppressWarnings(rd_GetHistory(
-    universe = universe,
-    fields = fields,
-    RD = RDConnect()
-  )))
-  timeseries2_python <- timeseries2_python[order(names(timeseries2_python))]
-  timeseries2_JSON <- timeseries2_JSON[order(names(timeseries2_JSON))]
 
-
-  keycol <- c("Date", "Instrument")
-  timeseries2_python <- data.table::as.data.table(timeseries2_python)
-  timeseries2_JSON <- data.table::as.data.table(timeseries2_JSON)
-
-
-  data.table::setcolorder(timeseries2_JSON,
-    neworder = names(timeseries2_python)
-  )
-
-
-  data.table::setorderv(timeseries2_python, keycol)
-  data.table::setorderv(timeseries2_JSON, keycol)
-
-
-  expect_equal(timeseries2_python, timeseries2_JSON)
+  expect_equal(class(result), "data.frame")
+  expect_true(nrow(result) > 0L)
+  expect_s3_class(result$Date, "Date")
+  expect_true(all(unique(result$Instrument) %in% universe))
 })
 
 

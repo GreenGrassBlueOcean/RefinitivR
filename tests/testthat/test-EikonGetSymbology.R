@@ -152,6 +152,107 @@ test_that("EikonGetSymbology chunks multiple symbols", {
   expect_gt(captured_n_chunks, 1L)
 })
 
+test_that("EikonGetSymbology combines multi-chunk results (STOXX-3 fix)", {
+  local_refinitiv_state()
+  withr::local_options(list(
+    eikon_port = 9000L,
+    refinitiv_base_url = "http://lh",
+    .RefinitivPyModuleName = "JSON",
+    .RefinitivAPI = "JSON"
+  ))
+  refinitiv_vault_set("api_key", "dummy_key")
+  RD <- RefinitivJsonConnect("dummy_key")
+
+  # Simulate 2 chunks of bestMatch results
+  chunk1 <- list(mappedSymbols = list(
+    list(symbol = "AAPL.O", bestMatch = list(ISIN = "US0378331005")),
+    list(symbol = "MSFT.O", bestMatch = list(ISIN = "US5949181045"))
+  ))
+  chunk2 <- list(mappedSymbols = list(
+    list(symbol = "GOOG.O", bestMatch = list(ISIN = "US02079K3059")),
+    list(symbol = "AMZN.O", bestMatch = list(ISIN = "US0231351067"))
+  ))
+
+  mockery::stub(EikonGetSymbology, "chunked_download", function(...) {
+    list(chunk1, chunk2)
+  })
+
+  result <- EikonGetSymbology(
+    EikonObject = RD,
+    symbol = c("AAPL.O", "MSFT.O", "GOOG.O", "AMZN.O"),
+    from_symbol_type = "RIC",
+    to_symbol_type = "ISIN",
+    cache = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  # All 4 symbols should be present — previously only chunk1 was returned
+
+  expect_equal(nrow(result), 4L)
+  expect_true(all(c("AAPL.O", "MSFT.O", "GOOG.O", "AMZN.O") %in% result$RIC))
+  expect_true(all(c("US0378331005", "US5949181045", "US02079K3059", "US0231351067") %in% result$ISIN))
+})
+
+test_that("EikonGetSymbology handles mixed success/failure chunks", {
+  local_refinitiv_state()
+  withr::local_options(list(
+    eikon_port = 9000L,
+    refinitiv_base_url = "http://lh",
+    .RefinitivPyModuleName = "JSON",
+    .RefinitivAPI = "JSON"
+  ))
+  refinitiv_vault_set("api_key", "dummy_key")
+  RD <- RefinitivJsonConnect("dummy_key")
+
+  # Chunk 1 succeeds, chunk 2 returns NA (failed)
+  chunk1 <- list(mappedSymbols = list(
+    list(symbol = "AAPL.O", bestMatch = list(ISIN = "US0378331005"))
+  ))
+
+  mockery::stub(EikonGetSymbology, "chunked_download", function(...) {
+    list(chunk1, NA)
+  })
+
+  result <- EikonGetSymbology(
+    EikonObject = RD,
+    symbol = c("AAPL.O", "FAIL.O"),
+    from_symbol_type = "RIC",
+    to_symbol_type = "ISIN",
+    cache = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  expect_equal(nrow(result), 1L)
+  expect_equal(result$RIC, "AAPL.O")
+})
+
+test_that("EikonGetSymbology all-NA chunks returns empty data.frame", {
+  local_refinitiv_state()
+  withr::local_options(list(
+    eikon_port = 9000L,
+    refinitiv_base_url = "http://lh",
+    .RefinitivPyModuleName = "JSON",
+    .RefinitivAPI = "JSON"
+  ))
+  refinitiv_vault_set("api_key", "dummy_key")
+  RD <- RefinitivJsonConnect("dummy_key")
+
+  mockery::stub(EikonGetSymbology, "chunked_download", function(...) {
+    list(NA, NA)
+  })
+
+  result <- EikonGetSymbology(
+    EikonObject = RD,
+    symbol = c("FAIL1.O", "FAIL2.O"),
+    from_symbol_type = "RIC",
+    to_symbol_type = "ISIN",
+    cache = FALSE
+  )
+
+  expect_s3_class(result, "data.frame")
+  expect_equal(nrow(result), 0L)
+})
+
 test_that("EikonGetSymbology uses retry with max_attempts = 1L (A5 fix)", {
   local_refinitiv_state()
   withr::local_options(list(

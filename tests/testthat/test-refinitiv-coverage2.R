@@ -493,11 +493,6 @@ test_that("EikonGetSymbology filters NA chunks in non-raw mode", {
   RD <- make_mock_connection()
 
   mockery::stub(EikonGetSymbology, "chunked_download", function(...) list(NA))
-  mockery::stub(EikonGetSymbology, "ProcessSymbology", function(x, ...) {
-    # After NA-to-NULL conversion, should receive list(NULL)
-    expect_null(x[[1]])
-    data.frame(symbol = character(0), ISIN = character(0))
-  })
 
   result <- EikonGetSymbology(
     EikonObject = RD, symbol = "AAPL.O",
@@ -505,6 +500,7 @@ test_that("EikonGetSymbology filters NA chunks in non-raw mode", {
     raw_output = FALSE, cache = FALSE
   )
   expect_s3_class(result, "data.frame")
+  expect_equal(nrow(result), 0L)
 })
 
 # ═══════════════════════════════════════════════════════════════════════════
