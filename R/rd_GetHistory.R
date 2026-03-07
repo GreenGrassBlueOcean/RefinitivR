@@ -152,7 +152,6 @@ rd_GetHistory <- function(
         "Fields should not contain Tr.Eikonformula.date  and use_field_names_in_headers = FALSE for use in GetHistory function removing",
         fields[FieldsCheck], "you will receive than multiple columns that have the same name (Date) and is therefore forbidden"
       ))
-      fields <- fields[!FieldsCheck]
     }
   }
 
@@ -181,12 +180,6 @@ rd_GetHistory <- function(
         ))
       }
     }
-  }
-
-
-  if (is.null(count) && is.null(start) && is.null(end)) {
-    message("No count, start or end date supplied, defaulting to count = 20")
-    count <- 20L
   }
 
 

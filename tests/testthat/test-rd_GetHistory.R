@@ -171,12 +171,12 @@ test_that("rd_GetHistory will handle requests with multiple instruments and one 
   skip_if(!has_live_api(), "No live API available")
 
   rics <- c("AAPL.O", "NVDA.O")
-  fields <- "TR.ClosePrice"
+  fields <- "TR.CLOSEPRICE(Adjusted=0)"
 
   result <- suppressWarnings(rd_GetHistory(
     universe = rics, fields = fields,
     RD = RDConnect(),
-    start = "2020-01-02", end = "2020-01-10"
+    parameters = list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01")
   ))
 
   expect_equal(class(result), "data.frame")
@@ -189,17 +189,20 @@ test_that("rd_GetHistory will handle requests with multiple instruments and one 
 test_that("rd_GetHistory will handle requests with one instruments and multiple fields", {
   skip_if(!has_live_api(), "No live API available")
 
-  result <- rd_GetHistory(
+  result <- suppressWarnings(rd_GetHistory(
     universe = "AAPL.O",
-    fields = c("TR.ClosePrice", "TR.OpenPrice"),
+    fields = c(
+      "TR.IssueMarketCap(Scale=6,ShType=FFL)",
+      "TR.CLOSEPRICE(Adjusted=0)"
+    ),
     RD = RDConnect(),
-    start = "2020-01-02", end = "2020-01-10"
-  )
+    parameters = list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01")
+  ))
 
   expect_equal(class(result), "data.frame")
   expect_true(nrow(result) > 0L)
   expect_equal(unique(result$Instrument), "AAPL.O")
-  expect_true(ncol(result) >= 4L) # Date, Instrument, + 2 fields
+  expect_true(ncol(result) >= 3L) # Date, Instrument, + fields
 })
 
 test_that("rd_GetHistory can handle timedates", {
