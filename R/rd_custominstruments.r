@@ -75,9 +75,6 @@ CustomInstrumentUDCBuilder <- function(
   rollover,
   spreadAdjustment
 ) {
-  UDC <- NULL
-  UDC <- UDC |> structure(class = "Refinitiv_udc")
-
   return("This function is not implemented yet")
 
   # user defined continuation

@@ -6,9 +6,8 @@ library(mockery)
 # ── CustomInstrumentUDCBuilder (lines 78-79, 81) ────────────────────────────
 
 test_that("CustomInstrumentUDCBuilder returns not-implemented message", {
-  result <- expect_warning(
-    CustomInstrumentUDCBuilder(root = "CC", rollover = "volume", spreadAdjustment = "arithmetic"),
-    "Calling.*structure\\(NULL"
+  result <- CustomInstrumentUDCBuilder(
+    root = "CC", rollover = "volume", spreadAdjustment = "arithmetic"
   )
   expect_equal(result, "This function is not implemented yet")
 })
