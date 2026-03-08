@@ -78,6 +78,14 @@
     # progress_msg() defaults to TRUE
   }
 
+  # Cache package version for fast cache key generation (avoids repeated
+  # DESCRIPTION file reads — see cache.R)
+  pkg <- if (is.null(pkgname)) "Refinitiv" else pkgname
+  .pkgglobalenv$pkg_version <- tryCatch(
+    as.character(utils::packageVersion(pkg)),
+    error = function(e) NULL
+  )
+
   # Clear any stale token options from previous sessions / older package
   # versions.  Tokens now live exclusively in the vault.
   options(

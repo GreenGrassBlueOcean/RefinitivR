@@ -81,14 +81,13 @@ rd_get_news_headlines <- function(RDObject = rd_connection(),
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 60)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key(
+    .cl <- cache_lookup(
       "rd_get_news_headlines", query, limit, sort, relevancy,
       cursor, dateFrom, dateTo, raw_output
     )
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    if (.cl$found) {
       if (debug) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
@@ -160,7 +159,7 @@ rd_get_news_headlines <- function(RDObject = rd_connection(),
 
   # ── Cache store (skip errors / NULL) ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   return(ReturnElement)
@@ -359,11 +358,10 @@ rd_get_news_story <- function(RDObject = rd_connection(),
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = Inf)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key("rd_get_news_story", story_id, raw_output, renderHTML)
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    .cl <- cache_lookup("rd_get_news_story", story_id, raw_output, renderHTML)
+    if (.cl$found) {
       if (debug) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
@@ -406,7 +404,7 @@ rd_get_news_story <- function(RDObject = rd_connection(),
   # -- If raw_output=TRUE, return the named raw list now --
   if (raw_output) {
     if (!isFALSE(ttl) && !is.null(NewsList) && !inherits(NewsList, "try-error")) {
-      cache_set(.ck, NewsList, ttl)
+      cache_set(.cl$key, NewsList, ttl)
     }
     return(NewsList)
   }
@@ -516,7 +514,7 @@ rd_get_news_story <- function(RDObject = rd_connection(),
 
   # ── Cache store (skip errors / NULL) ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   return(ReturnElement)
@@ -617,11 +615,10 @@ rd_get_top_news <- function(RDObject = rd_connection(),
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 60)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key("rd_get_top_news", group, page, raw_output)
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    .cl <- cache_lookup("rd_get_top_news", group, page, raw_output)
+    if (.cl$found) {
       if (debug) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
@@ -636,7 +633,7 @@ rd_get_top_news <- function(RDObject = rd_connection(),
   if (is.null(response$data)) {
     if (debug) message("No data found in /top-news response.")
     ReturnElement <- if (raw_output) list() else data.frame()
-    if (!isFALSE(ttl)) cache_set(.ck, ReturnElement, ttl)
+    if (!isFALSE(ttl)) cache_set(.cl$key, ReturnElement, ttl)
     return(ReturnElement)
   }
 
@@ -695,7 +692,7 @@ rd_get_top_news <- function(RDObject = rd_connection(),
   if (nrow(dt_pages) == 0) {
     if (debug) message("No matching top news pages after filtering.")
     ReturnElement <- if (raw_output) list() else data.frame()
-    if (!isFALSE(ttl)) cache_set(.ck, ReturnElement, ttl)
+    if (!isFALSE(ttl)) cache_set(.cl$key, ReturnElement, ttl)
     return(ReturnElement)
   }
 
@@ -725,7 +722,7 @@ rd_get_top_news <- function(RDObject = rd_connection(),
   }
 
   if (raw_output) {
-    if (!isFALSE(ttl) && !is.null(top_news_dict)) cache_set(.ck, top_news_dict, ttl)
+    if (!isFALSE(ttl) && !is.null(top_news_dict)) cache_set(.cl$key, top_news_dict, ttl)
     return(top_news_dict)
   }
 
@@ -769,7 +766,7 @@ rd_get_top_news <- function(RDObject = rd_connection(),
 
   # ── Cache store ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   return(ReturnElement)

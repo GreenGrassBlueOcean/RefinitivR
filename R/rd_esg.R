@@ -79,11 +79,10 @@ rd_GetESG <- function(RDObject = rd_connection(),
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 300)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key("rd_GetESG", universe, view, start, end, raw_output)
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    .cl <- cache_lookup("rd_GetESG", universe, view, start, end, raw_output)
+    if (.cl$found) {
       if (debug) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
@@ -113,7 +112,7 @@ rd_GetESG <- function(RDObject = rd_connection(),
   # ── Cache store ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) &&
     !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   ReturnElement

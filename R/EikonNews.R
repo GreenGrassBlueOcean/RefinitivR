@@ -50,14 +50,13 @@ EikonGetNewsHeadlines <- function(
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 60)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key(
+    .cl <- cache_lookup(
       "EikonGetNewsHeadlines", query, count, repository,
       date_from, date_to, raw_output
     )
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    if (.cl$found) {
       if (debug) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
@@ -103,7 +102,7 @@ EikonGetNewsHeadlines <- function(
 
   # ── Cache store (skip errors / NULL) ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   return(ReturnElement)
@@ -163,11 +162,10 @@ EikonGetNewsStory <- function(
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = Inf)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key("EikonGetNewsStory", story_id, raw_output, renderHTML)
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    .cl <- cache_lookup("EikonGetNewsStory", story_id, raw_output, renderHTML)
+    if (.cl$found) {
       if (debug) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
@@ -280,7 +278,7 @@ EikonGetNewsStory <- function(
 
   # ── Cache store (skip errors / NULL) ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   return(ReturnElement)

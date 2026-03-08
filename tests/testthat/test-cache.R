@@ -54,54 +54,52 @@ test_that("sort_named_recursive handles mixed named/unnamed lists", {
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# cache_key
+# cache_key_canonical (formerly cache_key)
 # ══════════════════════════════════════════════════════════════════════════════
-test_that("cache_key is deterministic", {
-  k1 <- Refinitiv:::cache_key("fn", "AAPL.O", list(Curn = "USD"))
-  k2 <- Refinitiv:::cache_key("fn", "AAPL.O", list(Curn = "USD"))
+test_that("cache_key_canonical is deterministic", {
+  k1 <- Refinitiv:::cache_key_canonical("fn", "AAPL.O", list(Curn = "USD"))
+  k2 <- Refinitiv:::cache_key_canonical("fn", "AAPL.O", list(Curn = "USD"))
   expect_identical(k1, k2)
 })
 
-test_that("cache_key is order-independent for named list args", {
-  k1 <- Refinitiv:::cache_key("fn", list(a = 1, b = 2))
-  k2 <- Refinitiv:::cache_key("fn", list(b = 2, a = 1))
+test_that("cache_key_canonical is order-independent for named list args", {
+  k1 <- Refinitiv:::cache_key_canonical("fn", list(a = 1, b = 2))
+  k2 <- Refinitiv:::cache_key_canonical("fn", list(b = 2, a = 1))
   expect_identical(k1, k2)
 })
 
-test_that("cache_key differs for different function names", {
-  k1 <- Refinitiv:::cache_key("fn_a", "AAPL.O")
-  k2 <- Refinitiv:::cache_key("fn_b", "AAPL.O")
+test_that("cache_key_canonical differs for different function names", {
+  k1 <- Refinitiv:::cache_key_canonical("fn_a", "AAPL.O")
+  k2 <- Refinitiv:::cache_key_canonical("fn_b", "AAPL.O")
   expect_false(k1 == k2)
 })
 
-test_that("cache_key differs for different arguments", {
-  k1 <- Refinitiv:::cache_key("fn", "AAPL.O")
-  k2 <- Refinitiv:::cache_key("fn", "MSFT.O")
+test_that("cache_key_canonical differs for different arguments", {
+  k1 <- Refinitiv:::cache_key_canonical("fn", "AAPL.O")
+  k2 <- Refinitiv:::cache_key_canonical("fn", "MSFT.O")
   expect_false(k1 == k2)
 })
 
-test_that("cache_key is order-invariant for character vectors", {
-  k1 <- Refinitiv:::cache_key("fn", c("AAPL.O", "MSFT.O"))
-  k2 <- Refinitiv:::cache_key("fn", c("MSFT.O", "AAPL.O"))
+test_that("cache_key_canonical is order-invariant for character vectors", {
+  k1 <- Refinitiv:::cache_key_canonical("fn", c("AAPL.O", "MSFT.O"))
+  k2 <- Refinitiv:::cache_key_canonical("fn", c("MSFT.O", "AAPL.O"))
   expect_true(k1 == k2)
 })
 
-test_that("cache_key handles NULL args", {
-  k1 <- Refinitiv:::cache_key("fn", NULL, "x")
-  k2 <- Refinitiv:::cache_key("fn", NULL, "x")
+test_that("cache_key_canonical handles NULL args", {
+  k1 <- Refinitiv:::cache_key_canonical("fn", NULL, "x")
+  k2 <- Refinitiv:::cache_key_canonical("fn", NULL, "x")
   expect_identical(k1, k2)
 })
 
-test_that("cache_key includes package version (#22)", {
-  # Two keys with same fn_name + args must be identical (deterministic)
-  k1 <- Refinitiv:::cache_key("fn", "AAPL.O")
-  k2 <- Refinitiv:::cache_key("fn", "AAPL.O")
+test_that("cache_key_canonical includes package version (#22)", {
+  k1 <- Refinitiv:::cache_key_canonical("fn", "AAPL.O")
+  k2 <- Refinitiv:::cache_key_canonical("fn", "AAPL.O")
   expect_identical(k1, k2)
 
-  # Verify the version is actually part of the hash by computing it manually
-  # with a different version string and confirming the hash differs
+  # Verify the version is actually part of the hash
   args <- list("AAPL.O")
-  real_ver <- as.character(utils::packageVersion("Refinitiv"))
+  real_ver <- Refinitiv:::get_pkg_version()
   fake_ver <- "99.99.99"
   hash_real <- rlang::hash(c(list("fn", real_ver), args))
   hash_fake <- rlang::hash(c(list("fn", fake_ver), args))

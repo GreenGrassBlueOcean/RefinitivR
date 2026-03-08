@@ -220,4 +220,119 @@ test_that("chunked_download backoff only fires for failed rounds", {
   expect_true(backoff_sleeps[1] >= 0.5 && backoff_sleeps[1] <= 1.5)
 })
 
+# ══════════════════════════════════════════════════════════════════════════════
+# Per-chunk caching
+# ══════════════════════════════════════════════════════════════════════════════
+
+test_that("chunked_download uses per-chunk cache on second call", {
+  env <- Refinitiv:::.refinitiv_cache
+  rm(list = ls(env, all.names = TRUE), envir = env)
+
+  call_count <- 0L
+  fetch_fn <- function(j) {
+    call_count <<- call_count + 1L
+    paste0("result_", j)
+  }
+
+  keys <- c("chunk_test_1", "chunk_test_2", "chunk_test_3")
+  key_fn <- function(j) keys[j]
+
+  # First call: all 3 chunks downloaded
+  res1 <- Refinitiv:::chunked_download(
+    n_chunks = 3L,
+    fetch_fn = fetch_fn,
+    chunk_cache_key_fn = key_fn,
+    cache_ttl = 60,
+    sleep = 0,
+    verbose = FALSE
+  )
+  expect_equal(call_count, 3L)
+  expect_equal(res1, list("result_1", "result_2", "result_3"))
+
+  # Second call: all from cache, fetch_fn not called
+  call_count <- 0L
+  res2 <- Refinitiv:::chunked_download(
+    n_chunks = 3L,
+    fetch_fn = fetch_fn,
+    chunk_cache_key_fn = key_fn,
+    cache_ttl = 60,
+    sleep = 0,
+    verbose = FALSE
+  )
+  expect_equal(call_count, 0L)
+  expect_equal(res2, list("result_1", "result_2", "result_3"))
+
+  rm(list = ls(env, all.names = TRUE), envir = env)
+})
+
+test_that("chunked_download partial cache hit downloads only missing chunks", {
+  env <- Refinitiv:::.refinitiv_cache
+  rm(list = ls(env, all.names = TRUE), envir = env)
+
+  # Pre-cache chunks 1 and 3
+  Refinitiv:::cache_set("partial_1", "cached_1", 60)
+  Refinitiv:::cache_set("partial_3", "cached_3", 60)
+
+  downloaded_indices <- integer(0)
+  fetch_fn <- function(j) {
+    downloaded_indices <<- c(downloaded_indices, j)
+    paste0("fresh_", j)
+  }
+
+  key_fn <- function(j) paste0("partial_", j)
+
+  res <- Refinitiv:::chunked_download(
+    n_chunks = 3L,
+    fetch_fn = fetch_fn,
+    chunk_cache_key_fn = key_fn,
+    cache_ttl = 60,
+    sleep = 0,
+    verbose = FALSE
+  )
+
+  # Only chunk 2 should have been downloaded
+  expect_equal(downloaded_indices, 2L)
+  expect_equal(res, list("cached_1", "fresh_2", "cached_3"))
+
+  rm(list = ls(env, all.names = TRUE), envir = env)
+})
+
+test_that("chunked_download without cache params works unchanged", {
+  call_count <- 0L
+  fetch_fn <- function(j) {
+    call_count <<- call_count + 1L
+    j * 10
+  }
+
+  res <- Refinitiv:::chunked_download(
+    n_chunks = 2L,
+    fetch_fn = fetch_fn,
+    sleep = 0,
+    verbose = FALSE
+  )
+  expect_equal(call_count, 2L)
+  expect_equal(res, list(10, 20))
+})
+
+test_that("chunked_download cache_ttl = FALSE disables chunk caching", {
+  env <- Refinitiv:::.refinitiv_cache
+  rm(list = ls(env, all.names = TRUE), envir = env)
+
+  fetch_fn <- function(j) paste0("val_", j)
+  key_fn <- function(j) paste0("nope_", j)
+
+  Refinitiv:::chunked_download(
+    n_chunks = 2L,
+    fetch_fn = fetch_fn,
+    chunk_cache_key_fn = key_fn,
+    cache_ttl = FALSE,
+    sleep = 0,
+    verbose = FALSE
+  )
+
+  # Nothing should be cached
+  expect_false(exists("nope_1", envir = env, inherits = FALSE))
+  expect_false(exists("nope_2", envir = env, inherits = FALSE))
+})
+
 dump_refinitiv_options("test-chunked_download")

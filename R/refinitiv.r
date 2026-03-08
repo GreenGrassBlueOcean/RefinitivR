@@ -335,14 +335,13 @@ EikonGetTimeseries <- function(
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 300)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key(
+    .cl <- cache_lookup(
       "EikonGetTimeseries", rics, interval, calender, corax,
       fields, start_date, end_date, cast, raw_output
     )
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    if (.cl$found) {
       if (verbose) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
@@ -442,7 +441,7 @@ EikonGetTimeseries <- function(
 
   # ── Cache store (skip errors / NULL) ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   return(ReturnElement)
@@ -524,22 +523,40 @@ EikonGetData <- function(
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 300)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key(
+    .cl <- cache_lookup(
       "EikonGetData", rics, Eikonformulas, Parameters,
       raw_output, SpaceConvertor
     )
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    if (.cl$found) {
       if (verbose) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
   try(EikonObject$set_app_key(app_key = refinitiv_vault_get("api_key")), silent = TRUE)
 
-  # Divide RICS in chunks to satisfy api limits
-  ChunckedRics <- EikonChunker(RICS = rics, Eikonfields = Eikonformulas, MaxRicsperChunk = 200, verbose = verbose)
+  # Sort RICs for deterministic chunk boundaries when caching is active
+  chunk_rics <- if (!isFALSE(ttl) && length(rics) > 1L) {
+    clean <- rics[!is.na(rics)]
+    sort(clean, method = if (length(clean) > 1000L) "radix" else "shell")
+  } else {
+    rics
+  }
 
+  # Divide RICS in chunks to satisfy api limits
+  ChunckedRics <- EikonChunker(RICS = chunk_rics, Eikonfields = Eikonformulas, MaxRicsperChunk = 200, verbose = verbose)
+
+  # Per-chunk cache key function
+  chunk_cache_key_fn <- NULL
+  if (!isFALSE(ttl)) {
+    shared_parts <- list(
+      "EikonGetData_chunk", get_pkg_version(),
+      Eikonformulas, Parameters, SpaceConvertor
+    )
+    chunk_cache_key_fn <- function(j) {
+      rlang::hash(c(shared_parts, list(ChunckedRics[[j]])))
+    }
+  }
 
   eikon_data_is_success <- function(x) {
     !identical(x, NA) && !identical(x, structure(list(), names = character(0)))
@@ -575,7 +592,9 @@ EikonGetData <- function(
     verbose = verbose,
     caller_label = "EikonGetData",
     chunk_sizes = lengths(ChunckedRics),
-    fail_message = "EikonGetData downloading data failed"
+    fail_message = "EikonGetData downloading data failed",
+    chunk_cache_key_fn = chunk_cache_key_fn,
+    cache_ttl = ttl
   )
 
 
@@ -594,7 +613,7 @@ EikonGetData <- function(
 
   # ── Cache store (skip errors / NULL) ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   return(ReturnElement)
@@ -679,21 +698,40 @@ EikonGetSymbology <- function(
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 3600)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key(
+    .cl <- cache_lookup(
       "EikonGetSymbology", symbol, from_symbol_type, to_symbol_type,
       bestMatch, raw_output
     )
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    if (.cl$found) {
       if (verbose) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
   try(EikonObject$set_app_key(app_key = refinitiv_vault_get("api_key")), silent = TRUE)
 
+  # Sort symbols for deterministic chunk boundaries when caching is active
+  chunk_symbols <- if (!isFALSE(ttl) && length(symbol) > 1L) {
+    clean <- symbol[!is.na(symbol)]
+    sort(clean, method = if (length(clean) > 1000L) "radix" else "shell")
+  } else {
+    symbol
+  }
+
   # Divide symbols in chunks to satisfy api limits
-  ChunckedSymbols <- EikonChunker(RICS = symbol, Eikonfields = to_symbol_type, verbose = verbose)
+  ChunckedSymbols <- EikonChunker(RICS = chunk_symbols, Eikonfields = to_symbol_type, verbose = verbose)
+
+  # Per-chunk cache key function
+  chunk_cache_key_fn <- NULL
+  if (!isFALSE(ttl)) {
+    shared_parts <- list(
+      "EikonGetSymbology_chunk", get_pkg_version(),
+      from_symbol_type, to_symbol_type, bestMatch
+    )
+    chunk_cache_key_fn <- function(j) {
+      rlang::hash(c(shared_parts, list(ChunckedSymbols[[j]])))
+    }
+  }
 
   EikonSymbologyList <- chunked_download(
     n_chunks = length(ChunckedSymbols),
@@ -728,7 +766,9 @@ EikonGetSymbology <- function(
     verbose = verbose,
     caller_label = "EikonGetSymbology",
     chunk_sizes = lengths(ChunckedSymbols),
-    fail_message = "EikonGetSymbology downloading data failed for one or more symbols"
+    fail_message = "EikonGetSymbology downloading data failed for one or more symbols",
+    chunk_cache_key_fn = chunk_cache_key_fn,
+    cache_ttl = ttl
   )
 
 
@@ -757,7 +797,7 @@ EikonGetSymbology <- function(
 
   # ── Cache store (skip errors / NULL) ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   return(ReturnElement)

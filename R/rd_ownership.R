@@ -183,14 +183,13 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 300)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key(
+    .cl <- cache_lookup(
       "rd_GetOwnership", universe, view, stat_type, limit,
       sort_order, frequency, start, end, count, raw_output
     )
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    if (.cl$found) {
       if (debug) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
@@ -282,7 +281,7 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
   # ── Cache store ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) &&
     !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   ReturnElement

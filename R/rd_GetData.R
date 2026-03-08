@@ -64,22 +64,42 @@ rd_GetData <- function(
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 300)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key(
+    .cl <- cache_lookup(
       "rd_GetData", rics, Eikonformulas, Parameters,
       raw_output, SpaceConvertor, use_field_names_in_headers, SyncFields
     )
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
+    if (.cl$found) {
       if (verbose) message("[RefinitivR] Cache hit")
-      return(.hit$value)
+      return(.cl$value)
     }
   }
 
   # Make sure that connection object has api key
   try(RDObject$set_app_key(app_key = refinitiv_vault_get("api_key")), silent = TRUE)
 
+  # Sort RICs for deterministic chunk boundaries when caching is active
+  chunk_rics <- if (!isFALSE(ttl) && length(rics) > 1L) {
+    clean <- rics[!is.na(rics)]
+    sort(clean, method = if (length(clean) > 1000L) "radix" else "shell")
+  } else {
+    rics
+  }
+
   # Divide RICS in chunks to satisfy api limits
-  ChunckedRics <- EikonChunker(RICS = rics, Eikonfields = Eikonformulas, verbose = verbose)
+  ChunckedRics <- EikonChunker(RICS = chunk_rics, Eikonfields = Eikonformulas, verbose = verbose)
+
+  # Per-chunk cache key function (shared params pre-hashed once)
+  chunk_cache_key_fn <- NULL
+  if (!isFALSE(ttl)) {
+    shared_parts <- list(
+      "rd_GetData_chunk", get_pkg_version(),
+      Eikonformulas, Parameters, SpaceConvertor,
+      use_field_names_in_headers, SyncFields
+    )
+    chunk_cache_key_fn <- function(j) {
+      rlang::hash(c(shared_parts, list(ChunckedRics[[j]])))
+    }
+  }
 
   EikonDataList <- chunked_download(
     n_chunks = length(ChunckedRics),
@@ -99,7 +119,9 @@ rd_GetData <- function(
     verbose = verbose,
     caller_label = "rd_GetData",
     chunk_sizes = lengths(ChunckedRics),
-    fail_message = "rd_GetData downloading data failed"
+    fail_message = "rd_GetData downloading data failed",
+    chunk_cache_key_fn = chunk_cache_key_fn,
+    cache_ttl = ttl
   )
 
 
@@ -117,7 +139,7 @@ rd_GetData <- function(
 
   # ── Cache store (skip errors / NULL) ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   return(ReturnElement)

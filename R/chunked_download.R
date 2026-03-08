@@ -80,7 +80,9 @@ chunked_download <- function(n_chunks,
                              verbose = getOption("refinitiv_progress", TRUE),
                              fail_message = "downloading data failed",
                              caller_label = NULL,
-                             chunk_sizes = NULL) {
+                             chunk_sizes = NULL,
+                             chunk_cache_key_fn = NULL,
+                             cache_ttl = FALSE) {
   on_failure <- match.arg(on_failure)
 
   # Resolve progress mode from the verbose parameter
@@ -88,9 +90,10 @@ chunked_download <- function(n_chunks,
   show_progress <- !isFALSE(mode)
   show_verbose   <- identical(mode, "verbose")
   # One-chunk rule: skip routine progress when n_chunks == 1 and mode is
-
   # plain TRUE (not "verbose")
   one_chunk_quiet <- (n_chunks == 1L && isTRUE(mode))
+
+  use_chunk_cache <- !isFALSE(cache_ttl) && !is.null(chunk_cache_key_fn)
 
   results <- as.list(rep(NA, n_chunks))
 
@@ -103,6 +106,21 @@ chunked_download <- function(n_chunks,
 
   # Prefix for labelled messages
   lbl <- if (!is.null(caller_label)) paste0(caller_label, ": ") else ""
+
+  # ── Per-chunk cache: check all chunks up front ──
+  if (use_chunk_cache) {
+    for (j in seq_len(n_chunks)) {
+      ck <- chunk_cache_key_fn(j)
+      hit <- cache_get(ck)
+      if (hit$found) {
+        results[[j]] <- hit$value
+        coordinator$success[j] <- TRUE
+        if (show_progress && !one_chunk_quiet) {
+          progress_msg(lbl, "Chunk ", j, "/", n_chunks, " [cached]")
+        }
+      }
+    }
+  }
 
   t_start <- proc.time()[["elapsed"]]
 
@@ -117,6 +135,11 @@ chunked_download <- function(n_chunks,
 
       if (is_success(results[[j]])) {
         coordinator$success[j] <- TRUE
+
+        # Cache this chunk on success
+        if (use_chunk_cache) {
+          cache_set(chunk_cache_key_fn(j), results[[j]], cache_ttl)
+        }
 
         # Per-chunk success message (skip for one-chunk-quiet)
         if (show_progress && !one_chunk_quiet) {
@@ -170,8 +193,15 @@ chunked_download <- function(n_chunks,
       warning(fail_message)
     }
   } else if (show_progress && !one_chunk_quiet) {
+    n_from_cache <- sum(coordinator$success) - sum(coordinator$retries > 0L | !coordinator$success)
+    cache_note <- if (use_chunk_cache && n_from_cache > 0L) {
+      paste0(" (", n_from_cache, " from cache)")
+    } else {
+      ""
+    }
     progress_msg(lbl, "Download complete: ", n_chunks, "/", n_chunks,
-                 " chunks succeeded in ", sprintf("%.1fs", total_elapsed))
+                 " chunks succeeded in ", sprintf("%.1fs", total_elapsed),
+                 cache_note)
   }
 
   results

@@ -91,12 +91,11 @@ test_that("rd_GetHistoricalPricing stores result in cache (line 258)", {
   )
 
   # Verify cache was populated
-  ck <- Refinitiv:::cache_key(
+  cl <- Refinitiv:::cache_lookup(
     "rd_GetHistoricalPricing", "AAPL.O", "P1D",
     NULL, NULL, NULL, 1L, NULL, NULL, "."
   )
-  hit <- Refinitiv:::cache_get(ck)
-  expect_true(hit$found)
+  expect_true(cl$found)
 })
 
 

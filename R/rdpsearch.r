@@ -90,10 +90,9 @@ RDPget_search_metadata <- function(RDP = rd_connection(), searchView = NULL, cac
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 3600)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key("RDPget_search_metadata", searchView)
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
-      return(.hit$value)
+    .cl <- cache_lookup("RDPget_search_metadata", searchView)
+    if (.cl$found) {
+      return(.cl$value)
     }
   }
 
@@ -107,7 +106,7 @@ RDPget_search_metadata <- function(RDP = rd_connection(), searchView = NULL, cac
 
   # ── Cache store (skip errors / NULL) ──
   if (!isFALSE(ttl) && !is.null(r_df) && !inherits(r_df, "try-error")) {
-    cache_set(.ck, r_df, ttl)
+    cache_set(.cl$key, r_df, ttl)
   }
 
   return(r_df)
@@ -227,14 +226,13 @@ RDPsearch <- function(
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 300)
   if (!isFALSE(ttl)) {
-    .ck <- cache_key(
+    .cl <- cache_lookup(
       "RDPsearch", query, view, select, top, filter, boost,
       order_by, group_by, group_count, navigators, features,
       SpaceConvertor
     )
-    .hit <- cache_get(.ck)
-    if (.hit$found) {
-      return(.hit$value)
+    if (.cl$found) {
+      return(.cl$value)
     }
   }
 
@@ -295,7 +293,7 @@ RDPsearch <- function(
 
   # ── Cache store (skip errors / NULL) ──
   if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
-    cache_set(.ck, ReturnElement, ttl)
+    cache_set(.cl$key, ReturnElement, ttl)
   }
 
   return(ReturnElement)
