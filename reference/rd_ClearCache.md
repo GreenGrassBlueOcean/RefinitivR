@@ -1,6 +1,7 @@
 # Clear the RefinitivR Session Cache
 
-Removes all cached API responses from the current R session.
+Removes all cached API responses, fast-key aliases, and resets the
+cached package version from the current R session.
 
 ## Usage
 
