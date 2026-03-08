@@ -23,5 +23,5 @@ A list with elements `total_keys`, `active_keys`, `expired_keys`, and
 
 ``` r
 rd_CacheInfo()
-#> [RefinitivR] Cache: 0 active, 0 expired, ~0.00 MB
+#> [RefinitivR] Cache: 0 active, 0 expired, 0 aliases, ~0.00 MB
 ```
