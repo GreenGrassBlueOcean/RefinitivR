@@ -184,6 +184,104 @@ test_that("get_interday_custominstrument_pricing includes adjustments/fields/ses
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# NULL optional params: adjustments, fields, sessions stripped from endpoint
+# ═══════════════════════════════════════════════════════════════════════════════
+
+test_that("get_historical_pricing excludes NULL adjustments/fields/sessions", {
+  local_refinitiv_state()
+
+  captured <- list()
+  conn <- make_mock_conn(function(json = NULL, service = "eikon", debug = FALSE,
+                                  request_type = "POST", EndPoint = NULL, ...) {
+    captured$endpoint <<- EndPoint
+    list(
+      universe = "VOD.L",
+      headers = list(list(title = "Date"), list(title = "CLOSE")),
+      data = list(list("2024-01-02", 100))
+    )
+  })
+
+  conn$get_historical_pricing(
+    EikonObject = conn,
+    universe    = "VOD.L",
+    interval    = "P1D",
+    start       = "2024-01-01",
+    end         = "2024-01-31",
+    adjustments = NULL,
+    count       = 20L,
+    fields      = NULL,
+    sessions    = NULL
+  )
+
+  expect_false(grepl("adjustments", captured$endpoint))
+  expect_false(grepl("fields", captured$endpoint))
+  expect_false(grepl("sessions", captured$endpoint))
+})
+
+test_that("get_intraday_custominstrument_pricing excludes NULL optional params", {
+  local_refinitiv_state()
+
+  captured <- list()
+  conn <- make_mock_conn(function(json = NULL, service = "eikon", debug = FALSE,
+                                  request_type = "POST", EndPoint = NULL, ...) {
+    captured$endpoint <<- EndPoint
+    list(
+      universe = "S)test.UUID-1",
+      headers = list(list(title = "DATE_TIME"), list(title = "BID")),
+      data = list(list("2024-01-02T10:00:00", 100))
+    )
+  })
+
+  conn$get_intraday_custominstrument_pricing(
+    EikonObject = conn,
+    universe    = "S)test.UUID-1",
+    interval    = "PT1H",
+    start       = "2024-01-01",
+    end         = "2024-01-31",
+    adjustments = NULL,
+    count       = 50L,
+    fields      = NULL,
+    sessions    = NULL
+  )
+
+  expect_false(grepl("adjustments", captured$endpoint))
+  expect_false(grepl("fields", captured$endpoint))
+  expect_false(grepl("sessions", captured$endpoint))
+})
+
+test_that("get_interday_custominstrument_pricing excludes NULL optional params", {
+  local_refinitiv_state()
+
+  captured <- list()
+  conn <- make_mock_conn(function(json = NULL, service = "eikon", debug = FALSE,
+                                  request_type = "POST", EndPoint = NULL, ...) {
+    captured$endpoint <<- EndPoint
+    list(
+      universe = "S)test.UUID-2",
+      headers = list(list(title = "Date"), list(title = "CLOSE")),
+      data = list(list("2024-01-02", 150.5))
+    )
+  })
+
+  conn$get_interday_custominstrument_pricing(
+    EikonObject = conn,
+    universe    = "S)test.UUID-2",
+    interval    = "P1D",
+    start       = "2024-01-01",
+    end         = "2024-01-31",
+    adjustments = NULL,
+    count       = 100L,
+    fields      = NULL,
+    sessions    = NULL
+  )
+
+  expect_false(grepl("adjustments", captured$endpoint))
+  expect_false(grepl("fields", captured$endpoint))
+  expect_false(grepl("sessions", captured$endpoint))
+})
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # Lines 778-798: get_news_headlines UDF closure method
 # ═══════════════════════════════════════════════════════════════════════════════
 

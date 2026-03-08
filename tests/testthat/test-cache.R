@@ -183,6 +183,21 @@ test_that("cache_get: returns found=FALSE for expired key (lazy eviction)", {
   expect_false(exists("expired_key", envir = env, inherits = FALSE))
 })
 
+test_that("cache_get: verbose logs EXPIRED message on expired key", {
+  clear_test_cache()
+  env <- get_cache_env()
+  assign("expired_verbose_key",
+    list(value = "stale", expires_at = as.numeric(Sys.time()) - 1),
+    envir = env
+  )
+
+  withr::local_options(refinitiv_verbose_cache = TRUE)
+  expect_message(
+    Refinitiv:::cache_get("expired_verbose_key"),
+    "EXPIRED"
+  )
+})
+
 test_that("cache_get: Inf TTL never expires", {
   clear_test_cache()
   Refinitiv:::cache_set("inf_key", "permanent", ttl = Inf)

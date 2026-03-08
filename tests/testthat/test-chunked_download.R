@@ -335,4 +335,54 @@ test_that("chunked_download cache_ttl = FALSE disables chunk caching", {
   expect_false(exists("nope_2", envir = env, inherits = FALSE))
 })
 
+test_that("chunked_download emits [cached] message for cache hits", {
+  env <- Refinitiv:::.refinitiv_cache
+  rm(list = ls(env, all.names = TRUE), envir = env)
+
+  # Pre-cache chunk 1
+  Refinitiv:::cache_set("verbose_cached_1", "cached_val", 60)
+
+  fetch_fn <- function(j) paste0("fresh_", j)
+  key_fn <- function(j) paste0("verbose_cached_", j)
+
+  expect_message(
+    Refinitiv:::chunked_download(
+      n_chunks = 2L,
+      fetch_fn = fetch_fn,
+      chunk_cache_key_fn = key_fn,
+      cache_ttl = 60,
+      sleep = 0,
+      verbose = TRUE
+    ),
+    "\\[cached\\]"
+  )
+
+  rm(list = ls(env, all.names = TRUE), envir = env)
+})
+
+test_that("chunked_download reports 'from cache' in completion message", {
+  env <- Refinitiv:::.refinitiv_cache
+  rm(list = ls(env, all.names = TRUE), envir = env)
+
+  # Pre-cache both chunks
+  Refinitiv:::cache_set("fromcache_1", "val_1", 60)
+  Refinitiv:::cache_set("fromcache_2", "val_2", 60)
+
+  key_fn <- function(j) paste0("fromcache_", j)
+
+  expect_message(
+    Refinitiv:::chunked_download(
+      n_chunks = 2L,
+      fetch_fn = function(j) stop("should not be called"),
+      chunk_cache_key_fn = key_fn,
+      cache_ttl = 60,
+      sleep = 0,
+      verbose = TRUE
+    ),
+    "from cache"
+  )
+
+  rm(list = ls(env, all.names = TRUE), envir = env)
+})
+
 dump_refinitiv_options("test-chunked_download")

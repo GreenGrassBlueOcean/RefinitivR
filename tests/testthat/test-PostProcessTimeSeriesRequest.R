@@ -83,4 +83,21 @@ test_that("PostProcessTimeSeriesRequest works with one wrong RIC", {
   expect_identical(PostProcessTimeSeriesRequest(RawTimeSeries), expected_outcome)
 })
 
+test_that("PostProcessTimeSeriesRequest handles empty dataPoints list", {
+  # RIC with statusCode "Normal" but dataPoints is empty list()
+  RawTimeSeries <- list(list(timeseriesData = list(
+    list(
+      dataPoints = list(),
+      fields = list(
+        list(name = "CLOSE", type = "Double"),
+        list(name = "TIMESTAMP", type = "DateTime")
+      ),
+      ric = "EMPTY.RIC",
+      statusCode = "Normal"
+    )
+  )))
+  result <- PostProcessTimeSeriesRequest(RawTimeSeries)
+  expect_identical(result, data.frame())
+})
+
 dump_refinitiv_options("test-PostProcessTimeSeriesRequest")

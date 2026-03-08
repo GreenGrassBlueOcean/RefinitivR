@@ -191,4 +191,19 @@ test_that("rd_OutputProcesser can work with complete NA responses ", {
 })
 
 
+test_that("JsonHeaderAnalyzer errors on unsupported header location", {
+  expect_error(
+    JsonHeaderAnalyzer(list(no_headers_here = 1), Selectedheader = "name", use_field_names_in_headers = FALSE),
+    "not supported"
+  )
+})
+
+test_that("JsonHeaderAnalyzer errors on unimplemented Selectedheader", {
+  input <- list(headers = list(list(name = "col1", type = "string")))
+  expect_error(
+    JsonHeaderAnalyzer(input, Selectedheader = "bogus", use_field_names_in_headers = FALSE),
+    "Selectedheader not implemented"
+  )
+})
+
 dump_refinitiv_options("test-JsonHeaderAnalyzer")

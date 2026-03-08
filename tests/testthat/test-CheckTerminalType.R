@@ -24,7 +24,10 @@ test_that("CheckTerminalType warns when proxy is unreachable", {
   mockery::stub(CheckTerminalType, "rd_check_proxy_url", mock_rd_check_proxy_url)
 
   expect_warning(
-    CheckTerminalType(),
+    expect_message(
+      CheckTerminalType(verbose = TRUE),
+      "No connectivity on port"
+    ),
     "No terminal connection.*LSEG Workspace"
   )
 })

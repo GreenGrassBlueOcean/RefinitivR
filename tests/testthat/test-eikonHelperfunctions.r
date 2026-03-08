@@ -109,6 +109,20 @@ test_that("EikonRepairMic verbose parameter and multi-key logic work", {
   )
 })
 
+test_that("EikonRepairMic creates Operating.MIC column when absent", {
+  # Input has exchange identifier but no MIC column at all
+  no_mic_data <- data.frame(
+    RDN_ExchangeCode = c("NYQ", "LSE"),
+    CompanyName = c("Test Corp", "UK Corp"),
+    stringsAsFactors = FALSE
+  )
+  result <- EikonRepairMic(no_mic_data, verbose = FALSE)
+  expect_true("Operating.MIC" %in% names(result))
+  # NYQ → XNYS, LSE → XLON
+  expect_equal(result$Operating.MIC, c("XNYS", "XLON"))
+})
+
+
 test_that("ProcessSymbology returns an error when it should", {
   expect_error(
     ProcessSymbology(EikonSymbologyResult = list(data.frame()), from_symbol_type = "ISIN", to_symbol_type = "RIC"),
