@@ -395,12 +395,6 @@ rd_get_news_story <- function(RDObject = rd_connection(),
   # Name the NewsList by story_id
   names(NewsList) <- story_id
 
-  # Check for failures
-  failed <- sapply(NewsList, is.null)
-  if (any(failed)) {
-    warning("Failed to fetch stories for IDs: ", paste(story_id[failed], collapse = ", "))
-  }
-
   # -- If raw_output=TRUE, return the named raw list now --
   if (raw_output) {
     if (!isFALSE(ttl) && !is.null(NewsList) && !inherits(NewsList, "try-error")) {
@@ -414,11 +408,6 @@ rd_get_news_story <- function(RDObject = rd_connection(),
   for (i in seq_along(NewsList)) {
     x <- NewsList[[i]]
     id <- story_id[i] # Use the corresponding story_id for debug
-
-    if (is.null(x)) {
-      out_list[[id]] <- list(inline = "(Fetch failed)", html = "(Fetch failed)", headline = "", versionCreated = NA, urgency = NA)
-      next
-    }
 
     # Extract content
     inline <- ""

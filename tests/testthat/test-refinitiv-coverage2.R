@@ -344,6 +344,197 @@ test_that("EikonGetData cache hit emits message when verbose", {
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+# 4b. rd_GetData — RIC sorting when cache active
+# ═══════════════════════════════════════════════════════════════════════════
+
+test_that("rd_GetData sorts RICs when cache is active and multiple RICs (shell)", {
+  RD <- make_mock_connection()
+  rd_ClearCache()
+
+  captured_rics <- NULL
+  mockery::stub(rd_GetData, "chunked_download", function(n_chunks, fetch_fn, ...) list(list()))
+  mockery::stub(rd_GetData, "EikonChunker", function(RICS, ...) {
+    captured_rics <<- RICS
+    list(RICS)
+  })
+
+  rd_GetData(
+    RDObject = RD, rics = c("ZZZ.O", "AAA.O", "MMM.O"),
+    Eikonformulas = "TR.Revenue", cache = 300, verbose = FALSE, raw_output = TRUE
+  )
+
+  expect_equal(captured_rics, c("AAA.O", "MMM.O", "ZZZ.O"))
+  rd_ClearCache()
+})
+
+test_that("rd_GetData strips NAs before sorting when cache is active", {
+  RD <- make_mock_connection()
+  rd_ClearCache()
+
+  captured_rics <- NULL
+  mockery::stub(rd_GetData, "chunked_download", function(n_chunks, fetch_fn, ...) list(list()))
+  mockery::stub(rd_GetData, "EikonChunker", function(RICS, ...) {
+    captured_rics <<- RICS
+    list(RICS)
+  })
+
+  rd_GetData(
+    RDObject = RD, rics = c("ZZZ.O", NA, "AAA.O"),
+    Eikonformulas = "TR.Revenue", cache = 300, verbose = FALSE, raw_output = TRUE
+  )
+
+  expect_equal(captured_rics, c("AAA.O", "ZZZ.O"))
+  rd_ClearCache()
+})
+
+test_that("rd_GetData uses radix sort for >1000 RICs when cache is active", {
+  RD <- make_mock_connection()
+  rd_ClearCache()
+
+  big_rics <- paste0("RIC", sprintf("%04d", 1500:1))
+  captured_rics <- NULL
+
+  mockery::stub(rd_GetData, "chunked_download", function(n_chunks, fetch_fn, ...) list(list()))
+  mockery::stub(rd_GetData, "EikonChunker", function(RICS, ...) {
+    captured_rics <<- RICS
+    list(RICS)
+  })
+
+  rd_GetData(
+    RDObject = RD, rics = big_rics,
+    Eikonformulas = "TR.Revenue", cache = 300, verbose = FALSE, raw_output = TRUE
+  )
+
+  expect_equal(captured_rics, sort(big_rics))
+  expect_equal(length(captured_rics), 1500L)
+  rd_ClearCache()
+})
+
+test_that("rd_GetData does not sort RICs when cache is disabled", {
+  RD <- make_mock_connection()
+
+  captured_rics <- NULL
+  mockery::stub(rd_GetData, "chunked_download", function(n_chunks, fetch_fn, ...) list(list()))
+  mockery::stub(rd_GetData, "EikonChunker", function(RICS, ...) {
+    captured_rics <<- RICS
+    list(RICS)
+  })
+
+  rd_GetData(
+    RDObject = RD, rics = c("ZZZ.O", "AAA.O", "MMM.O"),
+    Eikonformulas = "TR.Revenue", cache = FALSE, verbose = FALSE, raw_output = TRUE
+  )
+
+  expect_equal(captured_rics, c("ZZZ.O", "AAA.O", "MMM.O"))
+})
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 4c. EikonGetData — RIC sorting when cache active
+# ═══════════════════════════════════════════════════════════════════════════
+
+test_that("EikonGetData sorts RICs when cache is active and multiple RICs (shell)", {
+  RD <- make_mock_connection()
+  rd_ClearCache()
+
+  captured_rics <- NULL
+  mockery::stub(EikonGetData, "chunked_download", function(n_chunks, fetch_fn, ...) {
+    list(list())
+  })
+  mockery::stub(EikonGetData, "EikonChunker", function(RICS, ...) {
+    captured_rics <<- RICS
+    list(RICS)
+  })
+  mockery::stub(EikonGetData, "EikonPostProcessor", function(x, ...) {
+    list(PostProcessedEikonGetData = data.frame(Instrument = "A"), Eikon_Error_Data = data.frame())
+  })
+
+  EikonGetData(
+    EikonObject = RD, rics = c("ZZZ.O", "AAA.O", "MMM.O"),
+    Eikonformulas = "TR.Revenue", cache = 300, verbose = FALSE
+  )
+
+  expect_equal(captured_rics, c("AAA.O", "MMM.O", "ZZZ.O"))
+  rd_ClearCache()
+})
+
+test_that("EikonGetData strips NAs before sorting when cache is active", {
+  RD <- make_mock_connection()
+  rd_ClearCache()
+
+  captured_rics <- NULL
+  mockery::stub(EikonGetData, "chunked_download", function(n_chunks, fetch_fn, ...) {
+    list(list())
+  })
+  mockery::stub(EikonGetData, "EikonChunker", function(RICS, ...) {
+    captured_rics <<- RICS
+    list(RICS)
+  })
+  mockery::stub(EikonGetData, "EikonPostProcessor", function(x, ...) {
+    list(PostProcessedEikonGetData = data.frame(Instrument = "A"), Eikon_Error_Data = data.frame())
+  })
+
+  EikonGetData(
+    EikonObject = RD, rics = c("ZZZ.O", NA, "AAA.O"),
+    Eikonformulas = "TR.Revenue", cache = 300, verbose = FALSE
+  )
+
+  expect_equal(captured_rics, c("AAA.O", "ZZZ.O"))
+  rd_ClearCache()
+})
+
+test_that("EikonGetData uses radix sort for >1000 RICs when cache is active", {
+  RD <- make_mock_connection()
+  rd_ClearCache()
+
+  big_rics <- paste0("RIC", sprintf("%04d", 1500:1))
+  captured_rics <- NULL
+
+  mockery::stub(EikonGetData, "chunked_download", function(n_chunks, fetch_fn, ...) {
+    list(list())
+  })
+  mockery::stub(EikonGetData, "EikonChunker", function(RICS, ...) {
+    captured_rics <<- RICS
+    list(RICS)
+  })
+  mockery::stub(EikonGetData, "EikonPostProcessor", function(x, ...) {
+    list(PostProcessedEikonGetData = data.frame(Instrument = "A"), Eikon_Error_Data = data.frame())
+  })
+
+  EikonGetData(
+    EikonObject = RD, rics = big_rics,
+    Eikonformulas = "TR.Revenue", cache = 300, verbose = FALSE
+  )
+
+  expect_equal(captured_rics, sort(big_rics))
+  expect_equal(length(captured_rics), 1500L)
+  rd_ClearCache()
+})
+
+test_that("EikonGetData does not sort RICs when cache is disabled", {
+  RD <- make_mock_connection()
+
+  captured_rics <- NULL
+  mockery::stub(EikonGetData, "chunked_download", function(n_chunks, fetch_fn, ...) {
+    list(list())
+  })
+  mockery::stub(EikonGetData, "EikonChunker", function(RICS, ...) {
+    captured_rics <<- RICS
+    list(RICS)
+  })
+  mockery::stub(EikonGetData, "EikonPostProcessor", function(x, ...) {
+    list(PostProcessedEikonGetData = data.frame(Instrument = "A"), Eikon_Error_Data = data.frame())
+  })
+
+  EikonGetData(
+    EikonObject = RD, rics = c("ZZZ.O", "AAA.O", "MMM.O"),
+    Eikonformulas = "TR.Revenue", cache = FALSE, verbose = FALSE
+  )
+
+  expect_equal(captured_rics, c("ZZZ.O", "AAA.O", "MMM.O"))
+})
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 # 5. EikonGetSymbology — cache paths & verbose
 # ═══════════════════════════════════════════════════════════════════════════
 

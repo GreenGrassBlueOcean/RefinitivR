@@ -8,12 +8,14 @@ rd_CacheInfo()
 }
 \value{
 A list with elements \code{total_keys}, \code{active_keys},
-  \code{expired_keys}, and \code{estimated_size_mb}, returned invisibly.
+  \code{expired_keys}, \code{aliases}, and \code{estimated_size_mb},
+  returned invisibly.
   A summary is also printed via \code{message()}.
 }
 \description{
 Reports the number of active and expired entries in the session cache,
-together with an estimated total size in megabytes.
+together with an estimated total size in megabytes and the number of
+fast-key aliases.
 }
 \examples{
 rd_CacheInfo()
