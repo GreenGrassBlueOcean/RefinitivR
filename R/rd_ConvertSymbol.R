@@ -53,8 +53,9 @@
 #'   \item{\code{MappedSymbol}}{The resolved symbol, or \code{NA} if unresolved.}
 #'   \item{\code{ResolutionTier}}{Which tier resolved the symbol:
 #'     \code{"symbology"}, \code{"primary_instrument"},
-#'     \code{"history_canonical"}, or \code{"none"}.}
+#'     \code{"history_canonical"}, \code{"identity"}, or \code{"none"}.}
 #'   \item{\code{IsActive}}{Logical. Whether the resolved instrument is active.}
+#'   \item{\code{DelistingDate}}{Character. The retire date (YYYY-MM-DD) if inactive, or \code{NA}.}
 #' }
 #'
 #' @examples
@@ -64,23 +65,23 @@
 #' rd_ConvertSymbol(symbols = "US0378331005",
 #'                  from_symbol_type = "ISIN",
 #'                  to_symbol_type = "RIC")
-#' #>   OriginalSymbol MappedSymbol ResolutionTier IsActive
-#' #> 1:   US0378331005       AAPL.O      symbology     TRUE
+#' #>   OriginalSymbol MappedSymbol ResolutionTier IsActive DelistingDate
+#' #> 1:   US0378331005       AAPL.O      symbology     TRUE          <NA>
 #'
 #' # --- Active Bare RIC Resolution (Tier 2) ---
 #' # "A" is a bare RIC (no dot suffix). LSEG symbology cannot resolve it,
 #' # but Tier 2 queries TR.PrimaryInstrument and maps to A.N (NYSE).
 #' rd_ConvertSymbol("A")
-#' #>   OriginalSymbol MappedSymbol     ResolutionTier IsActive
-#' #> 1:              A          A.N primary_instrument     TRUE
+#' #>   OriginalSymbol MappedSymbol     ResolutionTier IsActive DelistingDate
+#' #> 1:              A          A.N primary_instrument     TRUE          <NA>
 #'
 #' # --- Delisted Bare RIC (Tier 2) ---
 #' # "HES" was Hess Corp, recently acquired and delisted. The bare ticker
 #' # has no exchange suffix, so symbology fails. Tier 2 maps it to the
 #' # delisted form HES.N^G25.
 #' rd_ConvertSymbol("HES")
-#' #>   OriginalSymbol MappedSymbol     ResolutionTier IsActive
-#' #> 1:            HES    HES.N^G25 primary_instrument    FALSE
+#' #>   OriginalSymbol MappedSymbol     ResolutionTier IsActive DelistingDate
+#' #> 1:            HES    HES.N^G25 primary_instrument    FALSE    2025-07-18
 #'
 #' # --- Case-Sensitive Delisted RIC (Tier 3) ---
 #' # Refinitiv is highly case-sensitive for European delisted RICs.
@@ -88,16 +89,16 @@
 #' # rd_GetHistory(TR.RIC) which is case-insensitive, extracting the
 #' # canonical string "1COv.DE^L25" from the historical timeline.
 #' rd_ConvertSymbol("1cOv.De")
-#' #>   OriginalSymbol  MappedSymbol    ResolutionTier IsActive
-#' #> 1:        1cOv.De 1COv.DE^L25 history_canonical    FALSE
+#' #>   OriginalSymbol  MappedSymbol    ResolutionTier IsActive DelistingDate
+#' #> 1:        1cOv.De 1COv.DE^L25 history_canonical    FALSE    2025-12-08
 #'
 #' # --- Batch conversion (mixed scenarios) ---
-#' rd_ConvertSymbol(c("AAPL.O", "HES", "1cOv.De", "UNKNOWN"))
-#' #>   OriginalSymbol  MappedSymbol     ResolutionTier IsActive
-#' #> 1:         AAPL.O        AAPL.O          symbology     TRUE
-#' #> 2:            HES     HES.N^G25 primary_instrument    FALSE
-#' #> 3:        1cOv.De  1COv.DE^L25  history_canonical    FALSE
-#' #> 4:        UNKNOWN          <NA>               none       NA
+#' rd_ConvertSymbol(c("AAPL.O", "HES", "1cOv.De", "INVALID_RIC"))
+#' #>   OriginalSymbol  MappedSymbol     ResolutionTier IsActive DelistingDate
+#' #> 1:         AAPL.O        AAPL.O          identity     TRUE          <NA>
+#' #> 2:            HES     HES.N^G25 primary_instrument    FALSE    2025-07-18
+#' #> 3:        1cOv.De  1COv.DE^L25  history_canonical    FALSE    2025-12-08
+#' #> 4:    INVALID_RIC          <NA>               none       NA          <NA>
 #'
 #' # --- Disable fallbacks for speed ---
 #' # If you know all inputs are well-formed, skip Tier 2 & 3:
@@ -125,7 +126,8 @@ rd_ConvertSymbol <- function(symbols,
     OriginalSymbol = symbols,
     MappedSymbol = NA_character_,
     ResolutionTier = "none",
-    IsActive = NA
+    IsActive = NA,
+    DelistingDate = NA_character_
   )
 
   # Only process non-empty symbols
@@ -134,34 +136,47 @@ rd_ConvertSymbol <- function(symbols,
 
   syms_to_process <- symbols[valid_idx]
 
-  # --- Helper to resolve active flag ---
-  check_active <- function(rics) {
-    if (length(rics) == 0) return(logical(0))
-    # We use a tryCatch so it won't crash if EikonGetData fails
+  # --- Helper to resolve active flag and delisting date ---
+  get_active_and_date <- function(rics) {
+    res <- data.table::data.table(
+      IsActive = rep(NA, length(rics)),
+      DelistingDate = rep(NA_character_, length(rics))
+    )
+    if (length(rics) == 0) return(res)
+    
     tryCatch({
-      df <- EikonGetData(rics = rics, Eikonformulas = "TR.InstrumentIsActive", raw_output = FALSE, time_out = time_out, verbose = verbose)
+      df <- EikonGetData(rics = rics, Eikonformulas = c("TR.InstrumentIsActive", "TR.RetireDate"), raw_output = FALSE, time_out = time_out, verbose = verbose)
       if (is.list(df) && "PostProcessedEikonGetData" %in% names(df)) {
         df <- df$PostProcessedEikonGetData
       }
-      # EikonGetData could return an error object or a data frame
-      if (!is.data.frame(df) || !"Instrument" %in% names(df)) return(rep(NA, length(rics)))
+      
+      if (!is.data.frame(df) || !"Instrument" %in% names(df)) return(res)
       
       act_col_idx <- grep("active", tolower(names(df)))
-      if (length(act_col_idx) > 0) {
-        act_vals <- df[[names(df)[act_col_idx[1]]]]
-        res <- rep(NA, length(rics))
-        # Map back to original order
-        for (i in seq_along(rics)) {
-          match_idx <- which(df$Instrument == rics[i])
-          if (length(match_idx) > 0) {
-            val <- act_vals[match_idx[1]]
-            res[i] <- if (is.logical(val)) val else (val == 1 || val == "True" || val == "TRUE")
+      ret_col_idx <- grep("retire", tolower(names(df)))
+      
+      for (i in seq_along(rics)) {
+        match_idx <- which(df$Instrument == rics[i])
+        if (length(match_idx) > 0) {
+          if (length(act_col_idx) > 0) {
+            val <- df[[names(df)[act_col_idx[1]]]][match_idx[1]]
+            res$IsActive[i] <- if (is.logical(val)) val else (val == 1 || val == "True" || val == "TRUE")
+          }
+          if (length(ret_col_idx) > 0) {
+            ret_val <- df[[names(df)[ret_col_idx[1]]]][match_idx[1]]
+            if (!is.na(ret_val) && ret_val != "") {
+               if (inherits(ret_val, "POSIXt") || inherits(ret_val, "Date")) {
+                 res$DelistingDate[i] <- format(as.Date(ret_val), "%Y-%m-%d")
+               } else {
+                 res$DelistingDate[i] <- substr(as.character(ret_val), 1, 10)
+               }
+            }
           }
         }
-        return(res)
       }
-      return(rep(NA, length(rics)))
-    }, error = function(e) { message("check_active error: ", conditionMessage(e)); rep(NA, length(rics)) })
+    }, error = function(e) { if (verbose) message("get_active_and_date error: ", conditionMessage(e)) })
+    
+    return(res)
   }
 
   # --- Tier 1: Standard Symbology API ---
@@ -311,6 +326,19 @@ rd_ConvertSymbol <- function(symbols,
                if (canonical != sym) {
                  res_dt$MappedSymbol[idx] <- canonical
                  res_dt$ResolutionTier[idx] <- "history_canonical"
+                 
+                 # Extract delisting date from history
+                 if ("Date" %in% names(hist_df)) {
+                   date_vals <- hist_df[["Date"]][!is.na(hist_df[[ric_col]]) & hist_df[[ric_col]] != ""]
+                   if (length(date_vals) > 0) {
+                     delist_dt <- utils::tail(date_vals, 1)
+                     if (inherits(delist_dt, "POSIXt") || inherits(delist_dt, "Date")) {
+                       res_dt$DelistingDate[idx] <- format(as.Date(delist_dt), "%Y-%m-%d")
+                     } else {
+                       res_dt$DelistingDate[idx] <- substr(as.character(delist_dt), 1, 10)
+                     }
+                   }
+                 }
                }
              }
           }
@@ -334,9 +362,9 @@ rd_ConvertSymbol <- function(symbols,
     )
     if (length(still_unresolved) > 0) {
       identity_syms <- res_dt$OriginalSymbol[still_unresolved]
-      identity_active <- check_active(identity_syms)
+      identity_active <- get_active_and_date(identity_syms)
       for (j in seq_along(still_unresolved)) {
-        if (isTRUE(identity_active[j])) {
+        if (isTRUE(identity_active$IsActive[j])) {
           idx <- still_unresolved[j]
           res_dt$MappedSymbol[idx] <- res_dt$OriginalSymbol[idx]
           res_dt$ResolutionTier[idx] <- "identity"
@@ -346,16 +374,21 @@ rd_ConvertSymbol <- function(symbols,
     }
   }
 
-  # --- Resolve IsActive for successfully mapped symbols ---
+  # --- Resolve IsActive and DelistingDate for successfully mapped symbols ---
   mapped_idx <- which(!is.na(res_dt$MappedSymbol) & is.na(res_dt$IsActive))
   if (length(mapped_idx) > 0) {
     unique_mapped <- unique(res_dt$MappedSymbol[mapped_idx])
-    act_status <- check_active(unique_mapped)
-    names(act_status) <- unique_mapped
+    act_status <- get_active_and_date(unique_mapped)
+    
     for (idx in mapped_idx) {
-      val <- act_status[ res_dt$MappedSymbol[idx] ]
-      if (!is.na(val)) {
-        res_dt$IsActive[idx] <- val
+      mapped_val <- res_dt$MappedSymbol[idx]
+      match_j <- which(unique_mapped == mapped_val)[1]
+      
+      if (!is.na(act_status$IsActive[match_j])) {
+        res_dt$IsActive[idx] <- act_status$IsActive[match_j]
+      }
+      if (is.na(res_dt$DelistingDate[idx]) && !is.na(act_status$DelistingDate[match_j])) {
+        res_dt$DelistingDate[idx] <- act_status$DelistingDate[match_j]
       }
     }
   }
