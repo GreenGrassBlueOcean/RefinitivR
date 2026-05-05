@@ -556,16 +556,16 @@ test_that("EikonGetSymbology stores result in cache and returns cached value", {
   })
 
   # First call
-  r1 <- EikonGetSymbology(
+  r1 <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD, symbol = "AAPL.O",
     from_symbol_type = "RIC", to_symbol_type = "ISIN", cache = 3600
-  )
+  ))
 
   # Second call — cache hit
-  r2 <- EikonGetSymbology(
+  r2 <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD, symbol = "AAPL.O",
     from_symbol_type = "RIC", to_symbol_type = "ISIN", cache = 3600
-  )
+  ))
 
   expect_equal(r1, r2)
   expect_equal(call_count, 1L)
@@ -586,18 +586,18 @@ test_that("EikonGetSymbology cache hit emits message when verbose", {
 
   mockery::stub(EikonGetSymbology, "chunked_download", function(...) mock_symbology)
 
-  EikonGetSymbology(
+  suppressWarnings(EikonGetSymbology(
     EikonObject = RD, symbol = "AAPL.O",
     from_symbol_type = "RIC", to_symbol_type = "ISIN",
     cache = 3600, verbose = FALSE
-  )
+  ))
 
   expect_message(
-    EikonGetSymbology(
+    suppressWarnings(EikonGetSymbology(
       EikonObject = RD, symbol = "AAPL.O",
       from_symbol_type = "RIC", to_symbol_type = "ISIN",
       cache = 3600, verbose = TRUE
-    ),
+    )),
     "Cache hit"
   )
 
@@ -618,11 +618,11 @@ test_that("EikonGetSymbology verbose emits debug messages in fetch_fn", {
   })
 
   expect_message(
-    EikonGetSymbology(
+    suppressWarnings(EikonGetSymbology(
       EikonObject = RD, symbol = "AAPL.O",
       from_symbol_type = "RIC", to_symbol_type = "ISIN",
       verbose = "verbose", cache = FALSE
-    ),
+    )),
     "EikonGetSymbology JSON request"
   )
 })
@@ -640,10 +640,10 @@ test_that("EikonGetSymbology cache store for result", {
 
   mockery::stub(EikonGetSymbology, "chunked_download", function(...) mock_symbology)
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD, symbol = "AAPL.O",
     from_symbol_type = "RIC", to_symbol_type = "ISIN", cache = TRUE
-  )
+  ))
 
   info <- rd_CacheInfo()
   expect_true(info$total_keys > 0)
@@ -666,11 +666,11 @@ test_that("EikonGetSymbology raw_output returns chunked_download list directly",
 
   mockery::stub(EikonGetSymbology, "chunked_download", function(...) mock_raw)
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD, symbol = "AAPL.O",
     from_symbol_type = "RIC", to_symbol_type = "ISIN",
     raw_output = TRUE, cache = FALSE
-  )
+  ))
 
   expect_type(result, "list")
   expect_equal(result, mock_raw)
@@ -685,11 +685,11 @@ test_that("EikonGetSymbology filters NA chunks in non-raw mode", {
 
   mockery::stub(EikonGetSymbology, "chunked_download", function(...) list(NA))
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD, symbol = "AAPL.O",
     from_symbol_type = "RIC", to_symbol_type = "ISIN",
     raw_output = FALSE, cache = FALSE
-  )
+  ))
   expect_s3_class(result, "data.frame")
   expect_equal(nrow(result), 0L)
 })

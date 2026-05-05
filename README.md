@@ -87,12 +87,13 @@ stream$close()
 1.  [Connecting to LSEG Workspace](#connecting-to-lseg-workspace)
 2.  [Real-Time Streaming](#real-time-streaming)
 3.  [Working with Refinitiv Data (RD)](#working-with-refinitiv-data-rd)
-4.  [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
-5.  [DataStream](#datastream)
+4.  [Symbology Conversion](#symbology-conversion)
+5.  [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
 6.  [Custom Instruments](#custom-instruments)
-7.  [Caching](#caching)
-8.  [Progress Reporting](#progress-reporting)
-9.  [Building Custom Visualizations](#building-custom-visualizations)
+7.  [DataStream](#datastream)
+8.  [Caching](#caching)
+9.  [Progress Reporting](#progress-reporting)
+10. [Building Custom Visualizations](#building-custom-visualizations)
 
 ------------------------------------------------------------------------
 
@@ -284,6 +285,41 @@ intraday <- rd_GetHistoricalPricing(
   count = 500L,
   sessions = c("pre", "normal", "post")
 )
+```
+
+------------------------------------------------------------------------
+
+## Symbology Conversion
+
+`rd_ConvertSymbol()` is the modern, robust replacement for the legacy `EikonGetSymbology`. It resolves gaps in the LSEG native symbology API by introducing a multi-tiered fallback strategy that successfully maps complex cases (such as historical delisted Bare RICs) while returning a clean, `data.table` formatted result.
+
+### Standard Conversion
+
+Convert ISIN, SEDOL, or CUSIP to RIC:
+
+``` r
+rd_ConvertSymbol("US0378331005", from_symbol_type = "ISIN", to_symbol_type = "RIC")
+```
+
+### Advanced Bare RIC Resolution
+
+`rd_ConvertSymbol` automatically handles "Bare RICs" by navigating through active primary instruments and historical canonical mappings. This is critical for backtesting workflows.
+
+``` r
+# Active primary instrument mapping
+rd_ConvertSymbol("A")
+#>   OriginalSymbol MappedSymbol     ResolutionTier IsActive
+#> 1              A          A.N primary_instrument     TRUE
+
+# Historical / delisted instrument mapping
+rd_ConvertSymbol("HES")
+#>   OriginalSymbol MappedSymbol    ResolutionTier IsActive
+#> 1            HES    HES.N^G25 primary_instrument   FALSE
+
+# Case insensitivity and canonical history fallback
+rd_ConvertSymbol("1cOv.De")
+#>   OriginalSymbol MappedSymbol    ResolutionTier IsActive
+#> 1        1cOv.De  1COv.DE^L25 history_canonical   FALSE
 ```
 
 ------------------------------------------------------------------------

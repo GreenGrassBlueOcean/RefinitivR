@@ -695,6 +695,10 @@ EikonGetSymbology <- function(
   bestMatch = TRUE, time_out = 60, verbose = getOption("refinitiv_progress", TRUE), raw_output = FALSE,
   cache = NULL
 ) {
+  .Deprecated("rd_ConvertSymbol", package = "Refinitiv",
+    msg = paste("EikonGetSymbology is deprecated due to fragile bare RIC and",
+                "casing limitations. Use rd_ConvertSymbol() instead."))
+
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 3600)
   if (!isFALSE(ttl)) {

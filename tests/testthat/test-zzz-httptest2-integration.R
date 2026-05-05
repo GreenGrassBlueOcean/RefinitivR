@@ -300,12 +300,12 @@ test_that("EikonGetSymbology RIC to ISIN from fixture", {
   RD <- setup_mock_json_env()
 
   with_mock_dir("eksym-r2i", {
-    result <- EikonGetSymbology(
+    result <- suppressWarnings(EikonGetSymbology(
       EikonObject = RD,
       symbol = c("AAPL.O", "MSFT"),
       from_symbol_type = "RIC",
       to_symbol_type = "ISIN"
-    )
+    ))
   })
 
   expect_s3_class(result, "data.frame")
@@ -316,12 +316,12 @@ test_that("EikonGetSymbology ISIN to RIC from fixture", {
   RD <- setup_mock_json_env()
 
   with_mock_dir("eksym-i2r", {
-    result <- EikonGetSymbology(
+    result <- suppressWarnings(EikonGetSymbology(
       EikonObject = RD,
       symbol = c("US0378331005", "GB00B03MLX29"),
       from_symbol_type = "ISIN",
       to_symbol_type = "RIC"
-    )
+    ))
   })
 
   expect_s3_class(result, "data.frame")
@@ -711,22 +711,22 @@ test_that("EikonGetSymbology caching works (store + hit)", {
   rd_ClearCache()
 
   with_mock_dir("eksym-r2i", {
-    result1 <- EikonGetSymbology(
+    result1 <- suppressWarnings(EikonGetSymbology(
       EikonObject = RD,
       symbol = c("AAPL.O", "MSFT"),
       from_symbol_type = "RIC",
       to_symbol_type = "ISIN",
       cache = TRUE
-    )
+    ))
   })
 
-  result2 <- EikonGetSymbology(
+  result2 <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD,
     symbol = c("AAPL.O", "MSFT"),
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     cache = TRUE
-  )
+  ))
 
   expect_equal(result2, result1)
   rd_ClearCache()

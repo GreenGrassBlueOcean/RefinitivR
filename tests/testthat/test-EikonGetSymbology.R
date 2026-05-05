@@ -29,13 +29,13 @@ test_that("EikonGetSymbology delegates to chunked_download()", {
     ))
   })
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD,
     symbol = "AAPL.O",
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     cache = FALSE
-  )
+  ))
 
   expect_false(is.null(captured_args))
   expect_equal(captured_args$n_chunks, 1L)
@@ -61,14 +61,14 @@ test_that("EikonGetSymbology raw_output returns chunked_download list directly",
     list(mock_raw)
   })
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD,
     symbol = "AAPL.O",
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     raw_output = TRUE,
     cache = FALSE
-  )
+  ))
 
   expect_type(result, "list")
   expect_equal(result, list(mock_raw))
@@ -95,24 +95,24 @@ test_that("EikonGetSymbology passes verbose to chunked_download", {
     ))))
   })
 
-  EikonGetSymbology(
+  suppressWarnings(EikonGetSymbology(
     EikonObject = RD,
     symbol = "AAPL.O",
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     verbose = TRUE,
     cache = FALSE
-  )
+  ))
   expect_true(captured_verbose)
 
-  EikonGetSymbology(
+  suppressWarnings(EikonGetSymbology(
     EikonObject = RD,
     symbol = "AAPL.O",
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     verbose = FALSE,
     cache = FALSE
-  )
+  ))
   expect_false(captured_verbose)
 })
 
@@ -139,14 +139,14 @@ test_that("EikonGetSymbology chunks multiple symbols", {
     as.list(rep(NA, args$n_chunks))
   })
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD,
     symbol = many_symbols,
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     raw_output = TRUE,
     cache = FALSE
-  )
+  ))
 
   expect_true(!is.null(captured_n_chunks))
   expect_gt(captured_n_chunks, 1L)
@@ -177,13 +177,13 @@ test_that("EikonGetSymbology combines multi-chunk results (STOXX-3 fix)", {
     list(chunk1, chunk2)
   })
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD,
     symbol = c("AAPL.O", "MSFT.O", "GOOG.O", "AMZN.O"),
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     cache = FALSE
-  )
+  ))
 
   expect_s3_class(result, "data.frame")
   # All 4 symbols should be present — previously only chunk1 was returned
@@ -213,13 +213,13 @@ test_that("EikonGetSymbology handles mixed success/failure chunks", {
     list(chunk1, NA)
   })
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD,
     symbol = c("AAPL.O", "FAIL.O"),
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     cache = FALSE
-  )
+  ))
 
   expect_s3_class(result, "data.frame")
   expect_equal(nrow(result), 1L)
@@ -241,13 +241,13 @@ test_that("EikonGetSymbology all-NA chunks returns empty data.frame", {
     list(NA, NA)
   })
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD,
     symbol = c("FAIL1.O", "FAIL2.O"),
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     cache = FALSE
-  )
+  ))
 
   expect_s3_class(result, "data.frame")
   expect_equal(nrow(result), 0L)
@@ -275,14 +275,14 @@ test_that("EikonGetSymbology uses retry with max_attempts = 1L (A5 fix)", {
     )))
   })
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = RD,
     symbol = "AAPL.O",
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     raw_output = TRUE,
     cache = FALSE
-  )
+  ))
 
   expect_false(is.null(captured_retry_args))
   expect_equal(captured_retry_args$max_attempts, 1L)
@@ -298,12 +298,12 @@ test_that("EikonGetSymbology converts RIC to ISIN", {
   skip_if(!has_live_api(), "No live API available")
   Eikon <- RefinitivJsonConnect(getOption(".EikonApiKey"))
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = Eikon,
     symbol = "AAPL.O",
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN"
-  )
+  ))
 
   expect_s3_class(result, "data.frame")
   expect_true("ISIN" %in% names(result) || "bestMatch" %in% names(result))
@@ -313,12 +313,12 @@ test_that("EikonGetSymbology converts ISIN to RIC", {
   skip_if(!has_live_api(), "No live API available")
   Eikon <- RefinitivJsonConnect(getOption(".EikonApiKey"))
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = Eikon,
     symbol = "US0378331005",
     from_symbol_type = "ISIN",
     to_symbol_type = "RIC"
-  )
+  ))
 
   expect_s3_class(result, "data.frame")
 })
@@ -327,12 +327,12 @@ test_that("EikonGetSymbology handles non-existing symbols", {
   skip_if(!has_live_api(), "No live API available")
   Eikon <- RefinitivJsonConnect(getOption(".EikonApiKey"))
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = Eikon,
     symbol = c("AAPL.O", "NONEXISTENT"),
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN"
-  )
+  ))
 
   expect_s3_class(result, "data.frame")
 })
@@ -341,13 +341,13 @@ test_that("EikonGetSymbology returns raw output", {
   skip_if(!has_live_api(), "No live API available")
   Eikon <- RefinitivJsonConnect(getOption(".EikonApiKey"))
 
-  result <- EikonGetSymbology(
+  result <- suppressWarnings(EikonGetSymbology(
     EikonObject = Eikon,
     symbol = "AAPL.O",
     from_symbol_type = "RIC",
     to_symbol_type = "ISIN",
     raw_output = TRUE
-  )
+  ))
 
   expect_type(result, "list")
 })
