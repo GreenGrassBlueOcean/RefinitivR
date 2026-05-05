@@ -40,6 +40,7 @@ and/or Datastream is required. Use at your own risk!
 ## Installation
 
 ``` r
+
 install.packages("devtools")
 devtools::install_github("GreenGrassBlueOcean/RefinitivR")
 library(Refinitiv)
@@ -50,6 +51,7 @@ library(Refinitiv)
 With LSEG Workspace running, no explicit connection step is needed:
 
 ``` r
+
 library(Refinitiv)
 
 # Get snapshot data
@@ -62,6 +64,7 @@ rd_GetHistory(universe = c("AAPL.O", "MSFT.O"))
 ### Real-Time Streaming
 
 ``` r
+
 stream <- rd_get_streaming_data(
   universe = "EUR=",
   fields = c("BID", "ASK", "OPEN_PRC")
@@ -84,12 +87,13 @@ stream$close()
 1.  [Connecting to LSEG Workspace](#connecting-to-lseg-workspace)
 2.  [Real-Time Streaming](#real-time-streaming)
 3.  [Working with Refinitiv Data (RD)](#working-with-refinitiv-data-rd)
-4.  [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
-5.  [DataStream](#datastream)
+4.  [Symbology Conversion](#symbology-conversion)
+5.  [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
 6.  [Custom Instruments](#custom-instruments)
-7.  [Caching](#caching)
-8.  [Progress Reporting](#progress-reporting)
-9.  [Building Custom Visualizations](#building-custom-visualizations)
+7.  [DataStream](#datastream)
+8.  [Caching](#caching)
+9.  [Progress Reporting](#progress-reporting)
+10. [Building Custom Visualizations](#building-custom-visualizations)
 
 ------------------------------------------------------------------------
 
@@ -113,6 +117,7 @@ using WebSocket connections.
 ### Prerequisites
 
 ``` r
+
 # Required packages (installed automatically)
 install.packages(c("websocket", "later", "shiny", "data.table"))
 ```
@@ -120,6 +125,7 @@ install.packages(c("websocket", "later", "shiny", "data.table"))
 ### Quick Example
 
 ``` r
+
 library(Refinitiv)
 
 stream <- rd_get_streaming_data(
@@ -140,6 +146,7 @@ stream$close()
 ### Multiple Instruments
 
 ``` r
+
 stream <- rd_get_streaming_data(
   universe = c("EUR=", "GBP=", "JPY="),
   fields = c("BID", "ASK", "OPEN_PRC", "DSPLY_NAME")
@@ -149,6 +156,7 @@ stream <- rd_get_streaming_data(
 ### Event Callbacks
 
 ``` r
+
 # Refresh callback - called when initial data is received
 stream$on_refresh(function(stream, instrument, fields) {
   cat(sprintf("Initial data for %s received\n", instrument))
@@ -168,6 +176,7 @@ stream$on_error(function(stream, error_message) {
 ### Accessing Data
 
 ``` r
+
 # Latest snapshot (all instruments)
 latest <- stream$get_latest_data()
 
@@ -185,6 +194,7 @@ summary_eur <- stream$get_summary(instrument = "EUR=")
 ### Built-in Live Plotting
 
 ``` r
+
 app <- stream$plot_live(field = "BID", instrument = "EUR=")
 shiny::runApp(app)
 ```
@@ -192,6 +202,7 @@ shiny::runApp(app)
 ### Advanced Usage
 
 ``` r
+
 # Enable debug logging
 options(refinitiv_streaming_debug = TRUE)
 
@@ -209,6 +220,7 @@ stream$open()
 Run the included examples:
 
 ``` r
+
 # Quick example (~10 seconds)
 source(system.file("examples", "streaming_quick_example.R", package = "Refinitiv"))
 
@@ -226,6 +238,7 @@ source(system.file("examples", "streaming_test_debug.R", package = "Refinitiv"))
 ### Searching
 
 ``` r
+
 # Basic search
 results <- RDPsearch(query = "AAPL.O")
 
@@ -243,6 +256,7 @@ Presidents <- RDPsearch(
 ### Get History
 
 ``` r
+
 # Simple timeseries
 timeseries <- rd_GetHistory(universe = c("AAPL.O", "NVDA.O"))
 
@@ -257,6 +271,7 @@ data <- rd_GetHistory(
 ### Get Data
 
 ``` r
+
 ex1 <- rd_GetData(
   rics = c("MMM", "III.L"),
   Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/", 
@@ -267,6 +282,7 @@ ex1 <- rd_GetData(
 ### Historical Pricing
 
 ``` r
+
 # Daily data
 daily <- rd_GetHistoricalPricing(
   universe = "VOD.L", 
@@ -285,6 +301,50 @@ intraday <- rd_GetHistoricalPricing(
 
 ------------------------------------------------------------------------
 
+## Symbology Conversion
+
+[`rd_ConvertSymbol()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ConvertSymbol.md)
+is the modern, robust replacement for the legacy `EikonGetSymbology`. It
+resolves gaps in the LSEG native symbology API by introducing a
+multi-tiered fallback strategy that successfully maps complex cases
+(such as historical delisted Bare RICs) while returning a clean,
+`data.table` formatted result.
+
+### Standard Conversion
+
+Convert ISIN, SEDOL, or CUSIP to RIC:
+
+``` r
+
+rd_ConvertSymbol("US0378331005", from_symbol_type = "ISIN", to_symbol_type = "RIC")
+```
+
+### Advanced Bare RIC Resolution
+
+`rd_ConvertSymbol` automatically handles “Bare RICs” by navigating
+through active primary instruments and historical canonical mappings.
+This is critical for backtesting workflows.
+
+``` r
+
+# Active primary instrument mapping
+rd_ConvertSymbol("A")
+#>   OriginalSymbol MappedSymbol     ResolutionTier IsActive
+#> 1              A          A.N primary_instrument     TRUE
+
+# Historical / delisted instrument mapping
+rd_ConvertSymbol("HES")
+#>   OriginalSymbol MappedSymbol    ResolutionTier IsActive
+#> 1            HES    HES.N^G25 primary_instrument   FALSE
+
+# Case insensitivity and canonical history fallback
+rd_ConvertSymbol("1cOv.De")
+#>   OriginalSymbol MappedSymbol    ResolutionTier IsActive
+#> 1        1cOv.De  1COv.DE^L25 history_canonical   FALSE
+```
+
+------------------------------------------------------------------------
+
 ## Working with the Legacy Eikon Functions
 
 The legacy `Eikon*` functions now also default to
@@ -294,6 +354,7 @@ so no explicit connection is needed:
 ### News
 
 ``` r
+
 headlines <- EikonGetNewsHeadlines(query = "R:MSFT.O", count = 2)
 stories <- EikonGetNewsStory(story_id = headlines$storyId)
 ```
@@ -301,6 +362,7 @@ stories <- EikonGetNewsStory(story_id = headlines$storyId)
 ### Timeseries
 
 ``` r
+
 Timeseries <- EikonGetTimeseries(
   rics = c("MMM", "III.L"),
   start_date = "2020-01-01T01:00:00",
@@ -311,6 +373,7 @@ Timeseries <- EikonGetTimeseries(
 ### Data Requests
 
 ``` r
+
 Data <- EikonGetData(
   rics = c("MMM", "III.L"),
   Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/", 
@@ -325,6 +388,7 @@ Data <- EikonGetData(
 ### Setup
 
 ``` r
+
 # Get UUID from Eikon Terminal: Help > About > User Details
 RD <- RDConnect(UUID = "ABCDE-123456")
 ```
@@ -332,6 +396,7 @@ RD <- RDConnect(UUID = "ABCDE-123456")
 ### Create Simple Instrument
 
 ``` r
+
 rd_ManageCustomInstruments(
   operation = "CREATE", 
   symbol = "testAAPLandAMZN",
@@ -350,6 +415,7 @@ rd_ManageCustomInstruments(operation = "DELETE", symbol = "testAAPLandAMZN")
 ### Basket Instruments
 
 ``` r
+
 basket <- CustomInstrumentBasketBuilder(
   RICs = c("AAPL.O", "AMZN.O"), 
   Weights = c(0.5, 0.5)
@@ -377,6 +443,7 @@ rd_ManageCustomInstruments(
 ### Utilities
 
 ``` r
+
 AllActiveCustomInstruments <- rd_SearchCustomInstruments()
 RealInstrumentName <- CorrectCustomInstrument("InterestingBasket")
 ```
@@ -386,6 +453,7 @@ RealInstrumentName <- CorrectCustomInstrument("InterestingBasket")
 ## DataStream
 
 ``` r
+
 DatastreamUserName <- "Your datastream username"
 DatastreamPassword <- "Your datastream password"
 DataStream <- DataStreamConnect(DatastreamUserName, DatastreamPassword)
@@ -408,6 +476,7 @@ All data retrieval functions support opt-in session-scoped caching to
 avoid redundant API calls:
 
 ``` r
+
 # Enable caching globally (uses per-function default TTLs, typically 300 s)
 options(refinitiv_cache = TRUE)
 
@@ -455,6 +524,7 @@ Control progress output with `options(refinitiv_progress = ...)` or the
 | `"verbose"`      | Compact progress + full debug dumps       |
 
 ``` r
+
 # Disable globally
 options(refinitiv_progress = FALSE)
 
@@ -478,6 +548,7 @@ The streaming API provides several ways to build custom visualizations:
 ### Using Built-in `plot_live()`
 
 ``` r
+
 stream <- rd_get_streaming_data(universe = "EUR=", fields = c("BID", "ASK"))
 stream$open()
 
@@ -488,6 +559,7 @@ shiny::runApp(app)
 ### Custom Shiny App
 
 ``` r
+
 library(shiny)
 library(Refinitiv)
 
@@ -523,6 +595,7 @@ shinyApp(ui, server)
 ### Static Plots with ggplot2
 
 ``` r
+
 library(ggplot2)
 
 stream <- rd_get_streaming_data(universe = "EUR=", fields = c("BID", "ASK"))
@@ -556,6 +629,7 @@ ggplot(history, aes(x = timestamp, y = BID)) +
 Example scripts are included in the package:
 
 ``` r
+
 list.files(system.file("examples", package = "Refinitiv"))
 source(system.file("examples", "streaming_quick_example.R", package = "Refinitiv"))
 ```
@@ -649,6 +723,8 @@ See LICENSE file.
   : Show RefinitivR Cache Statistics
 - [`rd_ClearCache()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md)
   : Clear the RefinitivR Session Cache
+- [`rd_ConvertSymbol()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ConvertSymbol.md)
+  : Robust Symbol Conversion for Refinitiv Data
 - [`rd_GetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md)
   : Function to obtain data from Eikon/LSEG via the JSON API
 - [`rd_GetESG()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetESG.md)

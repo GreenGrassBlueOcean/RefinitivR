@@ -72,6 +72,8 @@
   : Show RefinitivR Cache Statistics
 - [`rd_ClearCache()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md)
   : Clear the RefinitivR Session Cache
+- [`rd_ConvertSymbol()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ConvertSymbol.md)
+  : Robust Symbol Conversion for Refinitiv Data
 - [`rd_GetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md)
   : Function to obtain data from Eikon/LSEG via the JSON API
 - [`rd_GetESG()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetESG.md)
