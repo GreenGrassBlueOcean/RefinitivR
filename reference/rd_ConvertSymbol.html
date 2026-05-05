@@ -125,10 +125,13 @@ applies when <code>from_symbol_type = "RIC"</code>.</p></dd>
   <dt><code>ResolutionTier</code></dt>
 <dd><p>Which tier resolved the symbol:
     <code>"symbology"</code>, <code>"primary_instrument"</code>,
-    <code>"history_canonical"</code>, or <code>"none"</code>.</p></dd>
+    <code>"history_canonical"</code>, <code>"identity"</code>, or <code>"none"</code>.</p></dd>
 
   <dt><code>IsActive</code></dt>
 <dd><p>Logical. Whether the resolved instrument is active.</p></dd>
+
+  <dt><code>DelistingDate</code></dt>
+<dd><p>Character. The retire date (YYYY-MM-DD) if inactive, or <code>NA</code>.</p></dd>
 
 
 </dl></div>
@@ -163,23 +166,23 @@ applies when <code>from_symbol_type = "RIC"</code>.</p></dd>
 <span class="r-in"><span><span class="fu">rd_ConvertSymbol</span><span class="op">(</span>symbols <span class="op">=</span> <span class="st">"US0378331005"</span>,</span></span>
 <span class="r-in"><span>                 from_symbol_type <span class="op">=</span> <span class="st">"ISIN"</span>,</span></span>
 <span class="r-in"><span>                 to_symbol_type <span class="op">=</span> <span class="st">"RIC"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#&gt;   OriginalSymbol MappedSymbol ResolutionTier IsActive</span></span></span>
-<span class="r-in"><span><span class="co">#&gt; 1:   US0378331005       AAPL.O      symbology     TRUE</span></span></span>
+<span class="r-in"><span><span class="co">#&gt;   OriginalSymbol MappedSymbol ResolutionTier IsActive DelistingDate</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; 1:   US0378331005       AAPL.O      symbology     TRUE          &lt;NA&gt;</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- Active Bare RIC Resolution (Tier 2) ---</span></span></span>
 <span class="r-in"><span><span class="co"># "A" is a bare RIC (no dot suffix). LSEG symbology cannot resolve it,</span></span></span>
 <span class="r-in"><span><span class="co"># but Tier 2 queries TR.PrimaryInstrument and maps to A.N (NYSE).</span></span></span>
 <span class="r-in"><span><span class="fu">rd_ConvertSymbol</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#&gt;   OriginalSymbol MappedSymbol     ResolutionTier IsActive</span></span></span>
-<span class="r-in"><span><span class="co">#&gt; 1:              A          A.N primary_instrument     TRUE</span></span></span>
+<span class="r-in"><span><span class="co">#&gt;   OriginalSymbol MappedSymbol     ResolutionTier IsActive DelistingDate</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; 1:              A          A.N primary_instrument     TRUE          &lt;NA&gt;</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- Delisted Bare RIC (Tier 2) ---</span></span></span>
 <span class="r-in"><span><span class="co"># "HES" was Hess Corp, recently acquired and delisted. The bare ticker</span></span></span>
 <span class="r-in"><span><span class="co"># has no exchange suffix, so symbology fails. Tier 2 maps it to the</span></span></span>
 <span class="r-in"><span><span class="co"># delisted form HES.N^G25.</span></span></span>
 <span class="r-in"><span><span class="fu">rd_ConvertSymbol</span><span class="op">(</span><span class="st">"HES"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#&gt;   OriginalSymbol MappedSymbol     ResolutionTier IsActive</span></span></span>
-<span class="r-in"><span><span class="co">#&gt; 1:            HES    HES.N^G25 primary_instrument    FALSE</span></span></span>
+<span class="r-in"><span><span class="co">#&gt;   OriginalSymbol MappedSymbol     ResolutionTier IsActive DelistingDate</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; 1:            HES    HES.N^G25 primary_instrument    FALSE    2025-07-18</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- Case-Sensitive Delisted RIC (Tier 3) ---</span></span></span>
 <span class="r-in"><span><span class="co"># Refinitiv is highly case-sensitive for European delisted RICs.</span></span></span>
@@ -187,16 +190,16 @@ applies when <code>from_symbol_type = "RIC"</code>.</p></dd>
 <span class="r-in"><span><span class="co"># rd_GetHistory(TR.RIC) which is case-insensitive, extracting the</span></span></span>
 <span class="r-in"><span><span class="co"># canonical string "1COv.DE^L25" from the historical timeline.</span></span></span>
 <span class="r-in"><span><span class="fu">rd_ConvertSymbol</span><span class="op">(</span><span class="st">"1cOv.De"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#&gt;   OriginalSymbol  MappedSymbol    ResolutionTier IsActive</span></span></span>
-<span class="r-in"><span><span class="co">#&gt; 1:        1cOv.De 1COv.DE^L25 history_canonical    FALSE</span></span></span>
+<span class="r-in"><span><span class="co">#&gt;   OriginalSymbol  MappedSymbol    ResolutionTier IsActive DelistingDate</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; 1:        1cOv.De 1COv.DE^L25 history_canonical    FALSE    2025-12-08</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- Batch conversion (mixed scenarios) ---</span></span></span>
-<span class="r-in"><span><span class="fu">rd_ConvertSymbol</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AAPL.O"</span>, <span class="st">"HES"</span>, <span class="st">"1cOv.De"</span>, <span class="st">"UNKNOWN"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#&gt;   OriginalSymbol  MappedSymbol     ResolutionTier IsActive</span></span></span>
-<span class="r-in"><span><span class="co">#&gt; 1:         AAPL.O        AAPL.O          symbology     TRUE</span></span></span>
-<span class="r-in"><span><span class="co">#&gt; 2:            HES     HES.N^G25 primary_instrument    FALSE</span></span></span>
-<span class="r-in"><span><span class="co">#&gt; 3:        1cOv.De  1COv.DE^L25  history_canonical    FALSE</span></span></span>
-<span class="r-in"><span><span class="co">#&gt; 4:        UNKNOWN          &lt;NA&gt;               none       NA</span></span></span>
+<span class="r-in"><span><span class="fu">rd_ConvertSymbol</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AAPL.O"</span>, <span class="st">"HES"</span>, <span class="st">"1cOv.De"</span>, <span class="st">"INVALID_RIC"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#&gt;   OriginalSymbol  MappedSymbol     ResolutionTier IsActive DelistingDate</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; 1:         AAPL.O        AAPL.O          identity     TRUE          &lt;NA&gt;</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; 2:            HES     HES.N^G25 primary_instrument    FALSE    2025-07-18</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; 3:        1cOv.De  1COv.DE^L25  history_canonical    FALSE    2025-12-08</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; 4:    INVALID_RIC          &lt;NA&gt;               none       NA          &lt;NA&gt;</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- Disable fallbacks for speed ---</span></span></span>
 <span class="r-in"><span><span class="co"># If you know all inputs are well-formed, skip Tier 2 &amp; 3:</span></span></span>

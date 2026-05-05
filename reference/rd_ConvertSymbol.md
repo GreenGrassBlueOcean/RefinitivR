@@ -84,11 +84,15 @@ A `data.table` with the following columns:
 - `ResolutionTier`:
 
   Which tier resolved the symbol: `"symbology"`, `"primary_instrument"`,
-  `"history_canonical"`, or `"none"`.
+  `"history_canonical"`, `"identity"`, or `"none"`.
 
 - `IsActive`:
 
   Logical. Whether the resolved instrument is active.
+
+- `DelistingDate`:
+
+  Character. The retire date (YYYY-MM-DD) if inactive, or `NA`.
 
 ## Details
 
@@ -126,23 +130,23 @@ if (FALSE) { # \dontrun{
 rd_ConvertSymbol(symbols = "US0378331005",
                  from_symbol_type = "ISIN",
                  to_symbol_type = "RIC")
-#>   OriginalSymbol MappedSymbol ResolutionTier IsActive
-#> 1:   US0378331005       AAPL.O      symbology     TRUE
+#>   OriginalSymbol MappedSymbol ResolutionTier IsActive DelistingDate
+#> 1:   US0378331005       AAPL.O      symbology     TRUE          <NA>
 
 # --- Active Bare RIC Resolution (Tier 2) ---
 # "A" is a bare RIC (no dot suffix). LSEG symbology cannot resolve it,
 # but Tier 2 queries TR.PrimaryInstrument and maps to A.N (NYSE).
 rd_ConvertSymbol("A")
-#>   OriginalSymbol MappedSymbol     ResolutionTier IsActive
-#> 1:              A          A.N primary_instrument     TRUE
+#>   OriginalSymbol MappedSymbol     ResolutionTier IsActive DelistingDate
+#> 1:              A          A.N primary_instrument     TRUE          <NA>
 
 # --- Delisted Bare RIC (Tier 2) ---
 # "HES" was Hess Corp, recently acquired and delisted. The bare ticker
 # has no exchange suffix, so symbology fails. Tier 2 maps it to the
 # delisted form HES.N^G25.
 rd_ConvertSymbol("HES")
-#>   OriginalSymbol MappedSymbol     ResolutionTier IsActive
-#> 1:            HES    HES.N^G25 primary_instrument    FALSE
+#>   OriginalSymbol MappedSymbol     ResolutionTier IsActive DelistingDate
+#> 1:            HES    HES.N^G25 primary_instrument    FALSE    2025-07-18
 
 # --- Case-Sensitive Delisted RIC (Tier 3) ---
 # Refinitiv is highly case-sensitive for European delisted RICs.
@@ -150,16 +154,16 @@ rd_ConvertSymbol("HES")
 # rd_GetHistory(TR.RIC) which is case-insensitive, extracting the
 # canonical string "1COv.DE^L25" from the historical timeline.
 rd_ConvertSymbol("1cOv.De")
-#>   OriginalSymbol  MappedSymbol    ResolutionTier IsActive
-#> 1:        1cOv.De 1COv.DE^L25 history_canonical    FALSE
+#>   OriginalSymbol  MappedSymbol    ResolutionTier IsActive DelistingDate
+#> 1:        1cOv.De 1COv.DE^L25 history_canonical    FALSE    2025-12-08
 
 # --- Batch conversion (mixed scenarios) ---
-rd_ConvertSymbol(c("AAPL.O", "HES", "1cOv.De", "UNKNOWN"))
-#>   OriginalSymbol  MappedSymbol     ResolutionTier IsActive
-#> 1:         AAPL.O        AAPL.O          symbology     TRUE
-#> 2:            HES     HES.N^G25 primary_instrument    FALSE
-#> 3:        1cOv.De  1COv.DE^L25  history_canonical    FALSE
-#> 4:        UNKNOWN          <NA>               none       NA
+rd_ConvertSymbol(c("AAPL.O", "HES", "1cOv.De", "INVALID_RIC"))
+#>   OriginalSymbol  MappedSymbol     ResolutionTier IsActive DelistingDate
+#> 1:         AAPL.O        AAPL.O          identity     TRUE          <NA>
+#> 2:            HES     HES.N^G25 primary_instrument    FALSE    2025-07-18
+#> 3:        1cOv.De  1COv.DE^L25  history_canonical    FALSE    2025-12-08
+#> 4:    INVALID_RIC          <NA>               none       NA          <NA>
 
 # --- Disable fallbacks for speed ---
 # If you know all inputs are well-formed, skip Tier 2 & 3:

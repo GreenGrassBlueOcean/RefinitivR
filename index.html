@@ -339,18 +339,18 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Active primary instrument mapping</span></span>
 <span><span class="fu"><a href="reference/rd_ConvertSymbol.html">rd_ConvertSymbol</a></span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   OriginalSymbol MappedSymbol     ResolutionTier IsActive</span></span>
-<span><span class="co">#&gt; 1              A          A.N primary_instrument     TRUE</span></span>
+<span><span class="co">#&gt;   OriginalSymbol MappedSymbol     ResolutionTier IsActive DelistingDate</span></span>
+<span><span class="co">#&gt; 1              A          A.N primary_instrument     TRUE          &lt;NA&gt;</span></span>
 <span></span>
 <span><span class="co"># Historical / delisted instrument mapping</span></span>
 <span><span class="fu"><a href="reference/rd_ConvertSymbol.html">rd_ConvertSymbol</a></span><span class="op">(</span><span class="st">"HES"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   OriginalSymbol MappedSymbol    ResolutionTier IsActive</span></span>
-<span><span class="co">#&gt; 1            HES    HES.N^G25 primary_instrument   FALSE</span></span>
+<span><span class="co">#&gt;   OriginalSymbol MappedSymbol    ResolutionTier IsActive DelistingDate</span></span>
+<span><span class="co">#&gt; 1            HES    HES.N^G25 primary_instrument   FALSE    2025-07-18</span></span>
 <span></span>
 <span><span class="co"># Case insensitivity and canonical history fallback</span></span>
 <span><span class="fu"><a href="reference/rd_ConvertSymbol.html">rd_ConvertSymbol</a></span><span class="op">(</span><span class="st">"1cOv.De"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   OriginalSymbol MappedSymbol    ResolutionTier IsActive</span></span>
-<span><span class="co">#&gt; 1        1cOv.De  1COv.DE^L25 history_canonical   FALSE</span></span></code></pre></div>
+<span><span class="co">#&gt;   OriginalSymbol MappedSymbol    ResolutionTier IsActive DelistingDate</span></span>
+<span><span class="co">#&gt; 1        1cOv.De  1COv.DE^L25 history_canonical   FALSE    2025-12-08</span></span></code></pre></div>
 <hr>
 </div>
 </div>

@@ -329,18 +329,18 @@ This is critical for backtesting workflows.
 
 # Active primary instrument mapping
 rd_ConvertSymbol("A")
-#>   OriginalSymbol MappedSymbol     ResolutionTier IsActive
-#> 1              A          A.N primary_instrument     TRUE
+#>   OriginalSymbol MappedSymbol     ResolutionTier IsActive DelistingDate
+#> 1              A          A.N primary_instrument     TRUE          <NA>
 
 # Historical / delisted instrument mapping
 rd_ConvertSymbol("HES")
-#>   OriginalSymbol MappedSymbol    ResolutionTier IsActive
-#> 1            HES    HES.N^G25 primary_instrument   FALSE
+#>   OriginalSymbol MappedSymbol    ResolutionTier IsActive DelistingDate
+#> 1            HES    HES.N^G25 primary_instrument   FALSE    2025-07-18
 
 # Case insensitivity and canonical history fallback
 rd_ConvertSymbol("1cOv.De")
-#>   OriginalSymbol MappedSymbol    ResolutionTier IsActive
-#> 1        1cOv.De  1COv.DE^L25 history_canonical   FALSE
+#>   OriginalSymbol MappedSymbol    ResolutionTier IsActive DelistingDate
+#> 1        1cOv.De  1COv.DE^L25 history_canonical   FALSE    2025-12-08
 ```
 
 ------------------------------------------------------------------------
