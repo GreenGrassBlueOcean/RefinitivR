@@ -164,7 +164,7 @@ rd_ConvertSymbol <- function(symbols,
           }
           if (length(ret_col_idx) > 0) {
             ret_val <- df[[names(df)[ret_col_idx[1]]]][match_idx[1]]
-            if (!is.na(ret_val) && ret_val != "") {
+            if (!is.na(ret_val) && as.character(ret_val) != "") {
                if (inherits(ret_val, "POSIXt") || inherits(ret_val, "Date")) {
                  res$DelistingDate[i] <- format(as.Date(ret_val), "%Y-%m-%d")
                } else {
@@ -199,7 +199,7 @@ rd_ConvertSymbol <- function(symbols,
           match_row <- symb_res[symb_res[[1]] == sym, ]
           if (nrow(match_row) > 0) {
             best_val <- match_row$bestMatch[1]
-            if (!is.na(best_val) && best_val != "" && best_val != "No best match available") {
+            if (!is.na(best_val) && as.character(best_val) != "" && best_val != "No best match available") {
               res_dt$MappedSymbol[i] <- best_val
               res_dt$ResolutionTier[i] <- "symbology"
             }
@@ -217,7 +217,7 @@ rd_ConvertSymbol <- function(symbols,
              target_col <- if (to_symbol_type == "RIC") "RICs" else names(match_row)[ncol(match_row)]
              if (target_col %in% names(match_row)) {
                best_val <- match_row[[target_col]][1]
-               if (!is.na(best_val) && best_val != "") {
+               if (!is.na(best_val) && as.character(best_val) != "") {
                  res_dt$MappedSymbol[i] <- best_val
                  res_dt$ResolutionTier[i] <- "symbology"
                }
@@ -282,7 +282,7 @@ rd_ConvertSymbol <- function(symbols,
             match_row <- df_bare[df_bare$Instrument == bare_syms[i], ]
             if (nrow(match_row) > 0) {
               prim_ric <- match_row$Primary.Instrument.RIC[1]
-              if (!is.na(prim_ric) && prim_ric != "") {
+              if (!is.na(prim_ric) && as.character(prim_ric) != "") {
                 idx <- bare_idx[i]
                 res_dt$MappedSymbol[idx] <- prim_ric
                 res_dt$ResolutionTier[idx] <- "primary_instrument"
@@ -320,7 +320,7 @@ rd_ConvertSymbol <- function(symbols,
           
           if (!is.null(ric_col)) {
              ric_vals <- hist_df[[ric_col]]
-             ric_vals <- ric_vals[!is.na(ric_vals) & ric_vals != ""]
+             ric_vals <- ric_vals[!is.na(ric_vals) & as.character(ric_vals) != ""]
              if (length(ric_vals) > 0) {
                canonical <- utils::tail(ric_vals, 1) # last entry
                if (canonical != sym) {
@@ -329,7 +329,7 @@ rd_ConvertSymbol <- function(symbols,
                  
                  # Extract delisting date from history
                  if ("Date" %in% names(hist_df)) {
-                   date_vals <- hist_df[["Date"]][!is.na(hist_df[[ric_col]]) & hist_df[[ric_col]] != ""]
+                   date_vals <- hist_df[["Date"]][!is.na(hist_df[[ric_col]]) & as.character(hist_df[[ric_col]]) != ""]
                    if (length(date_vals) > 0) {
                      delist_dt <- utils::tail(date_vals, 1)
                      if (inherits(delist_dt, "POSIXt") || inherits(delist_dt, "Date")) {
