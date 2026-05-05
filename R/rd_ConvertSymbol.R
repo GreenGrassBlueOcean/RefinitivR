@@ -142,8 +142,8 @@ rd_ConvertSymbol <- function(symbols,
       IsActive = rep(NA, length(rics)),
       DelistingDate = rep(NA_character_, length(rics))
     )
-    if (length(rics) == 0) return(res)
     
+
     tryCatch({
       df <- EikonGetData(rics = rics, Eikonformulas = c("TR.InstrumentIsActive", "TR.RetireDate"), raw_output = FALSE, time_out = time_out, verbose = verbose)
       if (is.list(df) && "PostProcessedEikonGetData" %in% names(df)) {
