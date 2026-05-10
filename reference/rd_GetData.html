@@ -40,7 +40,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rd_GetData</span><span class="op">(</span></span>
 <span>  RDObject <span class="op">=</span> <span class="fu"><a href="rd_connection.html">rd_connection</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">rics</span>,</span>
-<span>  <span class="va">Eikonformulas</span>,</span>
+<span>  Eikonformulas <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Parameters <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  raw_output <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  time_out <span class="op">=</span> <span class="fl">60</span>,</span>
@@ -48,7 +48,8 @@
 <span>  SpaceConvertor <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  use_field_names_in_headers <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  SyncFields <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  cache <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  cache <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fields <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -65,7 +66,7 @@
 
 
 <dt id="arg-eikonformulas">Eikonformulas<a class="anchor" aria-label="anchor" href="#arg-eikonformulas"></a></dt>
-<dd><p>a vector containing character string of Eikon Formulas</p></dd>
+<dd><p>a vector containing character string of Eikon Formulas (deprecated, use <code>fields</code> instead)</p></dd>
 
 
 <dt id="arg-parameters">Parameters<a class="anchor" aria-label="anchor" href="#arg-parameters"></a></dt>
@@ -101,6 +102,10 @@
 <code>getOption("refinitiv_cache", FALSE)</code>. <code>TRUE</code> uses the
 function default TTL (300 s). <code>FALSE</code> disables caching. A positive
 numeric value sets the cache TTL in seconds. See <code><a href="rd_ClearCache.html">rd_ClearCache</a></code>.</p></dd>
+
+
+<dt id="arg-fields">fields<a class="anchor" aria-label="anchor" href="#arg-fields"></a></dt>
+<dd><p>a vector containing character string of requested data fields (alias for <code>Eikonformulas</code>)</p></dd>
 
 </dl></div>
     <div class="section level2">

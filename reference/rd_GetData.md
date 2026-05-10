@@ -10,7 +10,7 @@ into a single data.frame.
 rd_GetData(
   RDObject = rd_connection(),
   rics,
-  Eikonformulas,
+  Eikonformulas = NULL,
   Parameters = NULL,
   raw_output = FALSE,
   time_out = 60,
@@ -18,7 +18,8 @@ rd_GetData(
   SpaceConvertor = NULL,
   use_field_names_in_headers = FALSE,
   SyncFields = FALSE,
-  cache = NULL
+  cache = NULL,
+  fields = NULL
 )
 ```
 
@@ -34,7 +35,8 @@ rd_GetData(
 
 - Eikonformulas:
 
-  a vector containing character string of Eikon Formulas
+  a vector containing character string of Eikon Formulas (deprecated,
+  use `fields` instead)
 
 - Parameters:
 
@@ -74,6 +76,11 @@ rd_GetData(
   default TTL (300 s). `FALSE` disables caching. A positive numeric
   value sets the cache TTL in seconds. See
   [`rd_ClearCache`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md).
+
+- fields:
+
+  a vector containing character string of requested data fields (alias
+  for `Eikonformulas`)
 
 ## Value
 
