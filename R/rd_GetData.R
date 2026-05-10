@@ -3,7 +3,7 @@
 #' The function automatically chunks the list of rics into chunks that comply with the api limitations and in the end rebuilds the chunks again into a single data.frame.
 #'
 #' @param rics a vector containing the instrument RICS
-#' @param Eikonformulas a vector containing character string of Eikon Formulas
+#' @param Eikonformulas a vector containing character string of Eikon Formulas (deprecated, use \code{fields} instead)
 #' @param Parameters a named key value list for setting parameters, Default: NULL
 #' @param raw_output to return the raw list by chunk for debugging purposes, default = FALSE
 #' @param time_out set the maximum timeout to the Eikon server, default = 60
@@ -16,6 +16,7 @@
 #'   \code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
 #'   function default TTL (300 s). \code{FALSE} disables caching. A positive
 #'   numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.
+#' @param fields a vector containing character string of requested data fields (alias for \code{Eikonformulas})
 #'
 #' @return a data.frame containing data from Eikon
 #' @importFrom utils capture.output
@@ -57,10 +58,17 @@
 #' )
 #' }
 rd_GetData <- function(
-  RDObject = rd_connection(), rics, Eikonformulas, Parameters = NULL, raw_output = FALSE,
+  RDObject = rd_connection(), rics, Eikonformulas = NULL, Parameters = NULL, raw_output = FALSE,
   time_out = 60, verbose = getOption("refinitiv_progress", TRUE), SpaceConvertor = NULL, use_field_names_in_headers = FALSE, SyncFields = FALSE,
-  cache = NULL
+  cache = NULL, fields = NULL
 ) {
+  if (is.null(Eikonformulas) && is.null(fields)) {
+    stop("Please provide either 'Eikonformulas' or 'fields'")
+  }
+  if (!is.null(fields) && is.null(Eikonformulas)) {
+    Eikonformulas <- fields
+  }
+
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 300)
   if (!isFALSE(ttl)) {

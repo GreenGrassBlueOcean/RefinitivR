@@ -7,7 +7,7 @@
 rd_GetData(
   RDObject = rd_connection(),
   rics,
-  Eikonformulas,
+  Eikonformulas = NULL,
   Parameters = NULL,
   raw_output = FALSE,
   time_out = 60,
@@ -15,7 +15,8 @@ rd_GetData(
   SpaceConvertor = NULL,
   use_field_names_in_headers = FALSE,
   SyncFields = FALSE,
-  cache = NULL
+  cache = NULL,
+  fields = NULL
 )
 }
 \arguments{
@@ -23,7 +24,7 @@ rd_GetData(
 
 \item{rics}{a vector containing the instrument RICS}
 
-\item{Eikonformulas}{a vector containing character string of Eikon Formulas}
+\item{Eikonformulas}{a vector containing character string of Eikon Formulas (deprecated, use \code{fields} instead)}
 
 \item{Parameters}{a named key value list for setting parameters, Default: NULL}
 
@@ -43,6 +44,8 @@ rd_GetData(
 \code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
 function default TTL (300 s). \code{FALSE} disables caching. A positive
 numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.}
+
+\item{fields}{a vector containing character string of requested data fields (alias for \code{Eikonformulas})}
 }
 \value{
 a data.frame containing data from Eikon

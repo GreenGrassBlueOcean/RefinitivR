@@ -80,6 +80,26 @@ test_that("rd_GetData satisfies basic request", {
   expect_equal(sort(unique(result$Instrument)), sort(RICS))
 })
 
+test_that("rd_GetData supports 'fields' parameter as alias", {
+  skip_if(!has_live_api(), "No live API available")
+
+  RICS <- c("AAPL.O")
+  fields_to_request <- c("TR.InstrumentType", "TR.ExchangeName")
+
+  result <- rd_GetData(
+    rics = RICS, fields = fields_to_request,
+    RD = RDConnect()
+  )
+
+  expect_s3_class(result, "data.frame")
+  expect_equal(sort(names(result)), sort(c("Instrument", "Instrument Type", "Exchange Name")))
+  expect_equal(unique(result$Instrument), RICS)
+})
+
+test_that("rd_GetData throws error if no fields or Eikonformulas provided", {
+  expect_error(rd_GetData(rics = "AAPL.O", RDObject = dummy_rd_json), "Please provide either 'Eikonformulas' or 'fields'")
+})
+
 
 test_that("rd_GetData can handle with fields and dates", {
   skip_if(!has_live_api(), "No live API available")
