@@ -33,7 +33,7 @@ TestDataStreamCredentials(
 )
 #> URL does not seem to exist: http://product.datastream.com/DSWSClient/V1/DSService.svc/rest/Token?username=wrongusername&password=wrongPassword Either the service is down or the credentials are invalid.
 #> Original error message:
-#> HTTP 403 Forbidden.
+#> Failed to perform HTTP request.
 #> Warning: The provided DataStream credentials (username: "wrongusername", password: "wrongPassword") are invalid.
 #> [1] FALSE
 ```
