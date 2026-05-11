@@ -1,4 +1,10 @@
-# RefinitivR
+---
+title: "RefinitivR"
+output: 
+  md_document:
+    variant: gfm
+    preserve_yaml: TRUE
+---
 
 <!-- badges: start -->
 
@@ -29,8 +35,8 @@ opt-in **session-scoped cache** with configurable TTLs.
   instruments
 - **DataStream** — via `DatastreamDSWS2R`
 - **Robust under the hood** — three-layer retry with exponential
-  backoff, automatic chunking, HTTP 429/503 handling, progress
-  reporting for large requests
+  backoff, automatic chunking, HTTP 429/503 handling, progress reporting
+  for large requests
 
 > **Note (v0.2.0):** Python/reticulate support has been removed. All
 > data retrieval now uses the JSON API exclusively. See
@@ -43,8 +49,8 @@ and/or Datastream is required. Use at your own risk!
 ## Installation
 
 ``` r
-install.packages("devtools")
-devtools::install_github("GreenGrassBlueOcean/RefinitivR")
+install.packages("pak")
+pak::pak("GreenGrassBlueOcean/RefinitivR")
 library(Refinitiv)
 ```
 
@@ -87,13 +93,12 @@ stream$close()
 1.  [Connecting to LSEG Workspace](#connecting-to-lseg-workspace)
 2.  [Real-Time Streaming](#real-time-streaming)
 3.  [Working with Refinitiv Data (RD)](#working-with-refinitiv-data-rd)
-4.  [Symbology Conversion](#symbology-conversion)
-5.  [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
+4.  [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
+5.  [DataStream](#datastream)
 6.  [Custom Instruments](#custom-instruments)
-7.  [DataStream](#datastream)
-8.  [Caching](#caching)
-9.  [Progress Reporting](#progress-reporting)
-10. [Building Custom Visualizations](#building-custom-visualizations)
+7.  [Caching](#caching)
+8.  [Progress Reporting](#progress-reporting)
+9.  [Building Custom Visualizations](#building-custom-visualizations)
 
 ------------------------------------------------------------------------
 
@@ -103,8 +108,8 @@ No explicit connection step is needed. All API functions default to
 `rd_connection()`, which auto-creates and caches a connection on first
 use.
 
-Make sure LSEG Workspace (or Eikon Desktop) is running and online
-before calling any API function. After a terminal restart, call
+Make sure LSEG Workspace (or Eikon Desktop) is running and online before
+calling any API function. After a terminal restart, call
 `rd_connection(reset = TRUE)` to force a fresh connection.
 
 ------------------------------------------------------------------------
@@ -289,41 +294,6 @@ intraday <- rd_GetHistoricalPricing(
 
 ------------------------------------------------------------------------
 
-## Symbology Conversion
-
-`rd_ConvertSymbol()` is the modern, robust replacement for the legacy `EikonGetSymbology`. It resolves gaps in the LSEG native symbology API by introducing a multi-tiered fallback strategy that successfully maps complex cases (such as historical delisted Bare RICs) while returning a clean, `data.table` formatted result.
-
-### Standard Conversion
-
-Convert ISIN, SEDOL, or CUSIP to RIC:
-
-``` r
-rd_ConvertSymbol("US0378331005", from_symbol_type = "ISIN", to_symbol_type = "RIC")
-```
-
-### Advanced Bare RIC Resolution
-
-`rd_ConvertSymbol` automatically handles "Bare RICs" by navigating through active primary instruments and historical canonical mappings. This is critical for backtesting workflows.
-
-``` r
-# Active primary instrument mapping
-rd_ConvertSymbol("A")
-#>   OriginalSymbol MappedSymbol     ResolutionTier IsActive DelistingDate
-#> 1              A          A.N primary_instrument     TRUE          <NA>
-
-# Historical / delisted instrument mapping
-rd_ConvertSymbol("HES")
-#>   OriginalSymbol MappedSymbol    ResolutionTier IsActive DelistingDate
-#> 1            HES    HES.N^G25 primary_instrument   FALSE    2025-07-18
-
-# Case insensitivity and canonical history fallback
-rd_ConvertSymbol("1cOv.De")
-#>   OriginalSymbol MappedSymbol    ResolutionTier IsActive DelistingDate
-#> 1        1cOv.De  1COv.DE^L25 history_canonical   FALSE    2025-12-08
-```
-
-------------------------------------------------------------------------
-
 ## Working with the Legacy Eikon Functions
 
 The legacy `Eikon*` functions now also default to `rd_connection()`, so
@@ -482,11 +452,11 @@ polling and retriable errors always report status regardless of mode.
 Control progress output with `options(refinitiv_progress = ...)` or the
 `REFINITIV_PROGRESS` environment variable in `.Renviron`:
 
-| Value             | Behavior                                  |
-|-------------------|-------------------------------------------|
-| `TRUE` (default)  | Compact progress for multi-chunk requests |
-| `FALSE`           | Silent                                    |
-| `"verbose"`       | Compact progress + full debug dumps       |
+| Value            | Behavior                                  |
+|------------------|-------------------------------------------|
+| `TRUE` (default) | Compact progress for multi-chunk requests |
+| `FALSE`          | Silent                                    |
+| `"verbose"`      | Compact progress + full debug dumps       |
 
 ``` r
 # Disable globally

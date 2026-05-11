@@ -49,8 +49,8 @@ is required. Use at your own risk!
 ## Installation
 
 ```r
-install.packages("devtools")
-devtools::install_github("GreenGrassBlueOcean/RefinitivR")
+install.packages("pak")
+pak::pak("GreenGrassBlueOcean/RefinitivR")
 library(Refinitiv)
 ```
 
