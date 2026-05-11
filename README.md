@@ -3,8 +3,9 @@
 
 [![Codecov test
 coverage](https://codecov.io/gh/GreenGrassBlueOcean/RefinitivR/graph/badge.svg)](https://app.codecov.io/gh/GreenGrassBlueOcean/RefinitivR)
-[![R build
-status](https://github.com/GreenGrassBlueOcean/RefinitivR/workflows/R-CMD-check/badge.svg)](https://github.com/GreenGrassBlueOcean/RefinitivR/actions)
+[![R-CMD-check](https://github.com/GreenGrassBlueOcean/RefinitivR/workflows/R-CMD-check/badge.svg)](https://github.com/GreenGrassBlueOcean/RefinitivR/actions/workflows/R-CMD-check.yaml)
+[![Installation
+Test](https://github.com/GreenGrassBlueOcean/RefinitivR/actions/workflows/install-test.yaml/badge.svg)](https://github.com/GreenGrassBlueOcean/RefinitivR/actions/workflows/install-test.yaml)
 <!-- badges: end -->
 
 ## Overview
