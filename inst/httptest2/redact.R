@@ -15,7 +15,15 @@ function(resp) {
   #    stay shorter for tar portability.
   resp$url <- gsub("localhost(:\\d+)?", "lh:9000", resp$url)
 
-  # 3. Scrub bearer tokens from response bodies
+  # 3. Shorten extremely long LSEG API paths to avoid Windows MAX_PATH/tar issues
+  resp$url <- gsub("api/rdp/data/", "d/", resp$url)
+  resp$url <- gsub("historical-pricing/beta1/views/", "hp/", resp$url)
+  resp$url <- gsub("news/v1/top-news", "tn", resp$url)
+  resp$url <- gsub("news/v1/stories", "ns", resp$url)
+  resp$url <- gsub("urn-newsml-refinitiv.com-", "urn-", resp$url)
+  resp$url <- gsub("urn-newsml-reuters.com-", "urn-", resp$url)
+
+  # 4. Scrub bearer tokens from response bodies
   resp <- gsub_response(resp, "Bearer [^\" ]+", "Bearer REDACTED")
 
   resp
