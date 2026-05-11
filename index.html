@@ -44,11 +44,7 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="refinitivr">RefinitivR<a class="anchor" aria-label="anchor" href="#refinitivr"></a>
-</h1></div>
-<!-- badges: start -->
-
+  <main id="main" class="col-md-9">
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
@@ -82,8 +78,8 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"GreenGrassBlueOcean/RefinitivR"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"GreenGrassBlueOcean/RefinitivR"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://greengrassblueocean.github.io/RefinitivR/">Refinitiv</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -125,10 +121,9 @@
 <li><a href="#connecting-to-lseg-workspace">Connecting to LSEG Workspace</a></li>
 <li><a href="#real-time-streaming">Real-Time Streaming</a></li>
 <li><a href="#working-with-refinitiv-data-rd">Working with Refinitiv Data (RD)</a></li>
-<li><a href="#symbology-conversion">Symbology Conversion</a></li>
 <li><a href="#working-with-the-legacy-eikon-functions">Legacy Eikon Functions</a></li>
-<li><a href="#custom-instruments">Custom Instruments</a></li>
 <li><a href="#datastream">DataStream</a></li>
+<li><a href="#custom-instruments">Custom Instruments</a></li>
 <li><a href="#caching">Caching</a></li>
 <li><a href="#progress-reporting">Progress Reporting</a></li>
 <li><a href="#building-custom-visualizations">Building Custom Visualizations</a></li>
@@ -322,53 +317,20 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="symbology-conversion">Symbology Conversion<a class="anchor" aria-label="anchor" href="#symbology-conversion"></a>
-</h2>
-<p><code><a href="reference/rd_ConvertSymbol.html">rd_ConvertSymbol()</a></code> is the modern, robust replacement for the legacy <code>EikonGetSymbology</code>. It resolves gaps in the LSEG native symbology API by introducing a multi-tiered fallback strategy that successfully maps complex cases (such as historical delisted Bare RICs) while returning a clean, <code>data.table</code> formatted result.</p>
-<div class="section level3">
-<h3 id="standard-conversion">Standard Conversion<a class="anchor" aria-label="anchor" href="#standard-conversion"></a>
-</h3>
-<p>Convert ISIN, SEDOL, or CUSIP to RIC:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/rd_ConvertSymbol.html">rd_ConvertSymbol</a></span><span class="op">(</span><span class="st">"US0378331005"</span>, from_symbol_type <span class="op">=</span> <span class="st">"ISIN"</span>, to_symbol_type <span class="op">=</span> <span class="st">"RIC"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="advanced-bare-ric-resolution">Advanced Bare RIC Resolution<a class="anchor" aria-label="anchor" href="#advanced-bare-ric-resolution"></a>
-</h3>
-<p><code>rd_ConvertSymbol</code> automatically handles “Bare RICs” by navigating through active primary instruments and historical canonical mappings. This is critical for backtesting workflows.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Active primary instrument mapping</span></span>
-<span><span class="fu"><a href="reference/rd_ConvertSymbol.html">rd_ConvertSymbol</a></span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   OriginalSymbol MappedSymbol     ResolutionTier IsActive DelistingDate</span></span>
-<span><span class="co">#&gt; 1              A          A.N primary_instrument     TRUE          &lt;NA&gt;</span></span>
-<span></span>
-<span><span class="co"># Historical / delisted instrument mapping</span></span>
-<span><span class="fu"><a href="reference/rd_ConvertSymbol.html">rd_ConvertSymbol</a></span><span class="op">(</span><span class="st">"HES"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   OriginalSymbol MappedSymbol    ResolutionTier IsActive DelistingDate</span></span>
-<span><span class="co">#&gt; 1            HES    HES.N^G25 primary_instrument   FALSE    2025-07-18</span></span>
-<span></span>
-<span><span class="co"># Case insensitivity and canonical history fallback</span></span>
-<span><span class="fu"><a href="reference/rd_ConvertSymbol.html">rd_ConvertSymbol</a></span><span class="op">(</span><span class="st">"1cOv.De"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   OriginalSymbol MappedSymbol    ResolutionTier IsActive DelistingDate</span></span>
-<span><span class="co">#&gt; 1        1cOv.De  1COv.DE^L25 history_canonical   FALSE    2025-12-08</span></span></code></pre></div>
-<hr>
-</div>
-</div>
-<div class="section level2">
 <h2 id="working-with-the-legacy-eikon-functions">Working with the Legacy Eikon Functions<a class="anchor" aria-label="anchor" href="#working-with-the-legacy-eikon-functions"></a>
 </h2>
 <p>The legacy <code>Eikon*</code> functions now also default to <code><a href="reference/rd_connection.html">rd_connection()</a></code>, so no explicit connection is needed:</p>
 <div class="section level3">
 <h3 id="news">News<a class="anchor" aria-label="anchor" href="#news"></a>
 </h3>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">headlines</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/EikonGetNewsHeadlines.html">EikonGetNewsHeadlines</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"R:MSFT.O"</span>, count <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">stories</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/EikonGetNewsStory.html">EikonGetNewsStory</a></span><span class="op">(</span>story_id <span class="op">=</span> <span class="va">headlines</span><span class="op">$</span><span class="va">storyId</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="timeseries">Timeseries<a class="anchor" aria-label="anchor" href="#timeseries"></a>
 </h3>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Timeseries</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/EikonGetTimeseries.html">EikonGetTimeseries</a></span><span class="op">(</span></span>
 <span>  rics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MMM"</span>, <span class="st">"III.L"</span><span class="op">)</span>,</span>
 <span>  start_date <span class="op">=</span> <span class="st">"2020-01-01T01:00:00"</span>,</span>
@@ -378,7 +340,7 @@
 <div class="section level3">
 <h3 id="data-requests">Data Requests<a class="anchor" aria-label="anchor" href="#data-requests"></a>
 </h3>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/EikonGetData.html">EikonGetData</a></span><span class="op">(</span></span>
 <span>  rics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MMM"</span>, <span class="st">"III.L"</span><span class="op">)</span>,</span>
 <span>  Eikonformulas <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/"</span>, </span>
@@ -393,14 +355,14 @@
 <div class="section level3">
 <h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h3>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get UUID from Eikon Terminal: Help &gt; About &gt; User Details</span></span>
 <span><span class="va">RD</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/RDConnect.html">RDConnect</a></span><span class="op">(</span>UUID <span class="op">=</span> <span class="st">"ABCDE-123456"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="create-simple-instrument">Create Simple Instrument<a class="anchor" aria-label="anchor" href="#create-simple-instrument"></a>
 </h3>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/rd_ManageCustomInstruments.html">rd_ManageCustomInstruments</a></span><span class="op">(</span></span>
 <span>  operation <span class="op">=</span> <span class="st">"CREATE"</span>, </span>
 <span>  symbol <span class="op">=</span> <span class="st">"testAAPLandAMZN"</span>,</span>
@@ -418,7 +380,7 @@
 <div class="section level3">
 <h3 id="basket-instruments">Basket Instruments<a class="anchor" aria-label="anchor" href="#basket-instruments"></a>
 </h3>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">basket</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/CustomInstrumentBasketBuilder.html">CustomInstrumentBasketBuilder</a></span><span class="op">(</span></span>
 <span>  RICs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AAPL.O"</span>, <span class="st">"AMZN.O"</span><span class="op">)</span>, </span>
 <span>  Weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span></span>
@@ -445,7 +407,7 @@
 <div class="section level3">
 <h3 id="utilities">Utilities<a class="anchor" aria-label="anchor" href="#utilities"></a>
 </h3>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">AllActiveCustomInstruments</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rd_SearchCustomInstruments.html">rd_SearchCustomInstruments</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">RealInstrumentName</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/CorrectCustomInstrument.html">CorrectCustomInstrument</a></span><span class="op">(</span><span class="st">"InterestingBasket"</span><span class="op">)</span></span></code></pre></div>
 <hr>
@@ -454,7 +416,7 @@
 <div class="section level2">
 <h2 id="datastream">DataStream<a class="anchor" aria-label="anchor" href="#datastream"></a>
 </h2>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">DatastreamUserName</span> <span class="op">&lt;-</span> <span class="st">"Your datastream username"</span></span>
 <span><span class="va">DatastreamPassword</span> <span class="op">&lt;-</span> <span class="st">"Your datastream password"</span></span>
 <span><span class="va">DataStream</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/DataStreamConnect.html">DataStreamConnect</a></span><span class="op">(</span><span class="va">DatastreamUserName</span>, <span class="va">DatastreamPassword</span><span class="op">)</span></span>
@@ -471,7 +433,7 @@
 <h2 id="caching">Caching<a class="anchor" aria-label="anchor" href="#caching"></a>
 </h2>
 <p>All data retrieval functions support opt-in session-scoped caching to avoid redundant API calls:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Enable caching globally (uses per-function default TTLs, typically 300 s)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>refinitiv_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -491,11 +453,11 @@
 <h2 id="progress-reporting">Progress Reporting<a class="anchor" aria-label="anchor" href="#progress-reporting"></a>
 </h2>
 <p>Multi-chunk requests (large instrument universes, multi-query news, etc.) automatically show compact progress messages:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>[RefinitivR] <span class="dv">500</span> instruments, <span class="dv">500</span> data points, <span class="dv">3</span> chunks</span>
-<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Chunk <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span> <span class="fu">done</span> (<span class="dv">167</span> items, <span class="fl">0.3</span>s)</span>
-<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Chunk <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span> <span class="fu">done</span> (<span class="dv">167</span> items, <span class="fl">0.3</span>s)</span>
-<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Chunk <span class="dv">3</span><span class="sc">/</span><span class="dv">3</span> <span class="fu">done</span> (<span class="dv">166</span> items, <span class="fl">0.3</span>s)</span>
-<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Download complete<span class="sc">:</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">3</span> chunks succeeded <span class="cf">in</span> <span class="fl">2.5</span>s</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>[RefinitivR] <span class="dv">500</span> instruments, <span class="dv">500</span> data points, <span class="dv">3</span> chunks</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Chunk <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span> <span class="fu">done</span> (<span class="dv">167</span> items, <span class="fl">0.3</span>s)</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Chunk <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span> <span class="fu">done</span> (<span class="dv">167</span> items, <span class="fl">0.3</span>s)</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Chunk <span class="dv">3</span><span class="sc">/</span><span class="dv">3</span> <span class="fu">done</span> (<span class="dv">166</span> items, <span class="fl">0.3</span>s)</span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>[RefinitivR] EikonGetData<span class="sc">:</span> Download complete<span class="sc">:</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">3</span> chunks succeeded <span class="cf">in</span> <span class="fl">2.5</span>s</span></code></pre></div>
 <p>Single-instrument requests stay silent (one-chunk rule). Server-side polling and retriable errors always report status regardless of mode.</p>
 <p>Control progress output with <code>options(refinitiv_progress = ...)</code> or the <code>REFINITIV_PROGRESS</code> environment variable in <code>.Renviron</code>:</p>
 <table class="table">
@@ -519,7 +481,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Disable globally</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>refinitiv_progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
@@ -539,7 +501,7 @@
 <h3 id="using-built-in-plot_live">Using Built-in <code>plot_live()</code>
 <a class="anchor" aria-label="anchor" href="#using-built-in-plot_live"></a>
 </h3>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rd_get_streaming_data.html">rd_get_streaming_data</a></span><span class="op">(</span>universe <span class="op">=</span> <span class="st">"EUR="</span>, fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BID"</span>, <span class="st">"ASK"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">stream</span><span class="op">$</span><span class="fu">open</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -549,7 +511,7 @@
 <div class="section level3">
 <h3 id="custom-shiny-app">Custom Shiny App<a class="anchor" aria-label="anchor" href="#custom-shiny-app"></a>
 </h3>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://greengrassblueocean.github.io/RefinitivR/">Refinitiv</a></span><span class="op">)</span></span>
 <span></span>
@@ -584,7 +546,7 @@
 <div class="section level3">
 <h3 id="static-plots-with-ggplot2">Static Plots with ggplot2<a class="anchor" aria-label="anchor" href="#static-plots-with-ggplot2"></a>
 </h3>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rd_get_streaming_data.html">rd_get_streaming_data</a></span><span class="op">(</span>universe <span class="op">=</span> <span class="st">"EUR="</span>, fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BID"</span>, <span class="st">"ASK"</span><span class="op">)</span><span class="op">)</span></span>
@@ -622,7 +584,7 @@
 <h2 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a>
 </h2>
 <p>Example scripts are included in the package:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, package <span class="op">=</span> <span class="st">"Refinitiv"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"streaming_quick_example.R"</span>, package <span class="op">=</span> <span class="st">"Refinitiv"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <hr>
@@ -641,7 +603,7 @@
 <li>Built for stability and robustness with automatic retries and chunking</li>
 </ul>
 </div>
-</div>
+
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
