@@ -1,10 +1,3 @@
----
-title: "RefinitivR"
-output: 
-  md_document:
-    variant: gfm
-    preserve_yaml: TRUE
----
 
 <!-- badges: start -->
 
