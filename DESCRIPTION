@@ -1,7 +1,7 @@
 Package: Refinitiv
 Type: Package
 Title: Connect to LSEG/Refinitiv Eikon and DataStream from R
-Version: 0.2.0
+Version: 0.2.1
 Author: Laurens van der Burg
 Maintainer: Laurens van der Burg <laurens@ggbo.eu>
 Description: Zero-config R interface to LSEG Workspace (formerly Refinitiv Eikon)
