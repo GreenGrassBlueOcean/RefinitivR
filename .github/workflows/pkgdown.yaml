@@ -27,14 +27,6 @@ jobs:
         with:
           use-public-rspm: true
 
-      # DatastreamDSWS2R (GitHub Remote) imports dplyr but omits it from its
-      # DESCRIPTION, so pak (which sees no dependency) builds it before dplyr
-      # is installed and lazy-load fails. Pre-install dplyr into the library
-      # pak uses (R_LIBS_USER) so it is present when DatastreamDSWS2R builds.
-      - name: Pre-install dplyr (DatastreamDSWS2R undeclared build dep)
-        run: install.packages("dplyr")
-        shell: Rscript {0}
-
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::pkgdown, local::.

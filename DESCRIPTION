@@ -26,9 +26,7 @@ Imports:
     httr2,
     R6,
     base64enc
-Remotes:
-    github::CharlesCara/DatastreamDSWS2R
-Depends: 
+Depends:
     R (>= 4.1.0)
 Suggests: 
     testthat,
