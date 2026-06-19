@@ -1,5 +1,49 @@
 # Changelog
 
+## Refinitiv 0.2.2
+
+### Robustness
+
+- **Survive LSEG proxy connection resets** — Under sustained bulk load
+  the LSEG Workspace proxy can forcibly close the TCP connection
+  (`WinError 10054`), which surfaces as an `httr2` `"Recv failure"` /
+  `"Connection was reset"` error thrown *before* any HTTP response
+  exists.
+  [`httr2::req_retry()`](https://httr2.r-lib.org/reference/req_retry.html)
+  only inspects responses, so it never fired on these transport-level
+  failures and a single reset could fail an entire chunked download.
+  `send_json_request()` now retries `req_perform()` on genuine
+  connection-reset signatures (`WinError 10054`, `forcibly closed`,
+  `Connection was reset`, `Recv`/`Send failure`, `reset by peer`) with
+  exponential backoff. It deliberately does **not** match `httr2`’s
+  generic `"Failed to perform HTTP request"` wrapper, so ordinary errors
+  (connection refused, DNS, timeout) still fail fast.
+
+- **Inter-chunk pacing in `chunked_download()`** — Adds a configurable
+  sleep between sequential chunk requests and a longer jittered backoff
+  between retry rounds, giving the proxy room to recover after a reset.
+
+### New Features
+
+- **Tunable resilience options** — All of the new resilience delays are
+  driven by options so they can be tuned in production (or zeroed in
+  tests/CI) without code changes: `refinitiv_reset_retries` (default
+  `3`), `refinitiv_reset_base_wait` (default `5`s),
+  `refinitiv_reset_max_wait` (default `30`s), `refinitiv_chunk_sleep`
+  (default `1`s), and `refinitiv_chunk_backoff` (default `3`s).
+  [`EikonGetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetData.md),
+  [`EikonGetTimeseries()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetTimeseries.md)
+  and
+  [`rd_GetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md)
+  inherit the single `chunked_download()` default rather than carrying
+  their own sleep values.
+
+### CI/CD & Infrastructure
+
+- **`.gitignore` / `.Rbuildignore` hardened** — Ignore the local `mcps/`
+  tool-definition cache and `README.html` so they are no longer flagged
+  as non-standard top-level files by `R CMD check`.
+
 ## Refinitiv 0.2.1
 
 ### New Features
