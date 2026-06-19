@@ -28,7 +28,6 @@ Imports:
     base64enc
 Remotes:
     github::CharlesCara/DatastreamDSWS2R
-RoxygenNote: 7.3.3
 Depends: 
     R (>= 4.1.0)
 Suggests: 
@@ -45,3 +44,4 @@ Suggests:
     httptest2,
     withr
 URL: https://greengrassblueocean.github.io/RefinitivR/
+Config/roxygen2/version: 8.0.0

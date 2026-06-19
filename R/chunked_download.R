@@ -42,11 +42,16 @@ progress_msg <- function(..., verbose_only = FALSE, force = FALSE) {
 #' @param max_retries Maximum number of retry rounds for failed chunks.
 #'   Total attempts per chunk = 1 (initial) + max_retries. Default: 3L.
 #' @param sleep Seconds to sleep between individual chunk fetches within
-#'   a single round. Default: 0.1.
+#'   a single round. Gives the LSEG Workspace proxy breathing room between
+#'   sequential requests under bulk load. Default:
+#'   \code{getOption("refinitiv_chunk_sleep", 1.0)} — set the option to 0
+#'   to disable (e.g. in tests/CI).
 #' @param backoff Initial backoff in seconds between retry rounds.
 #'   Doubles after each round (exponential) with uniform jitter
-#'   (x0.5--1.5). Set to 0 to disable inter-round backoff.
-#'   Default: 1.0.
+#'   (x0.5--1.5). Set to 0 to disable inter-round backoff. Higher than a
+#'   typical retry backoff to allow the proxy to recover after a
+#'   connection reset. Default:
+#'   \code{getOption("refinitiv_chunk_backoff", 3.0)}.
 #' @param on_failure Either \code{"stop"} or \code{"warning"}. Action to
 #'   take when chunks are still failing after \code{max_retries} rounds.
 #'   Default: \code{"stop"}.
@@ -74,8 +79,8 @@ chunked_download <- function(n_chunks,
                              fetch_fn,
                              is_success = function(x) !identical(x, NA),
                              max_retries = 3L,
-                             sleep = 0.1,
-                             backoff = 1.0,
+                             sleep = getOption("refinitiv_chunk_sleep", 1.0),
+                             backoff = getOption("refinitiv_chunk_backoff", 3.0),
                              on_failure = c("stop", "warning"),
                              verbose = getOption("refinitiv_progress", TRUE),
                              fail_message = "downloading data failed",

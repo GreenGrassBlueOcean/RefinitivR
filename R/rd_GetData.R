@@ -123,7 +123,6 @@ rd_GetData <- function(
         )
       }, max_attempts = 1L, on_failure = "NA")
     },
-    sleep = 0.01,
     verbose = verbose,
     caller_label = "rd_GetData",
     chunk_sizes = lengths(ChunckedRics),

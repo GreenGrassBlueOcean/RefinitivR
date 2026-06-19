@@ -32,3 +32,6 @@
 ^\.positai$
 ^\.claude$
 ^.*\.Rcheck$
+^README\.html$
+^mcps$
+^mcps/

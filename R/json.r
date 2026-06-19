@@ -185,13 +185,77 @@ send_json_request <- function(json = NULL, service = "eikon", debug = FALSE, req
     req
   }
 
+  # Transport-level retry for proxy connection resets (e.g. WinError 10054) ----
+  # The LSEG Workspace local proxy can forcibly close the TCP connection under
+  # sustained bulk load. Such resets throw an R error during req_perform()
+  # *before* any HTTP response exists, so req_retry() above (which only inspects
+  # responses) never fires. We catch *only* genuine connection-reset signatures
+  # and retry with exponential backoff (default 5s, 10s, 20s; capped at 30s).
+  #
+  # NB: we deliberately do NOT match httr2's generic "Failed to perform HTTP
+  # request" wrapper — that message accompanies *every* transport failure
+  # (connection refused, DNS failure, timeout), so matching it would make those
+  # fail-fast errors sleep through pointless retries (e.g. offline unit tests).
+  # The specific reset signatures appear in the underlying curl error, which
+  # httr2 nests in $parent.
+  #
+  # Tunable via options (set to 0 retries to disable, e.g. in tests/CI):
+  #   refinitiv_reset_retries   (default 3)
+  #   refinitiv_reset_base_wait (default 5 seconds)
+  #   refinitiv_reset_max_wait  (default 30 seconds)
+  perform_with_reset_retry <- function(req) {
+    reset_patterns <- paste(
+      c("Recv failure",
+        "Send failure",
+        "Connection was reset",
+        "reset by peer",
+        "WinError 10054",
+        "forcibly closed"),
+      collapse = "|"
+    )
+    max_reset_tries <- as.integer(getOption("refinitiv_reset_retries", 3L))
+    base_wait <- getOption("refinitiv_reset_base_wait", 5)
+    max_wait  <- getOption("refinitiv_reset_max_wait", 30)
+    attempt <- 0L
+    repeat {
+      result <- tryCatch(httr2::req_perform(req), error = function(e) e)
+      if (!inherits(result, "error")) {
+        return(result)
+      }
+
+      # Collect messages from the condition and any nested parents (httr2 wraps
+      # the underlying curl error in $parent).
+      msgs <- character(0)
+      cond <- result
+      while (inherits(cond, "condition")) {
+        msgs <- c(msgs, conditionMessage(cond))
+        cond <- cond$parent
+      }
+      is_reset <- any(grepl(reset_patterns, msgs, ignore.case = TRUE))
+
+      if (!is_reset || attempt >= max_reset_tries) {
+        stop(result)
+      }
+
+      attempt <- attempt + 1L
+      wait_secs <- min(base_wait * (2^(attempt - 1L)), max_wait)
+      progress_msg(
+        "Connection reset by proxy, retrying in ",
+        sprintf("%.0fs", wait_secs),
+        " (transport retry ", attempt, "/", max_reset_tries, ")",
+        force = TRUE
+      )
+      Sys.sleep(wait_secs)
+    }
+  }
+
   # 2. Server polling loop (async tickets & retriable LSEG error codes) ----
   max_retries <- 6L
   counter <- 0L
   results <- NA
 
   while (counter < max_retries) {
-    query <- build_request() |> httr2::req_perform()
+    query <- perform_with_reset_retry(build_request())
 
     if (debug && method != "DELETE") {
       message(query$status_code)

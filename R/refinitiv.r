@@ -425,7 +425,6 @@ EikonGetTimeseries <- function(
       result
     },
     is_success = eikon_ts_is_success,
-    sleep = 0.5,
     on_failure = "warning",
     verbose = verbose,
     caller_label = "EikonGetTimeseries",
@@ -588,7 +587,6 @@ EikonGetData <- function(
       result
     },
     is_success = eikon_data_is_success,
-    sleep = 0.5,
     verbose = verbose,
     caller_label = "EikonGetData",
     chunk_sizes = lengths(ChunckedRics),
