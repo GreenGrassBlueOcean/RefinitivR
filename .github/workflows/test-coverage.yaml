@@ -22,7 +22,12 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::covr
+          # any::dplyr: DatastreamDSWS2R (GitHub Remote) under-declares its
+          # dplyr dependency, so pak can build it before dplyr is installed
+          # and fail. Forcing dplyr as a direct package avoids that.
+          extra-packages: |
+            any::covr
+            any::dplyr
           needs: coverage
 
       - name: Test coverage

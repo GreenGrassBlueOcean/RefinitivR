@@ -29,7 +29,13 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::remotes
+          # any::dplyr: DatastreamDSWS2R (GitHub Remote) uses dplyr at
+          # lazy-load/build time but under-declares it in its DESCRIPTION,
+          # so pak can build it before dplyr is installed and fail. Forcing
+          # dplyr as a direct package makes it available up front.
+          extra-packages: |
+            any::remotes
+            any::dplyr
           needs: check
 
       - name: Install package via remotes
