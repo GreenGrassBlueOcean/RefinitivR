@@ -356,5 +356,91 @@ test_that("get_news_headlines drops NULL date params from payload", {
   expect_equal(captured$json$Entity$W$number, "10")
 })
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# Transport retry loop (perform_with_reset_retry)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+test_that("perform_with_reset_retry retries on connection reset and succeeds", {
+  local_refinitiv_state()
+  withr::local_options(
+    refinitiv_reset_retries = 2L,
+    refinitiv_reset_base_wait = 0, # zero sleep for tests
+    refinitiv_reset_max_wait = 0
+  )
+
+  call_count <- 0L
+  mockery::stub(send_json_request, "httr2::req_perform", function(req) {
+    call_count <<- call_count + 1L
+    if (call_count < 2L) {
+      # First call: simulate a curl connection reset error wrapped by httr2
+      curl_err <- simpleError("Recv failure: Connection was reset")
+      class(curl_err) <- c("curl_error", "error", "condition")
+      
+      httr_err <- simpleError("Failed to perform HTTP request.")
+      class(httr_err) <- c("httr2_error", "error", "condition")
+      httr_err$parent <- curl_err
+      
+      stop(httr_err)
+    }
+    
+    # Second call: success
+    httr2::response(
+      status_code = 200L,
+      headers = list("Content-Type" = "application/json"),
+      body = charToRaw('{"data": "success"}')
+    )
+  })
+  mockery::stub(send_json_request, "Sys.sleep", function(...) invisible(NULL))
+  mockery::stub(send_json_request, "progress_msg", function(...) invisible(NULL))
+
+  result <- suppressMessages(
+    send_json_request(
+      json = list(),
+      request_type = "POST",
+      url = "http://lh:9000/api/udf/",
+      apikey = "k"
+    )
+  )
+
+  expect_equal(result$data, "success")
+  expect_equal(call_count, 2L)
+})
+
+test_that("perform_with_reset_retry fails fast on non-reset errors", {
+  local_refinitiv_state()
+  withr::local_options(
+    refinitiv_reset_retries = 2L,
+    refinitiv_reset_base_wait = 0,
+    refinitiv_reset_max_wait = 0
+  )
+
+  call_count <- 0L
+  mockery::stub(send_json_request, "httr2::req_perform", function(req) {
+    call_count <<- call_count + 1L
+    
+    # Simulate a generic DNS or timeout error
+    curl_err <- simpleError("Could not resolve host")
+    class(curl_err) <- c("curl_error", "error", "condition")
+    
+    httr_err <- simpleError("Failed to perform HTTP request.")
+    class(httr_err) <- c("httr2_error", "error", "condition")
+    httr_err$parent <- curl_err
+    
+    stop(httr_err)
+  })
+  
+  expect_error(
+    suppressMessages(send_json_request(
+      json = list(),
+      request_type = "POST",
+      url = "http://lh:9000/api/udf/",
+      apikey = "k"
+    )),
+    "Failed to perform HTTP request|Could not resolve host"
+  )
+  
+  # Should not retry for a non-reset error
+  expect_equal(call_count, 1L)
+})
 
 restore_refinitiv_state(.saved_state, "test-json-coverage")
