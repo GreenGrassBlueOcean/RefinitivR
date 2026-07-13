@@ -789,3 +789,65 @@ test_that("NA symbols in batch are skipped correctly", {
   expect_equal(result$ResolutionTier[3], "none")
 })
 
+
+# ===================================================================
+# Regression: REAL EikonGetSymbology schema (type-named columns)
+# ------------------------------------------------------------------
+# The live symbology endpoint returns columns named after the symbol
+# types (e.g. `RIC`, `ISIN`) -- NOT `bestMatch`/`RICs`. The original
+# Tier-1 logic keyed off bestMatch/RICs columns that never exist in
+# production, so every ISIN/CUSIP/ticker conversion silently returned
+# ResolutionTier="none" even though EikonGetSymbology resolved it.
+# These mocks use the REAL response shape; they fail on the old code.
+# ===================================================================
+
+test_that("Regression: real schema ISIN->RIC (type-named RIC/ISIN columns) resolves", {
+  stub(rd_ConvertSymbol, "EikonGetSymbology",
+       function(symbol, from_symbol_type, to_symbol_type, ...) {
+         # exactly what the live endpoint returns for a resolved ISIN->RIC
+         data.table(RIC = "AAPL.O", ISIN = symbol)
+       })
+  stub(rd_ConvertSymbol, "EikonGetData",
+       function(rics, ...) mock_eikon_active(rics, TRUE))
+
+  result <- rd_ConvertSymbol("US0378331005",
+                             from_symbol_type = "ISIN", to_symbol_type = "RIC")
+  expect_equal(result$MappedSymbol, "AAPL.O")       # was NA before the fix
+  expect_equal(result$ResolutionTier, "symbology")  # was "none" before the fix
+  expect_true(result$IsActive)
+})
+
+test_that("Regression: real schema batch resolves hits, leaves error-rows 'none'", {
+  stub(rd_ConvertSymbol, "EikonGetSymbology",
+       function(symbol, from_symbol_type, to_symbol_type, ...) {
+         # one resolves; the other carries an `error` column (rbindlist fill
+         # leaves the target RIC NA) -- must stay unresolved.
+         data.table(RIC   = c("AAPL.O", NA_character_),
+                    ISIN  = symbol,
+                    error = c(NA_character_, "No best match available"))
+       })
+  stub(rd_ConvertSymbol, "EikonGetData",
+       function(rics, ...) mock_eikon_active(rics, TRUE))
+
+  result <- rd_ConvertSymbol(c("US0378331005", "BADISIN00000"),
+                             from_symbol_type = "ISIN", to_symbol_type = "RIC")
+  expect_equal(result$MappedSymbol, c("AAPL.O", NA_character_))
+  expect_equal(result$ResolutionTier, c("symbology", "none"))
+})
+
+test_that("Regression: real schema RIC->RIC identity defers to Tier 4 (not mislabelled)", {
+  # For RIC->RIC the `RIC` column echoes the input; Tier 1a must NOT claim it
+  # as a 'symbology' mapping -- the Tier 4 identity check owns active RIC->RIC.
+  stub(rd_ConvertSymbol, "EikonGetSymbology",
+       function(symbol, from_symbol_type, to_symbol_type, ...) {
+         data.table(RIC = symbol, error = "No best match available")
+       })
+  stub(rd_ConvertSymbol, "EikonGetData",
+       function(rics, ...) mock_eikon_active(rics, TRUE))
+  stub(rd_ConvertSymbol, "rd_GetHistory",
+       function(universe, ...) mock_history(universe, universe))
+
+  result <- rd_ConvertSymbol("AAPL.O")
+  expect_equal(result$MappedSymbol, "AAPL.O")
+  expect_equal(result$ResolutionTier, "identity")
+})

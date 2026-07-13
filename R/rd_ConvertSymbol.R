@@ -193,6 +193,50 @@ rd_ConvertSymbol <- function(symbols,
     
     # Process Symbology Result
     if (is.data.frame(symb_res) && nrow(symb_res) > 0) {
+
+      # --- Tier 1a: current EikonGetSymbology schema (type-named columns) ---
+      # The live symbology endpoint names its result columns after the symbol
+      # types: an ISIN->RIC lookup returns a `RIC` (mapped) column plus an
+      # `ISIN` (echoed input) column, and an `error` column on failed rows.
+      # The mapped value therefore lives in the `to_symbol_type` column, keyed
+      # to each input via the `from_symbol_type` column. The legacy
+      # bestMatch/RICs handling below never fired for this shape, so EVERY
+      # ISIN/CUSIP/ticker conversion silently returned ResolutionTier="none"
+      # even though the underlying lookup resolved correctly. Engage only when
+      # the legacy columns are absent, so older response shapes are untouched.
+      legacy_schema <- ("bestMatch" %in% names(symb_res)) ||
+                       ("RICs" %in% names(symb_res))
+      if (!legacy_schema && to_symbol_type %in% names(symb_res)) {
+        match_col <- if (from_symbol_type %in% names(symb_res)) {
+          from_symbol_type
+        } else {
+          names(symb_res)[1L]
+        }
+        match_keys  <- as.character(symb_res[[match_col]])
+        mapped_vals <- as.character(symb_res[[to_symbol_type]])
+        err_vals <- if ("error" %in% names(symb_res)) {
+          as.character(symb_res[["error"]])
+        } else {
+          rep(NA_character_, nrow(symb_res))
+        }
+        for (i in valid_idx) {
+          rows <- which(match_keys == as.character(symbols[i]))
+          if (length(rows) > 0L) {
+            r <- rows[1L]
+            val <- mapped_vals[r]
+            has_err <- !is.na(err_vals[r]) && nzchar(err_vals[r])
+            # Skip failures and pure identity (from==to echoes input); an
+            # active RIC->RIC no-op is labelled by the Tier 4 identity check.
+            if (!has_err && !is.na(val) && nzchar(val) &&
+                val != "No best match available" &&
+                !identical(val, as.character(symbols[i]))) {
+              res_dt$MappedSymbol[i]   <- val
+              res_dt$ResolutionTier[i] <- "symbology"
+            }
+          }
+        }
+      }
+
       if (bestMatch && "bestMatch" %in% names(symb_res)) {
         for (i in valid_idx) {
           sym <- symbols[i]
