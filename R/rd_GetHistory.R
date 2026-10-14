@@ -120,6 +120,11 @@ rd_GetHistory <- function(
   debug = FALSE,
   cache = NULL
 ) {
+  # Normalize interval alias to ISO8601 duration
+  if (!is.null(interval)) {
+    interval <- translate_to_iso8601_duration(interval, default = interval)
+  }
+
   # ── Cache lookup ──
   ttl <- resolve_cache(cache, fn_default_ttl = 300)
   if (!isFALSE(ttl)) {

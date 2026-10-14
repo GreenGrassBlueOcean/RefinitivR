@@ -400,17 +400,33 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
   # Check if there are other fields that should be dates
   OtherDateColumns <- grep(pattern = ".date$|\\bdate\\b", x = tolower(names(return_DT)))
   if (!identical(OtherDateColumns, integer(0))) {
-    Columnclasses <- lapply(return_DT, class)
-    DateType <- Columnclasses[OtherDateColumns] |>
-      unlist() |>
-      as.vector() |>
-      unique()
-    if (identical(DateType, "numeric")) {
-      return_DT[, (OtherDateColumns) := lapply(.SD, function(x) {
-        as.POSIXct(x / 1000, origin = "1970-01-01", tz = "UTC")
-      }), .SDcols = OtherDateColumns]
-    } else {
-      return_DT[, (OtherDateColumns) := lapply(.SD, as.Date, tz = "UTC"), .SDcols = OtherDateColumns]
+    for (col_idx in OtherDateColumns) {
+      vals <- return_DT[[col_idx]]
+      if (inherits(vals, "Date") || inherits(vals, "POSIXt")) {
+        next
+      }
+      non_na <- vals[!is.na(vals)]
+      if (length(non_na) == 0L) {
+        data.table::set(return_DT, j = col_idx, value = as.Date(vals))
+      } else if (is.numeric(vals) || is.integer(vals)) {
+        if (all(non_na >= 19000101 & non_na <= 21001231)) {
+          data.table::set(return_DT, j = col_idx, value = as.Date(as.character(vals), format = "%Y%m%d"))
+        } else if (all(non_na >= 1e11)) {
+          data.table::set(return_DT, j = col_idx, value = as.POSIXct(vals / 1000, origin = "1970-01-01", tz = "UTC"))
+        } else if (all(non_na >= 0 & non_na <= 100000)) {
+          data.table::set(return_DT, j = col_idx, value = as.Date(vals, origin = "1970-01-01"))
+        } else {
+          data.table::set(return_DT, j = col_idx, value = as.POSIXct(vals / 1000, origin = "1970-01-01", tz = "UTC"))
+        }
+      } else if (is.character(vals)) {
+        if (all(grepl("^[12][0-9]{7}$", non_na))) {
+          data.table::set(return_DT, j = col_idx, value = as.Date(vals, format = "%Y%m%d"))
+        } else {
+          data.table::set(return_DT, j = col_idx, value = as.Date(vals, tz = "UTC"))
+        }
+      } else {
+        data.table::set(return_DT, j = col_idx, value = as.Date(vals, tz = "UTC"))
+      }
     }
   }
   data.table::setnames(return_DT, old = c("date", "DATE"), new = c("Date", "Date"), skip_absent = TRUE)

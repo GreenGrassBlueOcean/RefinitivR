@@ -49,19 +49,25 @@ export(rd_streaming_debug)
 export(rd_streaming_pricing)
 export(refinitiv_vault)
 import(R6)
-importFrom(data.table,`.SD`)
-importFrom(data.table,`:=`)
-importFrom(data.table,data.table)
-importFrom(data.table,dcast)
-importFrom(data.table,rbindlist)
-importFrom(data.table,setDF)
+importFrom(data.table,
+  ":=",
+  .SD,
+  data.table,
+  dcast,
+  rbindlist,
+  setDF
+)
 importFrom(jsonlite,fromJSON)
 importFrom(methods,is)
 importFrom(rlang,env)
-importFrom(stats,runif)
-importFrom(stats,setNames)
-importFrom(utils,URLencode)
-importFrom(utils,capture.output)
-importFrom(utils,data)
-importFrom(utils,head)
-importFrom(utils,str)
+importFrom(stats,
+  runif,
+  setNames
+)
+importFrom(utils,
+  URLencode,
+  capture.output,
+  data,
+  head,
+  str
+)

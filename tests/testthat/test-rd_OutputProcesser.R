@@ -783,5 +783,27 @@ test_that("rd_OutputProcesser can work with full NA responses with more rics", {
   expect_equal(ReturnValue, Expectedoutcome)
 })
 
+test_that("rd_OutputProcesser handles integer YYYYMMDD date columns correctly", {
+  input <- list(
+    data = list(
+      list("2024-01-02", 20261029L, 150.5),
+      list("2024-01-03", 20261029L, 152.0)
+    ),
+    headers = list(
+      list(name = "DATE", type = "string", decimalChar = "."),
+      list(name = "EXPIR_DATE", type = "number", decimalChar = "."),
+      list(name = "TRDPRC_1", type = "number", decimalChar = ".")
+    ),
+    universe = "AAPL.O"
+  )
+
+  res <- rd_OutputProcesser(input)
+
+  expect_s3_class(res$Date, "Date")
+  expect_equal(res$Date, as.Date(c("2024-01-02", "2024-01-03")))
+
+  expect_s3_class(res$EXPIR_DATE, "Date")
+  expect_equal(res$EXPIR_DATE, as.Date(c("2026-10-29", "2026-10-29")))
+})
 
 dump_refinitiv_options("test-rd_OutputProcesser")

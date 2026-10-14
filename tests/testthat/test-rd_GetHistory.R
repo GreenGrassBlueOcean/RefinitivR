@@ -659,5 +659,41 @@ test_that("instruments only on one side do not cause division-by-zero in granula
   expect_true("MSFT.O" %in% res$Instrument)
 })
 
+test_that("rd_GetHistory translates interval aliases before calling rd_GetHistoricalPricing", {
+  dummy_RD <- list()
+  stub(rd_GetHistory, "CheckifCustomInstrument", function(symbol, UUID) FALSE)
+
+  captured <- new.env(parent = emptyenv())
+  captured$interval <- NULL
+
+  stub(rd_GetHistory, "rd_GetHistoricalPricing", function(RDObject, universe, interval, ...) {
+    captured$interval <- interval
+    data.table::data.table(
+      Date = as.Date("2020-01-01"),
+      Instrument = universe,
+      TRDPRC_1 = 100
+    )
+  })
+
+  # Test "daily" -> "P1D"
+  res <- rd_GetHistory(RD = dummy_RD, universe = "AAPL.O", interval = "daily", cache = FALSE)
+  expect_equal(captured$interval, "P1D")
+
+  # Test "1D" -> "P1D"
+  res <- rd_GetHistory(RD = dummy_RD, universe = "AAPL.O", interval = "1D", cache = FALSE)
+  expect_equal(captured$interval, "P1D")
+
+  # Test "1min" -> "PT1M"
+  res <- rd_GetHistory(RD = dummy_RD, universe = "AAPL.O", interval = "1min", cache = FALSE)
+  expect_equal(captured$interval, "PT1M")
+
+  # Test "weekly" -> "P1W"
+  res <- rd_GetHistory(RD = dummy_RD, universe = "AAPL.O", interval = "weekly", cache = FALSE)
+  expect_equal(captured$interval, "P1W")
+
+  # Test ISO format is preserved: "PT5M" -> "PT5M"
+  res <- rd_GetHistory(RD = dummy_RD, universe = "AAPL.O", interval = "PT5M", cache = FALSE)
+  expect_equal(captured$interval, "PT5M")
+})
 
 restore_refinitiv_state(.saved_state, "test-rd_GetHistory")

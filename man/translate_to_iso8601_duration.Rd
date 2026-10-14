@@ -4,12 +4,18 @@
 \alias{translate_to_iso8601_duration}
 \title{Translate Frequency to ISO 8601 Duration}
 \usage{
-translate_to_iso8601_duration(frequency = "daily")
+translate_to_iso8601_duration(frequency = "daily", default = "P1D")
 }
 \arguments{
 \item{frequency}{A character string representing the time frequency.
-Accepted values include 'minute', 'hour', 'daily', 'weekly', 'monthly',
-'quarterly', 'yearly'. Default is 'daily'.}
+Accepted values include 'minute', '1min', '5min', '10min', '30min', '60min',
+'hour', 'hourly', '1h', 'daily', '1d', '1D', '7D', '7d', 'weekly', '1W',
+'monthly', '1M', 'quarterly', '3M', 'yearly', '12M', '1Y', or ISO 8601
+durations like 'PT1M', 'PT5M', 'PT10M', 'PT30M', 'PT60M', 'PT1H', 'P1D',
+'P7D', 'P1W', 'P1M', 'P3M', 'P12M', 'P1Y'. Default is 'daily'.}
+
+\item{default}{The fallback duration to return if the frequency is not recognized.
+Default is 'P1D'.}
 }
 \value{
 A character string representing the ISO 8601 duration equivalent of the input frequency.
@@ -27,6 +33,10 @@ about the correct interval
 }
 \examples{
 Refinitiv:::translate_to_iso8601_duration("minute") # Returns "PT1M"
+Refinitiv:::translate_to_iso8601_duration("1min") # Returns "PT1M"
+Refinitiv:::translate_to_iso8601_duration("1D") # Returns "P1D"
+Refinitiv:::translate_to_iso8601_duration("daily") # Returns "P1D"
+Refinitiv:::translate_to_iso8601_duration("PT1M") # Returns "PT1M"
 Refinitiv:::translate_to_iso8601_duration("hour") # Returns "PT1H"
 Refinitiv:::translate_to_iso8601_duration("weekly") # Returns "P1W"
 Refinitiv:::translate_to_iso8601_duration("unknown") # Returns "P1D" (default)

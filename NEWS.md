@@ -1,3 +1,11 @@
+# Refinitiv 0.2.3
+
+## Bug Fixes
+
+* **Interval alias resolution in `rd_GetHistory()`** — `rd_GetHistory()` now normalizes friendly interval aliases (e.g., `"daily"`, `"1d"`, `"1D"`, `"1min"`, `"weekly"`, etc.) via `translate_to_iso8601_duration()` before forwarding to `rd_GetHistoricalPricing()`, aligning behavior with documented interval parameters.
+* **Preserve ISO 8601 durations in `translate_to_iso8601_duration()`** — Valid ISO 8601 duration inputs (such as `"PT1M"`, `"P1D"`, `"PT5M"`) are now preserved instead of defaulting to daily intervals. Expanded alias mappings for all documented intraday and interday intervals.
+* **Parse integer `YYYYMMDD` dates in `rd_OutputProcesser()`** — Date fields returning numeric `YYYYMMDD` integer values (such as `EXPIR_DATE`) are now converted to `Date` objects correctly instead of treating values as days since epoch.
+
 # Refinitiv 0.2.2
 
 ## Robustness
