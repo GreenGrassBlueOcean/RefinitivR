@@ -1,5 +1,30 @@
 # Changelog
 
+## Refinitiv 0.2.3
+
+### Bug Fixes
+
+- **Interval alias resolution in
+  [`rd_GetHistory()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistory.md)**
+  —
+  [`rd_GetHistory()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistory.md)
+  now normalizes friendly interval aliases (e.g., `"daily"`, `"1d"`,
+  `"1D"`, `"1min"`, `"weekly"`, etc.) via
+  [`translate_to_iso8601_duration()`](https://greengrassblueocean.github.io/RefinitivR/reference/translate_to_iso8601_duration.md)
+  before forwarding to
+  [`rd_GetHistoricalPricing()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistoricalPricing.md),
+  aligning behavior with documented interval parameters.
+- **Preserve ISO 8601 durations in
+  [`translate_to_iso8601_duration()`](https://greengrassblueocean.github.io/RefinitivR/reference/translate_to_iso8601_duration.md)**
+  — Valid ISO 8601 duration inputs (such as `"PT1M"`, `"P1D"`, `"PT5M"`)
+  are now preserved instead of defaulting to daily intervals. Expanded
+  alias mappings for all documented intraday and interday intervals.
+- **Parse integer `YYYYMMDD` dates in
+  [`rd_OutputProcesser()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_OutputProcesser.md)**
+  — Date fields returning numeric `YYYYMMDD` integer values (such as
+  `EXPIR_DATE`) are now converted to `Date` objects correctly instead of
+  treating values as days since epoch.
+
 ## Refinitiv 0.2.2
 
 ### Robustness

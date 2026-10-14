@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,18 @@
 
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.3" id="refinitiv-023">Refinitiv 0.2.3<a class="anchor" aria-label="anchor" href="#refinitiv-023"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-2-3">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-3"></a></h3>
+<ul><li>
+<strong>Interval alias resolution in <code><a href="../reference/rd_GetHistory.html">rd_GetHistory()</a></code></strong> — <code><a href="../reference/rd_GetHistory.html">rd_GetHistory()</a></code> now normalizes friendly interval aliases (e.g., <code>"daily"</code>, <code>"1d"</code>, <code>"1D"</code>, <code>"1min"</code>, <code>"weekly"</code>, etc.) via <code><a href="../reference/translate_to_iso8601_duration.html">translate_to_iso8601_duration()</a></code> before forwarding to <code><a href="../reference/rd_GetHistoricalPricing.html">rd_GetHistoricalPricing()</a></code>, aligning behavior with documented interval parameters.</li>
+<li>
+<strong>Preserve ISO 8601 durations in <code><a href="../reference/translate_to_iso8601_duration.html">translate_to_iso8601_duration()</a></code></strong> — Valid ISO 8601 duration inputs (such as <code>"PT1M"</code>, <code>"P1D"</code>, <code>"PT5M"</code>) are now preserved instead of defaulting to daily intervals. Expanded alias mappings for all documented intraday and interday intervals.</li>
+<li>
+<strong>Parse integer <code>YYYYMMDD</code> dates in <code><a href="../reference/rd_OutputProcesser.html">rd_OutputProcesser()</a></code></strong> — Date fields returning numeric <code>YYYYMMDD</code> integer values (such as <code>EXPIR_DATE</code>) are now converted to <code>Date</code> objects correctly instead of treating values as days since epoch.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.2" id="refinitiv-022">Refinitiv 0.2.2<a class="anchor" aria-label="anchor" href="#refinitiv-022"></a></h2>
 <div class="section level3">
