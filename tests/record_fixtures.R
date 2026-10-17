@@ -16,6 +16,10 @@
 #   - Active Refinitiv Workspace or Eikon Desktop
 #   - Valid API key configured
 
+if (!interactive()) {
+  q("no", status = 0)
+}
+
 library(Refinitiv)
 library(httptest2)
 

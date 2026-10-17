@@ -689,7 +689,6 @@ rd_get_top_news <- function(RDObject = rd_connection(),
   top_news_dict <- list()
 
   for (tnid in unique_ids) {
-    if (!is.null(top_news_dict[[tnid]])) next
     top_story_endpoint <- paste0("data/news/v1/top-news/", tnid)
 
     story_resp <- try(

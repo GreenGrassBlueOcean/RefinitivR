@@ -182,7 +182,7 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
   # Minimum chunks to satisfy datapoint, RIC, and row-cap constraints, then distribute evenly
   chunks_dp <- ceiling(totalDataPoints / MaxCallsPerChunk)
   chunks_ric <- if (!is.null(MaxRicsperChunk)) ceiling(length(RICS) / MaxRicsperChunk) else 1L
-  chunks_rows <- if (!is.null(MaxRowsPerChunk) && rows_per_ric > 1) ceiling(totalRows / MaxRowsPerChunk) else 1L
+  chunks_rows <- if (!is.null(MaxRowsPerChunk) && !is.null(Eikonfields) && rows_per_ric > 1) ceiling(totalRows / MaxRowsPerChunk) else 1L
   n_chunks <- max(1L, chunks_dp, chunks_ric, chunks_rows)
   if (length(RICS) > 0L) {
     n_chunks <- min(length(RICS), n_chunks)

@@ -10,6 +10,10 @@
 # Output:
 #   tests/testthat/golden/golden_samples_r.rds
 
+if (!interactive()) {
+  q("no", status = 0)
+}
+
 library(Refinitiv)
 
 outdir <- file.path("tests", "testthat", "golden")

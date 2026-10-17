@@ -120,7 +120,7 @@ rd_GetHistory <- function(
   debug = FALSE,
   cache = NULL
 ) {
-  .SD <- Date <- Instrument <- NAVALUE <- NULL
+  .N <- .SD <- Date <- Instrument <- NAVALUE <- NULL
 
   # Normalize interval alias to ISO8601 duration
   if (!is.null(interval)) {
@@ -227,7 +227,7 @@ rd_GetHistory <- function(
       }
     }
 
-    if (!is.null(interval) && (is.null(parameters) || !"FRQ" %in% names(parameters))) {
+    if (!is.null(interval) && (is.null(parameters) || !any(tolower(names(parameters)) == "frq"))) {
       frq_map <- c(
         "tick" = "D", "tas" = "D", "taq" = "D",
         "minute" = "D", "1min" = "D", "5min" = "D", "10min" = "D",
@@ -286,6 +286,7 @@ rd_GetHistory <- function(
       interval <- "P1D"
     }
 
+    hp_fields <- if (is.null(fields)) NULL else HistorticalPricingFields
     HistoricalPricingOutput <- rd_GetHistoricalPricing(
       RDObject = RD,
       universe = universe,
@@ -294,11 +295,7 @@ rd_GetHistory <- function(
       end = end,
       adjustments = adjustments,
       count = count,
-      fields = if (is.null(fields)) {
-        NULL
-      } else {
-        HistorticalPricingFields
-      },
+      fields = hp_fields,
       sessions = NULL,
       debug = debug,
       SpaceConvertor = SpaceConvertor,

@@ -227,7 +227,7 @@ rd_GetHistoricalPricing <- function(
               fields      = fields,
               sessions    = sessions
             )
-          } else if (interval %in% c("P1D", "P7D", "P1W", "P1M", "P3M", "P12M", "P1Y")) {
+          } else {
             Request <- RDObject$get_interday_custominstrument_pricing(
               universe    = ChunckedRics[[j]],
               interval    = interval,
@@ -238,8 +238,6 @@ rd_GetHistoricalPricing <- function(
               fields      = fields,
               sessions    = sessions
             )
-          } else {
-            stop("the supplied interval cannot be used for this custom instrument")
           }
         }
         Request[[1]]
@@ -367,7 +365,8 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
   # Select the proper column names
   if (!is.null(use_field_names_in_headers) && !use_field_names_in_headers && "title" %in% names(x$headers[[1]])) {
     Selectedheader <- "title"
-  } else if (!is.null(use_field_names_in_headers) && ("displayName" %in% names(unlist(x$headers)))) { # [[1]]
+  } else if (!is.null(use_field_names_in_headers) &&
+             ("displayName" %in% names(unlist(replaceInList(x$headers, function(v) if (is.null(v)) NA_character_ else v))))) { # [[1]]
     Selectedheader <- "displayName"
   } else {
     Selectedheader <- "name"
@@ -376,7 +375,9 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
   headernames <- JsonHeaderAnalyzer(x, Selectedheader = Selectedheader, use_field_names_in_headers = use_field_names_in_headers)
 
   # set column names
-  data.table::setnames(x = return_DT, new = headernames)
+  if (!is.null(headernames)) {
+    data.table::setnames(x = return_DT, new = as.character(headernames))
+  }
 
 
   # add universe
@@ -390,9 +391,11 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
   if (all(c("V1", "V2") %in% names(return_DT))) {
     DateValueCol <- names(return_DT)[sapply(return_DT, function(col) "date Value" %in% col)]
 
-    # Set the values in the identified column to NA
-    return_DT[, (DateValueCol) := NA]
-    data.table::setnames(return_DT, old = DateValueCol, new = "Date")
+    if (length(DateValueCol) > 0L) {
+      # Set the values in the identified column to NA
+      return_DT[, (DateValueCol) := NA]
+      data.table::setnames(return_DT, old = DateValueCol, new = "Date")
+    }
 
 
     # Find the names of columns that start with "V" (excluding the Date column already renamed)
@@ -407,7 +410,7 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
 
 
   # Check if there are other fields that should be dates
-  OtherDateColumns <- grep(pattern = "\\.date$|\\bdate\\b|^date_time$", x = tolower(names(return_DT)))
+  OtherDateColumns <- grep(pattern = "[._]date$|\\bdate\\b|^date_time$", x = tolower(names(return_DT)))
   if (!identical(OtherDateColumns, integer(0))) {
     for (col_idx in OtherDateColumns) {
       vals <- return_DT[[col_idx]]
@@ -427,7 +430,7 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
         } else {
           data.table::set(return_DT, j = col_idx, value = as.POSIXct(vals / 1000, origin = "1970-01-01", tz = "UTC"))
         }
-      } else if (is.character(vals)) {
+      } else {
         if (all(grepl("^[12][0-9]{7}$", non_na))) {
           data.table::set(return_DT, j = col_idx, value = as.Date(vals, format = "%Y%m%d"))
         } else if (any(grepl("T", non_na) & !grepl("T00:00:00(\\.0+)?Z?$", non_na))) {
@@ -440,8 +443,6 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
         } else {
           data.table::set(return_DT, j = col_idx, value = as.Date(vals, tz = "UTC"))
         }
-      } else {
-        data.table::set(return_DT, j = col_idx, value = as.Date(vals, tz = "UTC"))
       }
     }
   }

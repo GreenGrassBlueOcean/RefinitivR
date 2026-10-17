@@ -677,9 +677,12 @@ eikon_data_is_success <- function(x, n_formulas = 1L) {
     return(NA)
   }
 
-  merged_data <- do.call(c, lapply(sub_results, function(s) {
-    if (is.list(s) && is.list(s$data)) s$data else list()
-  }))
+  merged_data <- list()
+  for (s in sub_results) {
+    if (is.list(s) && is.list(s$data)) {
+      merged_data <- c(merged_data, s$data)
+    }
+  }
 
   row_offset <- 0L
   merged_err <- list()

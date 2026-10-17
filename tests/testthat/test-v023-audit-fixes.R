@@ -839,4 +839,597 @@ test_that("CorrectCustomInstrument is vectorized over symbol vectors of length >
   )
 })
 
+test_that("AQL collapse helpers and rd_OutputProcesser 1-column V1 fallback handle all edge cases", {
+  # 1. .is_eikon_aql_collapse edge cases
+  expect_false(.is_eikon_aql_collapse("not_a_list", n_formulas = 1L))
+  expect_false(.is_eikon_aql_collapse(list(error = list()), n_formulas = 1L))
+  expect_false(.is_eikon_aql_collapse(list(error = list(list(code = 100L))), n_formulas = 0L))
+  # Multi-column payload with cell error is NOT an AQL collapse
+  expect_false(.is_eikon_aql_collapse(list(
+    totalColumnsCount = 2L,
+    headers = list(list(list(displayName = "Instrument"), list(displayName = "BID"))),
+    error = list(list(code = 100L, message = "Asynchronous Query library internal error."))
+  ), n_formulas = 1L))
+  # Header-only 1-column collapse (without totalColumnsCount)
+  expect_true(.is_eikon_aql_collapse(list(
+    headers = list(list(list(displayName = ""))),
+    error = list(list(code = 999L, message = "Backend internal error timeout"))
+  ), n_formulas = 1L))
+
+  # 2. .merge_eikon_raw_subchunks edge cases
+  expect_identical(.merge_eikon_raw_subchunks(list()), NA)
+  single_sub <- list(data = list(list("AAPL.O", 100)), totalColumnsCount = 2L)
+  expect_identical(.merge_eikon_raw_subchunks(list(single_sub)), single_sub)
+  expect_identical(.merge_eikon_raw_subchunks(list(NA, NA)), NA)
+
+  # Merge with cell errors (row offset adjustment) and missing columnHeadersCount
+  sub1 <- list(
+    data = list(list("AAPL.O", NULL), list("MSFT.O", 200)),
+    error = list(list(code = 416L, col = 1L, row = 0L, message = "Unable to collect")),
+    headers = list(list(list(displayName = "Instrument"), list(displayName = "BID"))),
+    totalColumnsCount = 2L,
+    totalRowsCount = 3L
+  )
+  sub2 <- list(
+    data = list(list("GOOG.O", NULL)),
+    error = list(list(code = 416L, col = 1L, row = 0L, message = "Unable to collect")),
+    headers = list(list(list(displayName = "Instrument"), list(displayName = "BID"))),
+    totalColumnsCount = 2L,
+    totalRowsCount = 2L
+  )
+  merged <- .merge_eikon_raw_subchunks(list(sub1, sub2, list(totalColumnsCount = 1L)))
+  expect_equal(length(merged$data), 3L)
+  expect_equal(length(merged$error), 2L)
+  expect_equal(merged$error[[1L]]$row, 0L)
+  expect_equal(merged$error[[2L]]$row, 2L)
+  expect_equal(merged$totalRowsCount, 4L)
+
+  # 3. .fetch_with_aql_subchunks verbose messages, sleep, sub-chunk retry, and failure propagation
+  withr::local_options(
+    refinitiv_chunk_sleep = 0.001,
+    refinitiv_aql_fallback_rics = 25L,
+    refinitiv_progress = TRUE
+  )
+  state_env <- new.env(parent = emptyenv())
+  state_env$aql_degraded <- FALSE
+  rics_30 <- sprintf("RIC%02d.O", seq_len(30L))
+
+  aql_err <- list(
+    totalColumnsCount = 1L,
+    headers = list(list(list(displayName = NULL))),
+    data = lapply(rics_30, function(r) list(r)),
+    error = list(list(code = 100L, message = "Asynchronous Query library internal error."))
+  )
+
+  # First sub-chunk fails once with NA, then succeeds on retry
+  sub_attempt <- 0L
+  fetch_fn <- function(r) {
+    if (length(r) > 25L) return(aql_err)
+    sub_attempt <<- sub_attempt + 1L
+    if (sub_attempt == 1L) return(NA)
+    list(
+      totalColumnsCount = 2L,
+      headers = list(list(list(displayName = "Instrument"), list(displayName = "BID"))),
+      data = lapply(r, function(x) list(x, 100))
+    )
+  }
+
+  expect_message(
+    res_sub <- .fetch_with_aql_subchunks(
+      chunk_rics = rics_30,
+      n_formulas = 1L,
+      fetch_rics_fn = fetch_fn,
+      is_success_fn = function(x) eikon_data_is_success(x, n_formulas = 1L),
+      state_env = state_env,
+      caller_label = "rd_GetData",
+      chunk_idx = 1L,
+      n_chunks = 2L,
+      verbose = TRUE
+    ),
+    "hit LSEG AQL internal error"
+  )
+  expect_true(state_env$aql_degraded)
+  expect_equal(length(res_sub$data), 30L)
+
+  # Second chunk in degraded mode logs pre-emptive step-down message; if sub-chunk fails both tries, returns NA
+  expect_message(
+    res_fail <- .fetch_with_aql_subchunks(
+      chunk_rics = rics_30,
+      n_formulas = 1L,
+      fetch_rics_fn = function(r) NA,
+      is_success_fn = function(x) eikon_data_is_success(x, n_formulas = 1L),
+      state_env = state_env,
+      caller_label = "rd_GetData",
+      chunk_idx = 2L,
+      n_chunks = 2L,
+      verbose = TRUE
+    ),
+    "pre-emptively stepped down"
+  )
+  expect_identical(res_fail, NA)
+
+  # 4. rd_OutputProcesser 1-column and 2-column collapsed chunks and partial-NULL headers without 'date Value'
+  collapsed_1col <- list(
+    columnHeadersCount = 1L,
+    data = list(list("AAPL.O"), list("MSFT.O")),
+    headerOrientation = "horizontal",
+    headers = list(list(list(displayName = NULL))),
+    rowHeadersCount = 1L,
+    totalColumnsCount = 1L,
+    totalRowsCount = 2L
+  )
+  dt_1col <- rd_OutputProcesser(collapsed_1col, use_field_names_in_headers = FALSE)
+  expect_equal(names(dt_1col), "Instrument")
+  expect_equal(dt_1col$Instrument, c("AAPL.O", "MSFT.O"))
+
+  collapsed_2col <- list(
+    columnHeadersCount = 1L,
+    data = list(list("AAPL.O", 100), list("MSFT.O", 200)),
+    headerOrientation = "horizontal",
+    headers = list(list(list(displayName = NULL), list(displayName = NULL))),
+    rowHeadersCount = 1L,
+    totalColumnsCount = 2L,
+    totalRowsCount = 2L
+  )
+  dt_2col <- rd_OutputProcesser(collapsed_2col, use_field_names_in_headers = FALSE)
+  expect_equal(names(dt_2col), c("Instrument", "Column_2"))
+
+  partial_null_no_dateval <- list(
+    columnHeadersCount = 1L,
+    data = list(list("AAPL.O", "2024-01-02", 185.5), list("MSFT.O", "2024-01-02", 370.2)),
+    headerOrientation = "horizontal",
+    headers = list(list(
+      list(displayName = NULL),
+      list(displayName = NULL),
+      list(displayName = "SETTLE", field = "SETTLE")
+    )),
+    rowHeadersCount = 1L,
+    totalColumnsCount = 3L,
+    totalRowsCount = 2L
+  )
+  dt_partial <- rd_OutputProcesser(partial_null_no_dateval, use_field_names_in_headers = FALSE)
+  expect_equal(names(dt_partial), c("Instrument", "V2", "SETTLE"))
+
+  # 5. rd_OutputProcesser date regex matches .date and _date but NOT non-date columns ending in *date
+  dt_nondate_suffix <- rd_OutputProcesser(list(
+    headers = list(
+      list(name = "instrument", title = "Instrument", type = "string", decimalChar = "."),
+      list(name = "expir", title = "EXPIR_DATE", type = "string", decimalChar = "."),
+      list(name = "cu", title = "ConsolidatedUpdate", type = "string", decimalChar = "."),
+      list(name = "mandate", title = "Mandate", type = "string", decimalChar = ".")
+    ),
+    data = list(
+      list("AAPL.O", "2024-06-21", "Active", "Global Equity")
+    )
+  ), use_field_names_in_headers = FALSE)
+  expect_s3_class(dt_nondate_suffix$EXPIR_DATE, "Date")
+  expect_type(dt_nondate_suffix$ConsolidatedUpdate, "character")
+  expect_equal(dt_nondate_suffix$ConsolidatedUpdate, "Active")
+  expect_equal(dt_nondate_suffix$Mandate, "Global Equity")
+
+  # 6. rd_GetHistory preserves case-variant Frq parameter without injecting duplicate FRQ
+  captured_params <- NULL
+  stub(rd_GetHistory, "CheckifCustomInstrument", function(...) FALSE)
+  stub(rd_GetHistory, "rd_GetData", function(RDObject, rics, Eikonformulas, Parameters, ...) {
+    captured_params <<- Parameters
+    data.table(Instrument = "AAPL.O", Date = as.Date("2024-03-31"), `TR.REVENUE` = 100)
+  })
+  rd_GetHistory(
+    RD = list(),
+    universe = "AAPL.O",
+    fields = "TR.Revenue",
+    interval = "quarterly",
+    parameters = list(Frq = "FQ"),
+    cache = FALSE
+  )
+  expect_equal(captured_params$Frq, "FQ")
+  expect_false("FRQ" %in% names(captured_params))
+})
+
+test_that("adc_processor, BearerTokenManagement, HistoricalPricing, json, rd_ConvertSymbol, ESG/Estimates/Ownership, and rd_GetHistory edge cases are covered", {
+  local_refinitiv_state()
+  rd_ClearCache()
+
+  # 0. dateFormatCheck error handler and .estimate_rows_per_ric default Frq = "D"
+  expect_false(dateFormatCheck(12345))
+  expect_equal(.estimate_rows_per_ric(list(SDate = "2024-01-01", EDate = "2024-01-10")), 8L)
+
+  # 1. process_adc_response: non-list error, j > ncol(dt) break, and set() error catch
+  expect_error(process_adc_response(NA), "API request failed -- no response received.")
+  df_short <- process_adc_response(list(
+    headers = list(
+      list(name = "instrument", title = "Instrument", type = "String"),
+      list(name = "extra", title = "Extra", type = "Float")
+    ),
+    data = list(list("AAPL.O"))
+  ))
+  expect_equal(ncol(df_short), 1L)
+
+  stub(process_adc_response, "data.table::set", function(...) stop("coercion failure"))
+  df_err_catch <- process_adc_response(list(
+    headers = list(list(name = "val", title = "Val", type = "Float")),
+    data = list(list("1.23"))
+  ))
+  expect_equal(nrow(df_err_catch), 1L)
+
+  # 2. rd_VerifyToken: base64decode error path
+  stub(rd_VerifyToken, "base64enc::base64decode", function(...) stop("bad base64"))
+  expect_warning(
+    vt_res <- rd_VerifyToken("header.payload.signature"),
+    "Base64 decoding failed"
+  )
+  expect_false(vt_res)
+
+  # 3. rd_OutputProcesser: pre-existing Date column, numeric epoch days (0..100000),
+  #    numeric ms (<0 or between 100001 and 1e11), character YYYYMMDD, mixed ISO + plain date
+  dt_dates <- rd_OutputProcesser(list(
+    headers = list(
+      list(name = "instrument", title = "Instrument", type = "string", decimalChar = "."),
+      list(name = "d_already", title = "d_already.date", type = "string", decimalChar = "."),
+      list(name = "d_epoch_day", title = "d_epoch_day.date", type = "number", decimalChar = "."),
+      list(name = "d_epoch_ms", title = "d_epoch_ms.date", type = "number", decimalChar = "."),
+      list(name = "d_char_ymd", title = "d_char_ymd.date", type = "string", decimalChar = "."),
+      list(name = "d_mixed_iso", title = "d_mixed_iso.date", type = "string", decimalChar = ".")
+    ),
+    data = list(
+      list("AAPL.O", as.Date("2024-01-02"), 19724, 5e8, "20240115", "2024-01-15T14:30:00Z"),
+      list("MSFT.O", as.Date("2024-01-03"), 19725, 6e8, "20240116", "2024-01-16")
+    )
+  ), use_field_names_in_headers = FALSE)
+  expect_s3_class(dt_dates$`d_already.date`, "Date")
+  expect_s3_class(dt_dates$`d_epoch_day.date`, "Date")
+  expect_s3_class(dt_dates$`d_epoch_ms.date`, "POSIXct")
+  expect_s3_class(dt_dates$`d_char_ymd.date`, "Date")
+  expect_s3_class(dt_dates$`d_mixed_iso.date`, "POSIXct")
+
+  # 4. RefinitivJsonConnect: get_data and get_search_metadata
+  withr::local_options(eikon_port = 9000L, refinitiv_base_url = "http://lh")
+  conn <- RefinitivJsonConnect(Eikonapplication_id = "test_key")
+  closure_env <- environment(conn$get_data_rdp)
+  closure_env$send_json_request <- function(json = NULL, service = "eikon", debug = FALSE,
+                                            request_type = "POST", EndPoint = NULL, ...) {
+    if (identical(request_type, "GET")) {
+      list(Properties = list(
+        RIC = list(Type = "String", Searchable = NA, Properties = list(nested = TRUE)),
+        ISIN = list(Type = "String", Searchable = TRUE)
+      ))
+    } else {
+      list(headers = list(), data = list())
+    }
+  }
+  gd_raw <- conn$get_data(instruments = "AAPL.O", fields = "BID", parameters = NULL, SyncFields = FALSE, debug = FALSE, raw_output = TRUE)
+  expect_type(gd_raw, "list")
+  ts_raw <- conn$get_timeseries(
+    rics = "AAPL.O", interval = "daily", calendar = "tradingdays",
+    fields = "CLOSE", start_date = "2024-01-01", end_date = "2024-01-10",
+    corax = "adjusted", normalize = TRUE, raw_output = TRUE
+  )
+  expect_type(ts_raw, "list")
+  sym_raw <- conn$get_symbology(
+    symbol = "AAPL.O", from_symbol_type = "RIC", to_symbol_type = list("ISIN"),
+    raw_output = TRUE, debug = FALSE, best_match = TRUE
+  )
+  expect_type(sym_raw, "list")
+  nhl_raw <- conn$rd_get_news_headlines(query = "AAPL.O", limit = 5L)
+  expect_type(nhl_raw, "list")
+  nst_raw <- conn$rd_get_news_story(story_id = "urn:newsml:123")
+  expect_type(nst_raw, "list")
+  est_raw <- conn$get_estimates(universe = "AAPL.O", view = "view-summary/annual", package = "basic", debug = FALSE)
+  expect_type(est_raw, "list")
+  own_raw <- conn$get_ownership(universe = "AAPL.O", view = "consolidated/breakdown", statType = 1, debug = FALSE)
+  expect_type(own_raw, "list")
+  hp_raw <- conn$get_historical_pricing(
+    EikonObject = conn, universe = "AAPL.O", interval = "P1D",
+    start = "2024-01-01", end = "2024-01-10", adjustments = NULL,
+    count = NULL, fields = NULL, sessions = NULL, debug = FALSE
+  )
+  expect_type(hp_raw, "list")
+  sm_df <- conn$get_search_metadata(searchView = "EquityQuotes")
+  expect_s3_class(sm_df, "data.frame")
+  expect_false("Properties" %in% names(sm_df))
+
+  # 5. rd_ConvertSymbol: Tier 1a when from_symbol_type is not in names(symb_res)
+  stub(rd_ConvertSymbol, "EikonGetSymbology", function(...) {
+    data.frame(symbol = "US0378331005", RIC = "AAPL.O", stringsAsFactors = FALSE)
+  })
+  stub(rd_ConvertSymbol, "EikonGetData", function(...) {
+    list(PostProcessedEikonGetData = data.frame(
+      Instrument = "AAPL.O",
+      TR.InstrumentIsActive = TRUE,
+      stringsAsFactors = FALSE
+    ))
+  })
+  cs_res <- rd_ConvertSymbol(
+    RDObject = list(),
+    symbols = "US0378331005",
+    from_symbol_type = "ISIN",
+    to_symbol_type = "RIC"
+  )
+  expect_equal(cs_res$MappedSymbol, "AAPL.O")
+
+  # 6. Cache hit debug messages in rd_GetHistoricalPricing, rd_GetESG, rd_GetEstimates, rd_GetOwnership, rd_get_news_headlines, and RDPsearch top coercion
+  rd_ClearCache()
+  hp_key <- cache_lookup("rd_GetHistoricalPricing", "AAPL.O", "P1D", NULL, NULL, NULL, 20L, NULL, NULL, ".")$key
+  cache_set(hp_key, data.table(Instrument = "AAPL.O"), ttl = 300)
+  expect_message(
+    rd_GetHistoricalPricing(RDObject = list(), universe = "AAPL.O", cache = TRUE, debug = TRUE),
+    "Cache hit"
+  )
+
+  esg_key <- cache_lookup("rd_GetESG", "AAPL.O", "scores-full", NULL, NULL, FALSE)$key
+  cache_set(esg_key, data.frame(Instrument = "AAPL.O"), ttl = 300)
+  expect_message(
+    rd_GetESG(RDObject = list(), universe = "AAPL.O", cache = TRUE, debug = TRUE),
+    "Cache hit"
+  )
+
+  est_key <- cache_lookup("rd_GetEstimates", "AAPL.O", "view-summary/annual", "basic", FALSE)$key
+  cache_set(est_key, data.frame(Instrument = "AAPL.O"), ttl = 300)
+  expect_message(
+    rd_GetEstimates(RDObject = list(), universe = "AAPL.O", package = "basic", cache = TRUE, debug = TRUE),
+    "Cache hit"
+  )
+
+  own_key <- cache_lookup("rd_GetOwnership", "AAPL.O", "consolidated/investors", NULL, 100L, NULL, NULL, NULL, NULL, NULL, NULL, FALSE)$key
+  cache_set(own_key, data.frame(Instrument = "AAPL.O"), ttl = 300)
+  expect_message(
+    rd_GetOwnership(RDObject = list(), universe = "AAPL.O", view = "consolidated/investors", limit = 100L, cache = TRUE, debug = TRUE),
+    "Cache hit"
+  )
+
+  nhl_key <- cache_lookup("rd_get_news_headlines", "R:AAPL.O", 2L, "NewToOld", "All", NULL, NULL, NULL, FALSE)$key
+  cache_set(nhl_key, data.frame(headline = "test"), ttl = 300)
+  expect_message(
+    rd_get_news_headlines(RDObject = list(), query = "R:AAPL.O", limit = 2L, cache = TRUE, debug = TRUE),
+    "Cache hit"
+  )
+  rd_ClearCache()
+
+  srch_res <- RDPsearch(
+    RDP = list(search = function(...) data.table(RIC = "AAPL.O")),
+    query = "apple",
+    top = 10,
+    cache = FALSE
+  )
+  expect_equal(nrow(srch_res), 1L)
+
+  # 7. rd_GetHistory: ensure_key_cols missing Instrument/Date, 0-row non-empty ncol branches, and character Date branches
+  stub(rd_GetHistory, "CheckifCustomInstrument", function(...) FALSE)
+
+  # 7a. Both endpoints return 0-row tables with >0 columns (lines 377-384)
+  stub(rd_GetHistory, "rd_GetData", function(...) data.table(TR.REVENUE = numeric(0)))
+  stub(rd_GetHistory, "rd_GetHistoricalPricing", function(...) data.table(BID = numeric(0)))
+  res_0a <- rd_GetHistory(RD = list(), universe = "AAPL.O", fields = c("TR.Revenue", "BID"), cache = FALSE)
+  expect_equal(nrow(res_0a), 0L)
+
+  # 7b. Only GetDataOutput has >0 columns, 0 rows (line 373)
+  stub(rd_GetHistory, "rd_GetHistoricalPricing", function(...) data.table())
+  res_0b <- rd_GetHistory(RD = list(), universe = "AAPL.O", fields = c("TR.Revenue", "BID"), cache = FALSE)
+  expect_equal(nrow(res_0b), 0L)
+
+  # 7c. Only HistoricalPricingOutput has >0 columns, 0 rows (line 375)
+  stub(rd_GetHistory, "rd_GetData", function(...) data.table())
+  stub(rd_GetHistory, "rd_GetHistoricalPricing", function(...) data.table(BID = numeric(0)))
+  res_0c <- rd_GetHistory(RD = list(), universe = "AAPL.O", fields = c("TR.Revenue", "BID"), cache = FALSE)
+  expect_equal(nrow(res_0c), 0L)
+
+  # 7d. Character ISO timestamp in Return_DT$Date (lines 401-409) and character plain date (line 411)
+  stub(rd_GetHistory, "rd_GetData", function(...) {
+    data.table(Instrument = "AAPL.O", Date = "2024-01-15T14:30:00Z", `TR.REVENUE` = 100)
+  })
+  res_char_ts <- rd_GetHistory(RD = list(), universe = "AAPL.O", fields = "TR.Revenue", cache = FALSE)
+  expect_s3_class(res_char_ts$Date, "POSIXct")
+
+  stub(rd_GetHistory, "rd_GetData", function(...) {
+    data.table(Instrument = "AAPL.O", Date = "2024-01-15", `TR.REVENUE` = 100)
+  })
+  res_char_d <- rd_GetHistory(RD = list(), universe = "AAPL.O", fields = "TR.Revenue", cache = FALSE)
+  expect_s3_class(res_char_d$Date, "Date")
+})
+
+test_that("Streaming subsystem edge cases in api, definition, utils, stream, and manager are covered", {
+  local_refinitiv_state()
+
+  # 1. rd_streaming_api: on_reconnecting and on_reconnected registration
+  reconn_called <- 0L
+  reconnected_called <- 0L
+  s <- rd_get_streaming_data(
+    universe = "EUR=",
+    fields = "BID",
+    on_reconnecting = function(stream, attempt) reconn_called <<- reconn_called + 1L,
+    on_reconnected = function(stream, attempt) reconnected_called <<- reconnected_called + 1L
+  )
+
+  # 2. Stream on_reconnecting and on_reconnected callbacks when stream is open
+  s_priv <- s$.__enclos_env__$private
+  s_priv$.is_open <- TRUE
+  mgr <- s_priv$.manager
+  mgr_priv <- mgr$.__enclos_env__$private
+  mgr_priv$.fire_reconnect_callbacks("on_reconnecting", 1L)
+  mgr_priv$.fire_reconnect_callbacks("on_reconnected", 1L)
+  expect_equal(reconn_called, 1L)
+  expect_equal(reconnected_called, 1L)
+
+  # 3. StreamDefinition$validate() when private$.fields is empty
+  def <- s$get_definition()
+  def_priv <- def$.__enclos_env__$private
+  saved_fields <- def_priv$.fields
+  def_priv$.fields <- character(0)
+  val_errs <- def$validate()
+  expect_true(any(grepl("fields must contain at least one field", unlist(val_errs))))
+  def_priv$.fields <- saved_fields
+
+  # 4. Stream private$.extract_instrument and .handle_message edge cases
+  # 4a. Name = "UNKNOWN" falls back to universe[1]
+  s_priv$.handle_message(list(Type = "Refresh", Name = "UNKNOWN", Fields = list(BID = 1.1)))
+  expect_equal(s$get_latest_data("EUR=")$BID, 1.1)
+
+  # 4b. Empty universe in definition -> .extract_instrument returns NULL (line 743) and .handle_message sets "UNKNOWN" (line 604)
+  def_priv$.universe <- character(0)
+  expect_null(s_priv$.extract_instrument(list(Type = "Refresh")))
+  s_priv$.handle_message(list(Type = "Refresh", Fields = list(BID = 1.2)))
+  expect_equal(s$get_latest_data("UNKNOWN")$BID, 1.2)
+
+  # 4c. NA in universe -> instrument becomes "UNKNOWN" (line 611)
+  def_priv$.universe <- NA_character_
+  s_priv$.handle_message(list(Type = "Refresh", Fields = list(BID = 1.3)))
+
+  # 4d. STATUS with Stream = "NonStreaming" (line 657)
+  s_priv$.handle_message(list(Type = "Status", State = list(Stream = "NonStreaming", Data = "Ok")))
+
+  # 4e. Error inside .handle_message tryCatch triggers warning (lines 676-678)
+  s_priv$.definition <- NULL
+  expect_warning(
+    s_priv$.handle_message(list(Type = "Refresh", Fields = list(BID = 1.4))),
+    "Error handling message"
+  )
+  s_priv$.definition <- def
+  def_priv$.universe <- "EUR="
+
+  # 5. rd_streaming_utils: poll_until_connected, get_streaming_url, create_omm_login_request, create_streaming_headers
+  stub(poll_until_connected, "later::run_now", function(...) invisible(NULL))
+  ws_state <- 0L
+  mock_ws <- list(readyState = function() {
+    ws_state <<- ws_state + 1L
+    if (ws_state == 1L) 0L else 1L
+  })
+  expect_message(
+    expect_true(poll_until_connected(mock_ws, timeout = 2, verbose = TRUE)),
+    "WebSocket connecting"
+  )
+  mock_ws_closed <- list(readyState = function() 3L)
+  expect_error(poll_until_connected(mock_ws_closed, timeout = 1), "Unable to establish websocket connection")
+
+  withr::with_options(list(refinitiv_base_url = "", streaming_port = 9000L), {
+    expect_true(grepl("^ws://localhost:9000/", get_streaming_url(base_url = "")))
+  })
+  refinitiv_vault_clear()
+  expect_true(grepl("DEFAULT_WORKSPACE_APP_KEY", create_omm_login_request(app_key = NULL, access_token = "tok")))
+  hdrs <- create_streaming_headers(access_token = "tok", app_key = NULL)
+  expect_equal(hdrs[["x-tr-applicationid"]], "DEFAULT_WORKSPACE_APP_KEY")
+
+  # 6. StreamManager private methods: .send_subscription_requests, .setup_websocket_handlers,
+  #    .process_message, .handle_refresh, .handle_status, .route_message
+  mgr_priv$.ws <- NULL
+  stub(mgr_priv$.send_subscription_requests, "requireNamespace", function(...) FALSE)
+  stub(mgr_priv$.send_subscription_requests, "Sys.sleep", function(...) invisible(NULL))
+  expect_message(
+    mgr_priv$.send_subscription_requests(def, first_id = 2L, debug = TRUE),
+    "WebSocket is NULL"
+  )
+  mgr_priv$.send_subscription_requests(def, first_id = 2L, debug = FALSE)
+
+  # .setup_websocket_handlers: capture onClose and onOpen callbacks
+  captured_close <- NULL
+  captured_open <- NULL
+  sent_msgs <- character(0)
+  mgr_priv$.ws <- list(
+    onError = function(fn) invisible(NULL),
+    onMessage = function(fn) invisible(NULL),
+    onClose = function(fn) captured_close <<- fn,
+    onOpen = function(fn) captured_open <<- fn,
+    send = function(msg) sent_msgs <<- c(sent_msgs, msg)
+  )
+  mgr_priv$.setup_websocket_handlers(debug = TRUE)
+
+  # Trigger accidental close with debug = TRUE (line 540)
+  mgr_priv$.user_initiated_close <- FALSE
+  stub(captured_close, "private$.attempt_reconnect", function(...) invisible(NULL))
+  withr::with_options(list(refinitiv_streaming_auto_reconnect = TRUE), {
+    expect_message(captured_close(list()), "Accidental close detected")
+  })
+
+  # Trigger onOpen during reconnect when vault token is NULL -> calls rd_handshake() (lines 557-558)
+  mgr_priv$.reconnecting <- TRUE
+  mgr_priv$.stream_type <- "pricing"
+  refinitiv_vault_clear()
+  stub(captured_open, "rd_handshake", function(...) list(access_token = "reconn_tok"))
+  expect_message(captured_open(list()), "sending login from onOpen")
+
+  # .process_message edge cases with debug = TRUE (lines 588, 619, 627, 667-668)
+  expect_message(mgr_priv$.process_message(list(data = "{}"), debug = TRUE), "Parsed message is empty")
+  expect_message(mgr_priv$.process_message(list(data = '{"type":"Ping"}'), debug = TRUE), "Found message type: Ping")
+  expect_message(mgr_priv$.process_message(list(data = '[{"a":1},{"b":2}]'), debug = TRUE), "Message is not a named list")
+  expect_warning(
+    expect_message(mgr_priv$.process_message(list(data = "INVALID_JSON"), debug = TRUE), "ERROR processing message"),
+    "Error processing message"
+  )
+
+  # .handle_refresh when State is a scalar character, reconnecting = TRUE, and pending subscriptions exist (lines 712, 734, 767-768, 776)
+  mgr_priv$.logged_in <- FALSE
+  mgr_priv$.reconnecting <- TRUE
+  def_priv$.universe <- "EUR="
+  mgr_priv$.pending_subscriptions <- list(`2` = def)
+  stub(mgr_priv$.handle_refresh, "requireNamespace", function(...) FALSE)
+  stub(mgr_priv$.handle_refresh, "Sys.sleep", function(...) invisible(NULL))
+  expect_message(
+    mgr_priv$.handle_refresh(list(Domain = "Login", ID = 1L, State = "Open"), debug = TRUE),
+    "Reconnect login successful"
+  )
+
+  # .handle_status DuplicateOpenRequest with refinitiv_streaming_debug = TRUE (line 821)
+  withr::with_options(list(refinitiv_streaming_debug = TRUE), {
+    expect_message(
+      mgr_priv$.handle_status(list(State = list(Text = "DuplicateOpenRequest", Code = "1", Stream = "Open"))),
+      "Duplicate request detected"
+    )
+  })
+
+  # .route_message fallback without ID when handler throws error (line 875)
+  mgr_priv$.message_handlers <- list(`99` = list(function(msg, tp) stop("boom_handler")))
+  expect_warning(
+    mgr_priv$.route_message(list(Fields = list(BID = 1.0)), message_type = "update"),
+    "Error in message handler: boom_handler"
+  )
+
+  # 7. rd_check_proxy_url (R/rd_streaming.r lines 14-19)
+  stub(rd_check_proxy_url, "send_json_request", function(request_type, debug, apikey, url) {
+    list(statusCode = "ST_PROXY_READY", version = "1.0")
+  })
+  withr::with_options(list(refinitiv_base_url = "http://lh"), {
+    proxy_res <- rd_check_proxy_url(port = 9000L, debug = FALSE)
+    expect_equal(proxy_res$statusCode, "ST_PROXY_READY")
+  })
+
+  # 8. EikonPostProcessor NULL-header sanitization + single-row branch (R/eikonHelperfunctions.r lines 34, 65, 68, 69)
+  epp_null_hdr <- list(list(
+    columnHeadersCount = 1L,
+    data = list(list("AAPL.O", 150)),
+    headerOrientation = "horizontal",
+    headers = list(list(list(displayName = NULL), list(displayName = NULL))),
+    rowHeadersCount = 1L,
+    totalColumnsCount = 2L,
+    totalRowsCount = 1L
+  ))
+  epp_res <- EikonPostProcessor(epp_null_hdr)
+  expect_equal(names(epp_res$PostProcessedEikonGetData), c("Instrument", "Column_2"))
+
+  # 9. StreamManager$.attempt_reconnect callback when current_token is NULL (line 449)
+  reconn_mgr <- StreamManager$new(stream_type = "pricing")
+  reconn_priv <- reconn_mgr$.__enclos_env__$private
+  reconn_priv$.user_initiated_close <- FALSE
+  queued_reconn <- list()
+  stub(reconn_priv$.attempt_reconnect, "later::later", function(func, delay) {
+    queued_reconn[[length(queued_reconn) + 1L]] <<- list(fn = func, delay = delay)
+  })
+  reconn_priv$.attempt_reconnect(debug = FALSE)
+  refinitiv_vault_clear()
+  stub(queued_reconn[[1]]$fn, "rd_handshake", function() {
+    refinitiv_vault_set("access_token", "fresh_tok")
+    list(access_token = "fresh_tok")
+  })
+  stub(queued_reconn[[1]]$fn, "websocket::WebSocket$new", function(url, protocols, headers, autoConnect) {
+    list(
+      onError = function(h) NULL,
+      onMessage = function(h) NULL,
+      onOpen = function(h) NULL,
+      onClose = function(h) NULL,
+      connect = function() NULL
+    )
+  })
+  queued_reconn[[1]]$fn()
+  expect_equal(refinitiv_vault_get("access_token"), "fresh_tok")
+  reconn_priv$.user_initiated_close <- TRUE
+})
+
 restore_refinitiv_state(.saved_state, "test-v023-audit-fixes")

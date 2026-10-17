@@ -963,6 +963,7 @@ test_that("onClose handler triggers reconnect on accidental close", {
   expect_equal(priv$.connection_state, "disconnected")
   expect_true(priv$.reconnecting)
   expect_equal(priv$.reconnect_attempt, 1L)
+  priv$.user_initiated_close <- TRUE
 })
 
 test_that("onClose handler skips reconnect when auto_reconnect is FALSE", {
@@ -1859,6 +1860,7 @@ test_that("reconnect callback error branch doesn't crash", {
   # reconnecting set to FALSE by error handler before re-calling .attempt_reconnect
   # (the inner attempt may or may not succeed depending on later availability)
   expect_false(priv$.user_initiated_close)
+  priv$.user_initiated_close <- TRUE
 })
 
 # --- Debug coverage: .route_message with lowercase id ---

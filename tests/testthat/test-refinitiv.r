@@ -6,7 +6,7 @@ test_that("placeholder", {
 })
 
 # Load required data for pure unit tests
-load(file = "testdata.rda")
+load(file = testthat::test_path("testdata.rda"))
 
 ## Test retry ----
 

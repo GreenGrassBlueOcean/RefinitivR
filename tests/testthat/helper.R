@@ -56,9 +56,38 @@ setup_mock_json_env <- function(api_key = "dummy_key", port = 9000L,
 #'
 #' @return TRUE if a live, authenticated terminal session is available.
 #' @noRd
+.live_api_probe_cache <- new.env(parent = emptyenv())
+
 has_live_api <- function() {
+  if (nzchar(Sys.getenv("REFINITIV_OFFLINE_TESTS", ""))) {
+    return(FALSE)
+  }
   env_host <- Sys.getenv("REFINITIV_TEST_HOST", "")
   env_port <- Sys.getenv("REFINITIV_TEST_PORT", "")
+  cache_key <- paste0(env_host, ":", env_port)
+
+  if (exists(cache_key, envir = .live_api_probe_cache, inherits = FALSE)) {
+    cached <- get(cache_key, envir = .live_api_probe_cache, inherits = FALSE)
+    if (!isTRUE(cached$available)) {
+      return(FALSE)
+    }
+    options(
+      refinitiv_base_url = cached$base_url,
+      eikon_port = cached$port,
+      .EikonApiKey = "DEFAULT_WORKSPACE_APP_KEY"
+    )
+    refinitiv_vault_set("api_key", "DEFAULT_WORKSPACE_APP_KEY")
+    if (!is.null(cached$access_token)) {
+      refinitiv_vault_set("access_token", cached$access_token)
+    }
+    if (!is.null(cached$token_expiration)) {
+      refinitiv_vault_set("token_expiration", cached$token_expiration)
+    }
+    if (!is.null(cached$token_type)) {
+      refinitiv_vault_set("token_type", cached$token_type)
+    }
+    return(TRUE)
+  }
 
   if (nzchar(env_host)) {
     options(refinitiv_base_url = paste0("http://", env_host))
@@ -80,6 +109,7 @@ has_live_api <- function() {
     {
       resp <- suppressWarnings(rd_handshake(debug = FALSE, force = TRUE))
       if (is.null(resp) || is.null(resp$access_token)) {
+        assign(cache_key, list(available = FALSE), envir = .live_api_probe_cache)
         return(FALSE)
       }
 
@@ -89,9 +119,24 @@ has_live_api <- function() {
       # Also set the .EikonApiKey option so that live tests calling
       # RefinitivJsonConnect(getOption(".EikonApiKey")) get a valid key.
       options(.EikonApiKey = "DEFAULT_WORKSPACE_APP_KEY")
+      assign(
+        cache_key,
+        list(
+          available = TRUE,
+          base_url = getOption("refinitiv_base_url"),
+          port = getOption("eikon_port"),
+          access_token = refinitiv_vault_get("access_token"),
+          token_expiration = refinitiv_vault_get("token_expiration"),
+          token_type = refinitiv_vault_get("token_type")
+        ),
+        envir = .live_api_probe_cache
+      )
       TRUE
     },
-    error = function(e) FALSE
+    error = function(e) {
+      assign(cache_key, list(available = FALSE), envir = .live_api_probe_cache)
+      FALSE
+    }
   )
 }
 
