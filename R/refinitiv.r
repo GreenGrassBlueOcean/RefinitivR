@@ -558,7 +558,26 @@ EikonGetData <- function(
   }
 
   eikon_data_is_success <- function(x) {
-    !identical(x, NA) && !identical(x, structure(list(), names = character(0)))
+    if (identical(x, NA) || identical(x, structure(list(), names = character(0)))) {
+      return(FALSE)
+    }
+    if (is.list(x) && length(Eikonformulas) > 0L && !is.null(x$error) && length(x$error) > 0L) {
+      n_cols <- x$totalColumnsCount
+      hdrs <- if (is.list(x$headers) && length(x$headers) >= 1L) x$headers[[1]] else NULL
+      no_formula_cols <- (!is.null(n_cols) && is.numeric(n_cols) && n_cols <= 1L) ||
+        (is.list(hdrs) && length(hdrs) <= 1L &&
+           (is.null(hdrs[[1]]$displayName) || is.na(hdrs[[1]]$displayName) || identical(hdrs[[1]]$displayName, "")))
+      if (isTRUE(no_formula_cols)) {
+        err_codes <- unlist(lapply(x$error, function(e) if (is.list(e)) e$code else NULL), use.names = FALSE)
+        err_msgs  <- unlist(lapply(x$error, function(e) if (is.list(e)) e$message else NULL), use.names = FALSE)
+        is_retriable_cell_err <- any(err_codes %in% c(100L, 400L, 500L, 2504L)) ||
+          any(grepl("Asynchronous Query library internal error|internal error|timeout", err_msgs, ignore.case = TRUE))
+        if (isTRUE(is_retriable_cell_err)) {
+          return(FALSE)
+        }
+      }
+    }
+    TRUE
   }
 
   EikonDataList <- chunked_download(

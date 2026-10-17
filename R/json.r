@@ -253,6 +253,7 @@ send_json_request <- function(json = NULL, service = "eikon", debug = FALSE, req
   max_retries <- 6L
   counter <- 0L
   results <- NA
+  original_json <- json
 
   while (counter < max_retries) {
     query <- perform_with_reset_retry(build_request())
@@ -280,6 +281,7 @@ send_json_request <- function(json = NULL, service = "eikon", debug = FALSE, req
             force = TRUE
           )
           Sys.sleep(wait_secs)
+          json <- original_json
           counter <- counter + 1L
         } else if (is.numeric(tryresults$estimatedDuration)) {
           WaitTime <- NULL

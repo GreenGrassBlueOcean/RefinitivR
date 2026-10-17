@@ -481,5 +481,84 @@ test_that("EikonGetData can handle long requests gracefully", {
   expect_true(nrow(result$PostProcessedEikonGetData) > 0)
 })
 
+test_that("EikonPostProcessor maps NULL first-column displayName to Instrument instead of NA", {
+  collapsed_chunk <- list(list(
+    columnHeadersCount = 1L,
+    data = list(list("AAPL.O"), list("MSFT.O")),
+    error = list(
+      list(code = 100L, col = 1L, message = "Asynchronous Query library internal error.", row = 0L),
+      list(code = 100L, col = 1L, message = "Asynchronous Query library internal error.", row = 1L)
+    ),
+    headerOrientation = "horizontal",
+    headers = list(list(list(displayName = NULL))),
+    rowHeadersCount = 1L,
+    totalColumnsCount = 1L,
+    totalRowsCount = 2L
+  ))
+
+  res <- EikonPostProcessor(collapsed_chunk)
+  expect_equal(names(res$PostProcessedEikonGetData), "Instrument")
+  expect_false("NA" %in% names(res$PostProcessedEikonGetData))
+  expect_equal(res$PostProcessedEikonGetData$Instrument, c("AAPL.O", "MSFT.O"))
+  expect_equal(nrow(res$Eikon_Error_Data), 2L)
+})
+
+test_that("EikonGetData retries chunk when LSEG returns AQL internal error (code=100) and succeeds on retry", {
+  withr::local_options(
+    refinitiv_chunk_sleep = 0,
+    refinitiv_chunk_backoff = 0,
+    refinitiv_progress = FALSE
+  )
+
+  aql_fail_payload <- list(
+    columnHeadersCount = 1L,
+    data = list(list("AAPL.O"), list("MSFT.O")),
+    error = list(
+      list(code = 100L, col = 1L, message = "Asynchronous Query library internal error.", row = 0L),
+      list(code = 100L, col = 1L, message = "Asynchronous Query library internal error.", row = 1L)
+    ),
+    headerOrientation = "horizontal",
+    headers = list(list(list(displayName = NULL))),
+    rowHeadersCount = 1L,
+    totalColumnsCount = 1L,
+    totalRowsCount = 2L
+  )
+
+  good_payload <- list(
+    columnHeadersCount = 1L,
+    data = list(list("AAPL.O", 150.0), list("MSFT.O", 300.0)),
+    headerOrientation = "horizontal",
+    headers = list(list(
+      list(displayName = "Instrument"),
+      list(displayName = "Price Close", field = "TR.PRICECLOSE")
+    )),
+    rowHeadersCount = 1L,
+    totalColumnsCount = 2L,
+    totalRowsCount = 3L
+  )
+
+  calls <- 0L
+  mock_eikon <- list(
+    get_data = function(instruments, fields, parameters = NULL, debug = FALSE, raw_output = TRUE) {
+      calls <<- calls + 1L
+      if (calls == 1L) aql_fail_payload else good_payload
+    }
+  )
+
+  res <- EikonGetData(
+    EikonObject = mock_eikon,
+    rics = c("AAPL.O", "MSFT.O"),
+    Eikonformulas = "TR.PriceClose",
+    raw_output = FALSE,
+    cache = FALSE,
+    verbose = FALSE
+  )
+
+  expect_equal(calls, 2L)
+  expect_equal(names(res$PostProcessedEikonGetData), c("Instrument", "Price.Close"))
+  expect_equal(res$PostProcessedEikonGetData$Instrument, c("AAPL.O", "MSFT.O"))
+  expect_equal(res$PostProcessedEikonGetData$Price.Close, c(150.0, 300.0))
+})
+
 
 restore_refinitiv_state(.saved_state, "test-refinitiv")

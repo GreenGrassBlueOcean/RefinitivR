@@ -44,7 +44,7 @@ EikonPostProcessor <- function(Eikon_get_dataOuput, SpaceConvertor = ".") {
     # replace null headers with NA headers
     data[[requestnumber]][["headers"]] <- replaceInList(data[[requestnumber]][["headers"]], function(x) if (is.null(x) || identical(x, "")) NA else x)
 
-    unlist(lapply(
+    hdrs <- unlist(lapply(
       X = 1:length(data[[requestnumber]][["headers"]][[1]]),
       FUN = function(x, data, requestnumber) {
         data[[requestnumber]][["headers"]][[1]][[x]][["displayName"]]
@@ -52,6 +52,14 @@ EikonPostProcessor <- function(Eikon_get_dataOuput, SpaceConvertor = ".") {
       data = data,
       requestnumber = requestnumber
     ))
+    if (length(hdrs) >= 1L && is.na(hdrs[[1L]])) {
+      hdrs[[1L]] <- "Instrument"
+    }
+    if (anyNA(hdrs)) {
+      na_idx <- which(is.na(hdrs))
+      hdrs[na_idx] <- paste0("Column_", na_idx)
+    }
+    hdrs
   }
 
 
