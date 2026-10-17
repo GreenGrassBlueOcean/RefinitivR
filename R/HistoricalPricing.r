@@ -251,6 +251,10 @@ rd_GetHistoricalPricing <- function(
     caller_label = "rd_GetHistoricalPricing",
     fail_message = "rd_GetHistoricalPricing downloading data failed for one or more RICs"
   )
+  any_chunk_failed <- any(vapply(TimeSeriesList, function(x) {
+    identical(x, NA) || identical(x, structure(list(), names = character(0)))
+  }, logical(1L)))
+
   # Process request and build return data.frame using data.table ----
   return_DT <- data.table::rbindlist(
     lapply(
@@ -267,8 +271,8 @@ rd_GetHistoricalPricing <- function(
   ))
   ReturnElement <- data.table::setDF(return_DT)
 
-  # ── Cache store (skip errors / NULL) ──
-  if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
+  # ── Cache store (skip errors / NULL / partial chunk failures) ──
+  if (!isFALSE(ttl) && !any_chunk_failed && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
     cache_set(.cl$key, ReturnElement, ttl)
   }
 
@@ -351,6 +355,15 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
   CleanedData <- replaceInList(x$data, function(x) if (is.null(x) || identical(x, "")) NA else x)
   return_DT <- data.table::rbindlist(CleanedData)
 
+  if (nrow(return_DT) >= 10000L) {
+    warning(
+      "Single chunk returned ", nrow(return_DT), " rows, reaching or exceeding the ",
+      "10,000-row server limit; results may be truncated. Consider reducing the ",
+      "date range or number of instruments per request.",
+      call. = FALSE
+    )
+  }
+
   # Select the proper column names
   if (!is.null(use_field_names_in_headers) && !use_field_names_in_headers && "title" %in% names(x$headers[[1]])) {
     Selectedheader <- "title"
@@ -394,7 +407,7 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
 
 
   # Check if there are other fields that should be dates
-  OtherDateColumns <- grep(pattern = ".date$|\\bdate\\b", x = tolower(names(return_DT)))
+  OtherDateColumns <- grep(pattern = "\\.date$|\\bdate\\b|^date_time$", x = tolower(names(return_DT)))
   if (!identical(OtherDateColumns, integer(0))) {
     for (col_idx in OtherDateColumns) {
       vals <- return_DT[[col_idx]]
@@ -417,6 +430,13 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
       } else if (is.character(vals)) {
         if (all(grepl("^[12][0-9]{7}$", non_na))) {
           data.table::set(return_DT, j = col_idx, value = as.Date(vals, format = "%Y%m%d"))
+        } else if (any(grepl("T", non_na) & !grepl("T00:00:00(\\.0+)?Z?$", non_na))) {
+          parsed_ts <- as.POSIXct(sub("Z$", "", vals), tz = "UTC", format = "%Y-%m-%dT%H:%M:%OS")
+          still_na <- is.na(parsed_ts) & !is.na(vals)
+          if (any(still_na)) {
+            parsed_ts[still_na] <- as.POSIXct(as.Date(vals[still_na], tz = "UTC"), tz = "UTC")
+          }
+          data.table::set(return_DT, j = col_idx, value = parsed_ts)
         } else {
           data.table::set(return_DT, j = col_idx, value = as.Date(vals, tz = "UTC"))
         }

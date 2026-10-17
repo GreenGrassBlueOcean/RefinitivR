@@ -18,6 +18,7 @@ rd_GetOwnership(
      "org-info"),
   stat_type = NULL,
   limit = NULL,
+  offset = NULL,
   sort_order = NULL,
   frequency = NULL,
   start = NULL,
@@ -55,6 +56,9 @@ Required for \code{consolidated/breakdown} and \code{fund/breakdown} views:
 If \code{NULL} (default), fetches all available data via automatic
 pagination. The LSEG API returns at most 100 rows per request; this
 function handles paging transparently.}
+
+\item{offset}{Optional integer. Starting row offset for retrieval (default
+\code{NULL}, which starts at 0).}
 
 \item{sort_order}{Optional character. Sort direction: \code{"asc"} or
 \code{"desc"}.}

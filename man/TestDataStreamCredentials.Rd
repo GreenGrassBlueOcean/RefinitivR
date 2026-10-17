@@ -20,8 +20,10 @@ This function checks the validity of the provided DataStream username and
 password by sending a request to the DataStream API.
 }
 \examples{
+\dontrun{
 TestDataStreamCredentials(
   DatastreamUsername = "wrongusername",
   DatastreamPassword = "wrongPassword"
 )
+}
 }

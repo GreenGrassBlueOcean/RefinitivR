@@ -560,5 +560,87 @@ test_that("EikonGetData retries chunk when LSEG returns AQL internal error (code
   expect_equal(res$PostProcessedEikonGetData$Price.Close, c(150.0, 300.0))
 })
 
+test_that("EikonGetData splits oversized chunk (>28 RICs) into <=25-RIC sub-chunks on AQL error and steps down subsequent chunks", {
+  withr::local_options(
+    refinitiv_chunk_sleep = 0,
+    refinitiv_chunk_backoff = 0,
+    refinitiv_progress = FALSE
+  )
+
+  # 360 RICs x 45 fields -> EikonChunker (MaxRicsperChunk = 200, 12000 / 45 = 266)
+  # splits into 2 chunks: Chunk 1 (180 RICs) and Chunk 2 (180 RICs).
+  rics_all <- sprintf("RIC%03d.O", seq_len(360L))
+  formulas <- sprintf("TR.Field%02d", seq_len(45L))
+
+  call_sizes <- integer(0)
+  mock_eikon <- list(
+    get_data = function(instruments, fields, parameters = NULL, debug = FALSE, raw_output = TRUE) {
+      inst <- unlist(instruments, use.names = FALSE)
+      call_sizes <<- c(call_sizes, length(inst))
+      if (length(inst) > 25L) {
+        # Simulate LSEG AQL timeout on >25 RIC chunks
+        return(list(
+          columnHeadersCount = 1L,
+          data = lapply(inst, function(r) list(r)),
+          error = lapply(seq_along(inst) - 1L, function(idx) {
+            list(code = 100L, col = 1L, message = "Asynchronous Query library internal error.", row = idx)
+          }),
+          headerOrientation = "horizontal",
+          headers = list(list(list(displayName = NULL))),
+          rowHeadersCount = 1L,
+          totalColumnsCount = 1L,
+          totalRowsCount = length(inst)
+        ))
+      }
+      # <= 25 RIC sub-chunk succeeds
+      hdr_list <- c(
+        list(list(displayName = "Instrument")),
+        lapply(seq_along(fields), function(k) {
+          list(displayName = paste0("Field", k), field = toupper(fields[[k]]))
+        })
+      )
+      row_list <- lapply(seq_along(inst), function(i) {
+        c(list(inst[[i]]), as.list(rep(as.numeric(i), length(fields))))
+      })
+      list(
+        columnHeadersCount = 1L,
+        data = row_list,
+        headerOrientation = "horizontal",
+        headers = list(hdr_list),
+        rowHeadersCount = 1L,
+        totalColumnsCount = length(hdr_list),
+        totalRowsCount = length(row_list) + 1L
+      )
+    }
+  )
+
+  res <- EikonGetData(
+    EikonObject = mock_eikon,
+    rics = rics_all,
+    Eikonformulas = formulas,
+    raw_output = FALSE,
+    cache = FALSE,
+    verbose = FALSE
+  )
+
+  # Chunk 1 tried 180 RICs once (failed with code=100), then split into 8 sub-chunks of <=23 RICs.
+  # Chunk 2 was pre-emptively stepped down into 8 sub-chunks of <=23 RICs without trying 180 RICs!
+  expect_equal(call_sizes[1L], 180L)
+  expect_true(all(call_sizes[-1L] <= 25L))
+  expect_equal(length(call_sizes), 1L + 8L + 8L)
+  expect_equal(nrow(res$PostProcessedEikonGetData), 360L)
+  expect_equal(ncol(res$PostProcessedEikonGetData), 46L)
+  expect_equal(res$PostProcessedEikonGetData$Instrument, rics_all)
+})
+
+test_that("JsonHeaderAnalyzer maps NULL first-column displayName to Instrument", {
+  collapsed <- list(
+    headers = list(list(list(displayName = NULL), list(displayName = NULL)))
+  )
+  hdrs <- JsonHeaderAnalyzer(collapsed, Selectedheader = "displayName", use_field_names_in_headers = FALSE)
+  expect_equal(hdrs, c("Instrument", "Column_2"))
+})
+
 
 restore_refinitiv_state(.saved_state, "test-refinitiv")
+

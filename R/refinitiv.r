@@ -133,10 +133,13 @@ EikonNameCleaner <- function(names, SpaceConvertor = ".") {
 #' Returns a list of chunked Rics so that api limits can be satisfied
 #'
 #' @param RICS a vector containing RICS to be requested
-#' @param Eikonfields a list of the eikonfields to be requested default NULL, if eikonfields are supplied duration may not be supplied
+#' @param Eikonfields a list of the eikonfields to be requested default NULL
 #' @param MaxCallsPerChunk the maximum amount of apicalls that can be made
-#' @param Duration a natural number denoting the amoount of rows asked for in a TimeSeries default NULL, if Duration is supplied Eikonfields may not be supplied
-#' @param MaxRicsperChunk  a natural number denoting the maximum amount of Rics that should be available in one call, default is 300.
+#' @param Duration a natural number denoting the amount of rows asked for in a TimeSeries default NULL
+#' @param MaxRicsperChunk a natural number denoting the maximum amount of Rics that should be available in one call, default is 300.
+#' @param verbose boolean or character, prints progress information when chunking
+#' @param Parameters optional named list of request parameters (e.g. \code{SDate}, \code{EDate}, \code{FRQ}) used to estimate multi-period row counts per instrument
+#' @param MaxRowsPerChunk maximum rows per chunk before server-side truncation (default 10000L)
 #'
 #' @return a list of splitted RICS that can be returned to guarantee compliance with api limits.
 #' @keywords internal
@@ -146,7 +149,7 @@ EikonNameCleaner <- function(names, SpaceConvertor = ".") {
 #' \dontrun{
 #' "internal function no examples"
 #' }
-EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Duration = NULL, MaxRicsperChunk = 300, verbose = getOption("refinitiv_progress", TRUE)) {
+EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Duration = NULL, MaxRicsperChunk = 300, verbose = getOption("refinitiv_progress", TRUE), Parameters = NULL, MaxRowsPerChunk = 10000L) {
   if (is.null(RICS)) {
     stop("RICS have to be supplid other wise no api call can be made")
   }
@@ -154,22 +157,36 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
   # clean out NA RICS
   RICS <- RICS[!is.na(RICS)]
 
-  if (!is.null(Eikonfields) & is.null(Duration)) {
-    totalDataPoints <- length(RICS) * length(Eikonfields)
-  } else if (!is.null(Duration) & is.null(Eikonfields)) {
-    totalDataPoints <- length(RICS) * Duration
-    if (Duration > MaxCallsPerChunk) {
-      stop("Duration is too long for even one RIC, Reduce Duration by changing start_date or end_date!")
-    }
-  } else {
+  if (is.null(Eikonfields) && is.null(Duration)) {
     stop("supply either Duration or Eikonfields")
   }
 
+  if (!is.null(Duration) && Duration > MaxCallsPerChunk) {
+    stop("Duration is too long for even one RIC, Reduce Duration by changing start_date or end_date!")
+  }
 
-  # Minimum chunks to satisfy both constraints, then distribute evenly
+  rows_per_ric <- if (!is.null(Duration)) {
+    as.numeric(Duration)
+  } else {
+    .estimate_rows_per_ric(Parameters)
+  }
+
+  if (!is.null(Eikonfields)) {
+    totalDataPoints <- length(RICS) * length(Eikonfields) * rows_per_ric
+  } else {
+    totalDataPoints <- length(RICS) * rows_per_ric
+  }
+
+  totalRows <- length(RICS) * rows_per_ric
+
+  # Minimum chunks to satisfy datapoint, RIC, and row-cap constraints, then distribute evenly
   chunks_dp <- ceiling(totalDataPoints / MaxCallsPerChunk)
   chunks_ric <- if (!is.null(MaxRicsperChunk)) ceiling(length(RICS) / MaxRicsperChunk) else 1L
-  n_chunks <- max(chunks_dp, chunks_ric)
+  chunks_rows <- if (!is.null(MaxRowsPerChunk) && rows_per_ric > 1) ceiling(totalRows / MaxRowsPerChunk) else 1L
+  n_chunks <- max(1L, chunks_dp, chunks_ric, chunks_rows)
+  if (length(RICS) > 0L) {
+    n_chunks <- min(length(RICS), n_chunks)
+  }
   chunk_size <- ceiling(length(RICS) / n_chunks)
 
   # One-chunk rule: skip summary when n_chunks == 1 and mode is plain TRUE
@@ -183,6 +200,66 @@ EikonChunker <- function(RICS, Eikonfields = NULL, MaxCallsPerChunk = 12000, Dur
 
   SplittedRics <- split(RICS, ceiling(seq_along(RICS) / chunk_size))
   return(SplittedRics)
+}
+
+
+#' Estimate expected rows per RIC from DataGrid Parameters
+#' @noRd
+.estimate_rows_per_ric <- function(Parameters) {
+  if (is.null(Parameters) || !is.list(Parameters) || is.null(names(Parameters))) {
+    return(1L)
+  }
+  nms_lower <- tolower(names(Parameters))
+  sdate_idx <- match("sdate", nms_lower)
+  edate_idx <- match("edate", nms_lower)
+  if (is.na(sdate_idx) || is.na(edate_idx)) {
+    return(1L)
+  }
+  sdate_val <- Parameters[[sdate_idx]]
+  edate_val <- Parameters[[edate_idx]]
+  if (is.null(sdate_val) || is.null(edate_val) || length(sdate_val) == 0L || length(edate_val) == 0L) {
+    return(1L)
+  }
+
+  # Relative period offsets (e.g. SDate = 0, EDate = -3 or "0CY", "-3CY")
+  s_num <- suppressWarnings(as.numeric(sub("^([+-]?[0-9]+).*$", "\\1", as.character(sdate_val)[1L])))
+  e_num <- suppressWarnings(as.numeric(sub("^([+-]?[0-9]+).*$", "\\1", as.character(edate_val)[1L])))
+  s_is_iso <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}", as.character(sdate_val)[1L])
+  e_is_iso <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}", as.character(edate_val)[1L])
+
+  if (!s_is_iso && !e_is_iso && !is.na(s_num) && !is.na(e_num)) {
+    return(max(1L, as.integer(abs(s_num - e_num) + 1L)))
+  }
+
+  if (s_is_iso && e_is_iso) {
+    d1 <- tryCatch(as.Date(substr(as.character(sdate_val)[1L], 1L, 10L)), error = function(e) NA)
+    d2 <- tryCatch(as.Date(substr(as.character(edate_val)[1L], 1L, 10L)), error = function(e) NA)
+    if (!is.na(d1) && !is.na(d2)) {
+      days <- abs(as.numeric(difftime(d2, d1, units = "days"))) + 1
+      frq_idx <- match("frq", nms_lower)
+      frq <- if (!is.na(frq_idx) && !is.null(Parameters[[frq_idx]])) {
+        toupper(as.character(Parameters[[frq_idx]])[1L])
+      } else {
+        "D"
+      }
+      rows <- if (frq %in% c("Y", "FY", "CY", "1Y", "12M", "P1Y", "P12M")) {
+        ceiling(days / 365) + 1L
+      } else if (frq %in% c("S", "FS", "CS", "FH", "CH", "6M", "P6M")) {
+        ceiling(days / 182) + 1L
+      } else if (frq %in% c("Q", "FQ", "CQ", "3M", "P3M")) {
+        ceiling(days / 90) + 1L
+      } else if (frq %in% c("M", "FM", "CM", "1M", "P1M")) {
+        ceiling(days / 30) + 1L
+      } else if (frq %in% c("W", "FW", "CW", "1W", "7D", "P1W", "P7D")) {
+        ceiling(days / 7) + 1L
+      } else {
+        ceiling(days * 5 / 7)
+      }
+      return(max(1L, as.integer(rows)))
+    }
+  }
+
+  1L
 }
 
 #' Retry a function call with exponential backoff
@@ -245,13 +322,14 @@ retry <- function(fn, max_attempts = getOption("refinitiv_max_retries", 2L),
   max_attempts <- as.integer(max_attempts)
   if (is.na(max_attempts) || max_attempts < 1L) max_attempts <- 1L
 
-  last_error <- NULL
+  err_env <- new.env(parent = emptyenv())
+  err_env$last_error <- NULL
   # Sentinel: distinguishes "fn() returned NULL" from "fn() threw an error"
   .sentinel <- structure(list(), class = "retry_error_sentinel")
 
   for (i in seq_len(max_attempts)) {
     result <- tryCatch(fn(), error = function(e) {
-      last_error <<- e
+      err_env$last_error <- e
       message(
         "API request failed (attempt ", i, "/", max_attempts, "): ",
         conditionMessage(e)
@@ -267,7 +345,7 @@ retry <- function(fn, max_attempts = getOption("refinitiv_max_retries", 2L),
   }
 
   # All attempts exhausted
-  err_detail <- if (!is.null(last_error)) conditionMessage(last_error) else "unknown error"
+  err_detail <- if (!is.null(err_env$last_error)) conditionMessage(err_env$last_error) else "unknown error"
   msg <- paste0("All ", max_attempts, " retry attempts failed. Last error: ", err_detail)
 
   if (on_failure == "stop") {
@@ -432,14 +510,16 @@ EikonGetTimeseries <- function(
     fail_message = "EikonGetTimeseries downloading data failed for one or more Rics"
   )
 
+  any_chunk_failed <- !all(vapply(TimeSeriesList, eikon_ts_is_success, logical(1L)))
+
   ReturnElement <- if (raw_output) {
     TimeSeriesList
   } else {
     PostProcessTimeSeriesRequest(TimeSeriesList)
   }
 
-  # ── Cache store (skip errors / NULL) ──
-  if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
+  # ── Cache store (skip errors / NULL / partial chunk failures) ──
+  if (!isFALSE(ttl) && !any_chunk_failed && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
     cache_set(.cl$key, ReturnElement, ttl)
   }
 
@@ -465,6 +545,34 @@ EikonGetTimeseries <- function(
 #'   \code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
 #'   function default TTL (300 s). \code{FALSE} disables caching. A positive
 #'   numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.
+#'
+#' @details
+#' \strong{LSEG Backend AQL Error Handling and Adaptive Sub-Chunking:}
+#' When LSEG's backend Asynchronous Query Library (AQL) is under heavy load and
+#' receives a large multi-RIC \eqn{\times} multi-formula request (e.g. \eqn{> 28}
+#' RICs \eqn{\times} 100+ \code{TR.*} formulas), LSEG can fail in three ways:
+#' \enumerate{
+#'   \item \emph{Async ticket poll failure}: \code{DataGrid_StandardAsync}
+#'     returns \code{estimatedDuration} + \code{ticket}, and the subsequent poll
+#'     returns top-level \code{ErrorCode = 2504} / \code{500} / \code{400}.
+#'     \code{send_json_request()} restores \code{original_json} before retrying so
+#'     it resubmits the query rather than re-polling a dead ticket.
+#'   \item \emph{Collapsed 1-column HTTP 200 payload}: The proxy returns HTTP
+#'     200 with \code{totalColumnsCount = 1}, \code{headers[[1]][[1]]$displayName = NULL},
+#'     and \code{code = 100} (\code{"Asynchronous Query library internal error."})
+#'     in \code{$error} for every row. Without validation, post-processing turns
+#'     \code{displayName = NULL} into a column literally named \code{"NA"} and
+#'     silently drops all requested formula columns for that chunk (observed in
+#'     production under both R 4.5.3 on 2026-10-10 / 2026-10-14 and R 4.6.1 on
+#'     2026-10-17).
+#'   \item \emph{Persistent oversized chunk timeouts}: Retrying the same 100+
+#'     RIC chunk against a saturated AQL worker pool fails \eqn{\sim 85\%} of
+#'     the time. When an oversized chunk (\eqn{> 28} RICs) hits an AQL collapse,
+#'     \code{EikonGetData()} automatically splits that chunk into
+#'     \eqn{\le 25}-RIC sub-chunks (\code{getOption("refinitiv_aql_fallback_rics", 25L)}),
+#'     merges the raw sub-chunk payloads, and pre-emptively steps down all
+#'     remaining oversized chunks in the same call.
+#' }
 #'
 #' @return a data.frame containing data from Eikon
 #' @importFrom utils capture.output
@@ -543,69 +651,78 @@ EikonGetData <- function(
   }
 
   # Divide RICS in chunks to satisfy api limits
-  ChunckedRics <- EikonChunker(RICS = chunk_rics, Eikonfields = Eikonformulas, MaxRicsperChunk = 200, verbose = verbose)
+  ChunckedRics <- EikonChunker(
+    RICS = chunk_rics, Eikonfields = Eikonformulas,
+    MaxRicsperChunk = 200, verbose = verbose, Parameters = Parameters
+  )
 
   # Per-chunk cache key function
   chunk_cache_key_fn <- NULL
   if (!isFALSE(ttl)) {
+    canon_formulas <- if (is.character(Eikonformulas) && length(Eikonformulas) > 1L) {
+      sort(Eikonformulas)
+    } else {
+      Eikonformulas
+    }
+    canon_params <- if (is.list(Parameters)) sort_named_recursive(Parameters) else Parameters
     shared_parts <- list(
       "EikonGetData_chunk", get_pkg_version(),
-      Eikonformulas, Parameters, SpaceConvertor
+      canon_formulas, canon_params, SpaceConvertor
     )
     chunk_cache_key_fn <- function(j) {
-      rlang::hash(c(shared_parts, list(ChunckedRics[[j]])))
+      chunk_j <- ChunckedRics[[j]]
+      if (is.character(chunk_j) && length(chunk_j) > 1L) {
+        chunk_j <- sort(chunk_j)
+      }
+      rlang::hash(c(shared_parts, list(chunk_j)))
     }
   }
 
-  eikon_data_is_success <- function(x) {
-    if (identical(x, NA) || identical(x, structure(list(), names = character(0)))) {
-      return(FALSE)
+  n_formulas <- length(Eikonformulas)
+  is_chunk_ok <- function(x) eikon_data_is_success(x, n_formulas = n_formulas)
+  aql_state <- new.env(parent = emptyenv())
+  aql_state$aql_degraded <- FALSE
+
+  fetch_rics_once <- function(rics_vec) {
+    if (identical(verbose, "verbose")) {
+      message(paste0(
+        Sys.time(), "\n",
+        "EikonGetData JSON request:\n",
+        "  instruments = [\"", paste(rics_vec, collapse = "\",\""), "\"]\n",
+        "  fields      = [\"", paste(Eikonformulas, collapse = "\",\""), "\"]"
+      ))
     }
-    if (is.list(x) && length(Eikonformulas) > 0L && !is.null(x$error) && length(x$error) > 0L) {
-      n_cols <- x$totalColumnsCount
-      hdrs <- if (is.list(x$headers) && length(x$headers) >= 1L) x$headers[[1]] else NULL
-      no_formula_cols <- (!is.null(n_cols) && is.numeric(n_cols) && n_cols <= 1L) ||
-        (is.list(hdrs) && length(hdrs) <= 1L &&
-           (is.null(hdrs[[1]]$displayName) || is.na(hdrs[[1]]$displayName) || identical(hdrs[[1]]$displayName, "")))
-      if (isTRUE(no_formula_cols)) {
-        err_codes <- unlist(lapply(x$error, function(e) if (is.list(e)) e$code else NULL), use.names = FALSE)
-        err_msgs  <- unlist(lapply(x$error, function(e) if (is.list(e)) e$message else NULL), use.names = FALSE)
-        is_retriable_cell_err <- any(err_codes %in% c(100L, 400L, 500L, 2504L)) ||
-          any(grepl("Asynchronous Query library internal error|internal error|timeout", err_msgs, ignore.case = TRUE))
-        if (isTRUE(is_retriable_cell_err)) {
-          return(FALSE)
-        }
-      }
-    }
-    TRUE
+
+    result <- retry(function() {
+      EikonObject$get_data(
+        instruments = rics_vec,
+        fields      = as.list(Eikonformulas),
+        parameters  = Parameters,
+        debug       = FALSE,
+        raw_output  = TRUE
+      )
+    }, max_attempts = 1L, on_failure = "NA")
+
+    InspectRequest(df = result, functionname = "EikonGetData", verbose = identical(verbose, "verbose"))
+    result
   }
 
   EikonDataList <- chunked_download(
     n_chunks = length(ChunckedRics),
     fetch_fn = function(j) {
-      if (identical(verbose, "verbose")) {
-        message(paste0(
-          Sys.time(), "\n",
-          "EikonGetData JSON request:\n",
-          "  instruments = [\"", paste(ChunckedRics[[j]], collapse = "\",\""), "\"]\n",
-          "  fields      = [\"", paste(Eikonformulas, collapse = "\",\""), "\"]"
-        ))
-      }
-
-      result <- retry(function() {
-        EikonObject$get_data(
-          instruments = ChunckedRics[[j]],
-          fields      = as.list(Eikonformulas),
-          parameters  = Parameters,
-          debug       = FALSE,
-          raw_output  = TRUE
-        )
-      }, max_attempts = 1L, on_failure = "NA")
-
-      InspectRequest(df = result, functionname = "EikonGetData", verbose = identical(verbose, "verbose"))
-      result
+      .fetch_with_aql_subchunks(
+        chunk_rics    = ChunckedRics[[j]],
+        n_formulas    = n_formulas,
+        fetch_rics_fn = fetch_rics_once,
+        is_success_fn = is_chunk_ok,
+        state_env     = aql_state,
+        caller_label  = "EikonGetData",
+        chunk_idx     = j,
+        n_chunks      = length(ChunckedRics),
+        verbose       = verbose
+      )
     },
-    is_success = eikon_data_is_success,
+    is_success = is_chunk_ok,
     verbose = verbose,
     caller_label = "EikonGetData",
     chunk_sizes = lengths(ChunckedRics),
@@ -614,6 +731,7 @@ EikonGetData <- function(
     cache_ttl = ttl
   )
 
+  any_chunk_failed <- !all(vapply(EikonDataList, is_chunk_ok, logical(1L)))
 
   if (!raw_output) {
     EikonDataList <- lapply(EikonDataList, FUN = function(x) {
@@ -628,8 +746,8 @@ EikonGetData <- function(
     ReturnElement <- EikonDataList
   }
 
-  # ── Cache store (skip errors / NULL) ──
-  if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
+  # ── Cache store (skip errors / NULL / partial chunk failures) ──
+  if (!isFALSE(ttl) && !any_chunk_failed && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
     cache_set(.cl$key, ReturnElement, ttl)
   }
 
@@ -745,12 +863,21 @@ EikonGetSymbology <- function(
   # Per-chunk cache key function
   chunk_cache_key_fn <- NULL
   if (!isFALSE(ttl)) {
+    canon_to <- if (is.character(to_symbol_type) && length(to_symbol_type) > 1L) {
+      sort(to_symbol_type)
+    } else {
+      to_symbol_type
+    }
     shared_parts <- list(
       "EikonGetSymbology_chunk", get_pkg_version(),
-      from_symbol_type, to_symbol_type, bestMatch
+      from_symbol_type, canon_to, bestMatch
     )
     chunk_cache_key_fn <- function(j) {
-      rlang::hash(c(shared_parts, list(ChunckedSymbols[[j]])))
+      chunk_j <- ChunckedSymbols[[j]]
+      if (is.character(chunk_j) && length(chunk_j) > 1L) {
+        chunk_j <- sort(chunk_j)
+      }
+      rlang::hash(c(shared_parts, list(chunk_j)))
     }
   }
 
@@ -792,6 +919,9 @@ EikonGetSymbology <- function(
     cache_ttl = ttl
   )
 
+  any_chunk_failed <- any(vapply(EikonSymbologyList, function(x) {
+    identical(x, NA) || identical(x, structure(list(), names = character(0)))
+  }, logical(1L)))
 
   if (!raw_output) {
     # Process each chunk individually and rbind (fixes silent truncation
@@ -816,8 +946,8 @@ EikonGetSymbology <- function(
     ReturnElement <- EikonSymbologyList
   }
 
-  # ── Cache store (skip errors / NULL) ──
-  if (!isFALSE(ttl) && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
+  # ── Cache store (skip errors / NULL / partial chunk failures) ──
+  if (!isFALSE(ttl) && !any_chunk_failed && !is.null(ReturnElement) && !inherits(ReturnElement, "try-error")) {
     cache_set(.cl$key, ReturnElement, ttl)
   }
 

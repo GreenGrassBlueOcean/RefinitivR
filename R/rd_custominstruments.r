@@ -165,6 +165,9 @@ CustomInstrumentUDCBuilder <- function(
 #' CorrectCustomInstrument(symbol = "S)test", UUID = "ABCDE-123456")
 #' CorrectCustomInstrument(symbol = "test.ABCDE-123456", UUID = "ABCDE-123456")
 CorrectCustomInstrument <- function(symbol, UUID = getOption(".RefinitivUUID")) {
+  if (length(symbol) > 1L) {
+    return(unname(vapply(symbol, CorrectCustomInstrument, character(1L), UUID = UUID)))
+  }
   # Check if symbol end with .UUID
   if (!stringi::stri_endswith(symbol, fixed = paste0(".", UUID))) {
     # Check if dot is missing

@@ -54,6 +54,23 @@ a data.frame containing data from LSEG Workspace / Eikon
 Automatically chunks the requested instruments to comply with API limits and
 recombines the results into a single \code{data.frame}.
 }
+\details{
+\strong{LSEG Backend AQL Error Handling and Adaptive Sub-Chunking:}
+When LSEG's backend Asynchronous Query Library (AQL) is under heavy load and
+receives a large multi-RIC \eqn{\times} multi-formula request (e.g. \eqn{> 28}
+RICs \eqn{\times} 100+ \code{TR.*} formulas), the proxy may return HTTP 200
+with a collapsed 1-column payload (\code{totalColumnsCount = 1},
+\code{headers[[1]][[1]]$displayName = NULL}) and \code{code = 100}
+(\code{"Asynchronous Query library internal error."}) in \code{$error} for
+every row. \code{rd_GetData()} rejects these collapsed AQL payloads via
+\code{eikon_data_is_success()} so they are never treated as valid data or
+cached, and when an oversized chunk (\eqn{> 28} RICs) hits an AQL collapse it
+automatically splits that chunk (and any remaining oversized chunks in the
+same call) into \eqn{\le 25}-RIC sub-chunks
+(\code{getOption("refinitiv_aql_fallback_rics", 25L)}). See
+\code{\link{EikonGetData}} for full details on the three LSEG backend AQL
+failure modes.
+}
 \examples{
 \dontrun{
 ex1 <- rd_GetData(

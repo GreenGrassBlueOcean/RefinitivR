@@ -65,7 +65,6 @@ translate_to_iso8601_duration <- function(frequency = "daily", default = "P1D") 
       "weekly", "1w", "1 week", "week",
       "monthly", "1m", "1 month", "month",
       "quarterly", "3m", "quarter",
-      "6m",
       "yearly", "12m", "1y", "1 year", "year"
     ),
     iso8601 = c(
@@ -80,7 +79,6 @@ translate_to_iso8601_duration <- function(frequency = "daily", default = "P1D") 
       "P1W", "P1W", "P1W", "P1W",
       "P1M", "P1M", "P1M", "P1M",
       "P3M", "P3M", "P3M",
-      "P3M",
       "P1Y", "P12M", "P1Y", "P1Y", "P1Y"
     )
   )

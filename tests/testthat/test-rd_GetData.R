@@ -163,5 +163,67 @@ test_that("rd_GetData can handle previous problem case", {
   testthat::expect_equal(corp_event_rd, corp_event_eikon$PostProcessedEikonGetData)
 })
 
+test_that("rd_GetData rejects collapsed AQL error (code=100) and splits oversized chunks into <=25-RIC sub-chunks", {
+  withr::local_options(
+    refinitiv_chunk_sleep = 0,
+    refinitiv_chunk_backoff = 0,
+    refinitiv_progress = FALSE
+  )
+
+  rics_60 <- sprintf("RIC%02d.O", seq_len(60L))
+  call_sizes <- integer(0)
+  mock_rd <- list(
+    set_app_key = function(app_key) {},
+    get_data = function(instruments, fields, parameters = NULL, SyncFields = FALSE, debug = FALSE, raw_output = TRUE) {
+      inst <- unlist(instruments, use.names = FALSE)
+      call_sizes <<- c(call_sizes, length(inst))
+      if (length(inst) > 25L) {
+        return(list(
+          columnHeadersCount = 1L,
+          data = lapply(inst, function(r) list(r)),
+          error = lapply(seq_along(inst) - 1L, function(idx) {
+            list(code = 100L, col = 1L, message = "Asynchronous Query library internal error.", row = idx)
+          }),
+          headerOrientation = "horizontal",
+          headers = list(list(list(displayName = NULL))),
+          rowHeadersCount = 1L,
+          totalColumnsCount = 1L,
+          totalRowsCount = length(inst)
+        ))
+      }
+      list(
+        columnHeadersCount = 1L,
+        data = lapply(inst, function(r) list(r, 123.45)),
+        headerOrientation = "horizontal",
+        headers = list(list(
+          list(displayName = "Instrument"),
+          list(displayName = "Price Close", field = "TR.PRICECLOSE")
+        )),
+        rowHeadersCount = 1L,
+        totalColumnsCount = 2L,
+        totalRowsCount = length(inst) + 1L
+      )
+    }
+  )
+
+  res <- rd_GetData(
+    RDObject = mock_rd,
+    rics = rics_60,
+    fields = "TR.PriceClose",
+    SpaceConvertor = ".",
+    raw_output = FALSE,
+    cache = FALSE,
+    verbose = FALSE
+  )
+
+  # First call was 60 RICs (failed with code=100), then split into 3 sub-chunks of 20 RICs
+  expect_equal(call_sizes, c(60L, 20L, 20L, 20L))
+  expect_equal(nrow(res), 60L)
+  expect_equal(names(res), c("Instrument", "Price.Close"))
+  expect_equal(res$Instrument, rics_60)
+  expect_equal(res$Price.Close, rep(123.45, 60L))
+})
+
 
 restore_refinitiv_state(.saved_state, "test-rd_GetData")
+

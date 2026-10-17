@@ -45,6 +45,34 @@ a data.frame containing data from Eikon
 \description{
 The function automatically chunks the list of rics into chunks that comply with the api limitations and in the end rebuilds the chunks again into a single data.frame.
 }
+\details{
+\strong{LSEG Backend AQL Error Handling and Adaptive Sub-Chunking:}
+When LSEG's backend Asynchronous Query Library (AQL) is under heavy load and
+receives a large multi-RIC \eqn{\times} multi-formula request (e.g. \eqn{> 28}
+RICs \eqn{\times} 100+ \code{TR.*} formulas), LSEG can fail in three ways:
+\enumerate{
+  \item \emph{Async ticket poll failure}: \code{DataGrid_StandardAsync}
+    returns \code{estimatedDuration} + \code{ticket}, and the subsequent poll
+    returns top-level \code{ErrorCode = 2504} / \code{500} / \code{400}.
+    \code{send_json_request()} restores \code{original_json} before retrying so
+    it resubmits the query rather than re-polling a dead ticket.
+  \item \emph{Collapsed 1-column HTTP 200 payload}: The proxy returns HTTP
+    200 with \code{totalColumnsCount = 1}, \code{headers[[1]][[1]]$displayName = NULL},
+    and \code{code = 100} (\code{"Asynchronous Query library internal error."})
+    in \code{$error} for every row. Without validation, post-processing turns
+    \code{displayName = NULL} into a column literally named \code{"NA"} and
+    silently drops all requested formula columns for that chunk (observed in
+    production under both R 4.5.3 on 2026-10-10 / 2026-10-14 and R 4.6.1 on
+    2026-10-17).
+  \item \emph{Persistent oversized chunk timeouts}: Retrying the same 100+
+    RIC chunk against a saturated AQL worker pool fails \eqn{\sim 85\%} of
+    the time. When an oversized chunk (\eqn{> 28} RICs) hits an AQL collapse,
+    \code{EikonGetData()} automatically splits that chunk into
+    \eqn{\le 25}-RIC sub-chunks (\code{getOption("refinitiv_aql_fallback_rics", 25L)}),
+    merges the raw sub-chunk payloads, and pre-emptively steps down all
+    remaining oversized chunks in the same call.
+}
+}
 \examples{
 \dontrun{
 Eikon <- Refinitiv::EikonConnect()

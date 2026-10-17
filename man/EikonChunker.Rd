@@ -10,19 +10,27 @@ EikonChunker(
   MaxCallsPerChunk = 12000,
   Duration = NULL,
   MaxRicsperChunk = 300,
-  verbose = getOption("refinitiv_progress", TRUE)
+  verbose = getOption("refinitiv_progress", TRUE),
+  Parameters = NULL,
+  MaxRowsPerChunk = 10000L
 )
 }
 \arguments{
 \item{RICS}{a vector containing RICS to be requested}
 
-\item{Eikonfields}{a list of the eikonfields to be requested default NULL, if eikonfields are supplied duration may not be supplied}
+\item{Eikonfields}{a list of the eikonfields to be requested default NULL}
 
 \item{MaxCallsPerChunk}{the maximum amount of apicalls that can be made}
 
-\item{Duration}{a natural number denoting the amoount of rows asked for in a TimeSeries default NULL, if Duration is supplied Eikonfields may not be supplied}
+\item{Duration}{a natural number denoting the amount of rows asked for in a TimeSeries default NULL}
 
 \item{MaxRicsperChunk}{a natural number denoting the maximum amount of Rics that should be available in one call, default is 300.}
+
+\item{verbose}{boolean or character, prints progress information when chunking}
+
+\item{Parameters}{optional named list of request parameters (e.g. \code{SDate}, \code{EDate}, \code{FRQ}) used to estimate multi-period row counts per instrument}
+
+\item{MaxRowsPerChunk}{maximum rows per chunk before server-side truncation (default 10000L)}
 }
 \value{
 a list of splitted RICS that can be returned to guarantee compliance with api limits.

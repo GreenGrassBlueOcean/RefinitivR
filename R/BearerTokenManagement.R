@@ -103,7 +103,9 @@ rd_handshake <- function(debug = FALSE, force = TRUE) {
     error = function(e) "0.2.0"
   )
   app_key <- refinitiv_vault_get("api_key")
-  if (is.null(app_key)) app_key <- Sys.getenv("REFINITIV_APP_KEY", "DEFAULT_WORKSPACE_APP_KEY")
+  if (is.null(app_key) || !nzchar(app_key)) {
+    app_key <- Sys.getenv("REFINITIV_APP_KEY", "DEFAULT_WORKSPACE_APP_KEY")
+  }
   payload <- list(
     "AppKey" = app_key,
     "AppScope" = "trapi",
@@ -127,7 +129,7 @@ rd_handshake <- function(debug = FALSE, force = TRUE) {
     json = payload,
     request_type = "POST",
     debug = debug,
-    apikey = "DEFAULT_WORKSPACE_APP_KEY",
+    apikey = app_key,
     url = handshake_url
   )
 
@@ -157,7 +159,8 @@ rd_handshake <- function(debug = FALSE, force = TRUE) {
 #' inspecting its expiration time (`exp` claim). It decodes the token's payload without
 #' verifying its signature.
 #'
-#' @param token A character string representing the JWT access token.
+#' @param token A character string representing the JWT access token. Defaults to the current
+#'   vaulted access token (`refinitiv_vault_get("access_token")`).
 #'
 #' @return A logical value:
 #' \describe{
@@ -174,7 +177,7 @@ rd_handshake <- function(debug = FALSE, force = TRUE) {
 #' }
 #'
 #' @keywords internal
-rd_VerifyToken <- function(token) {
+rd_VerifyToken <- function(token = refinitiv_vault_get("access_token")) {
   # Ensure the token is a non-empty string
   if (!is.character(token) || length(token) != 1 || nchar(token) == 0) {
     warning("Token must be a non-empty character string.")

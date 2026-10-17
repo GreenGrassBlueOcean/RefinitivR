@@ -46,11 +46,14 @@ build_json_list_string <- function(fieldsvector) {
 #'
 #' @param stream_type Type of stream ("pricing", "analytics", etc.)
 #' @param port Port number (optional, uses option streaming_port if not provided)
+#' @param base_url Optional base URL (uses option refinitiv_base_url or "http://localhost" if NULL)
 #' @return WebSocket URL
 #' @noRd
-get_streaming_url <- function(stream_type = "pricing", port = NULL) {
-  base_url <- getOption("refinitiv_base_url")
-  if (is.null(base_url)) {
+get_streaming_url <- function(stream_type = "pricing", port = NULL, base_url = NULL) {
+  if (is.null(base_url) || !nzchar(base_url)) {
+    base_url <- getOption("refinitiv_base_url")
+  }
+  if (is.null(base_url) || !nzchar(base_url)) {
     base_url <- "http://localhost"
   }
 
@@ -100,11 +103,17 @@ get_streaming_protocol <- function(stream_type = "pricing") {
 
 #' Create login request for OMM/tr_json2 protocol
 #'
-#' @param app_key Application key
+#' @param app_key Application key (defaults to vaulted api_key or "DEFAULT_WORKSPACE_APP_KEY")
 #' @param access_token Access token
 #' @return JSON string
 #' @noRd
-create_omm_login_request <- function(app_key = "DEFAULT_WORKSPACE_APP_KEY", access_token) {
+create_omm_login_request <- function(app_key = NULL, access_token) {
+  if (is.null(app_key) || !nzchar(app_key)) {
+    app_key <- refinitiv_vault_get("api_key")
+    if (is.null(app_key) || !nzchar(app_key)) {
+      app_key <- "DEFAULT_WORKSPACE_APP_KEY"
+    }
+  }
   position <- "127.0.0.1/localhost"
 
   login_json_string <- paste0(
@@ -161,12 +170,19 @@ create_omm_stream_request <- function(domain, universe, fields, streaming = TRUE
 #' Create headers for WebSocket connection
 #'
 #' @param access_token Access token
+#' @param app_key Optional application key (defaults to vaulted api_key or "DEFAULT_WORKSPACE_APP_KEY")
 #' @return List of headers
 #' @noRd
-create_streaming_headers <- function(access_token) {
+create_streaming_headers <- function(access_token, app_key = NULL) {
+  if (is.null(app_key) || !nzchar(app_key)) {
+    app_key <- refinitiv_vault_get("api_key")
+    if (is.null(app_key) || !nzchar(app_key)) {
+      app_key <- "DEFAULT_WORKSPACE_APP_KEY"
+    }
+  }
   return(list(
     "User-Agent" = "R",
-    "x-tr-applicationid" = "DEFAULT_WORKSPACE_APP_KEY",
+    "x-tr-applicationid" = app_key,
     "Authorization" = paste("Bearer", access_token)
   ))
 }

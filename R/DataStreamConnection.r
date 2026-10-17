@@ -10,10 +10,12 @@
 #'   returns `FALSE` and issues a warning with the error message.
 #' @export
 #' @examples
+#' \dontrun{
 #' TestDataStreamCredentials(
 #'   DatastreamUsername = "wrongusername",
 #'   DatastreamPassword = "wrongPassword"
 #' )
+#' }
 TestDataStreamCredentials <- function(DatastreamUsername = NULL, DatastreamPassword = NULL) {
   # 1. Check input ----
   if (is.null(DatastreamUsername) || is.na(DatastreamUsername)) {

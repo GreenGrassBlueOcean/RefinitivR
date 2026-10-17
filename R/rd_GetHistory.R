@@ -120,6 +120,8 @@ rd_GetHistory <- function(
   debug = FALSE,
   cache = NULL
 ) {
+  .SD <- Date <- Instrument <- NAVALUE <- NULL
+
   # Normalize interval alias to ISO8601 duration
   if (!is.null(interval)) {
     interval <- translate_to_iso8601_duration(interval, default = interval)
@@ -213,13 +215,40 @@ rd_GetHistory <- function(
   GetDataOutput <- HistoricalPricingOutput <- data.table::data.table()
   # If required obtain data from GetData
   if (!is.null(GetDataFields)) {
-    if (!is.null(start)) {
+    if (!is.null(start) || !is.null(end)) {
       if (is.null(parameters)) {
         parameters <- list()
       }
-      parameters[["SDate"]] <- format(as.Date(start), "%Y-%m-%d")
+      if (!is.null(start)) {
+        parameters[["SDate"]] <- format(as.Date(start), "%Y-%m-%d")
+      }
       if (!is.null(end)) {
         parameters[["EDate"]] <- format(as.Date(end), "%Y-%m-%d")
+      }
+    }
+
+    if (!is.null(interval) && (is.null(parameters) || !"FRQ" %in% names(parameters))) {
+      frq_map <- c(
+        "tick" = "D", "tas" = "D", "taq" = "D",
+        "minute" = "D", "1min" = "D", "5min" = "D", "10min" = "D",
+        "30min" = "D", "60min" = "D", "hourly" = "D", "1h" = "D",
+        "PT1M" = "D", "PT5M" = "D", "PT10M" = "D", "PT30M" = "D",
+        "PT60M" = "D", "PT1H" = "D",
+        "daily" = "D", "1d" = "D", "1D" = "D", "P1D" = "D",
+        "7d" = "W", "7D" = "W", "weekly" = "W", "1w" = "W", "1W" = "W",
+        "P7D" = "W", "P1W" = "W",
+        "monthly" = "M", "1m" = "M", "1M" = "M", "P1M" = "M",
+        "quarterly" = "CQ", "3m" = "CQ", "3M" = "CQ", "P3M" = "CQ",
+        "6m" = "CS", "6M" = "CS", "P6M" = "CS",
+        "yearly" = "CY", "12m" = "CY", "12M" = "CY", "1y" = "CY", "1Y" = "CY",
+        "P12M" = "CY", "P1Y" = "CY"
+      )
+      mapped_frq <- unname(frq_map[interval])
+      if (!is.na(mapped_frq)) {
+        if (is.null(parameters)) {
+          parameters <- list()
+        }
+        parameters[["FRQ"]] <- mapped_frq
       }
     }
 
@@ -233,7 +262,8 @@ rd_GetHistory <- function(
       verbose = debug,
       SpaceConvertor = SpaceConvertor,
       use_field_names_in_headers = use_field_names_in_headers,
-      SyncFields = TRUE # , output = 'Col,T|Va,Row,In,date|'
+      SyncFields = TRUE,
+      cache = cache
     )
 
 
@@ -241,12 +271,13 @@ rd_GetHistory <- function(
 
     if (use_field_names_in_headers) {
       ToUpperCols <- setdiff(names(GetDataOutput), c("Instrument", "Date"))
-
-      data.table::setnames(
-        x =  GetDataOutput,
-        old = ToUpperCols,
-        new = toupper(ToUpperCols)
-      )
+      if (length(ToUpperCols) > 0L) {
+        data.table::setnames(
+          x = GetDataOutput,
+          old = ToUpperCols,
+          new = toupper(ToUpperCols)
+        )
+      }
     }
   }
 
@@ -270,14 +301,14 @@ rd_GetHistory <- function(
       },
       sessions = NULL,
       debug = debug,
-      SpaceConvertor = SpaceConvertor
+      SpaceConvertor = SpaceConvertor,
+      cache = cache
     )
 
     HistoricalPricingOutput <- HistoricalPricingOutput |>
       data.table::as.data.table()
 
     if ("NAVALUE" %in% names(HistoricalPricingOutput)) {
-      NAVALUE <- NULL
       HistoricalPricingOutput[NAVALUE == FALSE, NAVALUE := NA]
     }
 
@@ -287,11 +318,34 @@ rd_GetHistory <- function(
         new = c("Instrument")
       )
     }
+
+    if ("DATE_TIME" %in% names(HistoricalPricingOutput) && !"Date" %in% names(HistoricalPricingOutput)) {
+      data.table::setnames(HistoricalPricingOutput,
+        old = c("DATE_TIME"),
+        new = c("Date")
+      )
+    }
+  }
+
+  ensure_key_cols <- function(dt) {
+    if (!"Instrument" %in% names(dt)) {
+      dt[, Instrument := rep(NA_character_, .N)]
+    }
+    if (!"Date" %in% names(dt)) {
+      dt[, Date := as.Date(rep(NA_character_, .N))]
+    }
+    dt
   }
 
   # ── Unify data from both endpoints ──
   merge_info <- NULL
-  if (nrow(GetDataOutput) > 0 & nrow(HistoricalPricingOutput) > 0) {
+  if (nrow(GetDataOutput) > 0L && nrow(HistoricalPricingOutput) > 0L) {
+    GetDataOutput <- ensure_key_cols(GetDataOutput)
+    HistoricalPricingOutput <- ensure_key_cols(HistoricalPricingOutput)
+    if (inherits(HistoricalPricingOutput$Date, "POSIXt") != inherits(GetDataOutput$Date, "POSIXt")) {
+      HistoricalPricingOutput[, Date := as.POSIXct(Date, tz = "UTC")]
+      GetDataOutput[, Date := as.POSIXct(Date, tz = "UTC")]
+    }
     .check_date_granularity(HistoricalPricingOutput, GetDataOutput)
     # Deduplicate on join keys to prevent many-to-many fan-out.
     # Both endpoints produce one row per (Instrument, Date) by design;
@@ -308,10 +362,32 @@ rd_GetHistory <- function(
       merged_rows      = nrow(Return_DT),
       merge_type       = "full_outer"
     )
-  } else if (nrow(HistoricalPricingOutput) == 0) {
+  } else if (nrow(HistoricalPricingOutput) == 0L && nrow(GetDataOutput) > 0L) {
+    GetDataOutput <- ensure_key_cols(GetDataOutput)
     Return_DT <- unique(GetDataOutput, by = c("Instrument", "Date"))
-  } else if (nrow(GetDataOutput) == 0) {
+  } else if (nrow(GetDataOutput) == 0L && nrow(HistoricalPricingOutput) > 0L) {
+    HistoricalPricingOutput <- ensure_key_cols(HistoricalPricingOutput)
     Return_DT <- unique(HistoricalPricingOutput, by = c("Instrument", "Date"))
+  } else {
+    if (ncol(GetDataOutput) > 0L && ncol(HistoricalPricingOutput) == 0L) {
+      Return_DT <- ensure_key_cols(GetDataOutput)
+    } else if (ncol(HistoricalPricingOutput) > 0L && ncol(GetDataOutput) == 0L) {
+      Return_DT <- ensure_key_cols(HistoricalPricingOutput)
+    } else if (ncol(GetDataOutput) > 0L && ncol(HistoricalPricingOutput) > 0L) {
+      GetDataOutput <- ensure_key_cols(GetDataOutput)
+      HistoricalPricingOutput <- ensure_key_cols(HistoricalPricingOutput)
+      Return_DT <- data.table::merge.data.table(
+        x = HistoricalPricingOutput,
+        y = GetDataOutput,
+        all.x = TRUE, all.y = TRUE,
+        by = c("Instrument", "Date")
+      )
+    } else {
+      Return_DT <- data.table::data.table(
+        Date = as.Date(character(0)),
+        Instrument = character(0)
+      )
+    }
   }
 
 
@@ -319,15 +395,31 @@ rd_GetHistory <- function(
     silent = TRUE
   )
 
-  Date <- NULL
-  Return_DT <- Return_DT[, Date := as.Date(Date, tz = "UTC")]
+  if (inherits(Return_DT$Date, "POSIXt")) {
+    attr(Return_DT$Date, "tzone") <- "UTC"
+  } else if (is.character(Return_DT$Date)) {
+    non_na_dates <- Return_DT$Date[!is.na(Return_DT$Date)]
+    if (length(non_na_dates) > 0L &&
+        any(grepl("T", non_na_dates)) &&
+        !all(grepl("T00:00:00(\\.0+)?Z?$", non_na_dates))) {
+      Return_DT <- Return_DT[, Date := as.POSIXct(
+        sub("Z$", "", Date),
+        tz = "UTC",
+        format = "%Y-%m-%dT%H:%M:%OS"
+      )]
+    } else {
+      Return_DT <- Return_DT[, Date := as.Date(Date, tz = "UTC")]
+    }
+  } else {
+    Return_DT <- Return_DT[, Date := as.Date(Date, tz = "UTC")]
+  }
   data.table::setorderv(Return_DT, c("Date", "Instrument"))
 
   # Remove rows where all data columns are NA (join-key-only noise from outer join)
   columns_to_check <- setdiff(names(Return_DT), c("Instrument", "Date"))
   if (length(columns_to_check) > 0L) {
     Return_DT <- Return_DT[
-      !rowSums(is.na(Return_DT[, columns_to_check, with = FALSE])) == length(columns_to_check)
+      !rowSums(is.na(Return_DT[, .SD, .SDcols = columns_to_check])) == length(columns_to_check)
     ]
   }
 

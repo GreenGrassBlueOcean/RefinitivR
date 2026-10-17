@@ -75,6 +75,9 @@ Stream <- R6::R6Class("Stream",
     #' @description Close stream (stop streaming)
     #' @return self (for chaining)
     close = function() {
+      if (is.function(private$.manager$unregister_reconnect_callbacks)) {
+        private$.manager$unregister_reconnect_callbacks(self)
+      }
       if (!private$.is_open) {
         return(self)
       }
@@ -177,11 +180,14 @@ Stream <- R6::R6Class("Stream",
       if (!is.function(callback)) {
         stop("callback must be a function")
       }
+      cb <- function(attempt) {
+        if (private$.is_open) {
+          callback(self, attempt)
+        }
+      }
+      attr(cb, "stream_owner") <- self
       # Register with manager so it fires during reconnect
-      private$.manager$register_reconnect_callback(
-        "on_reconnecting",
-        function(attempt) callback(self, attempt)
-      )
+      private$.manager$register_reconnect_callback("on_reconnecting", cb)
       return(self)
     },
 
@@ -192,10 +198,13 @@ Stream <- R6::R6Class("Stream",
       if (!is.function(callback)) {
         stop("callback must be a function")
       }
-      private$.manager$register_reconnect_callback(
-        "on_reconnected",
-        function(attempt) callback(self, attempt)
-      )
+      cb <- function(attempt) {
+        if (private$.is_open) {
+          callback(self, attempt)
+        }
+      }
+      attr(cb, "stream_owner") <- self
+      private$.manager$register_reconnect_callback("on_reconnected", cb)
       return(self)
     },
 
@@ -636,20 +645,28 @@ Stream <- R6::R6Class("Stream",
             # Check for errors
             if (!is.null(message_data$State) && is.list(message_data$State)) {
               state_stream <- message_data$State$Stream
-              state_datastate <- message_data$State$DataState
+              state_datastate <- message_data$State$Data %||% message_data$State$DataState
 
+              is_error <- FALSE
               if (!is.null(state_stream) && length(state_stream) > 0) {
                 state_stream <- as.character(state_stream)[1]
-                if (state_stream == "Closed" || state_stream == "NonStreaming") {
-                  private$.handle_error(message_data)
+                if (state_stream == "Closed") {
+                  private$.is_open <- FALSE
+                  is_error <- TRUE
+                } else if (state_stream == "NonStreaming") {
+                  is_error <- TRUE
                 }
               }
 
               if (!is.null(state_datastate) && length(state_datastate) > 0) {
                 state_datastate <- as.character(state_datastate)[1]
                 if (state_datastate == "Suspect") {
-                  private$.handle_error(message_data)
+                  is_error <- TRUE
                 }
+              }
+
+              if (is_error) {
+                private$.handle_error(message_data)
               }
             }
           }
@@ -893,6 +910,8 @@ Stream <- R6::R6Class("Stream",
           error_message <- error_data$message
         } else if (!is.null(error_data$Text)) {
           error_message <- error_data$Text
+        } else if (is.list(error_data$State) && !is.null(error_data$State$Text)) {
+          error_message <- error_data$State$Text
         }
       }
 

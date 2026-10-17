@@ -34,6 +34,15 @@ EikonPostProcessor <- function(Eikon_get_dataOuput, SpaceConvertor = ".") {
       RequestData <- data[[requestnumber]][["data"]][[1]]
     }
 
+    if (nrow(RequestData) >= 10000L) {
+      warning(
+        "Single chunk returned ", nrow(RequestData), " rows, reaching or exceeding the ",
+        "10,000-row server limit; results may be truncated. Consider reducing the ",
+        "date range or number of instruments per request.",
+        call. = FALSE
+      )
+    }
+
     Requestheaders <- EikonNameCleaner(getheaders(data, requestnumber), SpaceConvertor = SpaceConvertor)
     data.table::setnames(RequestData, Requestheaders)
 
@@ -307,7 +316,14 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
     replaceInList(x, function(x) if (is.null(x)) NA else x)
   }) |>
     lapply(function(x) {
-      lapply(x, function(x) if (is.list(x)) unlist(x) else x)
+      lapply(x, function(el) {
+        if (is.list(el)) {
+          u <- unlist(el)
+          if (length(u) == 0L) NA_character_ else u
+        } else {
+          el
+        }
+      })
     })
 
   # 1. Check Input
@@ -316,7 +332,13 @@ ProcessSymbology <- function(EikonSymbologyResult, from_symbol_type, to_symbol_t
     BestMatch <- FALSE
   } else if ("bestMatch" %in% EikonSymbologyNames) {
     BestMatch <- TRUE
-    BestMatchName <- names(EikonSymbologyResult[[1]]$bestMatch)
+    BestMatchName <- unique(unlist(lapply(EikonSymbologyResult, function(x) names(x$bestMatch))))
+    BestMatchName <- setdiff(BestMatchName[!is.na(BestMatchName)], "error")
+    if (length(BestMatchName) == 0L) {
+      BestMatchName <- to_symbol_type[1L]
+    } else {
+      BestMatchName <- BestMatchName[1L]
+    }
   } else {
     stop("ProcessSymbology retrieved input in wrong format")
   }
@@ -412,7 +434,12 @@ PostProcessTimeSeriesRequest <- function(RawTimeSeriesRequest) {
     rics <- TS[["timeseriesData"]][[ListPos]][["ric"]]
 
     Security <- Date <- TIMESTAMP <- NULL
-    data <- data[, Security := rics][, Date := as.POSIXct(TIMESTAMP, origin = "1970-01-01", tz = "UTC", format = "%FT%H:%M:%SZ")][, TIMESTAMP := NULL]
+    data <- data[, Security := rics][, Date := as.POSIXct(
+      sub("Z$", "", TIMESTAMP),
+      origin = "1970-01-01",
+      tz = "UTC",
+      format = "%Y-%m-%dT%H:%M:%OS"
+    )][, TIMESTAMP := NULL]
 
     data.table::setcolorder(data, intersect(c("Date", "Security", "CLOSE", "HIGH", "LOW", "OPEN", "VOLUME"), names(data)))
 
@@ -553,3 +580,225 @@ flattenNestedlist <- function(data) {
     NestedListPos = NestedListPos
   )
 }
+
+
+#' Detect a collapsed 1-column LSEG AQL / server error payload
+#'
+#' When LSEG's backend Asynchronous Query Library (AQL) fails on a multi-RIC x
+#' multi-formula DataGrid_StandardAsync request (typically when a chunk exceeds
+#' ~25-30 RICs x 100+ formulas under backend load), the proxy still returns HTTP
+#' 200 with a JSON payload whose headers collapse to a single unnamed column
+#' (`totalColumnsCount = 1`, `headers[[1]][[1]]$displayName = NULL`) and whose
+#' `$error` array contains `code = 100` (`"Asynchronous Query library internal
+#' error."`) or retriable server codes (`400`, `500`, `2504`) for every row.
+#'
+#' @param x Raw chunk response returned by `EikonObject$get_data()` or
+#'   `RDObject$get_data()`.
+#' @param n_formulas Integer count of requested formulas/fields.
+#'
+#' @return Logical scalar: `TRUE` if `x` is a collapsed 1-column retriable AQL /
+#'   server failure payload, `FALSE` otherwise.
+#' @keywords internal
+#' @noRd
+.is_eikon_aql_collapse <- function(x, n_formulas = 1L) {
+  if (!is.list(x) || n_formulas <= 0L || is.null(x$error) || length(x$error) == 0L) {
+    return(FALSE)
+  }
+  n_cols <- x$totalColumnsCount
+  hdrs <- if (is.list(x$headers) && length(x$headers) >= 1L) x$headers[[1L]] else NULL
+  no_formula_cols <- (!is.null(n_cols) && is.numeric(n_cols) && n_cols <= 1L) ||
+    (is.list(hdrs) && length(hdrs) <= 1L &&
+       (is.null(hdrs[[1L]]$displayName) || is.na(hdrs[[1L]]$displayName) || identical(hdrs[[1L]]$displayName, "")))
+  if (!isTRUE(no_formula_cols)) {
+    return(FALSE)
+  }
+  err_codes <- unlist(lapply(x$error, function(e) if (is.list(e)) e$code else NULL), use.names = FALSE)
+  err_msgs  <- unlist(lapply(x$error, function(e) if (is.list(e)) e$message else NULL), use.names = FALSE)
+  is_retriable_cell_err <- any(err_codes %in% c(100L, 400L, 500L, 2504L)) ||
+    any(grepl("Asynchronous Query library internal error|internal error|timeout", err_msgs, ignore.case = TRUE))
+  isTRUE(is_retriable_cell_err)
+}
+
+
+#' Check whether a raw DataGrid_StandardAsync chunk response succeeded
+#'
+#' Used as the `is_success` predicate in [chunked_download()] by both
+#' [EikonGetData()] and [rd_GetData()]. Rejects `NA`, empty named lists,
+#' `try-error` objects, and collapsed 1-column AQL/server error payloads.
+#'
+#' @param x Raw chunk response.
+#' @param n_formulas Integer count of requested formulas/fields.
+#'
+#' @return Logical scalar.
+#' @keywords internal
+#' @noRd
+eikon_data_is_success <- function(x, n_formulas = 1L) {
+  if (identical(x, NA) || identical(x, structure(list(), names = character(0))) || inherits(x, "try-error")) {
+    return(FALSE)
+  }
+  if (.is_eikon_aql_collapse(x, n_formulas = n_formulas)) {
+    return(FALSE)
+  }
+  TRUE
+}
+
+
+#' Merge raw DataGrid_StandardAsync sub-chunk payloads into a single chunk payload
+#'
+#' Combines the `data` rows and `error` entries from a list of raw `get_data()`
+#' sub-chunk responses while preserving `headers`, `totalColumnsCount`, and
+#' `headerOrientation` from the first populated sub-chunk.
+#'
+#' @param sub_results Non-empty list of raw `get_data()` chunk payloads.
+#'
+#' @return A single merged raw chunk payload compatible with [EikonPostProcessor()]
+#'   and [rd_OutputProcesser()].
+#' @keywords internal
+#' @noRd
+.merge_eikon_raw_subchunks <- function(sub_results) {
+  if (length(sub_results) == 0L) {
+    return(NA)
+  }
+  if (length(sub_results) == 1L) {
+    return(sub_results[[1L]])
+  }
+
+  # Pick the first sub-chunk with >1 header column as the header template
+  template_idx <- 1L
+  for (i in seq_along(sub_results)) {
+    s <- sub_results[[i]]
+    if (is.list(s) && !is.null(s$totalColumnsCount) && is.numeric(s$totalColumnsCount) && s$totalColumnsCount > 1L) {
+      template_idx <- i
+      break
+    }
+  }
+  base <- sub_results[[template_idx]]
+  if (!is.list(base)) {
+    return(NA)
+  }
+
+  merged_data <- do.call(c, lapply(sub_results, function(s) {
+    if (is.list(s) && is.list(s$data)) s$data else list()
+  }))
+
+  row_offset <- 0L
+  merged_err <- list()
+  for (s in sub_results) {
+    if (is.list(s) && is.list(s$error) && length(s$error) > 0L) {
+      s_errs <- lapply(s$error, function(e) {
+        if (is.list(e) && !is.null(e$row) && is.numeric(e$row)) {
+          e$row <- as.integer(e$row) + row_offset
+        }
+        e
+      })
+      merged_err <- c(merged_err, s_errs)
+    }
+    n_s_rows <- if (is.list(s) && is.list(s$data)) length(s$data) else 0L
+    row_offset <- row_offset + n_s_rows
+  }
+
+  base$data <- merged_data
+  if (length(merged_err) > 0L) {
+    base$error <- merged_err
+  } else {
+    base$error <- NULL
+  }
+  if (!is.null(base$totalRowsCount)) {
+    hdr_rows <- if (!is.null(base$columnHeadersCount) && is.numeric(base$columnHeadersCount)) {
+      as.integer(base$columnHeadersCount)
+    } else {
+      1L
+    }
+    base$totalRowsCount <- length(merged_data) + hdr_rows
+  }
+
+  base
+}
+
+
+#' Fetch a RIC chunk with adaptive <=25-RIC sub-chunk fallback on LSEG AQL errors
+#'
+#' When an oversized chunk (`> 28` RICs) hits LSEG's `code = 100`
+#' `"Asynchronous Query library internal error."` (an internal timeout/worker
+#' pool exhaustion in LSEG's backend when evaluating 100+ `TR.*` formulas across
+#' 100+ RICs), retrying the same 100+ RIC payload almost always fails again.
+#' This helper splits the failing chunk into sub-chunks of at most
+#' `getOption("refinitiv_aql_fallback_rics", 25L)` RICs, merges the sub-chunk
+#' responses into a single raw chunk payload, and sets `state_env$aql_degraded <- TRUE`
+#' so all subsequent oversized chunks in the same call step down immediately.
+#'
+#' @param chunk_rics Character vector of RICs for the current chunk.
+#' @param n_formulas Integer count of requested formulas/fields.
+#' @param fetch_rics_fn Function taking a character vector of RICs and returning
+#'   a raw `get_data()` response.
+#' @param is_success_fn Function taking a raw response and returning `TRUE`/`FALSE`.
+#' @param state_env Environment holding `aql_degraded` boolean state across chunks
+#'   of the enclosing `EikonGetData()` / `rd_GetData()` call.
+#' @param caller_label Character label for progress messages (`"EikonGetData"` or `"rd_GetData"`).
+#' @param chunk_idx Integer index of the current chunk.
+#' @param n_chunks Integer total number of chunks.
+#' @param verbose Logical or `"verbose"`.
+#'
+#' @return A raw `get_data()` chunk payload (or `NA` / failed payload if recovery fails).
+#' @keywords internal
+#' @noRd
+.fetch_with_aql_subchunks <- function(chunk_rics,
+                                      n_formulas,
+                                      fetch_rics_fn,
+                                      is_success_fn,
+                                      state_env,
+                                      caller_label = "EikonGetData",
+                                      chunk_idx = 1L,
+                                      n_chunks = 1L,
+                                      verbose = TRUE) {
+  aql_trigger_min_rics <- 28L
+  sub_max_rics <- as.integer(getOption("refinitiv_aql_fallback_rics", 25L))
+  sub_sleep <- getOption("refinitiv_chunk_sleep", 1.0)
+
+  if (!isTRUE(state_env$aql_degraded) || length(chunk_rics) <= aql_trigger_min_rics) {
+    res <- fetch_rics_fn(chunk_rics)
+    if (is_success_fn(res)) {
+      return(res)
+    }
+    if (length(chunk_rics) <= aql_trigger_min_rics || !.is_eikon_aql_collapse(res, n_formulas = n_formulas)) {
+      return(res)
+    }
+    state_env$aql_degraded <- TRUE
+    if (!isFALSE(verbose)) {
+      progress_msg(
+        caller_label, ": Chunk ", chunk_idx, "/", n_chunks, " (", length(chunk_rics),
+        " RICs) hit LSEG AQL internal error; splitting into <=", sub_max_rics,
+        "-RIC sub-chunks and stepping down remaining oversized chunks."
+      )
+    }
+  } else if (!isFALSE(verbose)) {
+    progress_msg(
+      caller_label, ": Chunk ", chunk_idx, "/", n_chunks, " (", length(chunk_rics),
+      " RICs) pre-emptively stepped down to <=", sub_max_rics,
+      "-RIC sub-chunks (AQL degraded mode)."
+    )
+  }
+
+  n_sub <- ceiling(length(chunk_rics) / sub_max_rics)
+  sub_size <- ceiling(length(chunk_rics) / n_sub)
+  sub_groups <- unname(split(chunk_rics, ceiling(seq_along(chunk_rics) / sub_size)))
+
+  sub_results <- vector("list", length(sub_groups))
+  for (k in seq_along(sub_groups)) {
+    if (k > 1L && is.numeric(sub_sleep) && sub_sleep > 0) {
+      Sys.sleep(sub_sleep)
+    }
+    sub_res <- fetch_rics_fn(sub_groups[[k]])
+    if (!is_success_fn(sub_res)) {
+      if (is.numeric(sub_sleep) && sub_sleep > 0) Sys.sleep(sub_sleep)
+      sub_res <- fetch_rics_fn(sub_groups[[k]])
+    }
+    if (!is_success_fn(sub_res)) {
+      return(sub_res)
+    }
+    sub_results[[k]] <- sub_res
+  }
+
+  .merge_eikon_raw_subchunks(sub_results)
+}
+

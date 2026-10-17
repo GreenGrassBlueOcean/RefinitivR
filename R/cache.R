@@ -188,14 +188,15 @@ resolve_cache <- function(cache_param, fn_default_ttl) {
 #' @noRd
 cache_set <- function(key, value, ttl) {
   expires_at <- if (is.infinite(ttl)) Inf else as.numeric(Sys.time()) + ttl
+  stored_val <- data.table::copy(value)
   assign(
     key,
-    list(value = value, expires_at = expires_at),
+    list(value = stored_val, expires_at = expires_at),
     envir = .refinitiv_cache
   )
   if (isTRUE(getOption("refinitiv_verbose_cache", FALSE))) {
     short_key <- substr(key, 1L, 8L)
-    size_kb <- round(as.numeric(utils::object.size(value)) / 1024, 1)
+    size_kb <- round(as.numeric(utils::object.size(stored_val)) / 1024, 1)
     message("[RefinitivR cache] STORE (key ", short_key, "..., TTL ", ttl, "s, ~", size_kb, " KB)")
   }
   invisible(NULL)
@@ -239,7 +240,7 @@ cache_get <- function(key) {
     ttl_left <- if (is.infinite(entry$expires_at)) Inf else round(entry$expires_at - as.numeric(Sys.time()))
     message("[RefinitivR cache] HIT (key ", short_key, "..., ", ttl_left, "s remaining)")
   }
-  list(found = TRUE, value = entry$value)
+  list(found = TRUE, value = data.table::copy(entry$value))
 }
 
 

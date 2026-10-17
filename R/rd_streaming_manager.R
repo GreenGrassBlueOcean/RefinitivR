@@ -68,7 +68,11 @@ StreamManager <- R6::R6Class("StreamManager",
       if (debug) message("[DEBUG] Access token obtained, length: ", nchar(access_token))
 
       # Get URL and protocol
-      url <- get_streaming_url(private$.stream_type, private$.port)
+      url <- if (is.null(private$.base_url)) {
+        get_streaming_url(private$.stream_type, private$.port)
+      } else {
+        get_streaming_url(private$.stream_type, private$.port, base_url = private$.base_url)
+      }
       protocol <- get_streaming_protocol(private$.stream_type)
       headers <- create_streaming_headers(access_token)
 
@@ -205,6 +209,22 @@ StreamManager <- R6::R6Class("StreamManager",
         private$.reconnect_callbacks[[event]],
         list(callback)
       )
+    },
+
+    #' @description Unregister reconnection callbacks associated with a stream
+    #' @param owner Stream object whose callbacks should be removed
+    unregister_reconnect_callbacks = function(owner) {
+      for (ev in names(private$.reconnect_callbacks)) {
+        cbs <- private$.reconnect_callbacks[[ev]]
+        if (length(cbs) > 0L) {
+          keep <- !vapply(
+            cbs,
+            function(fn) identical(attr(fn, "stream_owner"), owner),
+            logical(1L)
+          )
+          private$.reconnect_callbacks[[ev]] <- cbs[keep]
+        }
+      }
     },
 
     #' @description Subscribe to a stream
@@ -424,7 +444,15 @@ StreamManager <- R6::R6Class("StreamManager",
         tryCatch(
           {
             # Check / refresh token before reconnecting
-            token_valid <- tryCatch(rd_VerifyToken(), error = function(e) FALSE)
+            current_token <- refinitiv_vault_get("access_token")
+            token_valid <- if (is.null(current_token)) {
+              FALSE
+            } else {
+              tryCatch(
+                if (length(formals(rd_VerifyToken)) > 0L) rd_VerifyToken(current_token) else rd_VerifyToken(),
+                error = function(e) FALSE
+              )
+            }
             if (!isTRUE(token_valid)) {
               if (debug) message("[DEBUG] Token expired, refreshing via rd_handshake()")
               rd_handshake()
@@ -432,7 +460,11 @@ StreamManager <- R6::R6Class("StreamManager",
 
             # Get connection params
             access_token <- refinitiv_vault_get("access_token")
-            url <- get_streaming_url(priv$.stream_type, priv$.port)
+            url <- if (is.null(priv$.base_url)) {
+              get_streaming_url(priv$.stream_type, priv$.port)
+            } else {
+              get_streaming_url(priv$.stream_type, priv$.port, base_url = priv$.base_url)
+            }
             protocol <- get_streaming_protocol(priv$.stream_type)
             headers <- create_streaming_headers(access_token)
 
@@ -700,9 +732,10 @@ StreamManager <- R6::R6Class("StreamManager",
         was_reconnecting <- private$.reconnecting
         if (was_reconnecting) {
           if (debug) message("[DEBUG] Reconnect login successful, resetting reconnect state")
+          attempt_num <- private$.reconnect_attempt
           private$.reconnecting <- FALSE
           private$.reconnect_attempt <- 0L
-          private$.fire_reconnect_callbacks("on_reconnected", 0L)
+          private$.fire_reconnect_callbacks("on_reconnected", attempt_num)
         }
 
         # Small delay to ensure login is fully processed

@@ -48,6 +48,13 @@ JsonHeaderAnalyzer <- function(JsonReturn, Selectedheader, use_field_names_in_he
       },
       use_field_names_in_headers = use_field_names_in_headers
     ) |> unlist()
+    if (length(headernames) >= 1L && is.na(headernames[[1L]])) {
+      headernames[[1L]] <- "Instrument"
+    }
+    if (anyNA(headernames)) {
+      na_idx <- which(is.na(headernames))
+      headernames[na_idx] <- paste0("Column_", na_idx)
+    }
     return(headernames)
   } else if (Selectedheader == "name") {
     headers <- data.table::rbindlist(CleanedHeaders, fill = TRUE, use.names = TRUE)
@@ -64,6 +71,8 @@ JsonHeaderAnalyzer <- function(JsonReturn, Selectedheader, use_field_names_in_he
         yes = paste0(name, ".", tolower(title))
       )][ParameterName == "instrument", ParameterName := "Instrument"][ParameterName == "date", ParameterName := "Date"]
       return(headers2$ParameterName)
+    } else {
+      return(headers[["name"]])
     }
   } else {
     stop("Selectedheader not implemented")

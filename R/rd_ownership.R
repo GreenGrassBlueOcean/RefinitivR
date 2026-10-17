@@ -25,6 +25,8 @@
 #'   If \code{NULL} (default), fetches all available data via automatic
 #'   pagination. The LSEG API returns at most 100 rows per request; this
 #'   function handles paging transparently.
+#' @param offset Optional integer. Starting row offset for retrieval (default
+#'   \code{NULL}, which starts at 0).
 #' @param sort_order Optional character. Sort direction: \code{"asc"} or
 #'   \code{"desc"}.
 #' @param frequency Optional character. Data frequency: \code{"Q"} (quarterly)
@@ -142,6 +144,7 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
                             ),
                             stat_type = NULL,
                             limit = NULL,
+                            offset = NULL,
                             sort_order = NULL,
                             frequency = NULL,
                             start = NULL,
@@ -184,7 +187,7 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
   ttl <- resolve_cache(cache, fn_default_ttl = 300)
   if (!isFALSE(ttl)) {
     .cl <- cache_lookup(
-      "rd_GetOwnership", universe, view, stat_type, limit,
+      "rd_GetOwnership", universe, view, stat_type, limit, offset,
       sort_order, frequency, start, end, count, raw_output
     )
     if (.cl$found) {
@@ -197,6 +200,7 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
 
   # ── Fetch data with auto-pagination ──
   MAX_PAGE <- 100L
+  initial_offset <- if (!is.null(offset)) as.integer(offset) else 0L
 
   fetch_page <- function(page_limit, page_offset) {
     retry(function() {
@@ -222,14 +226,15 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
   if (needs_pagination || fetch_all) {
     # ── Paginated retrieval ──
     req_limit <- if (fetch_all) Inf else as.numeric(limit)
-    offset_val <- 0L
+    offset_val <- initial_offset
+    rows_fetched <- 0L
     pages_raw <- list()
     pages_df <- list()
 
     page_num <- 0L
-    while (offset_val < req_limit) {
+    while (rows_fetched < req_limit) {
       page_num <- page_num + 1L
-      chunk_limit <- as.integer(min(MAX_PAGE, req_limit - offset_val))
+      chunk_limit <- as.integer(min(MAX_PAGE, req_limit - rows_fetched))
       page_raw <- fetch_page(chunk_limit, offset_val)
 
       if (raw_output) {
@@ -250,7 +255,8 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
       # Early exit: data exhausted
       if (nrow(page_df) < chunk_limit || nrow(page_df) == 0L) break
 
-      offset_val <- offset_val + chunk_limit
+      rows_fetched <- rows_fetched + nrow(page_df)
+      offset_val <- offset_val + nrow(page_df)
     }
 
     if (raw_output) {
@@ -265,7 +271,7 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
     # ── Single-page retrieval (limit <= 100 or limit = NULL with no pagination) ──
     raw <- fetch_page(
       page_limit  = if (!is.null(limit)) as.integer(limit) else NULL,
-      page_offset = 0L
+      page_offset = initial_offset
     )
 
     if (raw_output) {

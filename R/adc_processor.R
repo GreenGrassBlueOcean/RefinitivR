@@ -53,6 +53,29 @@ process_adc_response <- function(x, use_field_names_in_headers = TRUE) {
     stop(sprintf("LSEG API fault: %s", msg), call. = FALSE)
   }
 
+  # -- 0c. Unresolved identifier diagnostic in x$universe --
+  if (is.list(x$universe) && length(x$universe) > 0L) {
+    unresolved <- character(0)
+    for (u in x$universe) {
+      if (is.list(u)) {
+        u_msg <- u$Message %||% u$message
+        if (!is.null(u_msg) && is.character(u_msg) && nzchar(u_msg)) {
+          u_inst <- u$Instrument %||% u$instrument %||% "<unknown>"
+          unresolved <- c(unresolved, sprintf("%s (%s)", u_inst, u_msg))
+        }
+      }
+    }
+    if (length(unresolved) > 0L) {
+      warning(
+        sprintf(
+          "Unresolved identifier(s) in ADC response: %s",
+          paste(unresolved, collapse = ", ")
+        ),
+        call. = FALSE
+      )
+    }
+  }
+
   # -- 1. Validate structure --
   hdrs <- x$headers
   rows <- x$data

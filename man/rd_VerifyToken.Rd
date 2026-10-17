@@ -4,10 +4,11 @@
 \alias{rd_VerifyToken}
 \title{Verify the Validity of a JWT Access Token}
 \usage{
-rd_VerifyToken(token)
+rd_VerifyToken(token = refinitiv_vault_get("access_token"))
 }
 \arguments{
-\item{token}{A character string representing the JWT access token.}
+\item{token}{A character string representing the JWT access token. Defaults to the current
+vaulted access token (`refinitiv_vault_get("access_token")`).}
 }
 \value{
 A logical value:
