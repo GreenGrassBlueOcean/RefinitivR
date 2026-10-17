@@ -217,7 +217,9 @@
   not actually re-execute failed calls.
 
 - **[`retry()`](https://greengrassblueocean.github.io/RefinitivR/reference/retry.md)
-  throws on exhaustion by default (#17)** —
+  throws on exhaustion by default
+  ([\#17](https://github.com/GreenGrassBlueOcean/RefinitivR/issues/17))**
+  —
   [`retry()`](https://greengrassblueocean.github.io/RefinitivR/reference/retry.md)
   now defaults to `on_failure = "stop"`, throwing an error with the last
   failure message when all attempts are exhausted. Previously it
@@ -225,8 +227,9 @@
   `on_failure = "NA"` for the `chunked_download()` use case where
   per-chunk success is tracked externally.
 
-- **HTTP 429/503 rate-limit handling (#18)** — `send_json_request()` now
-  uses
+- **HTTP 429/503 rate-limit handling
+  ([\#18](https://github.com/GreenGrassBlueOcean/RefinitivR/issues/18))**
+  — `send_json_request()` now uses
   [`httr2::req_retry()`](https://httr2.r-lib.org/reference/req_retry.html)
   to automatically retry on HTTP 429 (Too Many Requests) and 503
   (Service Unavailable) responses with jittered exponential backoff.
@@ -234,20 +237,25 @@
   Configurable via `options(refinitiv_rate_limit_max_wait)` (default
   60s).
 
-- **Retry architecture documented (#19)** — The three-layer retry system
+- **Retry architecture documented
+  ([\#19](https://github.com/GreenGrassBlueOcean/RefinitivR/issues/19))**
+  — The three-layer retry system
   ([`retry()`](https://greengrassblueocean.github.io/RefinitivR/reference/retry.md),
   [`httr2::req_retry()`](https://httr2.r-lib.org/reference/req_retry.html),
   server polling loop) is now documented in `ARCHITECTURE.md` and
   [`retry()`](https://greengrassblueocean.github.io/RefinitivR/reference/retry.md)
   roxygen.
 
-- **DELETE dead assignment fixed (#21)** — Removed unreachable
-  `results <- NA` after [`break`](https://rdrr.io/r/base/Control.html)
-  in `send_json_request()` DELETE code path.
+- **DELETE dead assignment fixed
+  ([\#21](https://github.com/GreenGrassBlueOcean/RefinitivR/issues/21))**
+  — Removed unreachable `results <- NA` after
+  [`break`](https://rdrr.io/r/base/Control.html) in
+  `send_json_request()` DELETE code path.
 
-- **Package version in cache key (#22)** — `cache_key()` now includes
-  the package version, so a mid-session upgrade automatically
-  invalidates stale cached entries.
+- **Package version in cache key
+  ([\#22](https://github.com/GreenGrassBlueOcean/RefinitivR/issues/22))**
+  — `cache_key()` now includes the package version, so a mid-session
+  upgrade automatically invalidates stale cached entries.
 
 - **Credential vault (C3)** — Bearer tokens are now stored in a
   package-private environment invisible to

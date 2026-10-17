@@ -1,12 +1,13 @@
 ## Overview
 
-**RefinitivR** is an R interface to LSEG Workspace (formerly Refinitiv
-Eikon) and Refinitiv DataStream.
+**RefinitivR** is an R interface to **LSEG Workspace** (formerly
+Refinitiv Eikon) and **Refinitiv DataStream**.
 
 **Just load and go** — the package auto-detects your running terminal
-and connects on the first API call. No API key, no setup code, no
-connection objects to manage. Repeated requests can be served from an
-opt-in **session-scoped cache** with configurable TTLs.
+(LSEG Workspace on port 9000 or Eikon Desktop on port 9060) and connects
+on the first API call. No API key, no setup code, no connection objects
+to manage. Repeated requests can be served from an opt-in
+**session-scoped cache** with configurable TTLs.
 
 - **Snapshot & historical data** —
   [`rd_GetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md),
@@ -14,25 +15,35 @@ opt-in **session-scoped cache** with configurable TTLs.
   [`rd_GetHistoricalPricing()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistoricalPricing.md)
 - **Real-time streaming** — WebSocket-based live market data with
   callbacks
+  ([`rd_get_streaming_data()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_streaming_data.md))
 - **ESG, estimates & ownership** —
   [`rd_GetESG()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetESG.md),
   [`rd_GetEstimates()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetEstimates.md),
   [`rd_GetOwnership()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetOwnership.md)
-- **News & search** — headlines, stories, top news, discovery search
+- **Symbology & search** —
+  [`rd_ConvertSymbol()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ConvertSymbol.md),
+  [`RDPsearch()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDPsearch.md),
+  [`RDPget_search_metadata()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDPget_search_metadata.md)
+- **News** —
+  [`rd_get_news_headlines()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_news_headlines.md),
+  [`rd_get_news_story()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_news_story.md),
+  [`rd_get_top_news()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_top_news.md)
 - **Custom instruments** — create, update, delete basket and formula
   instruments
+  ([`rd_ManageCustomInstruments()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ManageCustomInstruments.md))
 - **DataStream** — via `DatastreamDSWS2R`
+  ([`DataStreamConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/DataStreamConnect.md))
 - **Robust under the hood** — three-layer retry with exponential
-  backoff, automatic chunking, HTTP 429/503 handling, progress reporting
-  for large requests
+  backoff, connection-reset recovery, automatic chunking, HTTP 429/503
+  handling, and progress reporting for large requests
 
-> **Note (v0.2.0):** Python/reticulate support has been removed. All
-> data retrieval now uses the JSON API exclusively. See
-> [NEWS.md](https://greengrassblueocean.github.io/RefinitivR/NEWS.md)
+> **Note (v0.2.0+):** Python/reticulate support has been removed. All
+> data retrieval now uses the JSON API exclusively. See the [Changelog
+> (NEWS.md)](https://github.com/GreenGrassBlueOcean/RefinitivR/blob/master/NEWS.md)
 > for details.
 
 This package is in no way affiliated with Thomson Reuters, Refinitiv,
-Eikon, Datastream, or LSEG. A subscription to Eikon/LSEG Workspace
+Eikon, Datastream, or LSEG. A subscription to LSEG Workspace / Eikon
 and/or Datastream is required. Use at your own risk!
 
 ## Installation
@@ -46,14 +57,15 @@ library(Refinitiv)
 
 ## Quick Start
 
-With LSEG Workspace running, no explicit connection step is needed:
+With LSEG Workspace (or Eikon Desktop) running, no explicit connection
+step is needed:
 
 ``` r
 
 library(Refinitiv)
 
 # Get snapshot data
-rd_GetData(rics = "AAPL.O", Eikonformulas = "TR.CompanyName")
+rd_GetData(rics = "AAPL.O", fields = "TR.CompanyName")
 
 # Get historical data
 rd_GetHistory(universe = c("AAPL.O", "MSFT.O"))
@@ -86,8 +98,8 @@ stream$close()
 2.  [Real-Time Streaming](#real-time-streaming)
 3.  [Working with Refinitiv Data (RD)](#working-with-refinitiv-data-rd)
 4.  [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
-5.  [DataStream](#datastream)
-6.  [Custom Instruments](#custom-instruments)
+5.  [Custom Instruments](#custom-instruments)
+6.  [DataStream](#datastream)
 7.  [Caching](#caching)
 8.  [Progress Reporting](#progress-reporting)
 9.  [Building Custom Visualizations](#building-custom-visualizations)
@@ -98,11 +110,23 @@ stream$close()
 
 No explicit connection step is needed. All API functions default to
 [`rd_connection()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_connection.md),
-which auto-creates and caches a connection on first use.
+which auto-detects the running terminal (**LSEG Workspace** on port 9000
+or **Refinitiv Eikon** on port 9060) and caches a connection on first
+use.
 
 Make sure LSEG Workspace (or Eikon Desktop) is running and online before
 calling any API function. After a terminal restart, call
 `rd_connection(reset = TRUE)` to force a fresh connection.
+
+For headless, CI, or remote-terminal setups, you can pre-configure
+connection settings in `.Renviron` (read at package load, skipping
+terminal auto-detection):
+
+``` ini
+REFINITIV_PORT=9000
+REFINITIV_BASE_URL=http://localhost
+REFINITIV_APP_KEY=DEFAULT_WORKSPACE_APP_KEY
+```
 
 ------------------------------------------------------------------------
 
@@ -232,7 +256,7 @@ source(system.file("examples", "streaming_test_debug.R", package = "Refinitiv"))
 
 ## Working with Refinitiv Data (RD)
 
-### Searching
+### Searching & Symbol Conversion
 
 ``` r
 
@@ -247,6 +271,13 @@ Presidents <- RDPsearch(
   select = 'DocumentTitle',
   order_by = 'DocumentTitle asc',
   top = 20
+)
+
+# Robust multi-tiered symbol conversion (ISIN/CUSIP/SEDOL/RIC, bare tickers, delisted RICs)
+rd_ConvertSymbol(
+  symbols = c("US0378331005", "US5949181045"),
+  from_symbol_type = "ISIN",
+  to_symbol_type = "RIC"
 )
 ```
 
@@ -271,8 +302,10 @@ data <- rd_GetHistory(
 
 ex1 <- rd_GetData(
   rics = c("MMM", "III.L"),
-  Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/", 
-                     "TR.CompanyName")
+  fields = c(
+    "TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/", 
+    "TR.CompanyName"
+  )
 )
 ```
 
@@ -294,6 +327,38 @@ intraday <- rd_GetHistoricalPricing(
   count = 500L,
   sessions = c("pre", "normal", "post")
 )
+```
+
+### ESG, Consensus Estimates & Ownership
+
+``` r
+
+# ESG scores and measures
+esg <- rd_GetESG(universe = c("AAPL.O", "MSFT.O"), view = "scores-full")
+
+# I/B/E/S consensus estimates
+estimates <- rd_GetEstimates(
+  universe = "AAPL.O",
+  view = "view-summary/annual",
+  package = "standard"
+)
+
+# Institutional & insider ownership (with automatic pagination)
+ownership <- rd_GetOwnership(
+  universe = "AAPL.O",
+  view = "consolidated/investors",
+  limit = 50
+)
+```
+
+### News
+
+``` r
+
+# Headlines, full stories, and top news
+headlines <- rd_get_news_headlines(query = "MSFT.O", limit = 5)
+story <- rd_get_news_story(story_id = headlines$storyId[1])
+top_news <- rd_get_top_news()
 ```
 
 ------------------------------------------------------------------------
@@ -342,7 +407,7 @@ Data <- EikonGetData(
 
 ``` r
 
-# Get UUID from Eikon Terminal: Help > About > User Details
+# Get UUID from LSEG Workspace / Eikon: Help > About > User Details
 RD <- RDConnect(UUID = "ABCDE-123456")
 ```
 
@@ -434,7 +499,7 @@ avoid redundant API calls:
 options(refinitiv_cache = TRUE)
 
 # Or enable per call
-rd_GetData(rics = "AAPL.O", Eikonformulas = "TR.CompanyName", cache = TRUE)
+rd_GetData(rics = "AAPL.O", fields = "TR.CompanyName", cache = TRUE)
 
 # Custom TTL (seconds)
 rd_GetHistory(universe = "AAPL.O", cache = 600)
@@ -482,7 +547,7 @@ Control progress output with `options(refinitiv_progress = ...)` or the
 options(refinitiv_progress = FALSE)
 
 # Or per-call
-rd_GetData(rics = large_universe, Eikonformulas = fields, verbose = FALSE)
+rd_GetData(rics = large_universe, fields = fields, verbose = FALSE)
 
 # Or via .Renviron (read at package load)
 # REFINITIV_PROGRESS=FALSE
@@ -604,8 +669,111 @@ See LICENSE file.
 
 # Package index
 
-## All functions
+## Connection & Authentication
 
+Zero-config connection management, terminal auto-detection for LSEG
+Workspace and Refinitiv Eikon, and credential storage.
+
+- [`rd_connection()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_connection.md)
+  : Get or create the default Refinitiv connection
+- [`RDConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDConnect.md)
+  [`RDPConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDConnect.md)
+  : Connect to LSEG / Refinitiv Data via JSON
+- [`EikonConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonConnect.md)
+  : Connect to LSEG Workspace via JSON
+- [`RefinitivJsonConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/RefinitivJsonConnect.md)
+  : Create a JSON connection object for the LSEG Workspace proxy
+- [`rd_handshake()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_handshake.md)
+  : Get Bearer Key from Terminal
+- [`refinitiv_vault()`](https://greengrassblueocean.github.io/RefinitivR/reference/refinitiv_vault.md)
+  : Inspect the credential vault safely
+- [`print(`*`<RefinitivConnection>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/print.RefinitivConnection.md)
+  : Print a RefinitivConnection object
+- [`names(`*`<RefinitivConnection>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/names.RefinitivConnection.md)
+  : List methods on a RefinitivConnection object
+
+## Snapshot & Historical Data
+
+Retrieve current snapshots, fundamental history, and historical pricing
+time series with corporate action adjustments.
+
+- [`rd_GetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md)
+  : Retrieve Snapshot Data from LSEG Workspace / Eikon via the JSON API
+- [`rd_GetHistory()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistory.md)
+  : The get_history function allows you to retrieve pricing history, as
+  well as Fundamental and Reference data history through a single
+  function call.
+- [`rd_GetHistoricalPricing()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistoricalPricing.md)
+  : GetHistoricalPricing
+- [`TR_Field()`](https://greengrassblueocean.github.io/RefinitivR/reference/TR_Field.md)
+  : Helper function to build the Eikonformulas parameter for the
+  EikonGetData function.
+
+## ESG, Estimates & Ownership
+
+Retrieve Environmental, Social, and Governance (ESG) scores and
+measures, I/B/E/S consensus estimates, and institutional/insider
+ownership data.
+
+- [`rd_GetESG()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetESG.md)
+  : Retrieve ESG Data from LSEG
+- [`rd_GetEstimates()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetEstimates.md)
+  : Retrieve Estimates Data from LSEG
+- [`rd_GetOwnership()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetOwnership.md)
+  : Retrieve Ownership Data from LSEG
+
+## Symbology & Search
+
+Multi-tiered symbol conversion (RIC, ISIN, CUSIP, SEDOL, bare tickers,
+delisted instruments) and discovery search across LSEG views.
+
+- [`rd_ConvertSymbol()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ConvertSymbol.md)
+  : Robust Symbol Conversion for Refinitiv Data
+- [`RDPsearch()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDPsearch.md)
+  : RDP search function is a wrapper for the pyton rdp.search function
+- [`RDPget_search_metadata()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDPget_search_metadata.md)
+  : Get search metadata from RDP
+- [`RDPShowAvailableSearchViews()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDPShowAvailableSearchViews.md)
+  : Show Available Search Views for searchView parameter in
+  RDPget_search_metadata
+- [`EikonRepairMic()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonRepairMic.md)
+  : Repair Market Identifier Codes (MIC) utilizing RDN Exchange
+  Identifiers
+
+## News
+
+Search news headlines, retrieve full news stories, and browse top news
+packages.
+
+- [`rd_get_news_headlines()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_news_headlines.md)
+  : Retrieve News Headlines from a Refinitiv RDP (JSON) Connection
+- [`rd_get_news_story()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_news_story.md)
+  : Retrieve Full News Story from a Refinitiv RDP (JSON) Connection
+- [`rd_get_top_news()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_top_news.md)
+  : Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection,
+  Then Fetch Stories
+
+## Real-Time Streaming
+
+WebSocket-based live market data streaming with event callbacks, history
+buffering, and interactive visualization.
+
+- [`rd_get_streaming_data()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_streaming_data.md)
+  : Get streaming data from Refinitiv
+- [`rd_streaming_pricing`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_streaming_pricing.md)
+  : Pricing Stream Definition
+- [`rd_streaming_debug()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_streaming_debug.md)
+  : Debug streaming connection
+
+## Custom Instruments
+
+Create, search, update, and delete custom formula and basket
+instruments.
+
+- [`rd_ManageCustomInstruments()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ManageCustomInstruments.md)
+  : CREATE, GET, UPDATE or DELETE a custom instrument
+- [`rd_SearchCustomInstruments()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_SearchCustomInstruments.md)
+  : Show all available custom instruments that have been created
 - [`CorrectCustomInstrument()`](https://greengrassblueocean.github.io/RefinitivR/reference/CorrectCustomInstrument.md)
   : Function to check if custom symbol is in format
   "S)INSTRUMENTSYMBOL.UUID"
@@ -615,104 +783,67 @@ See LICENSE file.
   : Build a holiday object for a custom instrument
 - [`CustomInstrumentUDCBuilder()`](https://greengrassblueocean.github.io/RefinitivR/reference/CustomInstrumentUDCBuilder.md)
   : Build a user defined continuation object for a custom instrument
+
+## Session Cache
+
+Inspect and manage the opt-in session-scoped request cache.
+
+- [`rd_CacheInfo()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_CacheInfo.md)
+  : Show RefinitivR Cache Statistics
+- [`rd_ClearCache()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md)
+  : Clear the RefinitivR Session Cache
+
+## DataStream
+
+Connect to LSEG/Refinitiv DataStream via DatastreamDSWS2R.
+
 - [`DataStreamConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/DataStreamConnect.md)
   : Initialize DataStream Connection
-- [`EikonConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonConnect.md)
-  : Connect to LSEG Workspace via JSON
+- [`TestDataStreamCredentials()`](https://greengrassblueocean.github.io/RefinitivR/reference/TestDataStreamCredentials.md)
+  : Test if the DataStream Credentials are valid
+
+## Legacy Eikon API
+
+Backward-compatible Eikon UDF functions and result wrappers.
+
 - [`EikonGetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetData.md)
   : Function to obtain data from Eikon via the JSON API
+- [`EikonGetTimeseries()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetTimeseries.md)
+  : Function to obtain timeseries from Eikon via the JSON API
+- [`EikonGetSymbology()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetSymbology.md)
+  : Returns a list of instrument names converted into another instrument
+  code. For example: convert SEDOL instrument names to RIC names
 - [`EikonGetNewsHeadlines()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetNewsHeadlines.md)
   : Returns a list of news headlines
 - [`EikonGetNewsStory()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetNewsStory.md)
   : Return a single news story corresponding to the identifier provided
   in story_id
-- [`EikonGetSymbology()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetSymbology.md)
-  : Returns a list of instrument names converted into another instrument
-  code. For example: convert SEDOL instrument names to RIC names
-- [`EikonGetTimeseries()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetTimeseries.md)
-  : Function to obtain timeseries from Eikon via the JSON API
-- [`EikonRepairMic()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonRepairMic.md)
-  : Repair Market Identifier Codes (MIC) utilizing RDN Exchange
-  Identifiers
+- [`print(`*`<EikonResult>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/print.EikonResult.md)
+  : Print an EikonResult
+- [`as.data.table.EikonResult()`](https://greengrassblueocean.github.io/RefinitivR/reference/as.data.table.EikonResult.md)
+  : Convert EikonResult to data.table
+- [`as.data.frame(`*`<EikonResult>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/as.data.frame.EikonResult.md)
+  : Convert EikonResult to data.frame
+
+## Bundled Datasets
+
+Reference lookup tables included with the package.
+
 - [`NagerHolidayData`](https://greengrassblueocean.github.io/RefinitivR/reference/NagerHolidayData.md)
   : Public Holidays between the years 1990 and 2030
 - [`OperatingMicLookup`](https://greengrassblueocean.github.io/RefinitivR/reference/OperatingMicLookup.md)
   : Operating Mic lookup from Reuters Exchange Code
-- [`RDConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDConnect.md)
-  [`RDPConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDConnect.md)
-  : Connect to LSEG / Refinitiv Data via JSON
-- [`RDPGetOptionAnalytics()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDPGetOptionAnalytics.md)
-  : Get RDP option analytics
-- [`RDPShowAvailableSearchViews()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDPShowAvailableSearchViews.md)
-  : Show Available Search Views for searchView parameter in
-  RDPget_search_metadata
-- [`RDPget_search_metadata()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDPget_search_metadata.md)
-  : Get search metadata from RDP
-- [`RDPsearch()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDPsearch.md)
-  : RDP search function is a wrapper for the pyton rdp.search function
-- [`RefinitivJsonConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/RefinitivJsonConnect.md)
-  : Create a JSON connection object for the LSEG Workspace proxy
 - [`SearchViewsLookup`](https://greengrassblueocean.github.io/RefinitivR/reference/SearchViewsLookup.md)
   : Lookup code for SearchViews to alternate between RD and JSON format
   SearchViews
-- [`TR_Field()`](https://greengrassblueocean.github.io/RefinitivR/reference/TR_Field.md)
-  : Helper function to build the Eikonformulas parameter for the
-  EikonGetData function.
-- [`TestDataStreamCredentials()`](https://greengrassblueocean.github.io/RefinitivR/reference/TestDataStreamCredentials.md)
-  : Test if the DataStream Credentials are valid
-- [`as.data.frame(`*`<EikonResult>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/as.data.frame.EikonResult.md)
-  : Convert EikonResult to data.frame
-- [`as.data.table.EikonResult()`](https://greengrassblueocean.github.io/RefinitivR/reference/as.data.table.EikonResult.md)
-  : Convert EikonResult to data.table
+
+## Defunct Functions
+
+Functions removed in v0.2.0 following removal of the Python/reticulate
+bridge.
+
 - [`install_eikon()`](https://greengrassblueocean.github.io/RefinitivR/reference/install_eikon.md)
   : Install Eikon Python environment (Defunct)
-- [`names(`*`<RefinitivConnection>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/names.RefinitivConnection.md)
-  : List methods on a RefinitivConnection object
-- [`print(`*`<EikonResult>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/print.EikonResult.md)
-  : Print an EikonResult
-- [`print(`*`<RefinitivConnection>`*`)`](https://greengrassblueocean.github.io/RefinitivR/reference/print.RefinitivConnection.md)
-  : Print a RefinitivConnection object
-- [`rd_CacheInfo()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_CacheInfo.md)
-  : Show RefinitivR Cache Statistics
-- [`rd_ClearCache()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ClearCache.md)
-  : Clear the RefinitivR Session Cache
-- [`rd_ConvertSymbol()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ConvertSymbol.md)
-  : Robust Symbol Conversion for Refinitiv Data
-- [`rd_GetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md)
-  : Function to obtain data from Eikon/LSEG via the JSON API
-- [`rd_GetESG()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetESG.md)
-  : Retrieve ESG Data from LSEG
-- [`rd_GetEstimates()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetEstimates.md)
-  : Retrieve Estimates Data from LSEG
-- [`rd_GetHistoricalPricing()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistoricalPricing.md)
-  : GetHistoricalPricing
-- [`rd_GetHistory()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistory.md)
-  : The get_history function allows you to retrieve pricing history, as
-  well as Fundamental and Reference data history through a single
-  function call.
-- [`rd_GetOwnership()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetOwnership.md)
-  : Retrieve Ownership Data from LSEG
-- [`rd_ManageCustomInstruments()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_ManageCustomInstruments.md)
-  : CREATE, GET, UPDATE or DELETE a custom instrument
-- [`rd_SearchCustomInstruments()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_SearchCustomInstruments.md)
-  : Show all available custom instruments that have been created
-- [`rd_connection()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_connection.md)
-  : Get or create the default Refinitiv connection
-- [`rd_get_news_headlines()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_news_headlines.md)
-  : Retrieve News Headlines from a Refinitiv RDP (JSON) Connection
-- [`rd_get_news_story()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_news_story.md)
-  : Retrieve Full News Story from a Refinitiv RDP (JSON) Connection
-- [`rd_get_streaming_data()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_streaming_data.md)
-  : Get streaming data from Refinitiv
-- [`rd_get_top_news()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_get_top_news.md)
-  : Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection,
-  Then Fetch Stories
-- [`rd_handshake()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_handshake.md)
-  : Get Bearer Key from Terminal
-- [`rd_streaming_debug()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_streaming_debug.md)
-  : Debug streaming connection
-- [`rd_streaming_pricing`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_streaming_pricing.md)
-  : Pricing Stream Definition
-- [`refinitiv_vault()`](https://greengrassblueocean.github.io/RefinitivR/reference/refinitiv_vault.md)
-  : Inspect the credential vault safely
+- [`RDPGetOptionAnalytics()`](https://greengrassblueocean.github.io/RefinitivR/reference/RDPGetOptionAnalytics.md)
+  : Get RDP option analytics
 

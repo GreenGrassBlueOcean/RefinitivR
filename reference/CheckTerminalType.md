@@ -1,7 +1,8 @@
-# Check LSEG Workspace Connectivity
+# Check LSEG Workspace / Eikon Connectivity
 
-Verifies that the LSEG Workspace Data API proxy is reachable on port
-9000 and sets the `eikon_port` option accordingly.
+Verifies that the LSEG Workspace (port 9000) or Refinitiv Eikon (port
+9060) Data API proxy is reachable and sets the `eikon_port` option
+accordingly.
 
 ## Usage
 
@@ -22,8 +23,8 @@ CheckTerminalType(verbose = FALSE, force = FALSE)
 
 ## Value
 
-Invisibly `NULL`. Sets `options(eikon_port = 9000L)` on success; issues
-a warning if the proxy is not reachable.
+Invisibly `NULL`. Sets `options(eikon_port = <detected_port>)` on
+success; issues a warning if the proxy is not reachable.
 
 ## Details
 
