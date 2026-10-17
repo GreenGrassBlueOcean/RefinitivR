@@ -1,7 +1,7 @@
-#' Check LSEG Workspace Connectivity
+#' Check LSEG Workspace / Eikon Connectivity
 #'
-#' Verifies that the LSEG Workspace Data API proxy is reachable on port 9000
-#' and sets the \code{eikon_port} option accordingly.
+#' Verifies that the LSEG Workspace (port 9000) or Refinitiv Eikon (port 9060)
+#' Data API proxy is reachable and sets the \code{eikon_port} option accordingly.
 #'
 #' Auto-detection is skipped when \code{eikon_port} is already set.
 #' Pre-configure via \code{options(eikon_port = 9000L)} or the
@@ -11,7 +11,7 @@
 #' @param force Logical; if \code{TRUE}, rechecks even when \code{eikon_port} is
 #'   already set. Defaults to \code{FALSE}.
 #'
-#' @return Invisibly \code{NULL}. Sets \code{options(eikon_port = 9000L)} on
+#' @return Invisibly \code{NULL}. Sets \code{options(eikon_port = <detected_port>)} on
 #'   success; issues a warning if the proxy is not reachable.
 #'
 #' @examples

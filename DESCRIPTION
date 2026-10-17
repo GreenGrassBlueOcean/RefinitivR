@@ -1,6 +1,6 @@
 Package: Refinitiv
 Type: Package
-Title: Connect to LSEG/Refinitiv Eikon and DataStream from R
+Title: Connect to LSEG Workspace, Refinitiv Eikon, and DataStream from R
 Version: 0.2.3
 Author: Laurens van der Burg
 Maintainer: Laurens van der Burg <laurens@ggbo.eu>
@@ -8,9 +8,10 @@ Description: Zero-config R interface to LSEG Workspace (formerly Refinitiv Eikon
     and DataStream. Auto-detects the running terminal, connects via direct JSON
     API calls, and provides opt-in session-scoped request caching. Includes
     historical and snapshot data retrieval, real-time WebSocket streaming, ESG,
-    consensus estimates, ownership data, custom instruments, and news. DataStream
-    access is provided via the 'DatastreamDSWS2R' package. This package is in no
-    way affiliated with LSEG, Refinitiv, Eikon or Datastream. Use at own risk.
+    consensus estimates, ownership data, symbol conversion, custom instruments,
+    and news. DataStream access is provided via the 'DatastreamDSWS2R' package.
+    This package is in no way affiliated with LSEG, Refinitiv, Eikon or
+    Datastream. Use at own risk.
 License: LGPL (>= 2.0, < 3) | Mozilla Public License
 Encoding: UTF-8
 LazyData: true
@@ -41,5 +42,7 @@ Suggests:
     mockery,
     httptest2,
     withr
-URL: https://greengrassblueocean.github.io/RefinitivR/
+URL: https://greengrassblueocean.github.io/RefinitivR/,
+    https://github.com/GreenGrassBlueOcean/RefinitivR
+BugReports: https://github.com/GreenGrassBlueOcean/RefinitivR/issues
 Config/roxygen2/version: 8.1.1

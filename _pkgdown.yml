@@ -2,3 +2,118 @@ url: https://greengrassblueocean.github.io/RefinitivR/
 template:
   bootstrap: 5
 
+reference:
+  - title: Connection & Authentication
+    desc: >
+      Zero-config connection management, terminal auto-detection for LSEG
+      Workspace and Refinitiv Eikon, and credential storage.
+    contents:
+      - rd_connection
+      - RDConnect
+      - EikonConnect
+      - RefinitivJsonConnect
+      - rd_handshake
+      - refinitiv_vault
+      - print.RefinitivConnection
+      - names.RefinitivConnection
+
+  - title: Snapshot & Historical Data
+    desc: >
+      Retrieve current snapshots, fundamental history, and historical pricing
+      time series with corporate action adjustments.
+    contents:
+      - rd_GetData
+      - rd_GetHistory
+      - rd_GetHistoricalPricing
+      - TR_Field
+
+  - title: ESG, Estimates & Ownership
+    desc: >
+      Retrieve Environmental, Social, and Governance (ESG) scores and measures,
+      I/B/E/S consensus estimates, and institutional/insider ownership data.
+    contents:
+      - rd_GetESG
+      - rd_GetEstimates
+      - rd_GetOwnership
+
+  - title: Symbology & Search
+    desc: >
+      Multi-tiered symbol conversion (RIC, ISIN, CUSIP, SEDOL, bare tickers,
+      delisted instruments) and discovery search across LSEG views.
+    contents:
+      - rd_ConvertSymbol
+      - RDPsearch
+      - RDPget_search_metadata
+      - RDPShowAvailableSearchViews
+      - EikonRepairMic
+
+  - title: News
+    desc: >
+      Search news headlines, retrieve full news stories, and browse top news
+      packages.
+    contents:
+      - rd_get_news_headlines
+      - rd_get_news_story
+      - rd_get_top_news
+
+  - title: Real-Time Streaming
+    desc: >
+      WebSocket-based live market data streaming with event callbacks, history
+      buffering, and interactive visualization.
+    contents:
+      - rd_get_streaming_data
+      - rd_streaming_pricing
+      - rd_streaming_debug
+
+  - title: Custom Instruments
+    desc: >
+      Create, search, update, and delete custom formula and basket instruments.
+    contents:
+      - rd_ManageCustomInstruments
+      - rd_SearchCustomInstruments
+      - CorrectCustomInstrument
+      - CustomInstrumentBasketBuilder
+      - CustomInstrumentHolidayBuilder
+      - CustomInstrumentUDCBuilder
+
+  - title: Session Cache
+    desc: >
+      Inspect and manage the opt-in session-scoped request cache.
+    contents:
+      - rd_CacheInfo
+      - rd_ClearCache
+
+  - title: DataStream
+    desc: >
+      Connect to LSEG/Refinitiv DataStream via DatastreamDSWS2R.
+    contents:
+      - DataStreamConnect
+      - TestDataStreamCredentials
+
+  - title: Legacy Eikon API
+    desc: >
+      Backward-compatible Eikon UDF functions and result wrappers.
+    contents:
+      - EikonGetData
+      - EikonGetTimeseries
+      - EikonGetSymbology
+      - EikonGetNewsHeadlines
+      - EikonGetNewsStory
+      - print.EikonResult
+      - as.data.table.EikonResult
+      - as.data.frame.EikonResult
+
+  - title: Bundled Datasets
+    desc: >
+      Reference lookup tables included with the package.
+    contents:
+      - NagerHolidayData
+      - OperatingMicLookup
+      - SearchViewsLookup
+
+  - title: Defunct Functions
+    desc: >
+      Functions removed in v0.2.0 following removal of the Python/reticulate bridge.
+    contents:
+      - install_eikon
+      - RDPGetOptionAnalytics

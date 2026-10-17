@@ -1,24 +1,25 @@
-#' Function to obtain data from Eikon/LSEG via the JSON API
+#' Retrieve Snapshot Data from LSEG Workspace / Eikon via the JSON API
 #'
-#' The function automatically chunks the list of rics into chunks that comply with the api limitations and in the end rebuilds the chunks again into a single data.frame.
+#' Automatically chunks the requested instruments to comply with API limits and
+#' recombines the results into a single \code{data.frame}.
 #'
-#' @param rics a vector containing the instrument RICS
+#' @param rics a vector containing the instrument RICs
 #' @param Eikonformulas a vector containing character string of Eikon Formulas (deprecated, use \code{fields} instead)
 #' @param Parameters a named key value list for setting parameters, Default: NULL
 #' @param raw_output to return the raw list by chunk for debugging purposes, default = FALSE
-#' @param time_out set the maximum timeout to the Eikon server, default = 60
+#' @param time_out set the maximum timeout to the LSEG/Eikon server, default = 60
 #' @param verbose boolean, set to TRUE to print out the API call details with time stamp for debugging.
 #' @param SpaceConvertor converts spaces in variables name into one of the following characters ".", "," , "-", "_", default is NULL
-#' @param RDObject Refinitiv Data connection object, default is RefinitivJsonConnect()
+#' @param RDObject Refinitiv Data connection object, defaults to \code{\link{rd_connection}()}
 #' @param use_field_names_in_headers boolean return request fieldnames in stead of titles
 #' @param SyncFields boolean, synchronize fields over same time axis
 #' @param cache Controls caching. \code{NULL} (default) defers to
 #'   \code{getOption("refinitiv_cache", FALSE)}. \code{TRUE} uses the
 #'   function default TTL (300 s). \code{FALSE} disables caching. A positive
 #'   numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.
-#' @param fields a vector containing character string of requested data fields (alias for \code{Eikonformulas})
+#' @param fields a vector containing character string of requested data fields (preferred over \code{Eikonformulas})
 #'
-#' @return a data.frame containing data from Eikon
+#' @return a data.frame containing data from LSEG Workspace / Eikon
 #' @importFrom utils capture.output
 #'
 #' @export
@@ -26,18 +27,18 @@
 #'
 #' @examples
 #' \dontrun{
-#' Refinitiv <- RDConnect()
 #' ex1 <- rd_GetData(
-#'   RDObject = Refinitiv, rics = c("MMM", "III.L"),
-#'   Eikonformulas = c(
+#'   rics = c("MMM", "III.L"),
+#'   fields = c(
 #'     "TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/",
 #'     "TR.CompanyName"
-#'   ), verbose = TRUE
+#'   ),
+#'   verbose = TRUE
 #' )
 #'
 #' ex2 <- rd_GetData(
-#'   RDObject = Refinitiv, rics = "AAPL.O",
-#'   Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
+#'   rics = "AAPL.O",
+#'   fields = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
 #' )
 #'
 #' rics <- c("AAPL.O")
@@ -49,9 +50,8 @@
 #'
 #' parameters <- list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01", "Fill" = "None")
 #' test_json <- rd_GetData(
-#'   RDObject = Refinitiv,
 #'   rics = rics,
-#'   Eikonformulas = fields,
+#'   fields = fields,
 #'   Parameters = parameters,
 #'   use_field_names_in_headers = TRUE,
 #'   SyncFields = FALSE

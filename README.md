@@ -10,34 +10,39 @@ Test](https://github.com/GreenGrassBlueOcean/RefinitivR/actions/workflows/instal
 
 ## Overview
 
-**RefinitivR** is an R interface to LSEG Workspace (formerly Refinitiv
-Eikon) and Refinitiv DataStream.
+**RefinitivR** is an R interface to **LSEG Workspace** (formerly
+Refinitiv Eikon) and **Refinitiv DataStream**.
 
 **Just load and go** — the package auto-detects your running terminal
-and connects on the first API call. No API key, no setup code, no
-connection objects to manage. Repeated requests can be served from an
-opt-in **session-scoped cache** with configurable TTLs.
+(LSEG Workspace on port 9000 or Eikon Desktop on port 9060) and connects
+on the first API call. No API key, no setup code, no connection objects
+to manage. Repeated requests can be served from an opt-in
+**session-scoped cache** with configurable TTLs.
 
 - **Snapshot & historical data** — `rd_GetData()`, `rd_GetHistory()`,
   `rd_GetHistoricalPricing()`
 - **Real-time streaming** — WebSocket-based live market data with
-  callbacks
+  callbacks (`rd_get_streaming_data()`)
 - **ESG, estimates & ownership** — `rd_GetESG()`, `rd_GetEstimates()`,
   `rd_GetOwnership()`
-- **News & search** — headlines, stories, top news, discovery search
+- **Symbology & search** — `rd_ConvertSymbol()`, `RDPsearch()`,
+  `RDPget_search_metadata()`
+- **News** — `rd_get_news_headlines()`, `rd_get_news_story()`,
+  `rd_get_top_news()`
 - **Custom instruments** — create, update, delete basket and formula
-  instruments
-- **DataStream** — via `DatastreamDSWS2R`
+  instruments (`rd_ManageCustomInstruments()`)
+- **DataStream** — via `DatastreamDSWS2R` (`DataStreamConnect()`)
 - **Robust under the hood** — three-layer retry with exponential
-  backoff, automatic chunking, HTTP 429/503 handling, progress reporting
-  for large requests
+  backoff, connection-reset recovery, automatic chunking, HTTP 429/503
+  handling, and progress reporting for large requests
 
-> **Note (v0.2.0):** Python/reticulate support has been removed. All
-> data retrieval now uses the JSON API exclusively. See
-> [NEWS.md](NEWS.md) for details.
+> **Note (v0.2.0+):** Python/reticulate support has been removed. All
+> data retrieval now uses the JSON API exclusively. See the [Changelog
+> (NEWS.md)](https://github.com/GreenGrassBlueOcean/RefinitivR/blob/master/NEWS.md)
+> for details.
 
 This package is in no way affiliated with Thomson Reuters, Refinitiv,
-Eikon, Datastream, or LSEG. A subscription to Eikon/LSEG Workspace
+Eikon, Datastream, or LSEG. A subscription to LSEG Workspace / Eikon
 and/or Datastream is required. Use at your own risk!
 
 ## Installation
@@ -50,13 +55,14 @@ library(Refinitiv)
 
 ## Quick Start
 
-With LSEG Workspace running, no explicit connection step is needed:
+With LSEG Workspace (or Eikon Desktop) running, no explicit connection
+step is needed:
 
 ``` r
 library(Refinitiv)
 
 # Get snapshot data
-rd_GetData(rics = "AAPL.O", Eikonformulas = "TR.CompanyName")
+rd_GetData(rics = "AAPL.O", fields = "TR.CompanyName")
 
 # Get historical data
 rd_GetHistory(universe = c("AAPL.O", "MSFT.O"))
@@ -88,8 +94,8 @@ stream$close()
 2.  [Real-Time Streaming](#real-time-streaming)
 3.  [Working with Refinitiv Data (RD)](#working-with-refinitiv-data-rd)
 4.  [Legacy Eikon Functions](#working-with-the-legacy-eikon-functions)
-5.  [DataStream](#datastream)
-6.  [Custom Instruments](#custom-instruments)
+5.  [Custom Instruments](#custom-instruments)
+6.  [DataStream](#datastream)
 7.  [Caching](#caching)
 8.  [Progress Reporting](#progress-reporting)
 9.  [Building Custom Visualizations](#building-custom-visualizations)
@@ -99,12 +105,23 @@ stream$close()
 ## Connecting to LSEG Workspace
 
 No explicit connection step is needed. All API functions default to
-`rd_connection()`, which auto-creates and caches a connection on first
-use.
+`rd_connection()`, which auto-detects the running terminal (**LSEG
+Workspace** on port 9000 or **Refinitiv Eikon** on port 9060) and caches
+a connection on first use.
 
 Make sure LSEG Workspace (or Eikon Desktop) is running and online before
 calling any API function. After a terminal restart, call
 `rd_connection(reset = TRUE)` to force a fresh connection.
+
+For headless, CI, or remote-terminal setups, you can pre-configure
+connection settings in `.Renviron` (read at package load, skipping
+terminal auto-detection):
+
+``` ini
+REFINITIV_PORT=9000
+REFINITIV_BASE_URL=http://localhost
+REFINITIV_APP_KEY=DEFAULT_WORKSPACE_APP_KEY
+```
 
 ------------------------------------------------------------------------
 
@@ -226,7 +243,7 @@ source(system.file("examples", "streaming_test_debug.R", package = "Refinitiv"))
 
 ## Working with Refinitiv Data (RD)
 
-### Searching
+### Searching & Symbol Conversion
 
 ``` r
 # Basic search
@@ -240,6 +257,13 @@ Presidents <- RDPsearch(
   select = 'DocumentTitle',
   order_by = 'DocumentTitle asc',
   top = 20
+)
+
+# Robust multi-tiered symbol conversion (ISIN/CUSIP/SEDOL/RIC, bare tickers, delisted RICs)
+rd_ConvertSymbol(
+  symbols = c("US0378331005", "US5949181045"),
+  from_symbol_type = "ISIN",
+  to_symbol_type = "RIC"
 )
 ```
 
@@ -262,8 +286,10 @@ data <- rd_GetHistory(
 ``` r
 ex1 <- rd_GetData(
   rics = c("MMM", "III.L"),
-  Eikonformulas = c("TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/", 
-                     "TR.CompanyName")
+  fields = c(
+    "TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/", 
+    "TR.CompanyName"
+  )
 )
 ```
 
@@ -284,6 +310,36 @@ intraday <- rd_GetHistoricalPricing(
   count = 500L,
   sessions = c("pre", "normal", "post")
 )
+```
+
+### ESG, Consensus Estimates & Ownership
+
+``` r
+# ESG scores and measures
+esg <- rd_GetESG(universe = c("AAPL.O", "MSFT.O"), view = "scores-full")
+
+# I/B/E/S consensus estimates
+estimates <- rd_GetEstimates(
+  universe = "AAPL.O",
+  view = "view-summary/annual",
+  package = "standard"
+)
+
+# Institutional & insider ownership (with automatic pagination)
+ownership <- rd_GetOwnership(
+  universe = "AAPL.O",
+  view = "consolidated/investors",
+  limit = 50
+)
+```
+
+### News
+
+``` r
+# Headlines, full stories, and top news
+headlines <- rd_get_news_headlines(query = "MSFT.O", limit = 5)
+story <- rd_get_news_story(story_id = headlines$storyId[1])
+top_news <- rd_get_top_news()
 ```
 
 ------------------------------------------------------------------------
@@ -327,7 +383,7 @@ Data <- EikonGetData(
 ### Setup
 
 ``` r
-# Get UUID from Eikon Terminal: Help > About > User Details
+# Get UUID from LSEG Workspace / Eikon: Help > About > User Details
 RD <- RDConnect(UUID = "ABCDE-123456")
 ```
 
@@ -414,7 +470,7 @@ avoid redundant API calls:
 options(refinitiv_cache = TRUE)
 
 # Or enable per call
-rd_GetData(rics = "AAPL.O", Eikonformulas = "TR.CompanyName", cache = TRUE)
+rd_GetData(rics = "AAPL.O", fields = "TR.CompanyName", cache = TRUE)
 
 # Custom TTL (seconds)
 rd_GetHistory(universe = "AAPL.O", cache = 600)
@@ -457,7 +513,7 @@ Control progress output with `options(refinitiv_progress = ...)` or the
 options(refinitiv_progress = FALSE)
 
 # Or per-call
-rd_GetData(rics = large_universe, Eikonformulas = fields, verbose = FALSE)
+rd_GetData(rics = large_universe, fields = fields, verbose = FALSE)
 
 # Or via .Renviron (read at package load)
 # REFINITIV_PROGRESS=FALSE

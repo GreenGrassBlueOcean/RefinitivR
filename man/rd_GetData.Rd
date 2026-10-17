@@ -2,7 +2,7 @@
 % Please edit documentation in R/rd_GetData.R
 \name{rd_GetData}
 \alias{rd_GetData}
-\title{Function to obtain data from Eikon/LSEG via the JSON API}
+\title{Retrieve Snapshot Data from LSEG Workspace / Eikon via the JSON API}
 \usage{
 rd_GetData(
   RDObject = rd_connection(),
@@ -20,9 +20,9 @@ rd_GetData(
 )
 }
 \arguments{
-\item{RDObject}{Refinitiv Data connection object, default is RefinitivJsonConnect()}
+\item{RDObject}{Refinitiv Data connection object, defaults to \code{\link{rd_connection}()}}
 
-\item{rics}{a vector containing the instrument RICS}
+\item{rics}{a vector containing the instrument RICs}
 
 \item{Eikonformulas}{a vector containing character string of Eikon Formulas (deprecated, use \code{fields} instead)}
 
@@ -30,7 +30,7 @@ rd_GetData(
 
 \item{raw_output}{to return the raw list by chunk for debugging purposes, default = FALSE}
 
-\item{time_out}{set the maximum timeout to the Eikon server, default = 60}
+\item{time_out}{set the maximum timeout to the LSEG/Eikon server, default = 60}
 
 \item{verbose}{boolean, set to TRUE to print out the API call details with time stamp for debugging.}
 
@@ -45,28 +45,29 @@ rd_GetData(
 function default TTL (300 s). \code{FALSE} disables caching. A positive
 numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.}
 
-\item{fields}{a vector containing character string of requested data fields (alias for \code{Eikonformulas})}
+\item{fields}{a vector containing character string of requested data fields (preferred over \code{Eikonformulas})}
 }
 \value{
-a data.frame containing data from Eikon
+a data.frame containing data from LSEG Workspace / Eikon
 }
 \description{
-The function automatically chunks the list of rics into chunks that comply with the api limitations and in the end rebuilds the chunks again into a single data.frame.
+Automatically chunks the requested instruments to comply with API limits and
+recombines the results into a single \code{data.frame}.
 }
 \examples{
 \dontrun{
-Refinitiv <- RDConnect()
 ex1 <- rd_GetData(
-  RDObject = Refinitiv, rics = c("MMM", "III.L"),
-  Eikonformulas = c(
+  rics = c("MMM", "III.L"),
+  fields = c(
     "TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/",
     "TR.CompanyName"
-  ), verbose = TRUE
+  ),
+  verbose = TRUE
 )
 
 ex2 <- rd_GetData(
-  RDObject = Refinitiv, rics = "AAPL.O",
-  Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
+  rics = "AAPL.O",
+  fields = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
 )
 
 rics <- c("AAPL.O")
@@ -78,9 +79,8 @@ fields <- c(
 
 parameters <- list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01", "Fill" = "None")
 test_json <- rd_GetData(
-  RDObject = Refinitiv,
   rics = rics,
-  Eikonformulas = fields,
+  fields = fields,
   Parameters = parameters,
   use_field_names_in_headers = TRUE,
   SyncFields = FALSE

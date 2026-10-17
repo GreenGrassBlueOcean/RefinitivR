@@ -16,8 +16,6 @@ coverage_missing.csv
 coverage_report.html
 coverage_summary.txt
 COMMIT_MESSAGE.txt
-COMMIT_MESSAGE.txt
-COMMIT_MESSAGE.txt
 .venv/
 .Renviron
 *.md

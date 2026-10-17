@@ -20,7 +20,7 @@ rd_GetHistoricalPricing(
 )
 }
 \arguments{
-\item{RDObject}{connection object, defaults to RefinitivJsonConnect()}
+\item{RDObject}{connection object, defaults to \code{\link{rd_connection}()}}
 
 \item{universe}{The entity universe e.g. RIC name}
 
@@ -51,19 +51,19 @@ numeric value sets the cache TTL in seconds. See \code{\link{rd_ClearCache}}.}
 data.frame with result
 }
 \description{
-get historical timeseries from the Refinitiv API
+Retrieve historical pricing time series from LSEG Workspace / Eikon.
 }
 \details{
 Additional details on parameters:
 
 ## \strong{RDObject}:
-The supported connection object is RefinitivJsonConnect().
+Defaults to \code{\link{rd_connection}()} (created via \code{\link{RefinitivJsonConnect}()}).
 
 ## \strong{Interval}:
-The support intervals are:
+The supported intervals are:
 \describe{
  \item{Intraday Summaries Intervals}{ PT1M, PT5M, PT10M, PT30M, PT60M, and PT1H}
- \item{Interday Summaries Tntervals}{ P1D, P7D, P1W, P1M, P3M, P12M, and P1Y.}
+ \item{Interday Summaries Intervals}{ P1D, P7D, P1W, P1M, P3M, P12M, and P1Y.}
 }
 When interval is not specified, back-end will return the lowest supported interday interval.
 
@@ -72,16 +72,12 @@ When interval is not specified, back-end will return the lowest supported interd
  \item{\strong{Intraday Summaries Interval}}{ }
    \itemize{
    \item Local time is not supported
-   \item This parameter support time up to nanoseconds granularity.
-         For more details on minute summaries boundary
-         , see "Minute Summaries Boundary" in Readme.
-   \item See more details on "Start / End / Count Behavior" in Readme.
+   \item This parameter supports time up to nanoseconds granularity.
 }
 
- \item{\strong{Interday Summaries Tntervals}}{ }
+ \item{\strong{Interday Summaries Intervals}}{ }
    \describe{
    \item{The start/end of the query is in ISO8601 with local date only e.g 2018-01-01. If the time is supplied, it will be ignored.}{ }
-   \item{See more details on "Start / End / Count Behavior" in Readme.}{ }
 }}
 
 ## \strong{adjustments}:
