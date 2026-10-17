@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,6 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/GreenGrassBlueOcean/RefinitivR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -32,9 +31,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="connection-authentication">Connection &amp; Authentication<a class="anchor" aria-label="anchor" href="#connection-authentication"></a></h2>
+      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
 
-      <div class="section-desc"><p>Zero-config connection management, terminal auto-detection for LSEG Workspace and Refinitiv Eikon, and credential storage.</p></div>
+
 
       <dl></dl></div><div class="section level2">
 
@@ -42,256 +41,6 @@
 
 
       <dl><dt>
-
-          <code><a href="rd_connection.html">rd_connection()</a></code>
-
-        </dt>
-        <dd>Get or create the default Refinitiv connection</dd>
-
-        <dt>
-
-          <code><a href="RDConnect.html">RDConnect()</a></code> <code><a href="RDConnect.html">RDPConnect()</a></code>
-
-        </dt>
-        <dd>Connect to LSEG / Refinitiv Data via JSON</dd>
-
-        <dt>
-
-          <code><a href="EikonConnect.html">EikonConnect()</a></code>
-
-        </dt>
-        <dd>Connect to LSEG Workspace via JSON</dd>
-
-        <dt>
-
-          <code><a href="RefinitivJsonConnect.html">RefinitivJsonConnect()</a></code>
-
-        </dt>
-        <dd>Create a JSON connection object for the LSEG Workspace proxy</dd>
-
-        <dt>
-
-          <code><a href="rd_handshake.html">rd_handshake()</a></code>
-
-        </dt>
-        <dd>Get Bearer Key from Terminal</dd>
-
-        <dt>
-
-          <code><a href="refinitiv_vault.html">refinitiv_vault()</a></code>
-
-        </dt>
-        <dd>Inspect the credential vault safely</dd>
-
-        <dt>
-
-          <code><a href="print.RefinitivConnection.html">print(<i>&lt;RefinitivConnection&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Print a RefinitivConnection object</dd>
-
-        <dt>
-
-          <code><a href="names.RefinitivConnection.html">names(<i>&lt;RefinitivConnection&gt;</i>)</a></code>
-
-        </dt>
-        <dd>List methods on a RefinitivConnection object</dd>
-      </dl></div><div class="section level2">
-      <h2 id="snapshot-historical-data">Snapshot &amp; Historical Data<a class="anchor" aria-label="anchor" href="#snapshot-historical-data"></a></h2>
-
-      <div class="section-desc"><p>Retrieve current snapshots, fundamental history, and historical pricing time series with corporate action adjustments.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="rd_GetData.html">rd_GetData()</a></code>
-
-        </dt>
-        <dd>Retrieve Snapshot Data from LSEG Workspace / Eikon via the JSON API</dd>
-
-        <dt>
-
-          <code><a href="rd_GetHistory.html">rd_GetHistory()</a></code>
-
-        </dt>
-        <dd>The get_history function allows you to retrieve pricing history, as well as Fundamental and Reference data history through a single function call.</dd>
-
-        <dt>
-
-          <code><a href="rd_GetHistoricalPricing.html">rd_GetHistoricalPricing()</a></code>
-
-        </dt>
-        <dd>GetHistoricalPricing</dd>
-
-        <dt>
-
-          <code><a href="TR_Field.html">TR_Field()</a></code>
-
-        </dt>
-        <dd>Helper function to build the Eikonformulas parameter for the EikonGetData function.</dd>
-      </dl></div><div class="section level2">
-      <h2 id="esg-estimates-ownership">ESG, Estimates &amp; Ownership<a class="anchor" aria-label="anchor" href="#esg-estimates-ownership"></a></h2>
-
-      <div class="section-desc"><p>Retrieve Environmental, Social, and Governance (ESG) scores and measures, I/B/E/S consensus estimates, and institutional/insider ownership data.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="rd_GetESG.html">rd_GetESG()</a></code>
-
-        </dt>
-        <dd>Retrieve ESG Data from LSEG</dd>
-
-        <dt>
-
-          <code><a href="rd_GetEstimates.html">rd_GetEstimates()</a></code>
-
-        </dt>
-        <dd>Retrieve Estimates Data from LSEG</dd>
-
-        <dt>
-
-          <code><a href="rd_GetOwnership.html">rd_GetOwnership()</a></code>
-
-        </dt>
-        <dd>Retrieve Ownership Data from LSEG</dd>
-      </dl></div><div class="section level2">
-      <h2 id="symbology-search">Symbology &amp; Search<a class="anchor" aria-label="anchor" href="#symbology-search"></a></h2>
-
-      <div class="section-desc"><p>Multi-tiered symbol conversion (RIC, ISIN, CUSIP, SEDOL, bare tickers, delisted instruments) and discovery search across LSEG views.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="rd_ConvertSymbol.html">rd_ConvertSymbol()</a></code>
-
-        </dt>
-        <dd>Robust Symbol Conversion for Refinitiv Data</dd>
-
-        <dt>
-
-          <code><a href="RDPsearch.html">RDPsearch()</a></code>
-
-        </dt>
-        <dd>RDP search function is a wrapper for the pyton rdp.search function</dd>
-
-        <dt>
-
-          <code><a href="RDPget_search_metadata.html">RDPget_search_metadata()</a></code>
-
-        </dt>
-        <dd>Get search metadata from RDP</dd>
-
-        <dt>
-
-          <code><a href="RDPShowAvailableSearchViews.html">RDPShowAvailableSearchViews()</a></code>
-
-        </dt>
-        <dd>Show Available Search Views for searchView parameter in RDPget_search_metadata</dd>
-
-        <dt>
-
-          <code><a href="EikonRepairMic.html">EikonRepairMic()</a></code>
-
-        </dt>
-        <dd>Repair Market Identifier Codes (MIC) utilizing RDN Exchange Identifiers</dd>
-      </dl></div><div class="section level2">
-      <h2 id="news">News<a class="anchor" aria-label="anchor" href="#news"></a></h2>
-
-      <div class="section-desc"><p>Search news headlines, retrieve full news stories, and browse top news packages.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="rd_get_news_headlines.html">rd_get_news_headlines()</a></code>
-
-        </dt>
-        <dd>Retrieve News Headlines from a Refinitiv RDP (JSON) Connection</dd>
-
-        <dt>
-
-          <code><a href="rd_get_news_story.html">rd_get_news_story()</a></code>
-
-        </dt>
-        <dd>Retrieve Full News Story from a Refinitiv RDP (JSON) Connection</dd>
-
-        <dt>
-
-          <code><a href="rd_get_top_news.html">rd_get_top_news()</a></code>
-
-        </dt>
-        <dd>Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection, Then Fetch Stories</dd>
-      </dl></div><div class="section level2">
-      <h2 id="real-time-streaming">Real-Time Streaming<a class="anchor" aria-label="anchor" href="#real-time-streaming"></a></h2>
-
-      <div class="section-desc"><p>WebSocket-based live market data streaming with event callbacks, history buffering, and interactive visualization.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="rd_get_streaming_data.html">rd_get_streaming_data()</a></code>
-
-        </dt>
-        <dd>Get streaming data from Refinitiv</dd>
-
-        <dt>
-
-          <code><a href="rd_streaming_pricing.html">rd_streaming_pricing</a></code>
-
-        </dt>
-        <dd>Pricing Stream Definition</dd>
-
-        <dt>
-
-          <code><a href="rd_streaming_debug.html">rd_streaming_debug()</a></code>
-
-        </dt>
-        <dd>Debug streaming connection</dd>
-      </dl></div><div class="section level2">
-      <h2 id="custom-instruments">Custom Instruments<a class="anchor" aria-label="anchor" href="#custom-instruments"></a></h2>
-
-      <div class="section-desc"><p>Create, search, update, and delete custom formula and basket instruments.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="rd_ManageCustomInstruments.html">rd_ManageCustomInstruments()</a></code>
-
-        </dt>
-        <dd>CREATE, GET, UPDATE or DELETE a custom instrument</dd>
-
-        <dt>
-
-          <code><a href="rd_SearchCustomInstruments.html">rd_SearchCustomInstruments()</a></code>
-
-        </dt>
-        <dd>Show all available custom instruments that have been created</dd>
-
-        <dt>
 
           <code><a href="CorrectCustomInstrument.html">CorrectCustomInstrument()</a></code>
 
@@ -318,40 +67,8 @@
 
         </dt>
         <dd>Build a user defined continuation object for a custom instrument</dd>
-      </dl></div><div class="section level2">
-      <h2 id="session-cache">Session Cache<a class="anchor" aria-label="anchor" href="#session-cache"></a></h2>
-
-      <div class="section-desc"><p>Inspect and manage the opt-in session-scoped request cache.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="rd_CacheInfo.html">rd_CacheInfo()</a></code>
-
-        </dt>
-        <dd>Show RefinitivR Cache Statistics</dd>
 
         <dt>
-
-          <code><a href="rd_ClearCache.html">rd_ClearCache()</a></code>
-
-        </dt>
-        <dd>Clear the RefinitivR Session Cache</dd>
-      </dl></div><div class="section level2">
-      <h2 id="datastream">DataStream<a class="anchor" aria-label="anchor" href="#datastream"></a></h2>
-
-      <div class="section-desc"><p>Connect to LSEG/Refinitiv DataStream via DatastreamDSWS2R.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
 
           <code><a href="DataStreamConnect.html">DataStreamConnect()</a></code>
 
@@ -360,40 +77,17 @@
 
         <dt>
 
-          <code><a href="TestDataStreamCredentials.html">TestDataStreamCredentials()</a></code>
+          <code><a href="EikonConnect.html">EikonConnect()</a></code>
 
         </dt>
-        <dd>Test if the DataStream Credentials are valid</dd>
-      </dl></div><div class="section level2">
-      <h2 id="legacy-eikon-api">Legacy Eikon API<a class="anchor" aria-label="anchor" href="#legacy-eikon-api"></a></h2>
+        <dd>Connect to LSEG Workspace via JSON</dd>
 
-      <div class="section-desc"><p>Backward-compatible Eikon UDF functions and result wrappers.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
+        <dt>
 
           <code><a href="EikonGetData.html">EikonGetData()</a></code>
 
         </dt>
         <dd>Function to obtain data from Eikon via the JSON API</dd>
-
-        <dt>
-
-          <code><a href="EikonGetTimeseries.html">EikonGetTimeseries()</a></code>
-
-        </dt>
-        <dd>Function to obtain timeseries from Eikon via the JSON API</dd>
-
-        <dt>
-
-          <code><a href="EikonGetSymbology.html">EikonGetSymbology()</a></code>
-
-        </dt>
-        <dd>Returns a list of instrument names converted into another instrument code. For example: convert SEDOL instrument names to RIC names</dd>
 
         <dt>
 
@@ -411,35 +105,26 @@
 
         <dt>
 
-          <code><a href="print.EikonResult.html">print(<i>&lt;EikonResult&gt;</i>)</a></code>
+          <code><a href="EikonGetSymbology.html">EikonGetSymbology()</a></code>
 
         </dt>
-        <dd>Print an EikonResult</dd>
+        <dd>Returns a list of instrument names converted into another instrument code. For example: convert SEDOL instrument names to RIC names</dd>
 
         <dt>
 
-          <code><a href="as.data.table.EikonResult.html">as.data.table.EikonResult()</a></code>
+          <code><a href="EikonGetTimeseries.html">EikonGetTimeseries()</a></code>
 
         </dt>
-        <dd>Convert EikonResult to data.table</dd>
+        <dd>Function to obtain timeseries from Eikon via the JSON API</dd>
 
         <dt>
 
-          <code><a href="as.data.frame.EikonResult.html">as.data.frame(<i>&lt;EikonResult&gt;</i>)</a></code>
+          <code><a href="EikonRepairMic.html">EikonRepairMic()</a></code>
 
         </dt>
-        <dd>Convert EikonResult to data.frame</dd>
-      </dl></div><div class="section level2">
-      <h2 id="bundled-datasets">Bundled Datasets<a class="anchor" aria-label="anchor" href="#bundled-datasets"></a></h2>
+        <dd>Repair Market Identifier Codes (MIC) utilizing RDN Exchange Identifiers</dd>
 
-      <div class="section-desc"><p>Reference lookup tables included with the package.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
+        <dt>
 
           <code><a href="NagerHolidayData.html">NagerHolidayData</a></code>
 
@@ -455,21 +140,82 @@
 
         <dt>
 
+          <code><a href="RDConnect.html">RDConnect()</a></code> <code><a href="RDConnect.html">RDPConnect()</a></code>
+
+        </dt>
+        <dd>Connect to LSEG / Refinitiv Data via JSON</dd>
+
+        <dt>
+
+          <code><a href="RDPGetOptionAnalytics.html">RDPGetOptionAnalytics()</a></code>
+
+        </dt>
+        <dd>Get RDP option analytics</dd>
+
+        <dt>
+
+          <code><a href="RDPShowAvailableSearchViews.html">RDPShowAvailableSearchViews()</a></code>
+
+        </dt>
+        <dd>Show Available Search Views for searchView parameter in RDPget_search_metadata</dd>
+
+        <dt>
+
+          <code><a href="RDPget_search_metadata.html">RDPget_search_metadata()</a></code>
+
+        </dt>
+        <dd>Get search metadata from RDP</dd>
+
+        <dt>
+
+          <code><a href="RDPsearch.html">RDPsearch()</a></code>
+
+        </dt>
+        <dd>RDP search function is a wrapper for the pyton rdp.search function</dd>
+
+        <dt>
+
+          <code><a href="RefinitivJsonConnect.html">RefinitivJsonConnect()</a></code>
+
+        </dt>
+        <dd>Create a JSON connection object for the LSEG Workspace proxy</dd>
+
+        <dt>
+
           <code><a href="SearchViewsLookup.html">SearchViewsLookup</a></code>
 
         </dt>
         <dd>Lookup code for SearchViews to alternate between RD and JSON format SearchViews</dd>
-      </dl></div><div class="section level2">
-      <h2 id="defunct-functions">Defunct Functions<a class="anchor" aria-label="anchor" href="#defunct-functions"></a></h2>
 
-      <div class="section-desc"><p>Functions removed in v0.2.0 following removal of the Python/reticulate bridge.</p></div>
+        <dt>
 
-      <dl></dl></div><div class="section level2">
+          <code><a href="TR_Field.html">TR_Field()</a></code>
 
+        </dt>
+        <dd>Helper function to build the Eikonformulas parameter for the EikonGetData function.</dd>
 
+        <dt>
 
+          <code><a href="TestDataStreamCredentials.html">TestDataStreamCredentials()</a></code>
 
-      <dl><dt>
+        </dt>
+        <dd>Test if the DataStream Credentials are valid</dd>
+
+        <dt>
+
+          <code><a href="as.data.frame.EikonResult.html">as.data.frame(<i>&lt;EikonResult&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Convert EikonResult to data.frame</dd>
+
+        <dt>
+
+          <code><a href="as.data.table.EikonResult.html">as.data.table.EikonResult()</a></code>
+
+        </dt>
+        <dd>Convert EikonResult to data.table</dd>
+
+        <dt>
 
           <code><a href="install_eikon.html">install_eikon()</a></code>
 
@@ -478,13 +224,166 @@
 
         <dt>
 
-          <code><a href="RDPGetOptionAnalytics.html">RDPGetOptionAnalytics()</a></code>
+          <code><a href="names.RefinitivConnection.html">names(<i>&lt;RefinitivConnection&gt;</i>)</a></code>
 
         </dt>
-        <dd>Get RDP option analytics</dd>
+        <dd>List methods on a RefinitivConnection object</dd>
+
+        <dt>
+
+          <code><a href="print.EikonResult.html">print(<i>&lt;EikonResult&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Print an EikonResult</dd>
+
+        <dt>
+
+          <code><a href="print.RefinitivConnection.html">print(<i>&lt;RefinitivConnection&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Print a RefinitivConnection object</dd>
+
+        <dt>
+
+          <code><a href="rd_CacheInfo.html">rd_CacheInfo()</a></code>
+
+        </dt>
+        <dd>Show RefinitivR Cache Statistics</dd>
+
+        <dt>
+
+          <code><a href="rd_ClearCache.html">rd_ClearCache()</a></code>
+
+        </dt>
+        <dd>Clear the RefinitivR Session Cache</dd>
+
+        <dt>
+
+          <code><a href="rd_ConvertSymbol.html">rd_ConvertSymbol()</a></code>
+
+        </dt>
+        <dd>Robust Symbol Conversion for Refinitiv Data</dd>
+
+        <dt>
+
+          <code><a href="rd_GetData.html">rd_GetData()</a></code>
+
+        </dt>
+        <dd>Function to obtain data from Eikon/LSEG via the JSON API</dd>
+
+        <dt>
+
+          <code><a href="rd_GetESG.html">rd_GetESG()</a></code>
+
+        </dt>
+        <dd>Retrieve ESG Data from LSEG</dd>
+
+        <dt>
+
+          <code><a href="rd_GetEstimates.html">rd_GetEstimates()</a></code>
+
+        </dt>
+        <dd>Retrieve Estimates Data from LSEG</dd>
+
+        <dt>
+
+          <code><a href="rd_GetHistoricalPricing.html">rd_GetHistoricalPricing()</a></code>
+
+        </dt>
+        <dd>GetHistoricalPricing</dd>
+
+        <dt>
+
+          <code><a href="rd_GetHistory.html">rd_GetHistory()</a></code>
+
+        </dt>
+        <dd>The get_history function allows you to retrieve pricing history, as well as Fundamental and Reference data history through a single function call.</dd>
+
+        <dt>
+
+          <code><a href="rd_GetOwnership.html">rd_GetOwnership()</a></code>
+
+        </dt>
+        <dd>Retrieve Ownership Data from LSEG</dd>
+
+        <dt>
+
+          <code><a href="rd_ManageCustomInstruments.html">rd_ManageCustomInstruments()</a></code>
+
+        </dt>
+        <dd>CREATE, GET, UPDATE or DELETE a custom instrument</dd>
+
+        <dt>
+
+          <code><a href="rd_SearchCustomInstruments.html">rd_SearchCustomInstruments()</a></code>
+
+        </dt>
+        <dd>Show all available custom instruments that have been created</dd>
+
+        <dt>
+
+          <code><a href="rd_connection.html">rd_connection()</a></code>
+
+        </dt>
+        <dd>Get or create the default Refinitiv connection</dd>
+
+        <dt>
+
+          <code><a href="rd_get_news_headlines.html">rd_get_news_headlines()</a></code>
+
+        </dt>
+        <dd>Retrieve News Headlines from a Refinitiv RDP (JSON) Connection</dd>
+
+        <dt>
+
+          <code><a href="rd_get_news_story.html">rd_get_news_story()</a></code>
+
+        </dt>
+        <dd>Retrieve Full News Story from a Refinitiv RDP (JSON) Connection</dd>
+
+        <dt>
+
+          <code><a href="rd_get_streaming_data.html">rd_get_streaming_data()</a></code>
+
+        </dt>
+        <dd>Get streaming data from Refinitiv</dd>
+
+        <dt>
+
+          <code><a href="rd_get_top_news.html">rd_get_top_news()</a></code>
+
+        </dt>
+        <dd>Retrieve Top News Packages from a Refinitiv RDP (JSON) Connection, Then Fetch Stories</dd>
+
+        <dt>
+
+          <code><a href="rd_handshake.html">rd_handshake()</a></code>
+
+        </dt>
+        <dd>Get Bearer Key from Terminal</dd>
+
+        <dt>
+
+          <code><a href="rd_streaming_debug.html">rd_streaming_debug()</a></code>
+
+        </dt>
+        <dd>Debug streaming connection</dd>
+
+        <dt>
+
+          <code><a href="rd_streaming_pricing.html">rd_streaming_pricing</a></code>
+
+        </dt>
+        <dd>Pricing Stream Definition</dd>
+
+        <dt>
+
+          <code><a href="refinitiv_vault.html">refinitiv_vault()</a></code>
+
+        </dt>
+        <dd>Inspect the credential vault safely</dd>
       </dl></div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
-    </nav></aside></div>
+  </main></div>
 
 
     <footer><div class="pkgdown-footer-left">

@@ -11,9 +11,7 @@ EikonChunker(
   MaxCallsPerChunk = 12000,
   Duration = NULL,
   MaxRicsperChunk = 300,
-  verbose = getOption("refinitiv_progress", TRUE),
-  Parameters = NULL,
-  MaxRowsPerChunk = 10000L
+  verbose = getOption("refinitiv_progress", TRUE)
 )
 ```
 
@@ -25,7 +23,8 @@ EikonChunker(
 
 - Eikonfields:
 
-  a list of the eikonfields to be requested default NULL
+  a list of the eikonfields to be requested default NULL, if eikonfields
+  are supplied duration may not be supplied
 
 - MaxCallsPerChunk:
 
@@ -33,26 +32,14 @@ EikonChunker(
 
 - Duration:
 
-  a natural number denoting the amount of rows asked for in a TimeSeries
-  default NULL
+  a natural number denoting the amoount of rows asked for in a
+  TimeSeries default NULL, if Duration is supplied Eikonfields may not
+  be supplied
 
 - MaxRicsperChunk:
 
   a natural number denoting the maximum amount of Rics that should be
   available in one call, default is 300.
-
-- verbose:
-
-  boolean or character, prints progress information when chunking
-
-- Parameters:
-
-  optional named list of request parameters (e.g. `SDate`, `EDate`,
-  `FRQ`) used to estimate multi-period row counts per instrument
-
-- MaxRowsPerChunk:
-
-  maximum rows per chunk before server-side truncation (default 10000L)
 
 ## Value
 
