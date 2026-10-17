@@ -59,6 +59,7 @@ pagination for large result sets.</p>
 <span>     <span class="st">"org-info"</span><span class="op">)</span>,</span>
 <span>  stat_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  limit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  offset <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sort_order <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  frequency <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -124,6 +125,11 @@ Required for <code>consolidated/breakdown</code> and <code>fund/breakdown</code>
 If <code>NULL</code> (default), fetches all available data via automatic
 pagination. The LSEG API returns at most 100 rows per request; this
 function handles paging transparently.</p></dd>
+
+
+<dt id="arg-offset">offset<a class="anchor" aria-label="anchor" href="#arg-offset"></a></dt>
+<dd><p>Optional integer. Starting row offset for retrieval (default
+<code>NULL</code>, which starts at 0).</p></dd>
 
 
 <dt id="arg-sort-order">sort_order<a class="anchor" aria-label="anchor" href="#arg-sort-order"></a></dt>

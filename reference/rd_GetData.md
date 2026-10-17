@@ -86,6 +86,24 @@ rd_GetData(
 
 a data.frame containing data from LSEG Workspace / Eikon
 
+## Details
+
+**LSEG Backend AQL Error Handling and Adaptive Sub-Chunking:** When
+LSEG's backend Asynchronous Query Library (AQL) is under heavy load and
+receives a large multi-RIC \\\times\\ multi-formula request (e.g. \\\>
+28\\ RICs \\\times\\ 100+ `TR.*` formulas), the proxy may return HTTP
+200 with a collapsed 1-column payload (`totalColumnsCount = 1`,
+`headers[[1]][[1]]$displayName = NULL`) and `code = 100`
+(`"Asynchronous Query library internal error."`) in `$error` for every
+row. `rd_GetData()` rejects these collapsed AQL payloads via
+`eikon_data_is_success()` so they are never treated as valid data or
+cached, and when an oversized chunk (\\\> 28\\ RICs) hits an AQL
+collapse it automatically splits that chunk (and any remaining oversized
+chunks in the same call) into \\\le 25\\-RIC sub-chunks
+(`getOption("refinitiv_aql_fallback_rics", 25L)`). See
+[`EikonGetData`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetData.md)
+for full details on the three LSEG backend AQL failure modes.
+
 ## References
 
 <https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item>

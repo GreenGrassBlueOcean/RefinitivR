@@ -7,14 +7,16 @@ It decodes the token's payload without verifying its signature.
 ## Usage
 
 ``` r
-rd_VerifyToken(token)
+rd_VerifyToken(token = refinitiv_vault_get("access_token"))
 ```
 
 ## Arguments
 
 - token:
 
-  A character string representing the JWT access token.
+  A character string representing the JWT access token. Defaults to the
+  current vaulted access token
+  (\`refinitiv_vault_get("access_token")\`).
 
 ## Value
 
