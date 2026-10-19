@@ -2,8 +2,10 @@ Package: Refinitiv
 Type: Package
 Title: Connect to LSEG Workspace, Refinitiv Eikon, and DataStream from R
 Version: 0.2.4
-Author: Laurens van der Burg
-Maintainer: Laurens van der Burg <laurens@ggbo.eu>
+Authors@R: person(given = "Laurens",
+                  family = "van der Burg",
+                  role = c("aut", "cre"),
+                  email = "laurens@ggbo.eu")
 Description: Zero-config R interface to LSEG Workspace (formerly Refinitiv Eikon)
     and DataStream. Auto-detects the running terminal, connects via direct JSON
     API calls, and provides opt-in session-scoped request caching. Includes

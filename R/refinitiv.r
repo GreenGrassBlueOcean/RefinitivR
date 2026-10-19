@@ -143,7 +143,7 @@ EikonNameCleaner <- function(names, SpaceConvertor = ".") {
 #'
 #' @return a list of splitted RICS that can be returned to guarantee compliance with api limits.
 #' @keywords internal
-#' @references \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
+#' @references \url{https://developers.lseg.com/en/api-catalog/eikon/eikon-data-api/documentation}
 #'
 #' @examples
 #' \dontrun{
@@ -394,7 +394,7 @@ retry <- function(fn, max_attempts = getOption("refinitiv_max_retries", 2L),
 #' @return A data.frame containing time series from Eikon
 #' @export
 #'
-#' @references \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
+#' @references \url{https://developers.lseg.com/en/api-catalog/eikon/eikon-data-api/documentation}
 #' @importFrom  data.table rbindlist dcast
 #' @examples
 #' \dontrun{
@@ -588,7 +588,7 @@ EikonGetTimeseries <- function(
 #' @importFrom utils capture.output
 #'
 #' @export
-#' @references \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
+#' @references \url{https://developers.lseg.com/en/api-catalog/eikon/eikon-data-api/documentation}
 #'
 #' @examples
 #' \dontrun{

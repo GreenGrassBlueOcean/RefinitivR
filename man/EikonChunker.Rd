@@ -44,6 +44,6 @@ Returns a list of chunked Rics so that api limits can be satisfied
 }
 }
 \references{
-\url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
+\url{https://developers.lseg.com/en/api-catalog/eikon/eikon-data-api/documentation}
 }
 \keyword{internal}

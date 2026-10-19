@@ -13,7 +13,7 @@ A list containing:
 }
 }
 \source{
-\url{https://date.nager.at/}
+\url{https://nagerholidays.com/}
 }
 \usage{
 NagerHolidayData

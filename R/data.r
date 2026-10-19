@@ -8,7 +8,7 @@
 #'   \item{HolidayVectorperCountry}{a list of vectors containing the public holiday dates per country}
 #'   \item{HolidayDataFrame}{a dataframe with two columns date (of the holiday) and the iso3c countryindication of the country where the holiday is located}
 #' }
-#' @source \url{https://date.nager.at/}
+#' @source \url{https://nagerholidays.com/}
 "NagerHolidayData"
 
 

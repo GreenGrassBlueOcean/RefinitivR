@@ -40,7 +40,7 @@
 #' @importFrom utils capture.output
 #'
 #' @export
-#' @references \url{https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item}
+#' @references \url{https://developers.lseg.com/en/api-catalog/eikon/eikon-data-api/documentation}
 #'
 #' @examples
 #' \dontrun{
