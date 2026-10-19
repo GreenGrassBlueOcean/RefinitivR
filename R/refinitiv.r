@@ -324,23 +324,30 @@ retry <- function(fn, max_attempts = getOption("refinitiv_max_retries", 2L),
 
   err_env <- new.env(parent = emptyenv())
   err_env$last_error <- NULL
+  err_env$permanent <- FALSE
   # Sentinel: distinguishes "fn() returned NULL" from "fn() threw an error"
   .sentinel <- structure(list(), class = "retry_error_sentinel")
 
   for (i in seq_len(max_attempts)) {
     result <- tryCatch(fn(), error = function(e) {
       err_env$last_error <- e
+      if (inherits(e, "refinitiv_http_error")) {
+        err_env$permanent <- TRUE
+      }
       message(
         "API request failed (attempt ", i, "/", max_attempts, "): ",
         conditionMessage(e)
       )
-      if (i < max_attempts) {
+      if (i < max_attempts && !err_env$permanent) {
         Sys.sleep(backoff * (2^(i - 1)))
       }
       .sentinel
     })
     if (!inherits(result, "retry_error_sentinel")) {
       return(result)
+    }
+    if (err_env$permanent) {
+      break
     }
   }
 
@@ -352,6 +359,9 @@ retry <- function(fn, max_attempts = getOption("refinitiv_max_retries", 2L),
     stop(msg, call. = FALSE)
   }
   warning(msg, call. = FALSE)
+  if (err_env$permanent) {
+    return(structure(NA, permanent_error = TRUE))
+  }
   NA
 }
 
@@ -637,11 +647,7 @@ EikonGetData <- function(
     if (.cl$found) {
       if (!isFALSE(verbose)) message("[RefinitivR] Cache hit")
       if (!raw_output && is.list(.cl$value) && !is.null(.cl$value$PostProcessedEikonGetData)) {
-        val <- .cl$value
-        val$PostProcessedEikonGetData <- .restore_input_order(
-          val$PostProcessedEikonGetData, rics, "Instrument"
-        )
-        return(val)
+        return(.restore_input_order(.cl$value, rics, "Instrument"))
       }
       return(.cl$value)
     }
@@ -749,9 +755,9 @@ EikonGetData <- function(
       }
     })
     ReturnElement <- new_EikonResult(EikonPostProcessor(EikonDataList, SpaceConvertor))
-    ReturnElement$PostProcessedEikonGetData <- .restore_input_order(
-      ReturnElement$PostProcessedEikonGetData, rics, "Instrument"
-    )
+    if (!isFALSE(ttl)) {
+      ReturnElement <- .restore_input_order(ReturnElement, rics, "Instrument")
+    }
   } else {
     ReturnElement <- EikonDataList
   }
@@ -955,8 +961,10 @@ EikonGetSymbology <- function(
       ReturnElement <- data.table::rbindlist(ReturnList,
         use.names = TRUE, fill = TRUE
       ) |> data.table::setDF()
-      sym_col <- if (from_symbol_type %in% names(ReturnElement)) from_symbol_type else "symbol"
-      ReturnElement <- .restore_input_order(ReturnElement, symbol, sym_col)
+      if (!isFALSE(ttl)) {
+        sym_col <- if (from_symbol_type %in% names(ReturnElement)) from_symbol_type else "symbol"
+        ReturnElement <- .restore_input_order(ReturnElement, symbol, sym_col)
+      }
     }
   } else {
     ReturnElement <- EikonSymbologyList

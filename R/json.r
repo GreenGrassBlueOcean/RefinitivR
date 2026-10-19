@@ -264,92 +264,102 @@ send_json_request <- function(json = NULL, service = "eikon", debug = FALSE, req
     }
 
     if (method != "DELETE") {
-      tryresults <- tryCatch(
-        httr2::resp_body_json(query, check_type = FALSE),
-        error = function(e) {
-          if (is.numeric(http_status) && http_status >= 400L) {
-            raw_txt <- tryCatch(httr2::resp_body_string(query), error = function(e2) "")
-            snippet <- substr(gsub("[\\r\\n]+", " ", raw_txt), 1L, 200L)
-            stop(
-              paste0("HTTP ", http_status, " error (non-JSON response): ", snippet),
-              call. = FALSE
-            )
+        tryresults <- tryCatch(
+          httr2::resp_body_json(query, check_type = FALSE),
+          error = function(e) {
+            if (is.numeric(http_status) && http_status >= 400L) {
+              raw_txt <- tryCatch(httr2::resp_body_string(query), error = function(e2) "")
+              snippet <- substr(gsub("[\\r\\n]+", " ", raw_txt), 1L, 200L)
+              err_msg <- paste0("HTTP ", http_status, " error (non-JSON response): ", snippet)
+              if (http_status < 500L && !(http_status %in% c(408L, 429L))) {
+                stop(errorCondition(err_msg, class = "refinitiv_http_error", http_status = http_status))
+              }
+              stop(err_msg, call. = FALSE)
+            }
+            stop(e)
           }
-          stop(e)
-        }
-      )
-      if (is.list(tryresults) && "responses" %in% names(tryresults)) {
-        tryresults <- tryresults$responses[[1]]
-      }
-
-      ticket <- NULL
-      # Fetches the content from the query
-      # Checks for ErrorCode and then aborts after printing message
-      if (is.list(tryresults) && (is.numeric(tryresults$ErrorCode) || is.numeric(tryresults$estimatedDuration))) {
-        is_retriable_code <- is.numeric(tryresults$ErrorCode) && (
-          tryresults$ErrorCode %in% c(2504, 500) ||
-            (tryresults$ErrorCode == 400 && !identical(json, original_json))
         )
-        if (is_retriable_code) {
-          wait_secs <- 5 * (counter + 1L)
-          progress_msg(
-            "Retriable error ", tryresults$ErrorCode,
-            ", retrying in ", sprintf("%.0fs", wait_secs),
-            " (attempt ", counter + 1L, "/", max_retries, ")",
-            force = TRUE
+        if (is.list(tryresults) && "responses" %in% names(tryresults)) {
+          tryresults <- tryresults$responses[[1]]
+        }
+
+        ticket <- NULL
+        # Fetches the content from the query
+        # Checks for ErrorCode and then aborts after printing message
+        if (is.list(tryresults) && (is.numeric(tryresults$ErrorCode) || is.numeric(tryresults$estimatedDuration))) {
+          is_retriable_code <- is.numeric(tryresults$ErrorCode) && (
+            tryresults$ErrorCode %in% c(2504, 500) ||
+              (tryresults$ErrorCode == 400 && !identical(json, original_json))
           )
-          Sys.sleep(wait_secs)
-          json <- original_json
-          counter <- counter + 1L
-        } else if (is.numeric(tryresults$estimatedDuration)) {
-          WaitTime <- NULL
-          WaitTime <- try(tryresults$estimatedDuration / 1000, silent = TRUE)
-          ticket <- try(tryresults$ticket, silent = TRUE)
-          progress_msg(
-            "Server requested wait: ", sprintf("%.1fs", WaitTime),
-            " (async ticket, poll ", counter + 1L, "/", max_retries, ")",
-            force = TRUE
-          )
-          if (!is.null(WaitTime) && WaitTime <= 60) {
-            Sys.sleep(WaitTime)
+          if (is_retriable_code) {
+            wait_secs <- 5 * (counter + 1L)
+            progress_msg(
+              "Retriable error ", tryresults$ErrorCode,
+              ", retrying in ", sprintf("%.0fs", wait_secs),
+              " (attempt ", counter + 1L, "/", max_retries, ")",
+              force = TRUE
+            )
+            Sys.sleep(wait_secs)
+            json <- original_json
+            counter <- counter + 1L
+          } else if (is.numeric(tryresults$estimatedDuration)) {
+            WaitTime <- NULL
+            WaitTime <- try(tryresults$estimatedDuration / 1000, silent = TRUE)
+            ticket <- try(tryresults$ticket, silent = TRUE)
+            progress_msg(
+              "Server requested wait: ", sprintf("%.1fs", WaitTime),
+              " (async ticket, poll ", counter + 1L, "/", max_retries, ")",
+              force = TRUE
+            )
+            if (!is.null(WaitTime) && WaitTime <= 60) {
+              Sys.sleep(WaitTime)
+            } else {
+              Sys.sleep(60)
+            } # maximize waiting time to 60 seconds, not waiting for more than 60 seconds for server response
+            # Check if new json body with ticket should be created for the next request
+            if (!is.null(ticket) && !is.null(query$request$body)) {
+              json <- ConstructTicketJsonBody(ticket = ticket, query = query, debug = debug)
+            }
+            counter <- counter + 1L
           } else {
-            Sys.sleep(60)
-          } # maximize waiting time to 60 seconds, not waiting for more than 60 seconds for server response
-          # Check if new json body with ticket should be created for the next request
-          if (!is.null(ticket) && !is.null(query$request$body)) {
-            json <- ConstructTicketJsonBody(ticket = ticket, query = query, debug = debug)
+            err_msg <- paste0("Error code: ", tryresults$ErrorCode, " ", tryresults$ErrorMessage)
+            stop(errorCondition(err_msg, class = "refinitiv_http_error", http_status = tryresults$ErrorCode))
           }
-          counter <- counter + 1L
+        } else if (is.numeric(http_status) && http_status >= 400L) {
+          err_detail <- NULL
+          if (is.list(tryresults)) {
+            if (is.list(tryresults$error) && !is.null(tryresults$error$message)) {
+              err_detail <- as.character(tryresults$error$message)[1L]
+            } else if (is.character(tryresults$error_description)) {
+              err_detail <- tryresults$error_description[1L]
+            } else if (is.character(tryresults$message)) {
+              err_detail <- tryresults$message[1L]
+            } else if (is.character(tryresults$error)) {
+              err_detail <- tryresults$error[1L]
+            }
+          }
+          if (is.null(err_detail) || !nzchar(err_detail)) {
+            err_detail <- "Request failed"
+          }
+          err_msg <- paste0("HTTP ", http_status, " error: ", err_detail)
+          if (http_status < 500L && !(http_status %in% c(408L, 429L))) {
+            stop(errorCondition(err_msg, class = "refinitiv_http_error", http_status = http_status))
+          }
+          stop(err_msg, call. = FALSE)
         } else {
-          stop(paste0("Error code: ", tryresults$ErrorCode, " ", tryresults$ErrorMessage))
+          results <- tryresults
+          break
         }
-      } else if (is.numeric(http_status) && http_status >= 400L) {
-        err_detail <- NULL
-        if (is.list(tryresults)) {
-          if (is.list(tryresults$error) && !is.null(tryresults$error$message)) {
-            err_detail <- as.character(tryresults$error$message)[1L]
-          } else if (is.character(tryresults$error_description)) {
-            err_detail <- tryresults$error_description[1L]
-          } else if (is.character(tryresults$message)) {
-            err_detail <- tryresults$message[1L]
-          } else if (is.character(tryresults$error)) {
-            err_detail <- tryresults$error[1L]
-          }
-        }
-        if (is.null(err_detail) || !nzchar(err_detail)) {
-          err_detail <- "Request failed"
-        }
-        stop(paste0("HTTP ", http_status, " error: ", err_detail), call. = FALSE)
       } else {
-        results <- tryresults
+        if (is.numeric(http_status) && http_status >= 400L) {
+          err_msg <- paste0("HTTP ", http_status, " error on DELETE request")
+          if (http_status < 500L && !(http_status %in% c(408L, 429L))) {
+            stop(errorCondition(err_msg, class = "refinitiv_http_error", http_status = http_status))
+          }
+          stop(err_msg, call. = FALSE)
+        }
         break
       }
-    } else {
-      if (is.numeric(http_status) && http_status >= 400L) {
-        stop(paste0("HTTP ", http_status, " error on DELETE request"), call. = FALSE)
-      }
-      break
-    }
   }
 
   if (identical(results, NA) && counter >= max_retries) {

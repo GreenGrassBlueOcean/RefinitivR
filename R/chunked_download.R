@@ -138,11 +138,22 @@ chunked_download <- function(n_chunks,
       t_chunk <- proc.time()[["elapsed"]]
       results[j] <- list(try(fetch_fn(j)))
       chunk_elapsed <- proc.time()[["elapsed"]] - t_chunk
-      if (sleep > 0 && j != pending[length(pending)]) {
+
+      is_perm_err <- isTRUE(attr(results[[j]], "permanent_error")) ||
+        (inherits(results[[j]], "try-error") &&
+          inherits(attr(results[[j]], "condition"), "refinitiv_http_error"))
+      if (isTRUE(attr(results[[j]], "permanent_error"))) {
+        results[j] <- list(NA)
+      }
+      if (is_perm_err) {
+        coordinator$retries[j] <- max_retries + 1L
+      }
+
+      if (!is_perm_err && sleep > 0 && j != pending[length(pending)]) {
         Sys.sleep(sleep)
       }
 
-      if (is_success(results[[j]])) {
+      if (!is_perm_err && is_success(results[[j]])) {
         coordinator$success[j] <- TRUE
 
         # Cache this chunk on success
@@ -160,7 +171,7 @@ chunked_download <- function(n_chunks,
           }
           progress_msg(lbl, "Chunk ", j, "/", n_chunks, " done", size_info)
         }
-      } else if (show_progress && !one_chunk_quiet) {
+      } else if (!is_perm_err && show_progress && !one_chunk_quiet) {
         round_num <- coordinator$retries[j]
         progress_msg(lbl, "Chunk ", j, "/", n_chunks,
                      " failed, will retry (attempt ", round_num + 1L,

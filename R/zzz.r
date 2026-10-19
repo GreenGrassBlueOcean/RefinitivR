@@ -3,6 +3,7 @@
 # Hidden package environment
 .pkgglobalenv <- new.env(parent = emptyenv())
 
+#' @importFrom rlang %||%
 .onLoad <- function(libname, pkgname) {
   # Default options — resolution order: existing option > env var > default.
   # Setting REFINITIV_PORT / REFINITIV_BASE_URL in .Renviron skips

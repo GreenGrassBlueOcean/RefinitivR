@@ -133,7 +133,6 @@ DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA) 
   # 2. Perform Main operation ----
   refinitiv_vault_set("datastream_username", DatastreamUserName)
   refinitiv_vault_set("datastream_password", DatastreamPassword)
-  options(Datastream.Username = NULL, Datastream.Password = NULL)
   mydsws <- DatastreamDSWS2R::dsws$new(
     username = DatastreamUserName,
     password = DatastreamPassword

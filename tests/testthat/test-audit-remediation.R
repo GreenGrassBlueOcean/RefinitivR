@@ -664,6 +664,199 @@ test_that("#15: API key and DataStream credentials are stored in vault and never
   DataStreamConnect()
   expect_equal(captured_ds$username, "vault_ds_user")
   expect_equal(captured_ds$password, "vault_ds_pass")
+
+  # Follow-up #5: Pre-existing .Rprofile options(Datastream.Username/Password)
+  # are NOT cleared by DataStreamConnect()
+  refinitiv_vault_clear()
+  withr::with_options(
+    list(Datastream.Username = "rprofile_user", Datastream.Password = "rprofile_pass"),
+    {
+      DataStreamConnect()
+      expect_equal(getOption("Datastream.Username"), "rprofile_user")
+      expect_equal(getOption("Datastream.Password"), "rprofile_pass")
+    }
+  )
+})
+
+
+# =============================================================================
+# Follow-up Audit Findings (F1–F6)
+# =============================================================================
+
+test_that("F1: %||% is imported from rlang into the package namespace for R 4.1-4.3 compatibility", {
+  ns_imports <- getNamespaceImports("Refinitiv")
+  expect_true("rlang" %in% names(ns_imports))
+  expect_true("%||%" %in% unname(ns_imports[["rlang"]]))
+})
+
+test_that("F2: .restore_input_order remaps Eikon_Error_Data$row and preserves repeated RICs c('A','B','A')", {
+  local_refinitiv_state()
+  withr::local_options(refinitiv_chunk_sleep = 0)
+  suppressMessages(rd_ClearCache())
+
+  # 1. Repeated RICs c("A", "B", "A") preserved with caching off and caching on
+  df_sorted <- data.frame(
+    Instrument = c("A", "A", "B"),
+    Val = c(10, 30, 20),
+    stringsAsFactors = FALSE
+  )
+  reordered <- Refinitiv:::.restore_input_order(df_sorted, c("A", "B", "A"), "Instrument")
+  expect_equal(reordered$Instrument, c("A", "B", "A"))
+  expect_equal(reordered$Val, c(10, 20, 30))
+
+  # Already in c("A", "B", "A") order stays c("A", "B", "A")
+  df_aba <- data.frame(
+    Instrument = c("A", "B", "A"),
+    Val = c(10, 20, 30),
+    stringsAsFactors = FALSE
+  )
+  reordered_aba <- Refinitiv:::.restore_input_order(df_aba, c("A", "B", "A"), "Instrument")
+  expect_equal(reordered_aba$Instrument, c("A", "B", "A"))
+  expect_equal(reordered_aba$Val, c(10, 20, 30))
+
+  # 2. EikonResult error row indices remapped when data rows are reordered
+  eikon_res <- Refinitiv:::new_EikonResult(list(
+    PostProcessedEikonGetData = data.frame(
+      Instrument = c("AAPL.O", "MSFT.O", "ZZZ.O"),
+      Price = c(180, NA, 50),
+      stringsAsFactors = FALSE
+    ),
+    Eikon_Error_Data = data.frame(
+      code = c(412L, 251658243L),
+      col = c(1L, 1L),
+      message = c("Unable to resolve MSFT.O", "Bad field for AAPL.O"),
+      row = c(1L, 0L), # 0-indexed: row 1 is MSFT.O, row 0 is AAPL.O
+      stringsAsFactors = FALSE
+    )
+  ))
+
+  # Reorder to c("ZZZ.O", "MSFT.O", "AAPL.O"):
+  # ZZZ.O -> row 0, MSFT.O -> row 1, AAPL.O -> row 2
+  reordered_res <- Refinitiv:::.restore_input_order(
+    eikon_res, c("ZZZ.O", "MSFT.O", "AAPL.O"), "Instrument"
+  )
+  expect_equal(
+    reordered_res$PostProcessedEikonGetData$Instrument,
+    c("ZZZ.O", "MSFT.O", "AAPL.O")
+  )
+  expect_equal(reordered_res$Eikon_Error_Data$row, c(1L, 2L))
+  expect_equal(
+    reordered_res$Eikon_Error_Data$message,
+    c("Unable to resolve MSFT.O", "Bad field for AAPL.O")
+  )
+})
+
+test_that("F3: rd_handshake(force = FALSE) does not warn on expired token and Login Status: Closed invalidates token", {
+  local_refinitiv_state()
+  refinitiv_vault_clear()
+  withr::local_options(eikon_port = 9000L, refinitiv_base_url = "http://lh")
+
+  # Create a valid-format JWT whose exp is in the past
+  header_b64 <- base64enc::base64encode(charToRaw('{"alg":"HS256","typ":"JWT"}'))
+  exp_past <- as.integer(Sys.time()) - 300L
+  payload_b64 <- base64enc::base64encode(charToRaw(sprintf('{"exp":%d}', exp_past)))
+  expired_jwt <- paste(header_b64, payload_b64, "sig", sep = ".")
+
+  refinitiv_vault_set("access_token", expired_jwt)
+  refinitiv_vault_set("token_expiration", exp_past)
+  refinitiv_vault_set("token_type", "bearer")
+
+  stub(rd_handshake, "CheckTerminalType", function(...) invisible(NULL))
+  stub(rd_handshake, "send_json_request", function(...) {
+    list(access_token = "fresh_tok", expires_in = 3600L, token_type = "bearer")
+  })
+
+  # Routine token refresh in rd_handshake(force = FALSE) should NOT warn
+  expect_no_warning(res <- rd_handshake(force = FALSE))
+  expect_equal(res$access_token, "fresh_tok")
+
+  # Login Status: Closed in StreamManager clears the cached token
+  mgr <- StreamManager$new(stream_type = "pricing")
+  priv <- mgr$.__enclos_env__$private
+  priv$.logged_in <- TRUE
+  expect_equal(refinitiv_vault_get("access_token"), "fresh_tok")
+
+  login_closed_msg <- list(
+    ID = 1L,
+    Domain = "Login",
+    Type = "Status",
+    State = list(Stream = "Closed", Data = "Suspect", Code = "ForceLogout", Text = "Token rejected")
+  )
+  suppressWarnings(priv$.handle_status(login_closed_msg))
+  expect_false(priv$.logged_in)
+  expect_null(refinitiv_vault_get("access_token"))
+})
+
+test_that("F4: permanent HTTP 4xx errors are not retried by retry() or chunked_download()", {
+  local_refinitiv_state()
+  withr::local_options(eikon_port = 9000L, refinitiv_base_url = "http://lh")
+
+  # 1. retry() stops after 1 attempt on refinitiv_http_error
+  attempts <- 0L
+  expect_warning(
+    res_na <- Refinitiv:::retry(
+      function() {
+        attempts <<- attempts + 1L
+        stop(errorCondition("HTTP 401 error: Unauthorized", class = "refinitiv_http_error", http_status = 401L))
+      },
+      max_attempts = 3L,
+      backoff = 0,
+      on_failure = "NA"
+    ),
+    "HTTP 401 error"
+  )
+  expect_equal(attempts, 1L)
+  expect_true(isTRUE(attr(res_na, "permanent_error")))
+
+  # 2. chunked_download() does not retry chunks that fail with permanent_error
+  chunk_calls <- 0L
+  expect_error(
+    Refinitiv:::chunked_download(
+      n_chunks = 1L,
+      fetch_fn = function(j) {
+        chunk_calls <<- chunk_calls + 1L
+        structure(NA, permanent_error = TRUE)
+      },
+      max_retries = 3L,
+      sleep = 0,
+      backoff = 0,
+      on_failure = "stop",
+      verbose = FALSE,
+      fail_message = "auth failed"
+    ),
+    "auth failed"
+  )
+  expect_equal(chunk_calls, 1L)
+})
+
+test_that("F6: error in one message of a batched WebSocket frame does not drop remaining messages", {
+  local_refinitiv_state()
+  mgr <- StreamManager$new(stream_type = "pricing")
+  priv <- mgr$.__enclos_env__$private
+
+  stub(priv$.process_message, "private$.handle_refresh", function(msg, debug) {
+    stop("malformed refresh payload")
+  })
+
+  received_updates <- list()
+  mgr$register_handler("2", function(msg, type) {
+    received_updates[[length(received_updates) + 1L]] <<- msg
+  })
+
+  batched_json <- jsonlite::toJSON(
+    list(
+      list(ID = 2L, Type = "Refresh", Fields = list(BID = 1.1)),
+      list(ID = 2L, Type = "Update", Fields = list(BID = 1.2))
+    ),
+    auto_unbox = TRUE
+  )
+
+  expect_warning(
+    priv$.process_message(list(data = batched_json), debug = FALSE),
+    "malformed refresh payload"
+  )
+  expect_length(received_updates, 1L)
+  expect_equal(received_updates[[1L]]$Fields$BID, 1.2)
 })
 
 restore_refinitiv_state(.saved_state, "test-audit-remediation")

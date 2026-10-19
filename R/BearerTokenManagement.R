@@ -58,7 +58,11 @@ rd_handshake <- function(debug = FALSE, force = FALSE) {
   # Determine whether to use existing token
   use_existing <- FALSE
   if (!force && !is.null(existing_token) && !is.null(token_exp)) {
-    is_valid <- rd_VerifyToken(existing_token)
+    is_valid <- if ("warn" %in% names(formals(rd_VerifyToken))) {
+      rd_VerifyToken(existing_token, warn = FALSE)
+    } else {
+      rd_VerifyToken(existing_token)
+    }
 
     if (is_valid) {
       if (debug) {
@@ -91,7 +95,7 @@ rd_handshake <- function(debug = FALSE, force = FALSE) {
   # Prepare the payload for handshake
   pkg_version <- tryCatch(
     get_pkg_version(),
-    error = function(e) "0.2.3"
+    error = function(e) "0.2.4"
   )
   app_key <- refinitiv_vault_get("api_key")
   if (is.null(app_key) || !nzchar(app_key)) {
@@ -152,6 +156,8 @@ rd_handshake <- function(debug = FALSE, force = FALSE) {
 #'
 #' @param token A character string representing the JWT access token. Defaults to the current
 #'   vaulted access token (`refinitiv_vault_get("access_token")`).
+#' @param warn Logical. If `TRUE` (default), issues a warning when the token is expired
+#'   or within the safety buffer. Set to `FALSE` during routine refresh checks.
 #'
 #' @return A logical value:
 #' \describe{
@@ -168,7 +174,7 @@ rd_handshake <- function(debug = FALSE, force = FALSE) {
 #' }
 #'
 #' @keywords internal
-rd_VerifyToken <- function(token = refinitiv_vault_get("access_token")) {
+rd_VerifyToken <- function(token = refinitiv_vault_get("access_token"), warn = TRUE) {
   # Ensure the token is a non-empty string
   if (!is.character(token) || length(token) != 1 || nchar(token) == 0) {
     warning("Token must be a non-empty character string.")
@@ -265,10 +271,12 @@ rd_VerifyToken <- function(token = refinitiv_vault_get("access_token")) {
   if (current_time < (payload$exp - buffer)) {
     return(TRUE)
   } else {
-    warning(
-      "Token has expired or will expire within the safety buffer (",
-      buffer, "s)."
-    )
+    if (isTRUE(warn)) {
+      warning(
+        "Token has expired or will expire within the safety buffer (",
+        buffer, "s)."
+      )
+    }
     return(FALSE)
   }
 }

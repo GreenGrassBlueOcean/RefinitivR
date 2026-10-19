@@ -59,7 +59,10 @@ importFrom(data.table,
 )
 importFrom(jsonlite,fromJSON)
 importFrom(methods,is)
-importFrom(rlang,env)
+importFrom(rlang,
+  "%||%",
+  env
+)
 importFrom(stats,
   runif,
   setNames

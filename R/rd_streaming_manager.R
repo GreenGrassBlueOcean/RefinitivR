@@ -454,7 +454,13 @@ StreamManager <- R6::R6Class("StreamManager",
               FALSE
             } else {
               tryCatch(
-                if (length(formals(rd_VerifyToken)) > 0L) rd_VerifyToken(current_token) else rd_VerifyToken(),
+                if ("warn" %in% names(formals(rd_VerifyToken))) {
+                  rd_VerifyToken(current_token, warn = FALSE)
+                } else if (length(formals(rd_VerifyToken)) > 0L) {
+                  rd_VerifyToken(current_token)
+                } else {
+                  rd_VerifyToken()
+                },
                 error = function(e) FALSE
               )
             }
@@ -615,71 +621,85 @@ StreamManager <- R6::R6Class("StreamManager",
               next
             }
 
-            if (debug) {
-              message("[DEBUG] Parsed message structure:")
-              if (!is.null(names(message_data))) {
-                message("[DEBUG]   Top-level keys: ", paste(names(message_data), collapse = ", "))
-              }
-              message("[DEBUG]   Message type: ", class(message_data))
-              if (is.list(message_data)) {
-                message("[DEBUG]   Message structure: ", paste(capture.output(str(message_data, max.level = 2)), collapse = "\n"))
-              }
-            }
-
-            # Handle different message types
-            message_type <- NULL
-            if (is.list(message_data)) {
-              if (!is.null(message_data$Type) && length(message_data$Type) > 0) {
-                message_type <- message_data$Type
-                if (debug) message("[DEBUG] Found message Type: ", message_type)
-              } else if (!is.null(message_data$type) && length(message_data$type) > 0) {
-                message_type <- message_data$type
-                if (debug) message("[DEBUG] Found message type: ", message_type)
-              }
-            }
-
-            if (is.null(message_type) || length(message_type) == 0) {
-              if (debug) {
-                if (!is.null(names(message_data))) {
-                  message("[DEBUG] No message type found. Available keys: ", paste(names(message_data), collapse = ", "))
-                } else {
-                  message("[DEBUG] No message type found. Message is not a named list.")
+            tryCatch(
+              {
+                if (debug) {
+                  message("[DEBUG] Parsed message structure:")
+                  if (!is.null(names(message_data))) {
+                    message("[DEBUG]   Top-level keys: ", paste(names(message_data), collapse = ", "))
+                  }
+                  message("[DEBUG]   Message type: ", class(message_data))
+                  if (is.list(message_data)) {
+                    message("[DEBUG]   Message structure: ", paste(capture.output(str(message_data, max.level = 2)), collapse = "\n"))
+                  }
                 }
+
+                # Handle different message types
+                message_type <- NULL
                 if (is.list(message_data)) {
-                  # Still try to process if it might be a login response
-                  if (!is.null(message_data$Domain)) {
-                    message("[DEBUG] Found Domain field: ", message_data$Domain)
-                  }
-                  if (!is.null(message_data$ID) || !is.null(message_data$id)) {
-                    msg_id <- if (!is.null(message_data$ID)) message_data$ID else message_data$id
-                    message("[DEBUG] Found ID field: ", msg_id)
+                  if (!is.null(message_data$Type) && length(message_data$Type) > 0) {
+                    message_type <- message_data$Type
+                    if (debug) message("[DEBUG] Found message Type: ", message_type)
+                  } else if (!is.null(message_data$type) && length(message_data$type) > 0) {
+                    message_type <- message_data$type
+                    if (debug) message("[DEBUG] Found message type: ", message_type)
                   }
                 }
+
+                if (is.null(message_type) || length(message_type) == 0) {
+                  if (debug) {
+                    if (!is.null(names(message_data))) {
+                      message("[DEBUG] No message type found. Available keys: ", paste(names(message_data), collapse = ", "))
+                    } else {
+                      message("[DEBUG] No message type found. Message is not a named list.")
+                    }
+                    if (is.list(message_data)) {
+                      # Still try to process if it might be a login response
+                      if (!is.null(message_data$Domain)) {
+                        message("[DEBUG] Found Domain field: ", message_data$Domain)
+                      }
+                      if (!is.null(message_data$ID) || !is.null(message_data$id)) {
+                        msg_id <- if (!is.null(message_data$ID)) message_data$ID else message_data$id
+                        message("[DEBUG] Found ID field: ", msg_id)
+                      }
+                    }
+                  }
+                  return()
+                }
+
+                # Convert to character for comparison
+                message_type <- as.character(message_type)[1]
+                if (debug) message("[DEBUG] Processing message type: ", message_type)
+
+                if (message_type == "Refresh") {
+                  if (debug) message("[DEBUG] Handling Refresh message...")
+                  private$.handle_refresh(message_data, debug = debug)
+                } else if (message_type == "Update") {
+                  if (debug) message("[DEBUG] Handling Update message...")
+                  private$.handle_update(message_data)
+                } else if (message_type == "Ping") {
+                  if (debug) message("[DEBUG] Handling Ping message...")
+                  private$.handle_ping()
+                } else if (message_type == "Status") {
+                  if (debug) message("[DEBUG] Handling Status message...")
+                  private$.handle_status(message_data)
+                } else {
+                  if (debug) message("[DEBUG] Unknown message type, routing to handlers...")
+                  # Unknown message type - route to all handlers
+                  private$.route_message(message_data)
+                }
+              },
+              error = function(e) {
+                error_msg <- as.character(e$message)[1]
+                if (debug) {
+                  message("[DEBUG] ERROR processing message: ", error_msg)
+                  message("[DEBUG] Error traceback: ", paste(capture.output(traceback()), collapse = "\n"))
+                }
+                if (!grepl("argument is of length zero|subscript out of bounds", error_msg, ignore.case = TRUE)) {
+                  warning("Error processing message: ", error_msg)
+                }
               }
-              next
-            }
-
-            # Convert to character for comparison
-            message_type <- as.character(message_type)[1]
-            if (debug) message("[DEBUG] Processing message type: ", message_type)
-
-            if (message_type == "Refresh") {
-              if (debug) message("[DEBUG] Handling Refresh message...")
-              private$.handle_refresh(message_data, debug = debug)
-            } else if (message_type == "Update") {
-              if (debug) message("[DEBUG] Handling Update message...")
-              private$.handle_update(message_data)
-            } else if (message_type == "Ping") {
-              if (debug) message("[DEBUG] Handling Ping message...")
-              private$.handle_ping()
-            } else if (message_type == "Status") {
-              if (debug) message("[DEBUG] Handling Status message...")
-              private$.handle_status(message_data)
-            } else {
-              if (debug) message("[DEBUG] Unknown message type, routing to handlers...")
-              # Unknown message type - route to all handlers
-              private$.route_message(message_data)
-            }
+            )
           }
         },
         error = function(e) {
@@ -835,6 +855,18 @@ StreamManager <- R6::R6Class("StreamManager",
 
         if (debug) {
           message("[DEBUG] Status message - Code: ", status_code, " | Stream: ", stream_state, " | Text: ", status_text)
+        }
+
+        # Check if this is a Login domain status failure -> invalidate cached token
+        domain <- if (!is.null(message_data$Domain)) as.character(message_data$Domain)[1L] else NULL
+        msg_id <- message_data$ID %||% message_data$id
+        is_login_status <- identical(domain, "Login") ||
+          (!is.null(msg_id) && !is.na(suppressWarnings(as.numeric(msg_id))) && as.numeric(msg_id) == 1)
+        if (is_login_status && stream_state %in% c("Closed", "ClosedRecover", "NonStreaming")) {
+          private$.logged_in <- FALSE
+          refinitiv_vault_set("access_token", NULL)
+          refinitiv_vault_set("token_expiration", NULL)
+          refinitiv_vault_set("token_type", NULL)
         }
 
         # Check if this is a duplicate request error - might mean subscription already exists

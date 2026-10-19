@@ -194,7 +194,9 @@ rd_GetData <- function(
       SpaceConvertor = SpaceConvertor
     )
     ReturnElement <- data.table::rbindlist(ReturnList, use.names = TRUE, fill = TRUE) |> data.table::setDF()
-    ReturnElement <- .restore_input_order(ReturnElement, rics, "Instrument")
+    if (!isFALSE(ttl)) {
+      ReturnElement <- .restore_input_order(ReturnElement, rics, "Instrument")
+    }
   } else {
     ReturnElement <- EikonDataList
   }

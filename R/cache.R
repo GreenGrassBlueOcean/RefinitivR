@@ -257,34 +257,79 @@ cache_get <- function(key) {
 #' @return \code{df} reordered to match \code{input_vec}.
 #' @noRd
 .restore_input_order <- function(df, input_vec, col_name = "Instrument") {
-  if (!is.data.frame(df) || nrow(df) <= 1L || !(col_name %in% names(df))) {
+  is_eikon_res <- inherits(df, "EikonResult") ||
+    (is.list(df) && !is.data.frame(df) && "PostProcessedEikonGetData" %in% names(df))
+
+  target_df <- if (is_eikon_res) df$PostProcessedEikonGetData else df
+
+  if (!is.data.frame(target_df) || nrow(target_df) <= 1L || !(col_name %in% names(target_df))) {
     return(df)
   }
-  clean_input <- unique(as.character(input_vec[!is.na(input_vec)]))
-  if (length(clean_input) <= 1L) {
+  clean_input <- as.character(input_vec[!is.na(input_vec)])
+  if (length(unique(clean_input)) <= 1L) {
     return(df)
   }
-  col_idxs <- which(names(df) == col_name)
-  col_vals <- as.character(df[[col_idxs[1L]]])
+  col_idxs <- which(names(target_df) == col_name)
+  col_vals <- as.character(target_df[[col_idxs[1L]]])
   if (length(col_idxs) > 1L) {
     for (ci in col_idxs) {
-      cand <- as.character(df[[ci]])
+      cand <- as.character(target_df[[ci]])
       if (all(cand[!is.na(cand)] %in% clean_input)) {
         col_vals <- cand
         break
       }
     }
   }
-  pos <- match(col_vals, clean_input)
+
+  if (!anyDuplicated(clean_input)) {
+    pos <- match(col_vals, clean_input)
+  } else {
+    pos <- rep(NA_integer_, length(col_vals))
+    for (u in unique(clean_input)) {
+      in_locs <- which(clean_input == u)
+      df_locs <- which(!is.na(col_vals) & col_vals == u)
+      n_df <- length(df_locs)
+      if (n_df > 0L) {
+        n_in <- length(in_locs)
+        if (n_in == 1L) {
+          pos[df_locs] <- in_locs[1L]
+        } else {
+          block_idx <- pmin(n_in, ceiling(seq_len(n_df) * n_in / n_df))
+          pos[df_locs] <- in_locs[block_idx]
+        }
+      }
+    }
+  }
+
   if (all(is.na(pos))) {
     return(df)
   }
-  ord <- order(pos, seq_len(nrow(df)), na.last = TRUE)
-  if (identical(ord, seq_len(nrow(df)))) {
+  ord <- order(pos, seq_len(nrow(target_df)), na.last = TRUE)
+  if (identical(ord, seq_len(nrow(target_df)))) {
     return(df)
   }
-  df <- df[ord, , drop = FALSE]
-  rownames(df) <- NULL
+
+  target_df <- target_df[ord, , drop = FALSE]
+  rownames(target_df) <- NULL
+
+  if (!is_eikon_res) {
+    return(target_df)
+  }
+
+  df$PostProcessedEikonGetData <- target_df
+  err_df <- df$Eikon_Error_Data
+  if (is.data.frame(err_df) && nrow(err_df) > 0L &&
+      "row" %in% names(err_df) && is.numeric(err_df$row)) {
+    old_1based <- as.integer(err_df$row) + 1L
+    valid <- !is.na(old_1based) & old_1based >= 1L & old_1based <= length(ord)
+    if (any(valid)) {
+      err_df$row[valid] <- match(old_1based[valid], ord) - 1L
+      err_ord <- order(err_df$row, seq_len(nrow(err_df)))
+      err_df <- err_df[err_ord, , drop = FALSE]
+      rownames(err_df) <- NULL
+      df$Eikon_Error_Data <- err_df
+    }
+  }
   df
 }
 
