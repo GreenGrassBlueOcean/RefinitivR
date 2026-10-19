@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/GreenGrassBlueOcean/RefinitivR/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/GreenGrassBlueOcean/RefinitivR/blob/v0.2.4/DESCRIPTION)
 
 van der Burg L (2026). *Refinitiv: Connect to LSEG Workspace, Refinitiv
 Eikon, and DataStream from R*. R package version 0.2.4,
