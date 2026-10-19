@@ -25,9 +25,3 @@ refinitiv_vault_set(key, value)
 ## Value
 
 `value` (invisibly).
-
-## Details
-
-For backward compatibility the `"api_key"` key is also written through
-to `options(.EikonApiKey)`. This behaviour will be removed in a future
-release.

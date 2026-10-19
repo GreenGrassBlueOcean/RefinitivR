@@ -21,6 +21,7 @@ rd_GetOwnership(
      "org-info"),
   stat_type = NULL,
   limit = NULL,
+  offset = NULL,
   sort_order = NULL,
   frequency = NULL,
   start = NULL,
@@ -95,6 +96,11 @@ rd_GetOwnership(
   (default), fetches all available data via automatic pagination. The
   LSEG API returns at most 100 rows per request; this function handles
   paging transparently.
+
+- offset:
+
+  Optional integer. Starting row offset for retrieval (default `NULL`,
+  which starts at 0).
 
 - sort_order:
 

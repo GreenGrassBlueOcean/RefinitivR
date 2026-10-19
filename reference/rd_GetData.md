@@ -1,8 +1,7 @@
-# Function to obtain data from Eikon/LSEG via the JSON API
+# Retrieve Snapshot Data from LSEG Workspace / Eikon via the JSON API
 
-The function automatically chunks the list of rics into chunks that
-comply with the api limitations and in the end rebuilds the chunks again
-into a single data.frame.
+Automatically chunks the requested instruments to comply with API limits
+and recombines the results into a single `data.frame`.
 
 ## Usage
 
@@ -27,11 +26,12 @@ rd_GetData(
 
 - RDObject:
 
-  Refinitiv Data connection object, default is RefinitivJsonConnect()
+  Refinitiv Data connection object, defaults to
+  [`rd_connection()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_connection.md)
 
 - rics:
 
-  a vector containing the instrument RICS
+  a vector containing the instrument RICs
 
 - Eikonformulas:
 
@@ -49,7 +49,7 @@ rd_GetData(
 
 - time_out:
 
-  set the maximum timeout to the Eikon server, default = 60
+  set the maximum timeout to the LSEG/Eikon server, default = 60
 
 - verbose:
 
@@ -79,12 +79,30 @@ rd_GetData(
 
 - fields:
 
-  a vector containing character string of requested data fields (alias
-  for `Eikonformulas`)
+  a vector containing character string of requested data fields
+  (preferred over `Eikonformulas`)
 
 ## Value
 
-a data.frame containing data from Eikon
+a data.frame containing data from LSEG Workspace / Eikon
+
+## Details
+
+**LSEG Backend AQL Error Handling and Adaptive Sub-Chunking:** When
+LSEG's backend Asynchronous Query Library (AQL) is under heavy load and
+receives a large multi-RIC \\\times\\ multi-formula request (e.g. \\\>
+28\\ RICs \\\times\\ 100+ `TR.*` formulas), the proxy may return HTTP
+200 with a collapsed 1-column payload (`totalColumnsCount = 1`,
+`headers[[1]][[1]]$displayName = NULL`) and `code = 100`
+(`"Asynchronous Query library internal error."`) in `$error` for every
+row. `rd_GetData()` rejects these collapsed AQL payloads via
+`eikon_data_is_success()` so they are never treated as valid data or
+cached, and when an oversized chunk (\\\> 28\\ RICs) hits an AQL
+collapse it automatically splits that chunk (and any remaining oversized
+chunks in the same call) into \\\le 25\\-RIC sub-chunks
+(`getOption("refinitiv_aql_fallback_rics", 25L)`). See
+[`EikonGetData`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetData.md)
+for full details on the three LSEG backend AQL failure modes.
 
 ## References
 
@@ -94,18 +112,18 @@ a data.frame containing data from Eikon
 
 ``` r
 if (FALSE) { # \dontrun{
-Refinitiv <- RDConnect()
 ex1 <- rd_GetData(
-  RDObject = Refinitiv, rics = c("MMM", "III.L"),
-  Eikonformulas = c(
+  rics = c("MMM", "III.L"),
+  fields = c(
     "TR.PE(Sdate=0D)/*P/E (LTM) - Diluted Excl*/",
     "TR.CompanyName"
-  ), verbose = TRUE
+  ),
+  verbose = TRUE
 )
 
 ex2 <- rd_GetData(
-  RDObject = Refinitiv, rics = "AAPL.O",
-  Eikonformulas = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
+  rics = "AAPL.O",
+  fields = "TR.CompanyMarketCap(Sdate=0D)/*Market Cap*/"
 )
 
 rics <- c("AAPL.O")
@@ -117,9 +135,8 @@ fields <- c(
 
 parameters <- list("Curn" = "USD", "SDate" = "2020-10-27", "EDate" = "2020-12-01", "Fill" = "None")
 test_json <- rd_GetData(
-  RDObject = Refinitiv,
   rics = rics,
-  Eikonformulas = fields,
+  fields = fields,
   Parameters = parameters,
   use_field_names_in_headers = TRUE,
   SyncFields = FALSE

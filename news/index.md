@@ -1,5 +1,131 @@
 # Changelog
 
+## Refinitiv 0.2.3
+
+### Robustness & AQL Collapse Recovery
+
+- **Shared AQL collapse detection & adaptive $`\le 25`$-RIC sub-chunk
+  fallback** —
+  [`EikonGetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetData.md)
+  and
+  [`rd_GetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md)
+  now validate chunks with `eikon_data_is_success()` and
+  `.is_eikon_aql_collapse()` to detect collapsed 1-column HTTP 200
+  payloads (`totalColumnsCount <= 1` or single unnamed
+  `displayName = NULL` header with cell errors
+  `code %in% c(100, 400, 500, 2504)` or
+  `"Asynchronous Query library internal error"`). When an oversized
+  chunk hits an LSEG AQL collapse (`code = 100`),
+  `.fetch_with_aql_subchunks()` automatically splits the chunk into
+  $`\le 25`$-RIC sub-chunks
+  (`getOption("refinitiv_aql_fallback_rics", 25L)`), merges the raw
+  payloads via `.merge_eikon_raw_subchunks()`, and steps down remaining
+  oversized chunks in the same call.
+- **Multi-period chunk sizing & 10,000-row DataGrid truncation guard** —
+  [`EikonChunker()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonChunker.md)
+  now estimates rows per instrument when `Duration` or multi-period
+  `Parameters` (`SDate`/`EDate`/`FRQ`) are supplied so chunks stay below
+  LSEG DataGrid’s 10,000-row limit.
+  [`EikonGetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetData.md)
+  and
+  [`rd_GetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md)
+  emit an explicit warning if any DataGrid chunk returns $`\ge 10,000`$
+  rows.
+- **Session cache reference isolation & partial-failure protection** —
+  `cache_set()` and `cache_get()` now deep-copy cached objects
+  ([`data.table::copy()`](https://rdrr.io/pkg/data.table/man/copy.html),
+  including `EikonResult` wrappers) so caller-side in-place `data.table`
+  mutations (`:=`, `setnames()`, `setcolorder()`) never corrupt cached
+  results. Multi-chunk downloads in
+  [`EikonGetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetData.md),
+  [`EikonGetTimeseries()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetTimeseries.md),
+  and
+  [`rd_GetHistoricalPricing()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistoricalPricing.md)
+  no longer poison the top-level session cache when
+  `on_failure = "warning"` produces partial `NA` chunks.
+- **Async ticket poll payload restoration** — `send_json_request()`
+  restores `json <- original_json` before retrying after a retriable
+  `ErrorCode` (`2504`, `500`, `400`) so subsequent retries do not send a
+  stale async ticket poll payload.
+
+### Bug Fixes
+
+- **[`rd_GetHistory()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistory.md)
+  data integrity & edge-case fixes** — Fixed 0-row merge crashes when
+  either or both endpoints return empty tables, applied `end` (`EDate`)
+  even when `start` is `NULL`, mapped `interval` to
+  `parameters[["FRQ"]]` (case-insensitively preserving user-supplied
+  `FRQ`/`Frq`), forwarded `cache = cache` to underlying
+  [`rd_GetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md)
+  and
+  [`rd_GetHistoricalPricing()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistoricalPricing.md)
+  calls, and replaced `..` column selection with `.SD`/`.SDcols`.
+- **Intraday `POSIXct` timestamp preservation & `"6M"` interval
+  handling** —
+  [`PostProcessTimeSeriesRequest()`](https://greengrassblueocean.github.io/RefinitivR/reference/PostProcessTimeSeriesRequest.md),
+  [`rd_OutputProcesser()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_OutputProcesser.md),
+  and
+  [`rd_GetHistory()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistory.md)
+  now preserve full UTC `POSIXct` timestamps for intraday data
+  (`"tick"`, `"minute"`, `"hour"`, and ISO 8601 intraday intervals)
+  instead of truncating to `Date`. Removed silent coercion of
+  unsupported `"6m"`/`"6M"` to quarterly `"P3M"` in
+  [`translate_to_iso8601_duration()`](https://greengrassblueocean.github.io/RefinitivR/reference/translate_to_iso8601_duration.md).
+- **WebSocket streaming resilience & custom API key propagation** —
+  Fixed `StreamManager$.attempt_reconnect()` to pass the vaulted access
+  token to
+  [`rd_VerifyToken()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_VerifyToken.md),
+  preserved the reconnect attempt counter for `on_reconnected` callbacks
+  before resetting, unregistered reconnect callbacks on
+  `Stream$close()`, inspected OMM `State$Data == "Suspect"` and
+  `State$Stream == "Closed"` in `Stream`, wired `StreamManager`’s
+  `base_url` to URL construction, and propagated custom API keys from
+  the credential vault across
+  [`rd_handshake()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_handshake.md)
+  and WebSocket OMM login headers.
+- **Parser hardening, ADC diagnostics & pagination** — Sanitized
+  collapsed all-`NULL` headers in `JsonHeaderAnalyzer()` and
+  [`EikonPostProcessor()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonPostProcessor.md)
+  (`Instrument` / `Column_<idx>`) with safe fallback to
+  `headers[["name"]]`, guarded `DateValueCol` renaming in
+  [`rd_OutputProcesser()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_OutputProcesser.md),
+  tightened date column regex matching
+  (`[._]date$|\bdate\b|^date_time$`) so columns like
+  `ConsolidatedUpdate` or `Mandate` are not misclassified as dates,
+  hardened
+  [`ProcessSymbology()`](https://greengrassblueocean.github.io/RefinitivR/reference/ProcessSymbology.md)
+  when leading chunk symbols fail to resolve, added
+  unresolved-identifier warnings in `process_adc_response()`, fixed
+  non-zero initial `offset` pagination in
+  [`rd_GetOwnership()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetOwnership.md),
+  and vectorized
+  [`CheckifCustomInstrument()`](https://greengrassblueocean.github.io/RefinitivR/reference/CheckifCustomInstrument.md).
+- **Interval alias resolution in
+  [`rd_GetHistory()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistory.md)**
+  —
+  [`rd_GetHistory()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistory.md)
+  normalizes friendly interval aliases (e.g., `"daily"`, `"1d"`, `"1D"`,
+  `"1min"`, `"weekly"`, etc.) via
+  [`translate_to_iso8601_duration()`](https://greengrassblueocean.github.io/RefinitivR/reference/translate_to_iso8601_duration.md)
+  before forwarding to
+  [`rd_GetHistoricalPricing()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistoricalPricing.md).
+- **Preserve ISO 8601 durations in
+  [`translate_to_iso8601_duration()`](https://greengrassblueocean.github.io/RefinitivR/reference/translate_to_iso8601_duration.md)**
+  — Valid ISO 8601 duration inputs (such as `"PT1M"`, `"P1D"`, `"PT5M"`)
+  are preserved instead of defaulting to daily intervals.
+- **Parse integer `YYYYMMDD` dates in
+  [`rd_OutputProcesser()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_OutputProcesser.md)**
+  — Date fields returning numeric `YYYYMMDD` integer values (such as
+  `EXPIR_DATE`) are converted to `Date` objects correctly instead of
+  treating values as days since epoch.
+
+### Testing & Quality
+
+- **100.00% unit test coverage** — Added comprehensive regression tests
+  in `test-v023-audit-fixes.R` covering every v0.2.3 audit fix and edge
+  case, bringing overall package line coverage across all 37 files in
+  `R/` to **100.00%** (`2,305` passing test assertions, `0` failures).
+
 ## Refinitiv 0.2.2
 
 ### Robustness
@@ -192,7 +318,9 @@
   not actually re-execute failed calls.
 
 - **[`retry()`](https://greengrassblueocean.github.io/RefinitivR/reference/retry.md)
-  throws on exhaustion by default (#17)** —
+  throws on exhaustion by default
+  ([\#17](https://github.com/GreenGrassBlueOcean/RefinitivR/issues/17))**
+  —
   [`retry()`](https://greengrassblueocean.github.io/RefinitivR/reference/retry.md)
   now defaults to `on_failure = "stop"`, throwing an error with the last
   failure message when all attempts are exhausted. Previously it
@@ -200,8 +328,9 @@
   `on_failure = "NA"` for the `chunked_download()` use case where
   per-chunk success is tracked externally.
 
-- **HTTP 429/503 rate-limit handling (#18)** — `send_json_request()` now
-  uses
+- **HTTP 429/503 rate-limit handling
+  ([\#18](https://github.com/GreenGrassBlueOcean/RefinitivR/issues/18))**
+  — `send_json_request()` now uses
   [`httr2::req_retry()`](https://httr2.r-lib.org/reference/req_retry.html)
   to automatically retry on HTTP 429 (Too Many Requests) and 503
   (Service Unavailable) responses with jittered exponential backoff.
@@ -209,20 +338,25 @@
   Configurable via `options(refinitiv_rate_limit_max_wait)` (default
   60s).
 
-- **Retry architecture documented (#19)** — The three-layer retry system
+- **Retry architecture documented
+  ([\#19](https://github.com/GreenGrassBlueOcean/RefinitivR/issues/19))**
+  — The three-layer retry system
   ([`retry()`](https://greengrassblueocean.github.io/RefinitivR/reference/retry.md),
   [`httr2::req_retry()`](https://httr2.r-lib.org/reference/req_retry.html),
   server polling loop) is now documented in `ARCHITECTURE.md` and
   [`retry()`](https://greengrassblueocean.github.io/RefinitivR/reference/retry.md)
   roxygen.
 
-- **DELETE dead assignment fixed (#21)** — Removed unreachable
-  `results <- NA` after [`break`](https://rdrr.io/r/base/Control.html)
-  in `send_json_request()` DELETE code path.
+- **DELETE dead assignment fixed
+  ([\#21](https://github.com/GreenGrassBlueOcean/RefinitivR/issues/21))**
+  — Removed unreachable `results <- NA` after
+  [`break`](https://rdrr.io/r/base/Control.html) in
+  `send_json_request()` DELETE code path.
 
-- **Package version in cache key (#22)** — `cache_key()` now includes
-  the package version, so a mid-session upgrade automatically
-  invalidates stale cached entries.
+- **Package version in cache key
+  ([\#22](https://github.com/GreenGrassBlueOcean/RefinitivR/issues/22))**
+  — `cache_key()` now includes the package version, so a mid-session
+  upgrade automatically invalidates stale cached entries.
 
 - **Credential vault (C3)** — Bearer tokens are now stored in a
   package-private environment invisible to

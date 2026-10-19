@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/GreenGrassBlueOcean/RefinitivR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -28,7 +29,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Function to obtain data from Eikon via the JSON API</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/GreenGrassBlueOcean/RefinitivR/blob/master/R/refinitiv.r" class="external-link"><code>R/refinitiv.r</code></a></small>
       <div class="d-none name"><code>EikonGetData.Rd</code></div>
     </div>
 
@@ -99,6 +100,32 @@ numeric value sets the cache TTL in seconds. See <code><a href="rd_ClearCache.ht
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>a data.frame containing data from Eikon</p>
     </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p><strong>LSEG Backend AQL Error Handling and Adaptive Sub-Chunking:</strong>
+When LSEG's backend Asynchronous Query Library (AQL) is under heavy load and
+receives a large multi-RIC \(\times\) multi-formula request (e.g. \(&gt; 28\)
+RICs \(\times\) 100+ <code>TR.*</code> formulas), LSEG can fail in three ways:</p><ol><li><p><em>Async ticket poll failure</em>: <code>DataGrid_StandardAsync</code>
+    returns <code>estimatedDuration</code> + <code>ticket</code>, and the subsequent poll
+    returns top-level <code>ErrorCode = 2504</code> / <code>500</code> / <code>400</code>.
+    <code>send_json_request()</code> restores <code>original_json</code> before retrying so
+    it resubmits the query rather than re-polling a dead ticket.</p></li>
+<li><p><em>Collapsed 1-column HTTP 200 payload</em>: The proxy returns HTTP
+    200 with <code>totalColumnsCount = 1</code>, <code>headers[[1]][[1]]$displayName = NULL</code>,
+    and <code>code = 100</code> (<code>"Asynchronous Query library internal error."</code>)
+    in <code>$error</code> for every row. Without validation, post-processing turns
+    <code>displayName = NULL</code> into a column literally named <code>"NA"</code> and
+    silently drops all requested formula columns for that chunk (observed in
+    production under both R 4.5.3 on 2026-10-10 / 2026-10-14 and R 4.6.1 on
+    2026-10-17).</p></li>
+<li><p><em>Persistent oversized chunk timeouts</em>: Retrying the same 100+
+    RIC chunk against a saturated AQL worker pool fails \(\sim 85\%\) of
+    the time. When an oversized chunk (\(&gt; 28\) RICs) hits an AQL collapse,
+    <code>EikonGetData()</code> automatically splits that chunk into
+    \(\le 25\)-RIC sub-chunks (<code>getOption("refinitiv_aql_fallback_rics", 25L)</code>),
+    merges the raw sub-chunk payloads, and pre-emptively steps down all
+    remaining oversized chunks in the same call.</p></li>
+</ol></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p><a href="https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&amp;type=documentation_item" class="external-link">https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&amp;type=documentation_item</a></p>

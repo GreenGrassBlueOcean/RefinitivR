@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/GreenGrassBlueOcean/RefinitivR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -28,7 +29,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Returns a list of chunked Rics so that api limits can be satisfied</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/GreenGrassBlueOcean/RefinitivR/blob/master/R/refinitiv.r" class="external-link"><code>R/refinitiv.r</code></a></small>
       <div class="d-none name"><code>EikonChunker.Rd</code></div>
     </div>
 
@@ -44,7 +45,9 @@
 <span>  MaxCallsPerChunk <span class="op">=</span> <span class="fl">12000</span>,</span>
 <span>  Duration <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  MaxRicsperChunk <span class="op">=</span> <span class="fl">300</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"refinitiv_progress"</span>, <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  verbose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"refinitiv_progress"</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  Parameters <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  MaxRowsPerChunk <span class="op">=</span> <span class="fl">10000L</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -57,7 +60,7 @@
 
 
 <dt id="arg-eikonfields">Eikonfields<a class="anchor" aria-label="anchor" href="#arg-eikonfields"></a></dt>
-<dd><p>a list of the eikonfields to be requested default NULL, if eikonfields are supplied duration may not be supplied</p></dd>
+<dd><p>a list of the eikonfields to be requested default NULL</p></dd>
 
 
 <dt id="arg-maxcallsperchunk">MaxCallsPerChunk<a class="anchor" aria-label="anchor" href="#arg-maxcallsperchunk"></a></dt>
@@ -65,11 +68,23 @@
 
 
 <dt id="arg-duration">Duration<a class="anchor" aria-label="anchor" href="#arg-duration"></a></dt>
-<dd><p>a natural number denoting the amoount of rows asked for in a TimeSeries default NULL, if Duration is supplied Eikonfields may not be supplied</p></dd>
+<dd><p>a natural number denoting the amount of rows asked for in a TimeSeries default NULL</p></dd>
 
 
 <dt id="arg-maxricsperchunk">MaxRicsperChunk<a class="anchor" aria-label="anchor" href="#arg-maxricsperchunk"></a></dt>
 <dd><p>a natural number denoting the maximum amount of Rics that should be available in one call, default is 300.</p></dd>
+
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>boolean or character, prints progress information when chunking</p></dd>
+
+
+<dt id="arg-parameters">Parameters<a class="anchor" aria-label="anchor" href="#arg-parameters"></a></dt>
+<dd><p>optional named list of request parameters (e.g. <code>SDate</code>, <code>EDate</code>, <code>FRQ</code>) used to estimate multi-period row counts per instrument</p></dd>
+
+
+<dt id="arg-maxrowsperchunk">MaxRowsPerChunk<a class="anchor" aria-label="anchor" href="#arg-maxrowsperchunk"></a></dt>
+<dd><p>maximum rows per chunk before server-side truncation (default 10000L)</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -71,6 +71,37 @@ EikonGetData(
 
 a data.frame containing data from Eikon
 
+## Details
+
+**LSEG Backend AQL Error Handling and Adaptive Sub-Chunking:** When
+LSEG's backend Asynchronous Query Library (AQL) is under heavy load and
+receives a large multi-RIC \\\times\\ multi-formula request (e.g. \\\>
+28\\ RICs \\\times\\ 100+ `TR.*` formulas), LSEG can fail in three ways:
+
+1.  *Async ticket poll failure*: `DataGrid_StandardAsync` returns
+    `estimatedDuration` + `ticket`, and the subsequent poll returns
+    top-level `ErrorCode = 2504` / `500` / `400`. `send_json_request()`
+    restores `original_json` before retrying so it resubmits the query
+    rather than re-polling a dead ticket.
+
+2.  *Collapsed 1-column HTTP 200 payload*: The proxy returns HTTP 200
+    with `totalColumnsCount = 1`,
+    `headers[[1]][[1]]$displayName = NULL`, and `code = 100`
+    (`"Asynchronous Query library internal error."`) in `$error` for
+    every row. Without validation, post-processing turns
+    `displayName = NULL` into a column literally named `"NA"` and
+    silently drops all requested formula columns for that chunk
+    (observed in production under both R 4.5.3 on 2026-10-10 /
+    2026-10-14 and R 4.6.1 on 2026-10-17).
+
+3.  *Persistent oversized chunk timeouts*: Retrying the same 100+ RIC
+    chunk against a saturated AQL worker pool fails \\\sim 85\\\\ of the
+    time. When an oversized chunk (\\\> 28\\ RICs) hits an AQL collapse,
+    `EikonGetData()` automatically splits that chunk into \\\le 25\\-RIC
+    sub-chunks (`getOption("refinitiv_aql_fallback_rics", 25L)`), merges
+    the raw sub-chunk payloads, and pre-emptively steps down all
+    remaining oversized chunks in the same call.
+
 ## References
 
 <https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item>

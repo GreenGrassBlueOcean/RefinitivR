@@ -9,7 +9,7 @@ token and its expiration time for future use.
 ## Usage
 
 ``` r
-rd_handshake(debug = FALSE, force = TRUE)
+rd_handshake(debug = FALSE, force = FALSE)
 ```
 
 ## Arguments
@@ -22,7 +22,7 @@ rd_handshake(debug = FALSE, force = TRUE)
 - force:
 
   Logical. If \`TRUE\`, forces fetching a new token even if an existing
-  valid token is present. Defaults to \`TRUE\`.
+  valid token is present. Defaults to \`FALSE\`.
 
 ## Value
 
@@ -45,8 +45,8 @@ A list with the following fields:
 The function first checks if an existing bearer token is present and
 valid. If so, and if \`force = FALSE\`, it reuses the existing token.
 Otherwise, it initiates a handshake with the Refinitiv API to obtain a
-new token. The new token and its expiration time are stored in global
-options for subsequent use.
+new token. The new token and its expiration time are stored in the
+credential vault for subsequent use.
 
 ## Examples
 

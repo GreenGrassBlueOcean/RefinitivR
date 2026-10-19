@@ -1,6 +1,6 @@
 # GetHistoricalPricing
 
-get historical timeseries from the Refinitiv API
+Retrieve historical pricing time series from LSEG Workspace / Eikon.
 
 ## Usage
 
@@ -25,7 +25,8 @@ rd_GetHistoricalPricing(
 
 - RDObject:
 
-  connection object, defaults to RefinitivJsonConnect()
+  connection object, defaults to
+  [`rd_connection()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_connection.md)
 
 - universe:
 
@@ -91,16 +92,18 @@ data.frame with result
 
 Additional details on parameters:
 
-\## **RDObject**: The supported connection object is
-RefinitivJsonConnect().
+\## **RDObject**: Defaults to
+[`rd_connection()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_connection.md)
+(created via
+[`RefinitivJsonConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/RefinitivJsonConnect.md)).
 
-\## **Interval**: The support intervals are:
+\## **Interval**: The supported intervals are:
 
 - Intraday Summaries Intervals:
 
   PT1M, PT5M, PT10M, PT30M, PT60M, and PT1H
 
-- Interday Summaries Tntervals:
+- Interday Summaries Intervals:
 
   P1D, P7D, P1W, P1M, P3M, P12M, and P1Y.
 
@@ -111,7 +114,7 @@ supported interday interval.
 
 - **Intraday Summaries Interval**:
 
-- **Interday Summaries Tntervals**:
+- **Interday Summaries Intervals**:
 
 \## **adjustments**: The list of adjustment types (comma delimiter) that
 tells the system whether to apply or not apply CORAX (Corporate Actions)
