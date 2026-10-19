@@ -1,19 +1,20 @@
 Package: Refinitiv
 Type: Package
-Title: Connect to LSEG Workspace, Refinitiv Eikon, and DataStream from R
+Title: Connect to 'LSEG Workspace', 'Refinitiv Eikon', and 'DataStream' from R
 Version: 0.2.4
 Authors@R: person(given = "Laurens",
                   family = "van der Burg",
                   role = c("aut", "cre"),
                   email = "laurens@ggbo.eu")
-Description: Zero-config R interface to LSEG Workspace (formerly Refinitiv Eikon)
-    and DataStream. Auto-detects the running terminal, connects via direct JSON
-    API calls, and provides opt-in session-scoped request caching. Includes
-    historical and snapshot data retrieval, real-time WebSocket streaming, ESG,
-    consensus estimates, ownership data, symbol conversion, custom instruments,
-    and news. DataStream access is provided via the 'DatastreamDSWS2R' package.
-    This package is in no way affiliated with LSEG, Refinitiv, Eikon or
-    Datastream. Use at own risk.
+Description: Zero-config R interface to 'LSEG Workspace' (formerly 'Refinitiv
+    Eikon') and 'DataStream' <https://developers.lseg.com/en>. Auto-detects the
+    running terminal, connects via direct 'JSON' API calls, and provides opt-in
+    session-scoped request caching. Includes historical and snapshot data
+    retrieval, real-time 'WebSocket' streaming, environmental, social, and
+    governance ('ESG') data, consensus estimates, ownership data, symbol
+    conversion, custom instruments, and news. 'DataStream' access is provided
+    via the 'DatastreamDSWS2R' package. This package is in no way affiliated
+    with 'LSEG', 'Refinitiv', 'Eikon', or 'Datastream'.
 License: LGPL (>= 2.0, < 3) | Mozilla Public License
 Encoding: UTF-8
 LazyData: true
