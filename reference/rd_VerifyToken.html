@@ -11,7 +11,7 @@ verifying its signature."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">Refinitiv</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,7 @@ verifying its signature.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rd_VerifyToken</span><span class="op">(</span>token <span class="op">=</span> <span class="fu"><a href="refinitiv_vault_get.html">refinitiv_vault_get</a></span><span class="op">(</span><span class="st">"access_token"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rd_VerifyToken</span><span class="op">(</span>token <span class="op">=</span> <span class="fu"><a href="refinitiv_vault_get.html">refinitiv_vault_get</a></span><span class="op">(</span><span class="st">"access_token"</span><span class="op">)</span>, warn <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -55,6 +55,11 @@ verifying its signature.</p>
 <dl><dt id="arg-token">token<a class="anchor" aria-label="anchor" href="#arg-token"></a></dt>
 <dd><p>A character string representing the JWT access token. Defaults to the current
 vaulted access token (`refinitiv_vault_get("access_token")`).</p></dd>
+
+
+<dt id="arg-warn">warn<a class="anchor" aria-label="anchor" href="#arg-warn"></a></dt>
+<dd><p>Logical. If `TRUE` (default), issues a warning when the token is expired
+or within the safety buffer. Set to `FALSE` during routine refresh checks.</p></dd>
 
 </dl></div>
     <div class="section level2">

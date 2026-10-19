@@ -7,7 +7,7 @@ It decodes the token's payload without verifying its signature.
 ## Usage
 
 ``` r
-rd_VerifyToken(token = refinitiv_vault_get("access_token"))
+rd_VerifyToken(token = refinitiv_vault_get("access_token"), warn = TRUE)
 ```
 
 ## Arguments
@@ -17,6 +17,12 @@ rd_VerifyToken(token = refinitiv_vault_get("access_token"))
   A character string representing the JWT access token. Defaults to the
   current vaulted access token
   (\`refinitiv_vault_get("access_token")\`).
+
+- warn:
+
+  Logical. If \`TRUE\` (default), issues a warning when the token is
+  expired or within the safety buffer. Set to \`FALSE\` during routine
+  refresh checks.
 
 ## Value
 

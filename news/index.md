@@ -1,5 +1,94 @@
 # Changelog
 
+## Refinitiv 0.2.4
+
+### Security & Credential Handling
+
+- **Credential vault isolation (`#15`, `#2`, `#5`)** —
+  [`refinitiv_vault_set()`](https://greengrassblueocean.github.io/RefinitivR/reference/refinitiv_vault_set.md)
+  no longer writes `api_key` through to `options(.EikonApiKey)` (while
+  `refinitiv_vault_get("api_key")` retains a read-only fallback for
+  legacy callers, and `.onLoad()` clears `.EikonApiKey` after migrating
+  it into the private vault).
+  [`DataStreamConnect()`](https://greengrassblueocean.github.io/RefinitivR/reference/DataStreamConnect.md)
+  now stores credentials in the private vault and passes `username` and
+  `password` directly to `DatastreamDSWS2R::dsws$new()` without writing
+  to or clearing `options(Datastream.Username)` /
+  `options(Datastream.Password)`.
+  [`TestDataStreamCredentials()`](https://greengrassblueocean.github.io/RefinitivR/reference/TestDataStreamCredentials.md)
+  now uses `https://`, URL-encodes credentials with
+  `reserved = TRUE, repeated = TRUE`, and scrubs passwords and query
+  strings from diagnostic messages and warnings.
+- **Token lifecycle & handshake defaults (`#9`, `#16b`, `#16c`)** —
+  [`rd_handshake()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_handshake.md)
+  now defaults to `force = FALSE`, reusing valid cached bearer tokens
+  instead of re-probing ports and fetching a new token on every call.
+  Routine token expiry checks via `rd_VerifyToken(..., warn = FALSE)` no
+  longer emit a warning during normal refresh, `StreamManager`
+  invalidates the cached token when the server closes the `Login` stream
+  (`Status: Closed`),
+  [`rd_handshake()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_handshake.md)
+  uses `get_pkg_version()` as its fallback version, and
+  [`get_rdp_streaming_url()`](https://greengrassblueocean.github.io/RefinitivR/reference/get_rdp_streaming_url.md)
+  no longer sends duplicate HTTP requests.
+
+### Streaming, Caching & Request Pipeline Fixes
+
+- **Batched WebSocket frames & dynamic port resolution (`#1`, `#13`,
+  `#1`)** — `StreamManager$.process_message()` now iterates over all
+  elements in batched OMM JSON array frames instead of dropping
+  multi-element frames, with per-message `tryCatch` isolation so a
+  malformed message cannot drop subsequent messages in the same frame.
+  When `REFINITIV_PORT` is unset at load time, `streaming_port` is left
+  `NULL` and resolved dynamically from `getOption("eikon_port")` (with
+  `9000L` fallback). Imported `%||%` from `rlang` in `NAMESPACE` for
+  full compatibility with R 4.1–4.3.
+- **HTTP status code validation & fail-fast on permanent 4xx errors
+  (`#6`, `#14`)** — `send_json_request()` now checks HTTP status codes
+  (`>= 400`), guards `resp_body_json()` against non-JSON error responses
+  (such as HTML 502/503 proxy pages), fails immediately on initial
+  synchronous `ErrorCode == 400` responses (while still allowing retry
+  on async ticket-poll `400` responses), uses `5 * (counter + 1L)`
+  linear backoff (`5s, 10s, 15s, ...`), and signals
+  `refinitiv_http_error` on permanent HTTP 4xx errors (`400`, `401`,
+  `403`, `404`) so
+  [`retry()`](https://greengrassblueocean.github.io/RefinitivR/reference/retry.md)
+  and `chunked_download()` fail fast without sleeping through chunk
+  retries.
+- **Input order preservation & `Eikon_Error_Data` row synchronization
+  (`#4`, `#3`)** — When caching is active,
+  [`rd_GetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetData.md),
+  [`EikonGetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetData.md),
+  and
+  [`EikonGetSymbology()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetSymbology.md)
+  restore the caller’s input instrument order (including repeated
+  instruments) via `.restore_input_order()`, and
+  [`EikonGetData()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonGetData.md)
+  remaps 0-based `Eikon_Error_Data$row` indices to match the reordered
+  `PostProcessedEikonGetData` rows (as well as offsetting
+  `Eikon_Error_Data$row` across multiple chunks in
+  [`EikonPostProcessor()`](https://greengrassblueocean.github.io/RefinitivR/reference/EikonPostProcessor.md)).
+  Fixed `if (!isFALSE(verbose))` on cache hits so
+  `options(refinitiv_progress = "verbose")` no longer errors.
+- **Chunked download, pagination, date parsing & URL encoding (`#5`,
+  `#7`, `#8`, `#10`, `#11`, `#12`)** — `chunked_download()` no longer
+  sleeps `refinitiv_chunk_sleep` after the final chunk, preserves `NULL`
+  chunk returns via `results[j] <- list(...)`, and tracks pre-fetch
+  cache hits separately for accurate `(N from cache)` reporting.
+  [`rd_GetOwnership()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetOwnership.md)
+  guards unlimited pagination with duplicate-page detection and
+  `getOption("refinitiv_ownership_max_pages", 100L)`.
+  [`rd_OutputProcesser()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_OutputProcesser.md)
+  and
+  [`rd_GetHistory()`](https://greengrassblueocean.github.io/RefinitivR/reference/rd_GetHistory.md)
+  safely guard [`as.Date()`](https://rdrr.io/r/base/as.Date.html)
+  coercion on date-named columns containing non-ISO strings
+  (e.g. `"Q1 2023"`). Historical pricing endpoints now URL-encode
+  `universe` and query parameters via
+  [`build_get_query_string()`](https://greengrassblueocean.github.io/RefinitivR/reference/build_get_query_string.md),
+  and `manage_custom_instrument` respects its `debug` parameter instead
+  of hardcoding `debug = TRUE`.
+
 ## Refinitiv 0.2.3
 
 ### Robustness & AQL Collapse Recovery
