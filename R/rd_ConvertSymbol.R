@@ -174,7 +174,7 @@ rd_ConvertSymbol <- function(symbols,
           }
         }
       }
-    }, error = function(e) { if (verbose) message("get_active_and_date error: ", conditionMessage(e)) })
+    }, error = function(e) { if (!isFALSE(verbose)) message("get_active_and_date error: ", conditionMessage(e)) })
     
     return(res)
   }
@@ -298,7 +298,7 @@ rd_ConvertSymbol <- function(symbols,
       }
     }
   }, error = function(e) {
-    if (verbose) message(sprintf("Symbology API error: %s", conditionMessage(e)))
+    if (!isFALSE(verbose)) message(sprintf("Symbology API error: %s", conditionMessage(e)))
   })
 
   # --- Tier 2: Bare RIC Resolution ---
@@ -335,7 +335,7 @@ rd_ConvertSymbol <- function(symbols,
           }
         }
       }, error = function(e) {
-        if (verbose) message(sprintf("Bare RIC Resolution error: %s", conditionMessage(e)))
+        if (!isFALSE(verbose)) message(sprintf("Bare RIC Resolution error: %s", conditionMessage(e)))
       })
     }
   }
@@ -353,7 +353,7 @@ rd_ConvertSymbol <- function(symbols,
           universe = sym,
           fields = "TR.RIC",
           start = "1950-01-01",
-          debug = verbose
+          debug = !isFALSE(verbose)
         )
         if (is.data.frame(hist_df) && nrow(hist_df) > 0) {
           # Look for the RIC column (might be "RIC" or the sym name itself depending on api behavior, or "TR.RIC")
@@ -388,7 +388,7 @@ rd_ConvertSymbol <- function(symbols,
           }
         }
       }, error = function(e) {
-        if (verbose) message(sprintf("History Fallback error for %s: %s", sym, conditionMessage(e)))
+        if (!isFALSE(verbose)) message(sprintf("History Fallback error for %s: %s", sym, conditionMessage(e)))
       })
     }
   }

@@ -13,15 +13,6 @@
 get_rdp_streaming_url <- function(RDObject = rd_connection(), debug = TRUE) {
   handshake <- rd_handshake()
   Request <- RDObject$get_rdp_streaming_url(debug = debug)
-  EndPoint <- "streaming/pricing/v1/"
-  payload <- NULL
-  response <- send_json_request(payload,
-    service = "rdp",
-    EndPoint = EndPoint,
-    request_type = "GET",
-    debug = debug
-  )
-
   return(Request)
 }
 
@@ -33,7 +24,7 @@ get_rdp_streaming_url <- function(RDObject = rd_connection(), debug = TRUE) {
 #' for future use.
 #'
 #' @param debug Logical. If `TRUE`, prints URLs and additional debugging information for JSON requests. Defaults to `FALSE`.
-#' @param force Logical. If `TRUE`, forces fetching a new token even if an existing valid token is present. Defaults to `TRUE`.
+#' @param force Logical. If `TRUE`, forces fetching a new token even if an existing valid token is present. Defaults to `FALSE`.
 #'
 #' @return A list with the following fields:
 #' \describe{
@@ -45,7 +36,7 @@ get_rdp_streaming_url <- function(RDObject = rd_connection(), debug = TRUE) {
 #' @details
 #' The function first checks if an existing bearer token is present and valid. If so, and if `force = FALSE`,
 #' it reuses the existing token. Otherwise, it initiates a handshake with the Refinitiv API to obtain a new token.
-#' The new token and its expiration time are stored in global options for subsequent use.
+#' The new token and its expiration time are stored in the credential vault for subsequent use.
 #'
 #' @examples
 #' \dontrun{
@@ -55,7 +46,7 @@ get_rdp_streaming_url <- function(RDObject = rd_connection(), debug = TRUE) {
 #' }
 #'
 #' @export
-rd_handshake <- function(debug = FALSE, force = TRUE) {
+rd_handshake <- function(debug = FALSE, force = FALSE) {
   # Check the terminal type (function assumed to be defined elsewhere)
   CheckTerminalType(verbose = debug, force = force)
 
@@ -99,8 +90,8 @@ rd_handshake <- function(debug = FALSE, force = TRUE) {
 
   # Prepare the payload for handshake
   pkg_version <- tryCatch(
-    as.character(utils::packageVersion("Refinitiv")),
-    error = function(e) "0.2.0"
+    get_pkg_version(),
+    error = function(e) "0.2.3"
   )
   app_key <- refinitiv_vault_get("api_key")
   if (is.null(app_key) || !nzchar(app_key)) {

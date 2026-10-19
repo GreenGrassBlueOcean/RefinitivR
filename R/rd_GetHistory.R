@@ -405,10 +405,16 @@ rd_GetHistory <- function(
         format = "%Y-%m-%dT%H:%M:%OS"
       )]
     } else {
-      Return_DT <- Return_DT[, Date := as.Date(Date, tz = "UTC")]
+      parsed_d <- tryCatch(as.Date(Return_DT$Date, tz = "UTC"), error = function(e) NULL)
+      if (!is.null(parsed_d) && !any(is.na(parsed_d) & !is.na(Return_DT$Date))) {
+        Return_DT <- Return_DT[, Date := parsed_d]
+      }
     }
-  } else {
-    Return_DT <- Return_DT[, Date := as.Date(Date, tz = "UTC")]
+  } else if (!inherits(Return_DT$Date, "Date")) {
+    parsed_d <- tryCatch(as.Date(Return_DT$Date, tz = "UTC"), error = function(e) NULL)
+    if (!is.null(parsed_d) && !any(is.na(parsed_d) & !is.na(Return_DT$Date))) {
+      Return_DT <- Return_DT[, Date := parsed_d]
+    }
   }
   data.table::setorderv(Return_DT, c("Date", "Instrument"))
 

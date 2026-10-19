@@ -257,23 +257,41 @@ send_json_request <- function(json = NULL, service = "eikon", debug = FALSE, req
 
   while (counter < max_retries) {
     query <- perform_with_reset_retry(build_request())
+    http_status <- tryCatch(httr2::resp_status(query), error = function(e) query$status_code %||% 200L)
 
     if (debug && method != "DELETE") {
-      message(query$status_code)
+      message(query$status_code %||% http_status)
     }
 
     if (method != "DELETE") {
-      tryresults <- httr2::resp_body_json(query, check_type = FALSE)
-      if ("responses" %in% names(tryresults)) {
+      tryresults <- tryCatch(
+        httr2::resp_body_json(query, check_type = FALSE),
+        error = function(e) {
+          if (is.numeric(http_status) && http_status >= 400L) {
+            raw_txt <- tryCatch(httr2::resp_body_string(query), error = function(e2) "")
+            snippet <- substr(gsub("[\\r\\n]+", " ", raw_txt), 1L, 200L)
+            stop(
+              paste0("HTTP ", http_status, " error (non-JSON response): ", snippet),
+              call. = FALSE
+            )
+          }
+          stop(e)
+        }
+      )
+      if (is.list(tryresults) && "responses" %in% names(tryresults)) {
         tryresults <- tryresults$responses[[1]]
       }
 
       ticket <- NULL
       # Fetches the content from the query
       # Checks for ErrorCode and then aborts after printing message
-      if (is.numeric(tryresults$ErrorCode) || is.numeric(tryresults$estimatedDuration)) {
-        if (is.numeric(tryresults$ErrorCode) && tryresults$ErrorCode %in% c(2504, 500, 400)) {
-          wait_secs <- 5 * counter
+      if (is.list(tryresults) && (is.numeric(tryresults$ErrorCode) || is.numeric(tryresults$estimatedDuration))) {
+        is_retriable_code <- is.numeric(tryresults$ErrorCode) && (
+          tryresults$ErrorCode %in% c(2504, 500) ||
+            (tryresults$ErrorCode == 400 && !identical(json, original_json))
+        )
+        if (is_retriable_code) {
+          wait_secs <- 5 * (counter + 1L)
           progress_msg(
             "Retriable error ", tryresults$ErrorCode,
             ", retrying in ", sprintf("%.0fs", wait_secs),
@@ -305,11 +323,31 @@ send_json_request <- function(json = NULL, service = "eikon", debug = FALSE, req
         } else {
           stop(paste0("Error code: ", tryresults$ErrorCode, " ", tryresults$ErrorMessage))
         }
+      } else if (is.numeric(http_status) && http_status >= 400L) {
+        err_detail <- NULL
+        if (is.list(tryresults)) {
+          if (is.list(tryresults$error) && !is.null(tryresults$error$message)) {
+            err_detail <- as.character(tryresults$error$message)[1L]
+          } else if (is.character(tryresults$error_description)) {
+            err_detail <- tryresults$error_description[1L]
+          } else if (is.character(tryresults$message)) {
+            err_detail <- tryresults$message[1L]
+          } else if (is.character(tryresults$error)) {
+            err_detail <- tryresults$error[1L]
+          }
+        }
+        if (is.null(err_detail) || !nzchar(err_detail)) {
+          err_detail <- "Request failed"
+        }
+        stop(paste0("HTTP ", http_status, " error: ", err_detail), call. = FALSE)
       } else {
         results <- tryresults
         break
       }
     } else {
+      if (is.numeric(http_status) && http_status >= 400L) {
+        stop(paste0("HTTP ", http_status, " error on DELETE request"), call. = FALSE)
+      }
       break
     }
   }
@@ -398,7 +436,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA, Eikonapplication_port
   CheckTerminalType()
 
   # Resolve API key: explicit arg > vault > default workspace key
-  if (is.na(Eikonapplication_id)) {
+  if (is.null(Eikonapplication_id) || is.na(Eikonapplication_id)) {
     Eikonapplication_id <- refinitiv_vault_get("api_key")
     if (is.null(Eikonapplication_id)) {
       Eikonapplication_id <- "DEFAULT_WORKSPACE_APP_KEY"
@@ -602,14 +640,13 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA, Eikonapplication_port
       payload <- payload[!unlist(lapply(payload, is.null))]
 
       universeIndex <- grep(x = names(payload), pattern = "universe")
+      encoded_universe <- paste(
+        vapply(as.character(universe), utils::URLencode, character(1L), reserved = TRUE),
+        collapse = ","
+      )
+      qs <- build_get_query_string(payload[-universeIndex])
 
-      NonUniverseParameters <- paste0(paste0(names(payload[-universeIndex]), "=", payload[-universeIndex]), collapse = "&")
-
-      AllParameters <- paste0(payload[[universeIndex]], "?", NonUniverseParameters)
-
-
-      EndPoint <- paste0("data/historical-pricing/beta1/views/summaries/")
-      EndPoint <- paste0(EndPoint, AllParameters)
+      EndPoint <- paste0("data/historical-pricing/beta1/views/summaries/", encoded_universe, qs)
 
       # Execute request ----
 
@@ -648,14 +685,13 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA, Eikonapplication_port
       payload <- payload[!unlist(lapply(payload, is.null))]
 
       universeIndex <- grep(x = names(payload), pattern = "universe")
+      encoded_universe <- paste(
+        vapply(as.character(universe), utils::URLencode, character(1L), reserved = TRUE),
+        collapse = ","
+      )
+      qs <- build_get_query_string(payload[-universeIndex])
 
-      NonUniverseParameters <- paste0(paste0(names(payload[-universeIndex]), "=", payload[-universeIndex]), collapse = "&")
-
-      AllParameters <- paste0(payload[[universeIndex]], "?", NonUniverseParameters)
-
-
-      EndPoint <- paste0("data/custom-instruments/v1/intraday-summaries/")
-      EndPoint <- paste0(EndPoint, AllParameters)
+      EndPoint <- paste0("data/custom-instruments/v1/intraday-summaries/", encoded_universe, qs)
 
       # Execute request ----
 
@@ -694,14 +730,13 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA, Eikonapplication_port
       payload <- payload[!unlist(lapply(payload, is.null))]
 
       universeIndex <- grep(x = names(payload), pattern = "universe")
+      encoded_universe <- paste(
+        vapply(as.character(universe), utils::URLencode, character(1L), reserved = TRUE),
+        collapse = ","
+      )
+      qs <- build_get_query_string(payload[-universeIndex])
 
-      NonUniverseParameters <- paste0(paste0(names(payload[-universeIndex]), "=", payload[-universeIndex]), collapse = "&")
-
-      AllParameters <- paste0(payload[[universeIndex]], "?", NonUniverseParameters)
-
-
-      EndPoint <- paste0("data/custom-instruments/v1/interday-summaries/")
-      EndPoint <- paste0(EndPoint, AllParameters)
+      EndPoint <- paste0("data/custom-instruments/v1/interday-summaries/", encoded_universe, qs)
 
       # Execute request ----
 
@@ -832,7 +867,7 @@ RefinitivJsonConnect <- function(Eikonapplication_id = NA, Eikonapplication_port
         service = "rdp",
         request_type = operation,
         EndPoint = EndPoint,
-        debug = TRUE
+        debug = debug
       )
     }, get_news_headlines = function(query = NULL, count = 20L,
                                      repository = NULL,
@@ -1073,10 +1108,10 @@ build_get_query_string <- function(params) {
     stop("All elements of the list must be named")
   }
 
-  # URL-encode each key and value (reserved = TRUE encodes reserved characters)
+  # URL-encode each key and value (reserved = TRUE, repeated = TRUE encodes raw values reliably)
   encoded_params <- mapply(function(key, value) {
-    key_enc <- URLencode(as.character(key), reserved = TRUE)
-    value_enc <- URLencode(as.character(value), reserved = TRUE)
+    key_enc <- URLencode(as.character(key), reserved = TRUE, repeated = TRUE)
+    value_enc <- URLencode(as.character(value), reserved = TRUE, repeated = TRUE)
     paste0(key_enc, "=", value_enc)
   }, names(params), params, SIMPLIFY = TRUE)
 

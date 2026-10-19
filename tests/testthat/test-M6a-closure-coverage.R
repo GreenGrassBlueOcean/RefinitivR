@@ -358,11 +358,11 @@ test_that("get_intraday_custominstrument_pricing builds correct endpoint", {
   )
 
   expect_true(grepl("data/custom-instruments/v1/intraday-summaries/", captured$endpoint))
-  expect_true(grepl("S)test.UUID-123", captured$endpoint))
+  expect_true(grepl("S%29test\\.UUID-123", captured$endpoint))
   expect_true(grepl("interval=PT5M", captured$endpoint))
   expect_true(grepl("adjustments=exchangeCorrection", captured$endpoint))
-  expect_true(grepl("fields=BID,ASK", captured$endpoint))
-  expect_true(grepl("sessions=normal,post", captured$endpoint))
+  expect_true(grepl("fields=BID%2CASK", captured$endpoint))
+  expect_true(grepl("sessions=normal%2Cpost", captured$endpoint))
   expect_equal(captured$method, "GET")
 })
 
@@ -394,7 +394,7 @@ test_that("get_interday_custominstrument_pricing builds correct endpoint", {
   )
 
   expect_true(grepl("data/custom-instruments/v1/interday-summaries/", captured$endpoint))
-  expect_true(grepl("S)test.UUID-123", captured$endpoint))
+  expect_true(grepl("S%29test\\.UUID-123", captured$endpoint))
   expect_true(grepl("interval=P1D", captured$endpoint))
   # NULL adjustments/fields/sessions should not appear
   expect_false(grepl("adjustments", captured$endpoint))

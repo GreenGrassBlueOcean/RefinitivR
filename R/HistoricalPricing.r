@@ -437,11 +437,23 @@ rd_OutputProcesser <- function(x, use_field_names_in_headers = TRUE, SpaceConver
           parsed_ts <- as.POSIXct(sub("Z$", "", vals), tz = "UTC", format = "%Y-%m-%dT%H:%M:%OS")
           still_na <- is.na(parsed_ts) & !is.na(vals)
           if (any(still_na)) {
-            parsed_ts[still_na] <- as.POSIXct(as.Date(vals[still_na], tz = "UTC"), tz = "UTC")
+            fallback_d <- tryCatch(
+              as.POSIXct(as.Date(vals[still_na], tz = "UTC"), tz = "UTC"),
+              error = function(e) rep(as.POSIXct(NA_real_, origin = "1970-01-01", tz = "UTC"), sum(still_na))
+            )
+            parsed_ts[still_na] <- fallback_d
           }
-          data.table::set(return_DT, j = col_idx, value = parsed_ts)
+          if (!any(is.na(parsed_ts) & !is.na(vals))) {
+            data.table::set(return_DT, j = col_idx, value = parsed_ts)
+          }
         } else {
-          data.table::set(return_DT, j = col_idx, value = as.Date(vals, tz = "UTC"))
+          parsed_d <- tryCatch(
+            as.Date(vals, tz = "UTC"),
+            error = function(e) NULL
+          )
+          if (!is.null(parsed_d) && !any(is.na(parsed_d) & !is.na(vals))) {
+            data.table::set(return_DT, j = col_idx, value = parsed_d)
+          }
         }
       }
     }

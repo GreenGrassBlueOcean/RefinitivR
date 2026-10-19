@@ -30,7 +30,9 @@
 
   if (is.null(getOption("streaming_port"))) {
     eikon_port <- getOption("eikon_port")
-    options(streaming_port = if (!is.null(eikon_port)) eikon_port else 9000L)
+    if (!is.null(eikon_port)) {
+      options(streaming_port = eikon_port)
+    }
   }
 
   if (is.null(getOption("HistoricalPricingFields"))) {
@@ -49,11 +51,11 @@
   # === C3 Secure Credential Vault — backward-compatibility migration ===
   # Resolution order: existing option (.EikonApiKey) > env var > nothing.
   # If the user has .EikonApiKey in .Rprofile / options(), migrate it into
-  # the vault so internal code finds it there.  The write-through in
-  # refinitiv_vault_set() keeps the option in sync for external callers.
+  # the vault so internal code finds it there, then clear the option.
   legacy_key <- getOption(".EikonApiKey")
   if (!is.null(legacy_key) && !refinitiv_vault_has("api_key")) {
     refinitiv_vault_set("api_key", legacy_key)
+    options(.EikonApiKey = NULL)
   }
   # Also check REFINITIV_APP_KEY env var (e.g., in .Renviron)
   if (!refinitiv_vault_has("api_key")) {

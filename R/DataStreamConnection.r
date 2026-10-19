@@ -27,11 +27,13 @@ TestDataStreamCredentials <- function(DatastreamUsername = NULL, DatastreamPassw
   }
 
   # 2. Perform GET operation ----
+  encoded_user <- utils::URLencode(as.character(DatastreamUsername), reserved = TRUE, repeated = TRUE)
+  encoded_pass <- utils::URLencode(as.character(DatastreamPassword), reserved = TRUE, repeated = TRUE)
   token_url <- paste0(
-    "http://product.datastream.com/DSWSClient/V1/DSService.svc/rest/Token?username=",
-    DatastreamUsername,
+    "https://product.datastream.com/DSWSClient/V1/DSService.svc/rest/Token?username=",
+    encoded_user,
     "&password=",
-    DatastreamPassword
+    encoded_pass
   )
 
   response <- tryCatch(
@@ -41,12 +43,10 @@ TestDataStreamCredentials <- function(DatastreamUsername = NULL, DatastreamPassw
         httr2::req_perform()
     },
     error = function(cond) {
-      message(paste(
-        "URL does not seem to exist:", token_url,
-        "Either the service is down or the credentials are invalid."
-      ))
+      message("DataStream token endpoint request failed. Either the service is down or the credentials are invalid.")
       message("Original error message:")
-      message(cond$message)
+      safe_msg <- sub("\\?.*$", "", cond$message)
+      message(safe_msg)
       # Return a meaningful error object
       return(NULL)
     }
@@ -55,14 +55,14 @@ TestDataStreamCredentials <- function(DatastreamUsername = NULL, DatastreamPassw
   # 3. Interpret status and parse response body ----
   if (is.null(response)) {
     warning(paste0(
-      "The provided DataStream credentials (username: \"", DatastreamUsername,
-      "\", password: \"", DatastreamPassword, "\") are invalid.\n"
+      "The provided DataStream credentials for username \"", DatastreamUsername,
+      "\" are invalid.\n"
     ))
     return(FALSE)
   } else if (httr2::resp_status(response) != 200) {
     warning(paste0(
-      "The provided DataStream credentials (username: \"", DatastreamUsername,
-      "\", password: \"", DatastreamPassword, "\") are invalid.\n",
+      "The provided DataStream credentials for username \"", DatastreamUsername,
+      "\" are invalid.\n",
       "HTTP status code: ", httr2::resp_status(response)
     ))
     return(FALSE)
@@ -97,26 +97,46 @@ TestDataStreamCredentials <- function(DatastreamUsername = NULL, DatastreamPassw
 #' DataStream <- DataStreamConnect(DatastreamUserName, DatastreamPassword)
 #' }
 DataStreamConnect <- function(DatastreamUserName = NA, DatastreamPassword = NA) {
+  is_missing_cred <- function(x) {
+    is.null(x) || is.na(x) || (is.character(x) && trimws(x) == "")
+  }
+
   # 1. check input ----
-  if (is.na(DatastreamUserName) || (is.character(DatastreamUserName) && trimws(DatastreamUserName) == "")) {
-    DatastreamUserName <- getOption("Datastream.Username")
-    if (is.na(DatastreamUserName) || is.null(DatastreamUserName) ||
-      (is.character(DatastreamUserName) && trimws(DatastreamUserName) == "")) {
+  if (is_missing_cred(DatastreamUserName)) {
+    DatastreamUserName <- refinitiv_vault_get("datastream_username")
+    if (is_missing_cred(DatastreamUserName)) {
+      env_user <- Sys.getenv("DatastreamUsername", unset = "")
+      if (nzchar(env_user)) DatastreamUserName <- env_user
+    }
+    if (is_missing_cred(DatastreamUserName)) {
+      DatastreamUserName <- getOption("Datastream.Username")
+    }
+    if (is_missing_cred(DatastreamUserName)) {
       stop("Please supply the DataStream username.")
     }
   }
 
-  if (is.na(DatastreamPassword) || (is.character(DatastreamPassword) && trimws(DatastreamPassword) == "")) {
-    DatastreamPassword <- getOption("Datastream.Password")
-    if (is.na(DatastreamPassword) || is.null(DatastreamPassword) ||
-      (is.character(DatastreamPassword) && trimws(DatastreamPassword) == "")) {
+  if (is_missing_cred(DatastreamPassword)) {
+    DatastreamPassword <- refinitiv_vault_get("datastream_password")
+    if (is_missing_cred(DatastreamPassword)) {
+      env_pass <- Sys.getenv("DatastreamPassword", unset = "")
+      if (nzchar(env_pass)) DatastreamPassword <- env_pass
+    }
+    if (is_missing_cred(DatastreamPassword)) {
+      DatastreamPassword <- getOption("Datastream.Password")
+    }
+    if (is_missing_cred(DatastreamPassword)) {
       stop("Please supply the DataStream password.")
     }
   }
 
   # 2. Perform Main operation ----
-  options(Datastream.Username = DatastreamUserName)
-  options(Datastream.Password = DatastreamPassword)
-  mydsws <- DatastreamDSWS2R::dsws$new()
+  refinitiv_vault_set("datastream_username", DatastreamUserName)
+  refinitiv_vault_set("datastream_password", DatastreamPassword)
+  options(Datastream.Username = NULL, Datastream.Password = NULL)
+  mydsws <- DatastreamDSWS2R::dsws$new(
+    username = DatastreamUserName,
+    password = DatastreamPassword
+  )
   return(mydsws)
 }

@@ -106,8 +106,8 @@ test_that("get_historical_pricing includes fields and sessions in endpoint", {
     sessions    = c("normal", "pre")
   )
 
-  expect_true(grepl("fields=HIGH,LOW", captured$endpoint))
-  expect_true(grepl("sessions=normal,pre", captured$endpoint))
+  expect_true(grepl("fields=HIGH%2CLOW", captured$endpoint))
+  expect_true(grepl("sessions=normal%2Cpre", captured$endpoint))
 })
 
 
@@ -141,8 +141,8 @@ test_that("get_intraday_custominstrument_pricing includes adjustments/fields/ses
     sessions    = c("normal")
   )
 
-  expect_true(grepl("adjustments=exchangeCorrection,CCH", captured$endpoint))
-  expect_true(grepl("fields=BID,ASK,MID", captured$endpoint))
+  expect_true(grepl("adjustments=exchangeCorrection%2CCCH", captured$endpoint))
+  expect_true(grepl("fields=BID%2CASK%2CMID", captured$endpoint))
   expect_true(grepl("sessions=normal", captured$endpoint))
 })
 
@@ -178,8 +178,8 @@ test_that("get_interday_custominstrument_pricing includes adjustments/fields/ses
   )
 
   expect_true(grepl("adjustments=exchangeCorrection", captured$endpoint))
-  expect_true(grepl("fields=CLOSE,OPEN", captured$endpoint))
-  expect_true(grepl("sessions=normal,post", captured$endpoint))
+  expect_true(grepl("fields=CLOSE%2COPEN", captured$endpoint))
+  expect_true(grepl("sessions=normal%2Cpost", captured$endpoint))
 })
 
 

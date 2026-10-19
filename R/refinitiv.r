@@ -418,7 +418,7 @@ EikonGetTimeseries <- function(
       fields, start_date, end_date, cast, raw_output
     )
     if (.cl$found) {
-      if (verbose) message("[RefinitivR] Cache hit")
+      if (!isFALSE(verbose)) message("[RefinitivR] Cache hit")
       return(.cl$value)
     }
   }
@@ -635,7 +635,14 @@ EikonGetData <- function(
       raw_output, SpaceConvertor
     )
     if (.cl$found) {
-      if (verbose) message("[RefinitivR] Cache hit")
+      if (!isFALSE(verbose)) message("[RefinitivR] Cache hit")
+      if (!raw_output && is.list(.cl$value) && !is.null(.cl$value$PostProcessedEikonGetData)) {
+        val <- .cl$value
+        val$PostProcessedEikonGetData <- .restore_input_order(
+          val$PostProcessedEikonGetData, rics, "Instrument"
+        )
+        return(val)
+      }
       return(.cl$value)
     }
   }
@@ -742,6 +749,9 @@ EikonGetData <- function(
       }
     })
     ReturnElement <- new_EikonResult(EikonPostProcessor(EikonDataList, SpaceConvertor))
+    ReturnElement$PostProcessedEikonGetData <- .restore_input_order(
+      ReturnElement$PostProcessedEikonGetData, rics, "Instrument"
+    )
   } else {
     ReturnElement <- EikonDataList
   }
@@ -842,7 +852,11 @@ EikonGetSymbology <- function(
       bestMatch, raw_output
     )
     if (.cl$found) {
-      if (verbose) message("[RefinitivR] Cache hit")
+      if (!isFALSE(verbose)) message("[RefinitivR] Cache hit")
+      if (!raw_output && is.data.frame(.cl$value)) {
+        sym_col <- if (from_symbol_type %in% names(.cl$value)) from_symbol_type else "symbol"
+        return(.restore_input_order(.cl$value, symbol, sym_col))
+      }
       return(.cl$value)
     }
   }
@@ -941,6 +955,8 @@ EikonGetSymbology <- function(
       ReturnElement <- data.table::rbindlist(ReturnList,
         use.names = TRUE, fill = TRUE
       ) |> data.table::setDF()
+      sym_col <- if (from_symbol_type %in% names(ReturnElement)) from_symbol_type else "symbol"
+      ReturnElement <- .restore_input_order(ReturnElement, symbol, sym_col)
     }
   } else {
     ReturnElement <- EikonSymbologyList

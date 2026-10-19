@@ -61,12 +61,12 @@ test_that(".onLoad sets streaming_port from eikon_port when present", {
   expect_equal(getOption("streaming_port"), 9060L)
 })
 
-test_that(".onLoad defaults streaming_port to 9000 when eikon_port is NULL", {
+test_that(".onLoad leaves streaming_port NULL when eikon_port is NULL", {
   local_refinitiv_state()
   withr::local_options(eikon_port = NULL, streaming_port = NULL)
   withr::local_envvar(REFINITIV_PORT = NA)
   Refinitiv:::.onLoad(NULL, NULL)
-  expect_equal(getOption("streaming_port"), 9000L)
+  expect_null(getOption("streaming_port"))
 })
 
 test_that(".onLoad sets HistoricalPricingFields when option is NULL", {
@@ -80,12 +80,13 @@ test_that(".onLoad sets HistoricalPricingFields when option is NULL", {
   expect_length(hpf, 31)
 })
 
-test_that(".onLoad migrates legacy .EikonApiKey to vault", {
+test_that(".onLoad migrates legacy .EikonApiKey to vault and clears option", {
   local_refinitiv_state()
   refinitiv_vault_clear()
   withr::local_options(.EikonApiKey = "legacy_test_key")
   Refinitiv:::.onLoad(NULL, NULL)
   expect_equal(refinitiv_vault_get("api_key"), "legacy_test_key")
+  expect_null(getOption(".EikonApiKey"))
 })
 
 test_that(".onLoad reads REFINITIV_APP_KEY env var into vault", {

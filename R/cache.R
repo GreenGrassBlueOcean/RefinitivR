@@ -244,6 +244,51 @@ cache_get <- function(key) {
 }
 
 
+#' Restore caller's input instrument order on a post-processed data.frame
+#'
+#' When caching is active, RICs/symbols are sorted before chunking so that
+#' chunk boundaries are deterministic regardless of caller ordering. This
+#' helper reorders the resulting data.frame rows back to the caller's input
+#' sequence while preserving the relative order of multiple rows per instrument.
+#'
+#' @param df A \code{data.frame} (or non-data.frame returned unchanged).
+#' @param input_vec Character vector of requested instruments in caller order.
+#' @param col_name Name of the instrument column in \code{df}.
+#' @return \code{df} reordered to match \code{input_vec}.
+#' @noRd
+.restore_input_order <- function(df, input_vec, col_name = "Instrument") {
+  if (!is.data.frame(df) || nrow(df) <= 1L || !(col_name %in% names(df))) {
+    return(df)
+  }
+  clean_input <- unique(as.character(input_vec[!is.na(input_vec)]))
+  if (length(clean_input) <= 1L) {
+    return(df)
+  }
+  col_idxs <- which(names(df) == col_name)
+  col_vals <- as.character(df[[col_idxs[1L]]])
+  if (length(col_idxs) > 1L) {
+    for (ci in col_idxs) {
+      cand <- as.character(df[[ci]])
+      if (all(cand[!is.na(cand)] %in% clean_input)) {
+        col_vals <- cand
+        break
+      }
+    }
+  }
+  pos <- match(col_vals, clean_input)
+  if (all(is.na(pos))) {
+    return(df)
+  }
+  ord <- order(pos, seq_len(nrow(df)), na.last = TRUE)
+  if (identical(ord, seq_len(nrow(df)))) {
+    return(df)
+  }
+  df <- df[ord, , drop = FALSE]
+  rownames(df) <- NULL
+  df
+}
+
+
 # ── Exported helpers ─────────────────────────────────────────────────────────
 
 #' Clear the RefinitivR Session Cache

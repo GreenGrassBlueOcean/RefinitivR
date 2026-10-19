@@ -36,7 +36,7 @@ test_that("get_rdp_streaming_url passes the debug parameter to RDObject$get_rdp_
   expect_equal(result, "dummy_stream_url")
 })
 
-test_that("get_rdp_streaming_url calls handshake and send_json_request", {
+test_that("get_rdp_streaming_url calls handshake without duplicate send_json_request", {
   handshake_called <- FALSE
   send_called <- FALSE
 
@@ -51,7 +51,7 @@ test_that("get_rdp_streaming_url calls handshake and send_json_request", {
     handshake_called <<- TRUE
   })
 
-  # Stub send_json_request to record its call.
+  # Stub send_json_request to verify it is not called directly in get_rdp_streaming_url.
   stub(get_rdp_streaming_url, "send_json_request", function(payload, service, EndPoint, request_type, debug) {
     send_called <<- TRUE
     return(NULL)
@@ -59,7 +59,7 @@ test_that("get_rdp_streaming_url calls handshake and send_json_request", {
 
   result <- get_rdp_streaming_url(RDObject = dummy_RD, debug = TRUE)
   expect_true(handshake_called)
-  expect_true(send_called)
+  expect_false(send_called)
   expect_equal(result, "dummy_stream_url")
 })
 

@@ -14,17 +14,6 @@
 #' @keywords internal
 .vault <- new.env(parent = emptyenv())
 
-# ------------------------------------------------------------------
-# Internal helper: write-through for API-key backward compatibility
-# ------------------------------------------------------------------
-# During the transition period (0.2.x), the API key is mirrored to
-# options(.EikonApiKey) so that user code calling getOption(".EikonApiKey")
-# still works.  This write-through will be removed in 0.3.0.
-.sync_api_key_to_options <- function(value) {
-  options(.EikonApiKey = value)
-  invisible(value)
-}
-
 # ==================================================================
 # Public accessor functions
 # ==================================================================
@@ -33,10 +22,6 @@
 #'
 #' Stores a value under a named key in the package-private credential vault.
 #' The vault is not visible via \code{getOption()} or \code{options()}.
-#'
-#' For backward compatibility the \code{"api_key"} key is also written through
-#' to \code{options(.EikonApiKey)}.  This behaviour will be removed in a future
-#' release.
 #'
 #' @param key Character scalar — the credential name
 #'   (e.g. \code{"api_key"}, \code{"access_token"}).
@@ -48,11 +33,6 @@ refinitiv_vault_set <- function(key, value) {
     stop("`key` must be a single character string", call. = FALSE)
   }
   assign(key, value, envir = .vault, inherits = FALSE)
-
-  # Write-through for legacy compat (0.2.x only)
-  if (identical(key, "api_key")) {
-    .sync_api_key_to_options(value)
-  }
   invisible(value)
 }
 

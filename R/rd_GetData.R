@@ -94,7 +94,10 @@ rd_GetData <- function(
       raw_output, SpaceConvertor, use_field_names_in_headers, SyncFields
     )
     if (.cl$found) {
-      if (verbose) message("[RefinitivR] Cache hit")
+      if (!isFALSE(verbose)) message("[RefinitivR] Cache hit")
+      if (!raw_output) {
+        return(.restore_input_order(.cl$value, rics, "Instrument"))
+      }
       return(.cl$value)
     }
   }
@@ -191,6 +194,7 @@ rd_GetData <- function(
       SpaceConvertor = SpaceConvertor
     )
     ReturnElement <- data.table::rbindlist(ReturnList, use.names = TRUE, fill = TRUE) |> data.table::setDF()
+    ReturnElement <- .restore_input_order(ReturnElement, rics, "Instrument")
   } else {
     ReturnElement <- EikonDataList
   }

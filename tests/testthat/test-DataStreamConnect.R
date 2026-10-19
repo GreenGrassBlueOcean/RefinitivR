@@ -3,12 +3,10 @@ library(httr2)
 library(mockery)
 
 test_that("DataStream connection stops without password", {
-  # Save current options
-  oldDatastreamUser <- getOption("Datastream.Username")
-  oldDatastreamPassword <- getOption("Datastream.Password")
-
-  # Mock getOption within DataStreamConnect to always return NULL
-  stub(DataStreamConnect, "getOption", function(x, ...) NULL)
+  local_refinitiv_state()
+  refinitiv_vault_clear()
+  withr::local_envvar(DatastreamUsername = NA, DatastreamPassword = NA)
+  withr::local_options(Datastream.Username = NULL, Datastream.Password = NULL)
 
   expect_error(
     DataStreamConnect(DatastreamUserName = NA, DatastreamPassword = "real password"),
@@ -19,10 +17,6 @@ test_that("DataStream connection stops without password", {
     DataStreamConnect(DatastreamUserName = "real username", DatastreamPassword = NA),
     "Please supply the DataStream password."
   )
-
-  # Restore the original options
-  options(Datastream.Username = oldDatastreamUser)
-  options(Datastream.Password = oldDatastreamPassword)
 })
 
 test_that("TestDataStreamCredentials fails when it should", {
@@ -53,13 +47,16 @@ test_that("TestDataStreamCredentials satisfies test cases", {
   )
 })
 
-test_that("DataStreamConnect sets options and returns a stubbed dsws object", {
-  # Save current options
-  oldDatastreamUser <- getOption("Datastream.Username")
-  oldDatastreamPassword <- getOption("Datastream.Password")
+test_that("DataStreamConnect stores credentials in vault, clears options, and returns a stubbed dsws object", {
+  local_refinitiv_state()
+  refinitiv_vault_clear()
 
+  captured_args <- NULL
   # Stub the new() method of DatastreamDSWS2R::dsws to return a mock object.
-  stub(DataStreamConnect, "DatastreamDSWS2R::dsws$new", function(...) "mock_dsws_object")
+  stub(DataStreamConnect, "DatastreamDSWS2R::dsws$new", function(...) {
+    captured_args <<- list(...)
+    "mock_dsws_object"
+  })
 
   # Call DataStreamConnect with valid credentials.
   result <- DataStreamConnect(
@@ -68,12 +65,12 @@ test_that("DataStreamConnect sets options and returns a stubbed dsws object", {
   )
 
   expect_equal(result, "mock_dsws_object")
-  expect_equal(getOption("Datastream.Username"), "test_user")
-  expect_equal(getOption("Datastream.Password"), "test_password")
-
-  # Restore the original options
-  options(Datastream.Username = oldDatastreamUser)
-  options(Datastream.Password = oldDatastreamPassword)
+  expect_equal(captured_args$username, "test_user")
+  expect_equal(captured_args$password, "test_password")
+  expect_equal(refinitiv_vault_get("datastream_username"), "test_user")
+  expect_equal(refinitiv_vault_get("datastream_password"), "test_password")
+  expect_null(getOption("Datastream.Username"))
+  expect_null(getOption("Datastream.Password"))
 })
 
 test_that("TestDataStreamCredentials returns FALSE if response lacks valid token", {

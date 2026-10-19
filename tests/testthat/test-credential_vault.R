@@ -83,16 +83,17 @@ test_that("clear() with no args wipes everything", {
   expect_equal(length(refinitiv_vault_keys()), 0L)
 })
 
-# ── API-key write-through ────────────────────────────────────────────
+# ── API-key isolation from options() ─────────────────────────────────
 
-test_that("setting api_key writes through to options(.EikonApiKey)", {
+test_that("setting api_key does not write through to options(.EikonApiKey)", {
   clean_vault()
   old <- getOption(".EikonApiKey")
   on.exit(options(.EikonApiKey = old), add = TRUE)
+  options(.EikonApiKey = NULL)
 
   refinitiv_vault_set("api_key", "my_secret_key")
   expect_equal(refinitiv_vault_get("api_key"), "my_secret_key")
-  expect_equal(getOption(".EikonApiKey"), "my_secret_key")
+  expect_null(getOption(".EikonApiKey"))
 })
 
 test_that("clearing api_key also clears options(.EikonApiKey)", {

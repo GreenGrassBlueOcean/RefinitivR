@@ -15,14 +15,8 @@ StreamManager <- R6::R6Class("StreamManager",
     #' @param stream_type Type of stream ("pricing", "analytics")
     initialize = function(base_url = NULL, port = NULL, stream_type = "pricing") {
       private$.base_url <- base_url
-      # Get port from options if not provided
-      if (is.null(port)) {
-        port <- getOption("streaming_port")
-        if (is.null(port)) {
-          port <- getOption("eikon_port", 9000L)
-        }
-      }
-      private$.port <- port
+      private$.user_port <- port
+      private$.port <- private$.resolve_port()
       private$.stream_type <- stream_type
       private$.connection_state <- "disconnected"
       private$.streams <- list()
@@ -64,8 +58,15 @@ StreamManager <- R6::R6Class("StreamManager",
       # Get access token
       if (debug) message("[DEBUG] Getting access token via rd_handshake()...")
       handshake <- rd_handshake()
+      if (is.null(handshake) || is.null(handshake$access_token) ||
+        !is.character(handshake$access_token) || !nzchar(handshake$access_token)) {
+        stop("Failed to obtain access token via rd_handshake(). Ensure LSEG Workspace is running.", call. = FALSE)
+      }
       access_token <- handshake$access_token
       if (debug) message("[DEBUG] Access token obtained, length: ", nchar(access_token))
+
+      # Refresh port in case rd_handshake() auto-detected eikon_port (e.g. 9060)
+      private$.port <- private$.resolve_port()
 
       # Get URL and protocol
       url <- if (is.null(private$.base_url)) {
@@ -330,7 +331,11 @@ StreamManager <- R6::R6Class("StreamManager",
   ),
   private = list(
     .base_url = NULL,
+    .user_port = NULL,
     .port = 9000L,
+    .resolve_port = function() {
+      as.integer(private$.user_port %||% getOption("streaming_port") %||% getOption("eikon_port") %||% 9000L)
+    },
     .stream_type = "pricing",
     .connection_state = "disconnected",
     .ws = NULL,
@@ -458,8 +463,13 @@ StreamManager <- R6::R6Class("StreamManager",
               rd_handshake()
             }
 
+            priv$.port <- priv$.resolve_port()
+
             # Get connection params
             access_token <- refinitiv_vault_get("access_token")
+            if (is.null(access_token) || !nzchar(access_token)) {
+              stop("No valid bearer token available for reconnect.")
+            }
             url <- if (is.null(priv$.base_url)) {
               get_streaming_url(priv$.stream_type, priv$.port)
             } else {
@@ -555,7 +565,10 @@ StreamManager <- R6::R6Class("StreamManager",
                 token <- refinitiv_vault_get("access_token")
                 if (is.null(token) || nchar(token) == 0) {
                   handshake <- rd_handshake()
-                  token <- handshake$access_token
+                  token <- handshake$access_token %||% refinitiv_vault_get("access_token")
+                }
+                if (is.null(token) || !nzchar(token)) {
+                  stop("Failed to obtain bearer token on reconnect.")
                 }
                 login_request <- create_omm_login_request(access_token = token)
                 if (debug) message("[DEBUG] Reconnect: sending login from onOpen")
@@ -589,75 +602,84 @@ StreamManager <- R6::R6Class("StreamManager",
             return()
           }
 
-          # Handle array messages - OMM protocol can send arrays
-          # If message_data is an unnamed list with one element, it's an array
-          if (is.list(message_data) && length(message_data) == 1 &&
-            (is.null(names(message_data)) || length(names(message_data)) == 0)) {
-            # This is a list with one element (array was parsed)
-            message_data <- message_data[[1]]
-            if (debug) message("[DEBUG] Message was an array, extracted first element")
-          }
-
-          if (debug) {
-            message("[DEBUG] Parsed message structure:")
-            if (!is.null(names(message_data))) {
-              message("[DEBUG]   Top-level keys: ", paste(names(message_data), collapse = ", "))
-            }
-            message("[DEBUG]   Message type: ", class(message_data))
-            if (is.list(message_data)) {
-              message("[DEBUG]   Message structure: ", paste(capture.output(str(message_data, max.level = 2)), collapse = "\n"))
-            }
-          }
-
-          # Handle different message types
-          message_type <- NULL
-          if (!is.null(message_data$Type) && length(message_data$Type) > 0) {
-            message_type <- message_data$Type
-            if (debug) message("[DEBUG] Found message Type: ", message_type)
-          } else if (!is.null(message_data$type) && length(message_data$type) > 0) {
-            message_type <- message_data$type
-            if (debug) message("[DEBUG] Found message type: ", message_type)
-          }
-
-          if (is.null(message_type) || length(message_type) == 0) {
-            if (debug) {
-              if (!is.null(names(message_data))) {
-                message("[DEBUG] No message type found. Available keys: ", paste(names(message_data), collapse = ", "))
-              } else {
-                message("[DEBUG] No message type found. Message is not a named list.")
-              }
-              # Still try to process if it might be a login response
-              if (!is.null(message_data$Domain)) {
-                message("[DEBUG] Found Domain field: ", message_data$Domain)
-              }
-              if (!is.null(message_data$ID) || !is.null(message_data$id)) {
-                msg_id <- if (!is.null(message_data$ID)) message_data$ID else message_data$id
-                message("[DEBUG] Found ID field: ", msg_id)
-              }
-            }
-            return()
-          }
-
-          # Convert to character for comparison
-          message_type <- as.character(message_type)[1]
-          if (debug) message("[DEBUG] Processing message type: ", message_type)
-
-          if (message_type == "Refresh") {
-            if (debug) message("[DEBUG] Handling Refresh message...")
-            private$.handle_refresh(message_data, debug = debug)
-          } else if (message_type == "Update") {
-            if (debug) message("[DEBUG] Handling Update message...")
-            private$.handle_update(message_data)
-          } else if (message_type == "Ping") {
-            if (debug) message("[DEBUG] Handling Ping message...")
-            private$.handle_ping()
-          } else if (message_type == "Status") {
-            if (debug) message("[DEBUG] Handling Status message...")
-            private$.handle_status(message_data)
+          # Handle array messages - OMM protocol can send batched arrays of messages
+          if (is.list(message_data) && (is.null(names(message_data)) || length(names(message_data)) == 0L)) {
+            if (debug) message("[DEBUG] Message was an array, processing ", length(message_data), " element(s)")
+            messages <- message_data
           } else {
-            if (debug) message("[DEBUG] Unknown message type, routing to handlers...")
-            # Unknown message type - route to all handlers
-            private$.route_message(message_data)
+            messages <- list(message_data)
+          }
+
+          for (message_data in messages) {
+            if (is.null(message_data) || length(message_data) == 0L) {
+              next
+            }
+
+            if (debug) {
+              message("[DEBUG] Parsed message structure:")
+              if (!is.null(names(message_data))) {
+                message("[DEBUG]   Top-level keys: ", paste(names(message_data), collapse = ", "))
+              }
+              message("[DEBUG]   Message type: ", class(message_data))
+              if (is.list(message_data)) {
+                message("[DEBUG]   Message structure: ", paste(capture.output(str(message_data, max.level = 2)), collapse = "\n"))
+              }
+            }
+
+            # Handle different message types
+            message_type <- NULL
+            if (is.list(message_data)) {
+              if (!is.null(message_data$Type) && length(message_data$Type) > 0) {
+                message_type <- message_data$Type
+                if (debug) message("[DEBUG] Found message Type: ", message_type)
+              } else if (!is.null(message_data$type) && length(message_data$type) > 0) {
+                message_type <- message_data$type
+                if (debug) message("[DEBUG] Found message type: ", message_type)
+              }
+            }
+
+            if (is.null(message_type) || length(message_type) == 0) {
+              if (debug) {
+                if (!is.null(names(message_data))) {
+                  message("[DEBUG] No message type found. Available keys: ", paste(names(message_data), collapse = ", "))
+                } else {
+                  message("[DEBUG] No message type found. Message is not a named list.")
+                }
+                if (is.list(message_data)) {
+                  # Still try to process if it might be a login response
+                  if (!is.null(message_data$Domain)) {
+                    message("[DEBUG] Found Domain field: ", message_data$Domain)
+                  }
+                  if (!is.null(message_data$ID) || !is.null(message_data$id)) {
+                    msg_id <- if (!is.null(message_data$ID)) message_data$ID else message_data$id
+                    message("[DEBUG] Found ID field: ", msg_id)
+                  }
+                }
+              }
+              next
+            }
+
+            # Convert to character for comparison
+            message_type <- as.character(message_type)[1]
+            if (debug) message("[DEBUG] Processing message type: ", message_type)
+
+            if (message_type == "Refresh") {
+              if (debug) message("[DEBUG] Handling Refresh message...")
+              private$.handle_refresh(message_data, debug = debug)
+            } else if (message_type == "Update") {
+              if (debug) message("[DEBUG] Handling Update message...")
+              private$.handle_update(message_data)
+            } else if (message_type == "Ping") {
+              if (debug) message("[DEBUG] Handling Ping message...")
+              private$.handle_ping()
+            } else if (message_type == "Status") {
+              if (debug) message("[DEBUG] Handling Status message...")
+              private$.handle_status(message_data)
+            } else {
+              if (debug) message("[DEBUG] Unknown message type, routing to handlers...")
+              # Unknown message type - route to all handlers
+              private$.route_message(message_data)
+            }
           }
         },
         error = function(e) {

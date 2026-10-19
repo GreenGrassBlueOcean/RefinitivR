@@ -232,20 +232,41 @@ rd_GetOwnership <- function(RDObject = rd_connection(),
     pages_df <- list()
 
     page_num <- 0L
+    max_pages <- getOption("refinitiv_ownership_max_pages", 100L)
+    prev_page_df <- NULL
+
     while (rows_fetched < req_limit) {
+      if (page_num >= max_pages) {
+        warning(
+          "rd_GetOwnership: reached maximum page limit (", max_pages,
+          " pages). Stopping pagination. Increase options(refinitiv_ownership_max_pages = ...) if needed.",
+          call. = FALSE
+        )
+        break
+      }
       page_num <- page_num + 1L
       chunk_limit <- as.integer(min(MAX_PAGE, req_limit - rows_fetched))
       page_raw <- fetch_page(chunk_limit, offset_val)
-
-      if (raw_output) {
-        pages_raw[[length(pages_raw) + 1L]] <- page_raw
-      }
 
       page_df <- process_adc_response(
         page_raw,
         use_field_names_in_headers = use_field_names_in_headers
       )
+
+      if (!is.null(prev_page_df) && nrow(page_df) > 0L && identical(page_df, prev_page_df)) {
+        warning(
+          "rd_GetOwnership: duplicate page received at offset ", offset_val,
+          " (endpoint may not support offset pagination for this view). Stopping pagination.",
+          call. = FALSE
+        )
+        break
+      }
+
+      if (raw_output) {
+        pages_raw[[length(pages_raw) + 1L]] <- page_raw
+      }
       pages_df[[length(pages_df) + 1L]] <- page_df
+      prev_page_df <- page_df
 
       progress_msg(
         "rd_GetOwnership: page ", page_num, " fetched (",

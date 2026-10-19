@@ -19,9 +19,4 @@ refinitiv_vault_set(key, value)
 Stores a value under a named key in the package-private credential vault.
 The vault is not visible via \code{getOption()} or \code{options()}.
 }
-\details{
-For backward compatibility the \code{"api_key"} key is also written through
-to \code{options(.EikonApiKey)}.  This behaviour will be removed in a future
-release.
-}
 \keyword{internal}

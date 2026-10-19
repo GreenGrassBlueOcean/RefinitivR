@@ -1349,7 +1349,7 @@ test_that("Streaming subsystem edge cases in api, definition, utils, stream, and
   # .process_message edge cases with debug = TRUE (lines 588, 619, 627, 667-668)
   expect_message(mgr_priv$.process_message(list(data = "{}"), debug = TRUE), "Parsed message is empty")
   expect_message(mgr_priv$.process_message(list(data = '{"type":"Ping"}'), debug = TRUE), "Found message type: Ping")
-  expect_message(mgr_priv$.process_message(list(data = '[{"a":1},{"b":2}]'), debug = TRUE), "Message is not a named list")
+  expect_message(mgr_priv$.process_message(list(data = '[[1,2]]'), debug = TRUE), "Message is not a named list")
   expect_warning(
     expect_message(mgr_priv$.process_message(list(data = "INVALID_JSON"), debug = TRUE), "ERROR processing message"),
     "Error processing message"

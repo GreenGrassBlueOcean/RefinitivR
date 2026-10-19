@@ -106,6 +106,7 @@ chunked_download <- function(n_chunks,
     index = seq_len(n_chunks),
     success = rep(FALSE, n_chunks),
     retries = rep(0L, n_chunks),
+    from_cache = rep(FALSE, n_chunks),
     stringsAsFactors = FALSE
   )
 
@@ -118,8 +119,9 @@ chunked_download <- function(n_chunks,
       ck <- chunk_cache_key_fn(j)
       hit <- cache_get(ck)
       if (hit$found) {
-        results[[j]] <- hit$value
+        results[j] <- list(hit$value)
         coordinator$success[j] <- TRUE
+        coordinator$from_cache[j] <- TRUE
         if (show_progress && !one_chunk_quiet) {
           progress_msg(lbl, "Chunk ", j, "/", n_chunks, " [cached]")
         }
@@ -134,9 +136,11 @@ chunked_download <- function(n_chunks,
 
     for (j in pending) {
       t_chunk <- proc.time()[["elapsed"]]
-      results[[j]] <- try(fetch_fn(j))
+      results[j] <- list(try(fetch_fn(j)))
       chunk_elapsed <- proc.time()[["elapsed"]] - t_chunk
-      Sys.sleep(sleep)
+      if (sleep > 0 && j != pending[length(pending)]) {
+        Sys.sleep(sleep)
+      }
 
       if (is_success(results[[j]])) {
         coordinator$success[j] <- TRUE
@@ -166,7 +170,7 @@ chunked_download <- function(n_chunks,
       if (show_verbose) {
         message(
           "Download Status:\n",
-          paste(capture.output(coordinator), collapse = "\n")
+          paste(capture.output(coordinator[, c("index", "success", "retries"), drop = FALSE]), collapse = "\n")
         )
       }
     }
@@ -198,7 +202,7 @@ chunked_download <- function(n_chunks,
       warning(fail_message)
     }
   } else if (show_progress && !one_chunk_quiet) {
-    n_from_cache <- sum(coordinator$success) - sum(coordinator$retries > 0L | !coordinator$success)
+    n_from_cache <- sum(coordinator$from_cache)
     cache_note <- if (use_chunk_cache && n_from_cache > 0L) {
       paste0(" (", n_from_cache, " from cache)")
     } else {

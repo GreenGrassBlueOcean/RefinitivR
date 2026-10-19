@@ -357,8 +357,8 @@ test_that("RefinitivJsonConnect get_historical_pricing passes adjustments", {
     sessions    = NULL
   )
 
-  # adjustments should appear in the endpoint as comma-separated
-  expect_true(grepl("adjustments=exchangeCorrection,CCH", captured_endpoint))
+  # adjustments should appear in the endpoint as comma-separated (URL-encoded)
+  expect_true(grepl("adjustments=exchangeCorrection(%2C|,)CCH", captured_endpoint))
 })
 
 
