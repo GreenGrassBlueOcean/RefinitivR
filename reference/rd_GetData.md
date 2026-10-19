@@ -106,7 +106,7 @@ for full details on the three LSEG backend AQL failure modes.
 
 ## References
 
-<https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item>
+<https://developers.lseg.com/en/api-catalog/eikon/eikon-data-api/documentation>
 
 ## Examples
 

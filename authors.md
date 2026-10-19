@@ -2,12 +2,12 @@
 
 ## Authors
 
-- **Laurens van der Burg**. Maintainer.
+- **Laurens van der Burg**. Author, maintainer.
 
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/GreenGrassBlueOcean/RefinitivR/blob/v0.2.4/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/GreenGrassBlueOcean/RefinitivR/blob/master/DESCRIPTION)
 
 van der Burg L (2026). *Refinitiv: Connect to LSEG Workspace, Refinitiv
 Eikon, and DataStream from R*. R package version 0.2.4,

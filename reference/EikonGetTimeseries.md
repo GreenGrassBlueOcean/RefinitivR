@@ -95,7 +95,7 @@ A data.frame containing time series from Eikon
 
 ## References
 
-<https://developers.refinitiv.com/eikon-apis/eikon-data-api/docs?content=49692&type=documentation_item>
+<https://developers.lseg.com/en/api-catalog/eikon/eikon-data-api/documentation>
 
 ## Examples
 
